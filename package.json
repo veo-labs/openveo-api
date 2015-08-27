@@ -1,0 +1,30 @@
+{
+  "name": "openveo-api",
+  "version": "0.0.1",
+  "description": "TODO",
+  "private": true,
+  "keywords": [
+    "TODO"
+  ],
+  "homepage": "https://github.com/TODO",
+  "bugs": {
+    "url": "https://github.com/TODO"
+  },
+  "license": "TODO",
+  "author": "Veo-Labs <info@veo-labs.com> (http://www.veo-labs.com/)",
+  "files": [],
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/TODO"
+  },
+  "dependencies": {
+    "tar": "^1.0.3"
+  },
+  "devDependencies": {
+    "chai": "^1.10.0",
+    "mocha": "^2.1.0"
+  },
+  "engines": {
+    "node": "^0.10.0"
+  }
+}
