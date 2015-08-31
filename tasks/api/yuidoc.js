@@ -7,7 +7,7 @@ module.exports = {
     version : "<%= pkg.version %>",
     "options" : {
       paths : "lib",
-      "outdir" : "./doc/openveo-api",
+      "outdir" : "./doc/api",
       "linkNatives" : true
     }
   }
