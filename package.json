@@ -11,18 +11,15 @@
     "plugin",
     "veo-labs"
   ],
-  "homepage": "https://gitlab.com/TODO",
+  "homepage": "https://gitlab.com/veo-labs/openveo-api",
   "bugs": {
-    "url": "https://gitlab.com/TODO"
+    "url": "https://gitlab.com/veo-labs/openveo-api/issues"
   },
-  "license": "TODO",
+  "license": "MIT",
   "author": "Veo-Labs <info@veo-labs.com> (http://www.veo-labs.com/)",
-  "files": [
-    "An array of files to automatically include in the project's package"
-  ],
   "repository": {
     "type": "git",
-    "url": "https://gitlab.com/TODO"
+    "url": "https://gitlab.com/veo-labs/openveo-api.git"
   },
   "dependencies": {
     "tar": "^1.0.3"
@@ -37,7 +34,7 @@
     "grunt-init": "^0.3.2",
     "grunt-mocha-test": "^0.12.7"
   },
-  "engines": {
-    "node": "^0.10.0"
+  "peerDependencies": {
+    "@openveo/core": ">=0.0.2"
   }
 }
