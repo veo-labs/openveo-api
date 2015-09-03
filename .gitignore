@@ -16,10 +16,10 @@ Desktop.ini
 ehthumbs.db
 
 # Project npm dependencies
-node_modules
+/node_modules
 
 # IDE
 nbproject
 
 # Documentation (yuidoc)
-doc
+/doc

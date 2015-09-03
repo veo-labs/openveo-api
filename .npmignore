@@ -15,20 +15,20 @@ Desktop.ini
 ehthumbs.db
 
 # Project npm dependencies
-node_modules
+/node_modules
 
 # IDE
 nbproject
 
 # Unit tests
-tests
+/tests
 
 # Documentation (yuidoc)
-doc
+/doc
 
 # Grunt files
-Gruntfile.js
-tasks
+/Gruntfile.js
+/tasks
 
 # Git
 .gitignore
