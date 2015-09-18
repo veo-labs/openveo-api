@@ -28,6 +28,23 @@ describe("fileSystem", function(){
     
   });
   
+  // mkdir method
+  describe("mkdir", function(){
+
+    it("Should be able to create a directory and parent directories", function(done){
+      fileSystem.mkdir(path.normalize(__dirname + "/fileSystem/test1/test2/test3"), function(error){
+        if(!error){
+          fileSystem.rmdir(path.normalize(__dirname + "/fileSystem/test1"), function(error){
+            done();
+          });
+        }
+        else
+          assert.ok(false);
+      });
+    });
+
+  });
+
   // rmdir method
   describe("rmdir", function(){
   
