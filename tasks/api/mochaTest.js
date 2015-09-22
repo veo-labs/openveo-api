@@ -1,11 +1,13 @@
+'use strict';
+
 module.exports = {
-  
+
   // API unit tests
-  api : {
-    options : {
-      reporter : "spec"
+  api: {
+    options: {
+      reporter: 'spec'
     },
-    src : ["tests/server/init.js", "tests/server/*.js"]
+    src: ['tests/server/init.js', 'tests/server/*.js']
   }
-  
+
 };
