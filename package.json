@@ -33,9 +33,15 @@
     "grunt-extend-config": "^0.9.2",
     "grunt-init": "^0.3.2",
     "grunt-mocha-test": "^0.12.7",
-    "grunt-eslint": "^17.1.0"
+    "grunt-eslint": "^17.1.0",
+    "pre-commit": "^1.1.1"
   },
   "peerDependencies": {
     "@openveo/core": ">=0.0.2"
-  }
+  },
+  "scripts": {
+    "eslint": "grunt eslint",
+    "mocha": "grunt mochaTest"
+  },
+  "precommit": ["eslint", "mocha"]
 }

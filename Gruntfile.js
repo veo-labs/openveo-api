@@ -37,7 +37,6 @@ module.exports = function(grunt) {
 
   // Load grunt plugins
   grunt.loadNpmTasks('grunt-mocha-test');
-  grunt.loadNpmTasks('grunt-karma');
   grunt.loadNpmTasks('grunt-contrib-yuidoc');
   grunt.loadNpmTasks('grunt-eslint');
 
