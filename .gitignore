@@ -22,4 +22,5 @@ ehthumbs.db
 nbproject
 
 # Documentation (yuidoc)
-/doc
+/site
+/.grunt

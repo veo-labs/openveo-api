@@ -4,13 +4,14 @@ module.exports = {
 
   // API doc
   api: {
-    name: '<%= pkg.name %>',
-    description: '<%= pkg.description %>',
+    name: 'OpenVeo server API for plugins',
+    description: 'OpenVeo server side API for plugins',
     version: '<%= pkg.version %>',
     options: {
       paths: 'lib',
-      outdir: './doc/api',
-      linkNatives: true
+      outdir: './site/<%= pkg.version %>',
+      linkNatives: true,
+      themedir: 'node_modules/yuidoc-theme-blue'
     }
   }
 

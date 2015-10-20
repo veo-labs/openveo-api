@@ -39,5 +39,12 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-mocha-test');
   grunt.loadNpmTasks('grunt-contrib-yuidoc');
   grunt.loadNpmTasks('grunt-eslint');
+  grunt.loadNpmTasks('grunt-gh-pages');
+
+  // Generate documentation
+  grunt.registerTask('doc', ['yuidoc']);
+
+  // Deploy documentation to github pages
+  grunt.registerTask('deploy-doc', ['doc', 'gh-pages:doc']);
 
 };

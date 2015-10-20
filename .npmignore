@@ -24,7 +24,8 @@ nbproject
 /tests
 
 # Documentation (yuidoc)
-/doc
+/site
+/.grunt
 
 # Grunt files
 /Gruntfile.js
