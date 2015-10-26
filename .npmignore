@@ -34,3 +34,6 @@ nbproject
 # Git
 .gitignore
 .gitattributes
+
+# Eslint
+.eslintrc

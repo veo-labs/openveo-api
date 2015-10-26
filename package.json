@@ -1,25 +1,22 @@
 {
   "name": "@openveo/api",
-  "version": "0.0.1",
-  "description": "OpenVeo API for plugins",
-  "publishConfig": {
-    "registry": "http://87.98.155.235:4873/"
-  },
+  "version": "1.0.0",
+  "description": "API for OpenVeo plugins",
   "keywords": [
     "openveo",
     "api",
     "plugin",
     "veo-labs"
   ],
-  "homepage": "https://gitlab.com/veo-labs/openveo-api",
+  "homepage": "https://github.com/veo-labs/openveo-api",
   "bugs": {
-    "url": "https://gitlab.com/veo-labs/openveo-api/issues"
+    "url": "https://github.com/veo-labs/openveo-api/issues"
   },
   "license": "AGPL-3.0",
   "author": "Veo-Labs <info@veo-labs.com> (http://www.veo-labs.com/)",
   "repository": {
     "type": "git",
-    "url": "https://gitlab.com/veo-labs/openveo-api.git"
+    "url": "https://github.com/veo-labs/openveo-api.git"
   },
   "dependencies": {
     "tar": "^1.0.3"
@@ -39,7 +36,7 @@
     "yuidoc-theme-blue": "^0.1.9"
   },
   "peerDependencies": {
-    "@openveo/core": ">=0.0.2"
+    "@openveo/core": "~1.0.0"
   },
   "scripts": {
     "eslint": "grunt eslint",
