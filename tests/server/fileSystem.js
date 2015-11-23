@@ -2,7 +2,6 @@
 
 // Module dependencies
 var path = require('path');
-var fs = require('fs');
 var assert = require('chai').assert;
 
 // fileSystem.js
@@ -81,9 +80,9 @@ describe('fileSystem', function() {
 
     it('Should be able to copy a file', function(done) {
       fileSystem.copy(path.join(__dirname, '/fileSystem/.session'), path.join(
-        __dirname, '/fileSystem/.sessionCopy'), function(error) {
+        __dirname, '/fileSystem/session/.sessionCopy'), function(error) {
           if (!error) {
-            fs.unlink(path.join(__dirname, '/fileSystem/.sessionCopy'), function(error) {
+            fileSystem.rmdir(path.join(__dirname, '/fileSystem/session'), function(error) {
               if (!error)
                 done();
             });
