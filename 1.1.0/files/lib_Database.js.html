@@ -2,7 +2,7 @@
 <html lang="en" class="yui-overrride">
 <head>
     <meta charset="utf-8">
-    <title>lib\database\mongodb\MongoDatabase.js - OpenVeo server API for plugins</title>
+    <title>lib\Database.js - OpenVeo server API for plugins</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700' rel='stylesheet' type='text/css'>
@@ -18,7 +18,7 @@
             <h1 class="blue-main-title">OpenVeo server API for plugins</h1>
         </div>
         <div class="yui3-u-1-4 version project-version">
-            API Docs for: 1.0.0
+            API Docs for: 1.1.0
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -93,95 +93,88 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-<h1 class="file-heading">File: lib\database\mongodb\MongoDatabase.js</h1>
+<h1 class="file-heading">File: lib\Database.js</h1>
 
 <div class="file">
     <pre class="code prettyprint linenums">
 &#x27;use strict&#x27;;
 
 /**
- * @module mongodb
+ * Defines Database interface.
+ *
+ * @module database
  */
 
-// Module dependencies
-var util = require(&#x27;util&#x27;);
-var mongodb = require(&#x27;mongodb&#x27;);
-var Database = process.requireAPI(&#x27;lib/Database.js&#x27;);
-var MongoClient = mongodb.MongoClient;
-
 /**
- * Defines a MongoDB Database.
- *
- * MongoDatabase must not be used directly. Use Database to get an instance of MongoDatabase.
+ * Saves database configuration.
  *
  * @example
  *
- *     var api = require(&#x27;@openveo/api&#x27;);
+ *     // Example for how to use MongoDB database
  *
- *     // Example of a MongoDB database configuration object
+ *     var api = require(&#x27;@openveo/api&#x27;);
  *     var databaseConf = {
- *       &quot;type&quot; : &quot;mongodb&quot;, // Database type
- *       &quot;host&quot; : &quot;localhost&quot;, // MongoDB server host
- *       &quot;port&quot; : 27017, // MongoDB port
- *       &quot;database&quot; : &quot;DATABASE_NAME&quot;, // Replace DATABASE_NAME by the name of the OpenVeo database
- *       &quot;username&quot; : &quot;DATABASE_USER_NAME&quot;, // Replace DATABASE_USER_NAME by the name of the database user
- *       &quot;password&quot; : &quot;DATABASE_USER_PWD&quot;, // Replace DATABASE_USER_PWD  by the password of the database user
- *       &quot;replicaSet&quot; : &quot;REPLICA_SET_NAME&quot;, // Replace REPLICA_SET_NAME by the name of the ReplicaSet
- *       &quot;seedlist&quot;: &quot;IP_1:PORT_1,IP_2:PORT_2&quot; // The comma separated list of secondary servers
+ *      ...
  *     };
  *
- *     // Get a MongoDB database instance
- *     var db = api.Database.getDatabase(databaseConf);
+ *     // Create a new instance of the database
+ *     var db = api.Database.get(databaseConf);
  *
- * @class MongoDatabase
- * @extends Database
+ *     // Prefer using OpenVeo database instance
+ *     var db = api.applicationStorage.getDatabase();
+ *
+ *
+ * @class Database
  * @constructor
- * @param Object databaseConf A database configuration object
+ * @param {Object} databaseConf A database configuration object
  */
-function MongoDatabase(databaseConf) {
-  Database.call(this, databaseConf);
+function Database(databaseConf) {
+  this.conf = databaseConf;
+
+  if (!this.conf)
+    throw new Error(&#x27;No database configuration&#x27;);
 }
 
-module.exports = MongoDatabase;
-util.inherits(MongoDatabase, Database);
+module.exports = Database;
+
+/**
+ * Gets an instance of a Database using the given
+ * database configuration.
+ *
+ * @method getDatabase
+ * @static
+ * @param {Object} databaseConf A database configuration object
+ * @return {Database} A Database instance
+ */
+Database.getDatabase = function(databaseConf) {
+
+  if (databaseConf &amp;&amp; databaseConf.type) {
+
+    switch (databaseConf.type) {
+
+      case &#x27;mongodb&#x27;:
+        var MongoDatabase = process.requireAPI(&#x27;lib/database/mongodb/MongoDatabase.js&#x27;);
+        return new MongoDatabase(databaseConf);
+
+      default:
+        throw new Error(&#x27;Unknown database type&#x27;);
+    }
+
+  }
+
+};
 
 /**
  * Establishes connection to the database.
  *
  * @method connect
  * @async
- * @param {Function} callback The function to call when connection to the database is established
+ * @param {Function} callback The function to call when connection
+ * to the database is done
  *   - **Error** The error if an error occurred, null otherwise
  */
-MongoDatabase.prototype.connect = function(callback) {
-  var self = this;
-  var connectionUrl = &#x27;mongodb://&#x27; + this.conf.username + &#x27;:&#x27; + this.conf.password + &#x27;@&#x27; + this.conf.host + &#x27;:&#x27; + this.conf.port;
-  var database = &#x27;/&#x27; + this.conf.database;
-  var seedlist = &#x27;,&#x27; + this.conf.seedlist;
-  var replicaset = &#x27;?replicaSet=&#x27; + this.conf.replicaSet + &#x27;&amp;readPreference=secondary&#x27;;
-
-  // Connect to a Replica Set or not
-  if (this.conf.seedlist != undefined &amp;&amp;
-      this.conf.seedlist != &#x27;&#x27; &amp;&amp;
-      this.conf.replicaSet != undefined &amp;&amp;
-      this.conf.replicaSet != &#x27;&#x27;) {
-    connectionUrl = connectionUrl + seedlist + database + replicaset;
-  } else
-    connectionUrl = connectionUrl + database;
-
-  MongoClient.connect(connectionUrl, function(error, db) {
-
-    // Connection failed
-    if (error)
-      callback(error);
-
-    // Connection succeeded
-    else {
-      self.db = db;
-      callback();
-    }
-  });
-
+Database.prototype.connect = function() {
+  throw new Error(&#x27;connect method not implemented for this database&#x27;);
 };
 
 /**
@@ -194,9 +187,8 @@ MongoDatabase.prototype.connect = function(callback) {
  * @param {Function} callback The function to call when it&#x27;s done
  *   - **Error** The error if an error occurred, null otherwise
  */
-MongoDatabase.prototype.insert = function(collection, data, callback) {
-  collection = this.db.collection(collection);
-  collection.insert(data, callback);
+Database.prototype.insert = function() {
+  throw new Error(&#x27;insert method not implemented for this database&#x27;);
 };
 
 /**
@@ -205,19 +197,16 @@ MongoDatabase.prototype.insert = function(collection, data, callback) {
  * @method remove
  * @async
  * @param {String} collection The collection to work on
- * @param {Object} criteria The remove criteria
+ * @param {Object} criteria MongoDB criterias
  * @param {Function} callback The function to call when it&#x27;s done
  *   - **Error** The error if an error occurred, null otherwise
  */
-MongoDatabase.prototype.remove = function(collection, criteria, callback) {
-  if (criteria &amp;&amp; Object.keys(criteria).length) {
-    collection = this.db.collection(collection);
-    collection.remove(criteria, callback);
-  }
+Database.prototype.remove = function() {
+  throw new Error(&#x27;remove method not implemented for this database&#x27;);
 };
 
 /**
- * Removes a property on all collection&#x27;s documents.
+ * Removes a property on all documents in the collection.
  *
  * @method removeProp
  * @async
@@ -226,25 +215,8 @@ MongoDatabase.prototype.remove = function(collection, criteria, callback) {
  * @param {Function} callback The function to call when it&#x27;s done
  *   - **Error** The error if an error occurred, null otherwise
  */
-MongoDatabase.prototype.removeProp = function(collection, prop, callback) {
-  var query = {};
-  query[prop] = {$exists: true};
-  query[&#x27;locked&#x27;] = {$ne: true};
-
-  var update = {};
-  update[&#x27;$unset&#x27;] = {};
-  update[&#x27;$unset&#x27;][prop] = &#x27;&#x27;;
-
-  collection = this.db.collection(collection);
-
-  collection.update(
-    query,
-    update,
-    {
-      multi: true
-    },
-    callback
-  );
+Database.prototype.removeProp = function() {
+  throw new Error(&#x27;removeProp method not implemented for this database&#x27;);
 };
 
 /**
@@ -254,22 +226,13 @@ MongoDatabase.prototype.removeProp = function(collection, prop, callback) {
  * @async
  * @param {String} collection The collection to work on
  * @param {Object} criteria MongoDB criterias
- * @param {Object} data Document data
+ * @param {Object} data The document
  * @param {Function} callback The function to call when it&#x27;s done
  *   - **Error** The error if an error occurred, null otherwise
  */
-MongoDatabase.prototype.update = function(collection, criteria, data, callback) {
-  collection = this.db.collection(collection);
-  collection.update(criteria,
-    {
-      $set: data
-    },
-    {
-      multi: true
-    },
-  callback);
+Database.prototype.update = function() {
+  throw new Error(&#x27;update method not implemented for this database&#x27;);
 };
-
 
 /**
  * Gets a list of documents.
@@ -277,69 +240,15 @@ MongoDatabase.prototype.update = function(collection, criteria, data, callback) 
  * @method get
  * @async
  * @param {String} collection The collection to work on
- * @param {Object} [criteria] MongoDB criterias
- * @param {Object} [projection] MongoDB projection
- * @param {Number} [limit] A limit number of items to retrieve (all by default)
- * @param {Function} callback The function to call when it&#x27;s done
- *   - **Error** The error if an error occurred, null otherwise
- *   - **Array** The retrieved data
- */
-MongoDatabase.prototype.get = function(collection, criteria, projection, limit, callback) {
-  collection = this.db.collection(collection);
-
-  criteria = criteria || {};
-  projection = projection || {};
-  limit = limit || -1;
-  if (limit === -1)
-    collection.find(criteria, projection).toArray(callback);
-  else
-    collection.find(criteria, projection).limit(limit).toArray(callback);
-};
-
-/**
- * Gets an ordered list of documents by page.
- *
- * @method search
- * @async
- * @param {String} collection The collection to work on
- * @param {Object} [criteria] MongoDB criterias
- * @param {Object} [projection] MongoDB projection
- * @param {Number} [limit] The maximum number of expected documents
- * @param {Number} [page] The expected page
- * @param {Object} [sort] A sort object
+ * @param {Object} criteria MongoDB criterias
+ * @param {Object} projection MongoDB projection
+ * @param {Number} limit An optional limit number of items to retrieve
  * @param {Function} callback The function to call when it&#x27;s done
  *   - **Error** The error if an error occurred, null otherwise
  *   - **Array** The list of documents
- *   - **Object** Pagination information
  */
-MongoDatabase.prototype.search = function(collection, criteria, projection, limit, page, sort, callback) {
-  collection = this.db.collection(collection);
-
-  criteria = criteria || {};
-  projection = projection || {};
-  limit = limit || -1;
-  sort = sort || {};
-  var skip = limit * (page - 1) || 0;
-
-  if (limit === -1)
-    collection.find(criteria, projection).sort(sort).toArray(callback);
-  else {
-    var cursor = collection.find(criteria, projection).sort(sort).skip(skip).limit(limit);
-    cursor.toArray(function(err, res) {
-      if (err) callback(err, null, null);
-      cursor.count(false, null, function(error, count) {
-        if (error) callback(error, null, null);
-        var paginate = {
-          count: limit,
-          page: page,
-          pages: Math.ceil(count / limit),
-          size: count
-        };
-        var resultArray = res || [];
-        callback(error, resultArray, paginate);
-      });
-    });
-  }
+Database.prototype.get = function() {
+  throw new Error(&#x27;get method not implemented for this database&#x27;);
 };
 
     </pre>

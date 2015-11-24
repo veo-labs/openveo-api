@@ -2,7 +2,7 @@
 <html lang="en" class="yui-overrride">
 <head>
     <meta charset="utf-8">
-    <title>lib\logger.js - OpenVeo server API for plugins</title>
+    <title>lib\applicationStorage.js - OpenVeo server API for plugins</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700' rel='stylesheet' type='text/css'>
@@ -18,7 +18,7 @@
             <h1 class="blue-main-title">OpenVeo server API for plugins</h1>
         </div>
         <div class="yui3-u-1-4 version project-version">
-            API Docs for: 1.0.0
+            API Docs for: 1.1.0
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -93,78 +93,173 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-<h1 class="file-heading">File: lib\logger.js</h1>
+<h1 class="file-heading">File: lib\applicationStorage.js</h1>
 
 <div class="file">
     <pre class="code prettyprint linenums">
 &#x27;use strict&#x27;;
 
-  /**
-   * Provides functions to manage loggers.
-   *
-   * @module logger
-   * @class logger
-   * @main logger
-   */
+/**
+ * Application storage is a global storage for core and plugins, to be
+ * able to share information between both core and plugins.
+ *
+ * Information stored in the application storage must be limited.
+ *
+ * @module application-storage
+ * @class applicationStorage
+ * @main application-storage
+ */
 
-// Module dependencies
-var winston = require(&#x27;winston&#x27;);
+// Stores a bunch of information for all the application
+var plugins;
+var menu;
+var database;
+var scopes;
+var entities;
+var permissions;
 
 /**
- * Gets a new logger by its name or initializes one.
+ * Gets the list of loaded openveo plugins.
  *
  * @example
- *     var loggerAPI = require(&#x27;@openveo/api&#x27;).logger;
  *
- *     var conf =  {
- *      &#x27;fileName&#x27; : &#x27;/tmp/openveo/logs/openveo.log&#x27;,
- *      &#x27;level&#x27; : &#x27;debug&#x27;,
- *      &#x27;maxFileSize&#x27; : 1048576,
- *      &#x27;maxFiles&#x27; : 2
- *     };
+ *     var api = require(&#x27;@openveo/api&#x27;);
+ *     api.applicationStorage.getPlugins();
  *
- *     // Initializes logger &quot;openveo&quot;
- *     var logger = loggerAPI.get(&#x27;openveo&#x27;, conf);
- *
- *     // Log something
- *     logger.info(&#x27;A simple log&#x27;);
- *
- * @example
- *     var loggerAPI = require(&#x27;@openveo/api&#x27;).logger;
- *
- *     // Retrieve logger &quot;openveo&quot; which have already been initialized
- *     var logger = loggerAPI.get(&#x27;openveo&#x27;);
- *
- * @method get
- * @param {String} name The name of the logger
- * @param {Object} [conf] Logger configuration to initialize a new logger
- * Available debug levels are :
- *  - silly
- *  - debug
- *  - verbose
- *  - info
- *  - warn
- *  - error
+ * @method getPlugins
+ * @return {Array} The list of loaded plugins
  */
-module.exports.get = function(name, conf) {
-  if (conf) {
+module.exports.getPlugins = function() {
+  return plugins;
+};
 
-    // Create logger
-    winston.loggers.add(name, {
-      file: {
-        level: conf.level,
-        filename: conf.fileName,
-        maxsize: conf.maxFileSize,
-        maxFiles: conf.maxFiles
-      }
-    });
+/**
+ * Sets the list of openveo plugins.
+ *
+ * @param {Array} subPlugins The list of plugins
+ */
+module.exports.setPlugins = function(subPlugins) {
+  plugins = subPlugins;
+};
 
-    // Remove default logger, which log to the standard output, in production environment
-    if (process.env.NODE_ENV == &#x27;production&#x27;)
-      winston.loggers.get(name).remove(winston.transports.Console);
-  }
+/**
+ * Gets the computed back office menu with all links.
+ *
+ * @example
+ *
+ *     var api = require(&#x27;@openveo/api&#x27;);
+ *     api.applicationStorage.getMenu();
+ *
+ * @method getMenu
+ * @return {Array} The list of back office links
+ */
+module.exports.getMenu = function() {
+  return menu;
+};
 
-  return winston.loggers.get(name);
+/**
+ * Sets the back office menu list of links.
+ *
+ * @param {Array} newMenu The list of back office menu links
+ */
+module.exports.setMenu = function(newMenu) {
+  menu = newMenu;
+};
+
+/**
+ * Gets the current database instance.
+ *
+ * @example
+ *
+ *     var api = require(&#x27;@openveo/api&#x27;);
+ *     api.applicationStorage.getDatabase();
+ *
+ * @method getDatabase
+ * @return {Database} A Database object
+ */
+module.exports.getDatabase = function() {
+  return database;
+};
+
+/**
+ * Sets a new database instance as the current database.
+ *
+ * @param {Database} newDatabase The new database of the application
+ */
+module.exports.setDatabase = function(newDatabase) {
+  database = newDatabase;
+};
+
+/**
+ * Sets the web service list of scopes.
+ *
+ * @param {Object} newScopes The new list of scopes of the web service
+ */
+module.exports.setWebServiceScopes = function(newScopes) {
+  scopes = newScopes;
+};
+
+/**
+ * Gets the list of web service scopes defined by core and plugins.
+ *
+ * @example
+ *
+ *     var api = require(&#x27;@openveo/api&#x27;);
+ *     api.applicationStorage.getWebServiceScopes();
+ *
+ * @method getWebServiceScopes
+ * @return {Object} scopes
+ */
+module.exports.getWebServiceScopes = function() {
+  return scopes;
+};
+
+/**
+ * Sets the list of permissions.
+ *
+ * @param {Object} permissions The new list of permissions
+ */
+module.exports.setPermissions = function(newPermissions) {
+  permissions = newPermissions;
+};
+
+/**
+ * Gets the list of permissions defined by core and plugins.
+ *
+ * @example
+ *
+ *     var api = require(&#x27;@openveo/api&#x27;);
+ *     api.applicationStorage.getPermissions();
+ *
+ * @method getPermissions
+ * @return {Object} permissions
+ */
+module.exports.getPermissions = function() {
+  return permissions;
+};
+
+/**
+ * Sets the list of entities.
+ *
+ * @param {Object} newEntities The list of entities
+ */
+module.exports.setEntities = function(newEntities) {
+  entities = newEntities;
+};
+
+/**
+ * Gets the list of entities defined by both core and loaded plugins.
+ *
+ * @example
+ *
+ *     var api = require(&#x27;@openveo/api&#x27;);
+ *     api.applicationStorage.getEntities();
+ *
+ * @method getEntities
+ * @return {Object} entities
+ */
+module.exports.getEntities = function() {
+  return entities;
 };
 
     </pre>

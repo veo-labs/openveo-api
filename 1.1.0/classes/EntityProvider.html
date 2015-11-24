@@ -18,7 +18,7 @@
             <h1 class="blue-main-title">OpenVeo server API for plugins</h1>
         </div>
         <div class="yui3-u-1-4 version project-version">
-            API Docs for: 1.0.0
+            API Docs for: 1.1.0
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -225,7 +225,7 @@ var provider = new CustomProvider(api.applicationStorage.getDatabase()));</code>
 
                             </li>
                             <li class="index-item method">
-                                <a href="#method_remove">remove</a>
+                                <a href="#method_removeProp">removeProp</a>
 
                             </li>
                             <li class="index-item method">
@@ -698,8 +698,8 @@ var provider = new CustomProvider(api.applicationStorage.getDatabase()));</code>
 
 
 </div>
-<div id="method_remove" class="method item">
-  <h3 class="blue-method-name">remove</h3>
+<div id="method_removeProp" class="method item">
+  <h3 class="blue-method-name">removeProp</h3>
 
   <div class="meta method-meta">
       <p>
@@ -713,12 +713,12 @@ var provider = new CustomProvider(api.applicationStorage.getDatabase()));</code>
 
   <h3>Syntax</h3>
   <div class="blue-method-syntax">
-  <h3 class="name"><code>remove</code></h3>
+  <h3 class="name"><code>removeProp</code></h3>
 
         <div class="args">
             <span class="paren">(</span><ul class="args-list inline commas">
                 <li class="arg">
-                        <code>id</code>
+                        <code>prop</code>
                 </li>
                 <li class="arg">
                         <code>callback</code>
@@ -737,8 +737,7 @@ var provider = new CustomProvider(api.applicationStorage.getDatabase()));</code>
   </div>
     <div class="description">
       <h3>Summary</h3>
-        <p>Removes an entity.</p>
-<p>If the entity has the property &quot;locked&quot;, it won't be removed.</p>
+        <p>Removes a property on all documents in the collection.</p>
 
     </div>
 
@@ -747,12 +746,12 @@ var provider = new CustomProvider(api.applicationStorage.getDatabase()));</code>
 
             <ul class="params-list">
                 <li class="param">
-                        <code class="param-name">id</code>
+                        <code class="param-name">prop</code>
                         <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
 
 
                     <div class="param-description">
-                        <p>The id of the entity to remove</p>
+                        <p>The property name to remove</p>
 
                     </div>
 

@@ -2,7 +2,7 @@
 <html lang="en" class="yui-overrride">
 <head>
     <meta charset="utf-8">
-    <title>lib\logger.js - OpenVeo server API for plugins</title>
+    <title>lib\util.js - OpenVeo server API for plugins</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700' rel='stylesheet' type='text/css'>
@@ -18,7 +18,7 @@
             <h1 class="blue-main-title">OpenVeo server API for plugins</h1>
         </div>
         <div class="yui3-u-1-4 version project-version">
-            API Docs for: 1.0.0
+            API Docs for: 1.1.0
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -93,78 +93,88 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-<h1 class="file-heading">File: lib\logger.js</h1>
+<h1 class="file-heading">File: lib\util.js</h1>
 
 <div class="file">
     <pre class="code prettyprint linenums">
 &#x27;use strict&#x27;;
 
-  /**
-   * Provides functions to manage loggers.
-   *
-   * @module logger
-   * @class logger
-   * @main logger
-   */
-
-// Module dependencies
-var winston = require(&#x27;winston&#x27;);
+/**
+ * Provides functions for common JavaScript operations.
+ *
+ * @example
+ *
+ *     // Get util
+ *     var util = require(&#x27;@openveo/api&#x27;).util;
+ *
+ * @module util
+ * @class util
+ * @main util
+ */
 
 /**
- * Gets a new logger by its name or initializes one.
+ * Merges, recursively, all properties of object2 in object1.
  *
- * @example
- *     var loggerAPI = require(&#x27;@openveo/api&#x27;).logger;
+ * This will not create copies of objects.
  *
- *     var conf =  {
- *      &#x27;fileName&#x27; : &#x27;/tmp/openveo/logs/openveo.log&#x27;,
- *      &#x27;level&#x27; : &#x27;debug&#x27;,
- *      &#x27;maxFileSize&#x27; : 1048576,
- *      &#x27;maxFiles&#x27; : 2
- *     };
- *
- *     // Initializes logger &quot;openveo&quot;
- *     var logger = loggerAPI.get(&#x27;openveo&#x27;, conf);
- *
- *     // Log something
- *     logger.info(&#x27;A simple log&#x27;);
- *
- * @example
- *     var loggerAPI = require(&#x27;@openveo/api&#x27;).logger;
- *
- *     // Retrieve logger &quot;openveo&quot; which have already been initialized
- *     var logger = loggerAPI.get(&#x27;openveo&#x27;);
- *
- * @method get
- * @param {String} name The name of the logger
- * @param {Object} [conf] Logger configuration to initialize a new logger
- * Available debug levels are :
- *  - silly
- *  - debug
- *  - verbose
- *  - info
- *  - warn
- *  - error
+ * @method merge
+ * @param {Object} object1 The JavaScript final object
+ * @param {Object} object2 A second JavaScript object to merge into
+ * the first one
+ * @return {Object} object1
  */
-module.exports.get = function(name, conf) {
-  if (conf) {
+module.exports.merge = function(object1, object2) {
+  for (var property in object2) {
 
-    // Create logger
-    winston.loggers.add(name, {
-      file: {
-        level: conf.level,
-        filename: conf.fileName,
-        maxsize: conf.maxFileSize,
-        maxFiles: conf.maxFiles
+    try {
+
+      // Object property is an object
+      // Recusively merge its properties
+      if (typeof object2[property] === &#x27;object&#x27;) {
+        object1[property] = object1[property] || {};
+        object1[property] = this.merge(object1[property], object2[property]);
       }
-    });
+      else
+        object1[property] = object2[property];
 
-    // Remove default logger, which log to the standard output, in production environment
-    if (process.env.NODE_ENV == &#x27;production&#x27;)
-      winston.loggers.get(name).remove(winston.transports.Console);
+    } catch (e) {
+
+      // Property does not exist in object1, create it
+      object1[property] = object2[property];
+
+    }
+
   }
 
-  return winston.loggers.get(name);
+  return object1;
+};
+
+/**
+ * Merges two arrays without any duplicated value.
+ *
+ * @method joinArray
+ * @param {Array} [array1] A JavaScript array
+ * @param {Array} [array2] A JavaScript array
+ * @return {Array} array
+ */
+module.exports.joinArray = function(array1, array2) {
+  return array1.concat(array2.filter(function(item) {
+    return array1.indexOf(item) &lt; 0;
+  }));
+};
+
+
+/**
+ * Checks if an email address is valid or not.
+ *
+ * @method isEmailValid
+ * @param {String} email The email address
+ * @return {Boolean} true if the email is valid, false otherwise
+ */
+module.exports.isEmailValid = function(email) {
+  var reg = new RegExp(&#x27;[a-z0-9!#$%&amp;\&#x27;*+\/=?^_&#x60;{|}~-]+(?:\.[a-z0-9!#$%&amp;\&#x27;*+\/=?^_&#x60;{|}~-]+)*@(?:[a-z0-9]&#x27; +
+                       &#x27;(?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?&#x27;);
+  return reg.test(email);
 };
 
     </pre>

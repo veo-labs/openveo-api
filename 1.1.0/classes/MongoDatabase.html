@@ -2,7 +2,7 @@
 <html lang="en" class="yui-overrride">
 <head>
     <meta charset="utf-8">
-    <title>EntityProvider - OpenVeo server API for plugins</title>
+    <title>MongoDatabase - OpenVeo server API for plugins</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700' rel='stylesheet' type='text/css'>
@@ -18,7 +18,7 @@
             <h1 class="blue-main-title">OpenVeo server API for plugins</h1>
         </div>
         <div class="yui3-u-1-4 version project-version">
-            API Docs for: 1.0.0
+            API Docs for: 1.1.0
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -93,37 +93,38 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-<h1>EntityProvider</h1>
+<h1>MongoDatabase</h1>
 <div class="meta">
 
-
-        <div class="foundat">
-            Defined in: <a href="../files/lib_providers_EntityProvider.js.html#l9"><code>lib\providers\EntityProvider.js:9</code></a>
+        <div class="extends">
+            Extends <a href="../classes/Database.html" class="crosslink">Database</a>
         </div>
 
-            Module: <a href="../modules/providers.html">providers</a>
+        <div class="foundat">
+            Defined in: <a href="../files/lib_database_mongodb_MongoDatabase.js.html#l13"><code>lib\database\mongodb\MongoDatabase.js:13</code></a>
+        </div>
+
+            Module: <a href="../modules/mongodb.html">mongodb</a>
 
 </div>
 
 
 <h3>Summary</h3>
 <div class="intro">
-    <p>Defines class EntityProvider.</p>
-<p>The EntityProvider offers basic CRUD (<strong>C</strong>read <strong>R</strong>ead <strong>U</strong>pdate <strong>D</strong>elete) operations on a collection.<br/>
-EntityProvider must not be used directly. Use one of its sub class instead.</p>
-<p>Each entity model as it's own associated Provider (sub class of EntityProvider).</p>
+    <p>Defines a MongoDB Database.</p>
+<p>MongoDatabase must not be used directly. Use Database to get an instance of MongoDatabase.</p>
 
 </div>
 
     <div class="constructor">
         <h2>Constructor</h2>
-<div id="method_EntityProvider" class="method item">
-  <h3 class="blue-method-name">EntityProvider</h3>
+<div id="method_MongoDatabase" class="method item">
+  <h3 class="blue-method-name">MongoDatabase</h3>
 
   <div class="meta method-meta">
       <p>
           Defined in
-      <a href="../files/lib_providers_EntityProvider.js.html#l9"><code>lib\providers\EntityProvider.js:9</code></a>
+      <a href="../files/lib_database_mongodb_MongoDatabase.js.html#l13"><code>lib\database\mongodb\MongoDatabase.js:13</code></a>
   </p>
 
 
@@ -132,9 +133,15 @@ EntityProvider must not be used directly. Use one of its sub class instead.</p>
 
   <h3>Syntax</h3>
   <div class="blue-method-syntax">
-  <h3 class="name"><code>EntityProvider</code></h3>
+  <h3 class="name"><code>MongoDatabase</code></h3>
 
-        <span class="paren">()</span>
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>Object</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
 
 
 
@@ -149,35 +156,45 @@ EntityProvider must not be used directly. Use one of its sub class instead.</p>
         
     </div>
 
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">Object</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
+
+
+                    <div class="param-description">
+                        <p>databaseConf A database configuration object</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
 
 
         <div class="example">
             <h4>Example:</h4>
 
             <div class="example-content">
-<pre class="code prettyprint"><code>// Example for implementing a new EntityProvider named &quot;CustomProvider&quot;
+<pre class="code prettyprint"><code>var api = require('@openveo/api');
 
-// CustomProvider.js
+// Example of a MongoDB database configuration object
+var databaseConf = {
+  &quot;type&quot; : &quot;mongodb&quot;, // Database type
+  &quot;host&quot; : &quot;localhost&quot;, // MongoDB server host
+  &quot;port&quot; : 27017, // MongoDB port
+  &quot;database&quot; : &quot;DATABASE_NAME&quot;, // Replace DATABASE_NAME by the name of the OpenVeo database
+  &quot;username&quot; : &quot;DATABASE_USER_NAME&quot;, // Replace DATABASE_USER_NAME by the name of the database user
+  &quot;password&quot; : &quot;DATABASE_USER_PWD&quot;, // Replace DATABASE_USER_PWD  by the password of the database user
+  &quot;replicaSet&quot; : &quot;REPLICA_SET_NAME&quot;, // Replace REPLICA_SET_NAME by the name of the ReplicaSet
+  &quot;seedlist&quot;: &quot;IP_1:PORT_1,IP_2:PORT_2&quot; // The comma separated list of secondary servers
+};
 
- var util = require('util');
- var api = require('@openveo/api');
-
- function CustomProvider(database) {
-
-   // Initialize the entity provider with collection &quot;customCollection&quot;
-   api.EntityProvider.prototype.init.call(this, database, 'customCollection');
-
- }
-
- // CustomProvider must extend EntityProvider
- module.exports = CustomProvider;
- util.inherits(CustomProvider, api.EntityProvider);</code></pre>
-<pre class="code prettyprint"><code>// Example for how to use CustomProvider defined in previous example
-
-var api = require('@openveo/api');
-
-var CustomProvider = process.require('CustomProvider.js');
-var provider = new CustomProvider(api.applicationStorage.getDatabase()));</code></pre>
+// Get a MongoDB database instance
+var db = api.Database.getDatabase(databaseConf);</code></pre>
 
             </div>
         </div>
@@ -199,36 +216,32 @@ var provider = new CustomProvider(api.applicationStorage.getDatabase()));</code>
                 <div class="index-section methods">
                     <h3>Methods</h3>
 
-                    <ul class="index-list methods">
-                            <li class="index-item method">
-                                <a href="#method_add">add</a>
+                    <ul class="index-list methods extends">
+                            <li class="index-item method inherited">
+                                <a href="#method_connect">connect</a>
 
                             </li>
-                            <li class="index-item method">
+                            <li class="index-item method inherited">
                                 <a href="#method_get">get</a>
 
                             </li>
-                            <li class="index-item method">
-                                <a href="#method_getByFilter">getByFilter</a>
+                            <li class="index-item method inherited">
+                                <a href="#method_insert">insert</a>
 
                             </li>
-                            <li class="index-item method">
-                                <a href="#method_getOne">getOne</a>
-
-                            </li>
-                            <li class="index-item method protected">
-                                <a href="#method_init">init</a>
-
-                            </li>
-                            <li class="index-item method">
+                            <li class="index-item method inherited">
                                 <a href="#method_remove">remove</a>
 
                             </li>
-                            <li class="index-item method">
-                                <a href="#method_remove">remove</a>
+                            <li class="index-item method inherited">
+                                <a href="#method_removeProp">removeProp</a>
 
                             </li>
                             <li class="index-item method">
+                                <a href="#method_search">search</a>
+
+                            </li>
+                            <li class="index-item method inherited">
                                 <a href="#method_update">update</a>
 
                             </li>
@@ -242,13 +255,16 @@ var provider = new CustomProvider(api.applicationStorage.getDatabase()));</code>
             <div id="methods" class="api-class-tabpanel">
                 <h2 class="off-left">Methods</h2>
 
-<div id="method_add" class="method item">
-  <h3 class="blue-method-name">add</h3>
+<div id="method_connect" class="method item">
+  <h3 class="blue-method-name">connect</h3>
 
   <div class="meta method-meta">
-      <p>
-          Defined in
-      <a href="../files/lib_providers_EntityProvider.js.html#l159"><code>lib\providers\EntityProvider.js:159</code></a>
+    <p>Inherited from
+      <a href="../classes/Database.html#method_connect">
+        Database
+      </a>
+        but overwritten in
+      <a href="../files/lib_database_mongodb_MongoDatabase.js.html#l49"><code>lib\database\mongodb\MongoDatabase.js:49</code></a>
   </p>
 
 
@@ -257,13 +273,10 @@ var provider = new CustomProvider(api.applicationStorage.getDatabase()));</code>
 
   <h3>Syntax</h3>
   <div class="blue-method-syntax">
-  <h3 class="name"><code>add</code></h3>
+  <h3 class="name"><code>connect</code></h3>
 
         <div class="args">
             <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>data</code>
-                </li>
                 <li class="arg">
                         <code>callback</code>
                 </li>
@@ -281,7 +294,7 @@ var provider = new CustomProvider(api.applicationStorage.getDatabase()));</code>
   </div>
     <div class="description">
       <h3>Summary</h3>
-        <p>Adds a new entity.</p>
+        <p>Establishes connection to the database.</p>
 
     </div>
 
@@ -290,23 +303,12 @@ var provider = new CustomProvider(api.applicationStorage.getDatabase()));</code>
 
             <ul class="params-list">
                 <li class="param">
-                        <code class="param-name">data</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
-
-
-                    <div class="param-description">
-                        <p>Data to store into the collection, its structure depends on the entity type</p>
-
-                    </div>
-
-                </li>
-                <li class="param">
                         <code class="param-name">callback</code>
                         <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Function" class="crosslink external" target="_blank">Function</a></span>
 
 
                     <div class="param-description">
-                        <p>The function to call when it's done</p>
+                        <p>The function to call when connection to the database is established</p>
 <ul>
 <li><strong>Error</strong> The error if an error occurred, null otherwise</li>
 </ul>
@@ -324,9 +326,12 @@ var provider = new CustomProvider(api.applicationStorage.getDatabase()));</code>
   <h3 class="blue-method-name">get</h3>
 
   <div class="meta method-meta">
-      <p>
-          Defined in
-      <a href="../files/lib_providers_EntityProvider.js.html#l143"><code>lib\providers\EntityProvider.js:143</code></a>
+    <p>Inherited from
+      <a href="../classes/Database.html#method_get">
+        Database
+      </a>
+        but overwritten in
+      <a href="../files/lib_database_mongodb_MongoDatabase.js.html#l175"><code>lib\database\mongodb\MongoDatabase.js:175</code></a>
   </p>
 
 
@@ -340,249 +345,35 @@ var provider = new CustomProvider(api.applicationStorage.getDatabase()));</code>
         <div class="args">
             <span class="paren">(</span><ul class="args-list inline commas">
                 <li class="arg">
-                        <code>callback</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-
-
-
-
-
-
-        <span class="flag async">async</span>
-
-  </div>
-    <div class="description">
-      <h3>Summary</h3>
-        <p>Gets all entities.</p>
-
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">callback</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Function" class="crosslink external" target="_blank">Function</a></span>
-
-
-                    <div class="param-description">
-                        <p>The function to call when it's done</p>
-<ul>
-<li><strong>Error</strong> The error if an error occurred, null otherwise</li>
-<li><strong>Array</strong> The list of entities</li>
-</ul>
-
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-
-
-</div>
-<div id="method_getByFilter" class="method item">
-  <h3 class="blue-method-name">getByFilter</h3>
-
-  <div class="meta method-meta">
-      <p>
-          Defined in
-      <a href="../files/lib_providers_EntityProvider.js.html#l100"><code>lib\providers\EntityProvider.js:100</code></a>
-  </p>
-
-
-
-  </div>
-
-  <h3>Syntax</h3>
-  <div class="blue-method-syntax">
-  <h3 class="name"><code>getByFilter</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>filter</code>
-                </li>
-                <li class="arg">
-                        <code>callback</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-
-
-
-
-
-
-        <span class="flag async">async</span>
-
-  </div>
-    <div class="description">
-      <h3>Summary</h3>
-        <p>Gets an entity filter by custom filter.</p>
-
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">filter</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
-
-
-                    <div class="param-description">
-                        <p>A MongoDB filter</p>
-
-                    </div>
-
-                </li>
-                <li class="param">
-                        <code class="param-name">callback</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Function" class="crosslink external" target="_blank">Function</a></span>
-
-
-                    <div class="param-description">
-                        <p>The function to call when it's done</p>
-<ul>
-<li><strong>Error</strong> The error if an error occurred, null otherwise</li>
-<li><strong>Object</strong> The entity</li>
-</ul>
-
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-
-
-</div>
-<div id="method_getOne" class="method item">
-  <h3 class="blue-method-name">getOne</h3>
-
-  <div class="meta method-meta">
-      <p>
-          Defined in
-      <a href="../files/lib_providers_EntityProvider.js.html#l75"><code>lib\providers\EntityProvider.js:75</code></a>
-  </p>
-
-
-
-  </div>
-
-  <h3>Syntax</h3>
-  <div class="blue-method-syntax">
-  <h3 class="name"><code>getOne</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>id</code>
-                </li>
-                <li class="arg">
-                        <code>callback</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-
-
-
-
-
-
-        <span class="flag async">async</span>
-
-  </div>
-    <div class="description">
-      <h3>Summary</h3>
-        <p>Gets an entity.</p>
-
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">id</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
-
-
-                    <div class="param-description">
-                        <p>The entity id</p>
-
-                    </div>
-
-                </li>
-                <li class="param">
-                        <code class="param-name">callback</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Function" class="crosslink external" target="_blank">Function</a></span>
-
-
-                    <div class="param-description">
-                        <p>The function to call when it's done</p>
-<ul>
-<li><strong>Error</strong> The error if an error occurred, null otherwise</li>
-<li><strong>Object</strong> The entity</li>
-</ul>
-
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-
-
-</div>
-<div id="method_init" class="method item protected">
-  <h3 class="blue-method-name">init</h3>
-
-  <div class="meta method-meta">
-      <p>
-          Defined in
-      <a href="../files/lib_providers_EntityProvider.js.html#l55"><code>lib\providers\EntityProvider.js:55</code></a>
-  </p>
-
-
-
-  </div>
-
-  <h3>Syntax</h3>
-  <div class="blue-method-syntax">
-  <h3 class="name"><code>init</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>database</code>
-                </li>
-                <li class="arg">
                         <code>collection</code>
                 </li>
+                <li class="arg">
+                        <code class="optional">[criteria]</code>
+                </li>
+                <li class="arg">
+                        <code class="optional">[projection]</code>
+                </li>
+                <li class="arg">
+                        <code class="optional">[limit]</code>
+                </li>
+                <li class="arg">
+                        <code>callback</code>
+                </li>
             </ul><span class="paren">)</span>
         </div>
 
 
 
-        <span class="flag protected">protected</span>
 
 
 
 
+        <span class="flag async">async</span>
 
   </div>
     <div class="description">
       <h3>Summary</h3>
-        <p>Initializes an EntityProvider with a collection.</p>
+        <p>Gets a list of documents.</p>
 
     </div>
 
@@ -590,89 +381,49 @@ var provider = new CustomProvider(api.applicationStorage.getDatabase()));</code>
             <h4>Parameters:</h4>
 
             <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">database</code>
-                        <span class="type"><a href="../classes/Database.html" class="crosslink">Database</a></span>
-
-
-                    <div class="param-description">
-                        <p>The database to interact with</p>
-
-                    </div>
-
-                </li>
                 <li class="param">
                         <code class="param-name">collection</code>
                         <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
 
 
                     <div class="param-description">
-                        <p>The collection name where entities are stored</p>
+                        <p>The collection to work on</p>
 
                     </div>
 
                 </li>
-            </ul>
-        </div>
-
-
-
-</div>
-<div id="method_remove" class="method item">
-  <h3 class="blue-method-name">remove</h3>
-
-  <div class="meta method-meta">
-      <p>
-          Defined in
-      <a href="../files/lib_providers_EntityProvider.js.html#l203"><code>lib\providers\EntityProvider.js:203</code></a>
-  </p>
-
-
-
-  </div>
-
-  <h3>Syntax</h3>
-  <div class="blue-method-syntax">
-  <h3 class="name"><code>remove</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>id</code>
-                </li>
-                <li class="arg">
-                        <code>callback</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-
-
-
-
-
-
-        <span class="flag async">async</span>
-
-  </div>
-    <div class="description">
-      <h3>Summary</h3>
-        <p>Removes an entity.</p>
-<p>If the entity has the property &quot;locked&quot;, it won't be removed.</p>
-
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
                 <li class="param">
-                        <code class="param-name">id</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+                        <code class="param-name optional">[criteria]</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
 
 
                     <div class="param-description">
-                        <p>The id of the entity to remove</p>
+                        <p>MongoDB criterias</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name optional">[projection]</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+
+
+                    <div class="param-description">
+                        <p>MongoDB projection</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name optional">[limit]</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Number" class="crosslink external" target="_blank">Number</a></span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+
+
+                    <div class="param-description">
+                        <p>A limit number of items to retrieve (all by default)</p>
 
                     </div>
 
@@ -686,7 +437,7 @@ var provider = new CustomProvider(api.applicationStorage.getDatabase()));</code>
                         <p>The function to call when it's done</p>
 <ul>
 <li><strong>Error</strong> The error if an error occurred, null otherwise</li>
-<li><strong>Number</strong> The number of removed items</li>
+<li><strong>Array</strong> The retrieved data</li>
 </ul>
 
                     </div>
@@ -698,13 +449,16 @@ var provider = new CustomProvider(api.applicationStorage.getDatabase()));</code>
 
 
 </div>
-<div id="method_remove" class="method item">
-  <h3 class="blue-method-name">remove</h3>
+<div id="method_insert" class="method item">
+  <h3 class="blue-method-name">insert</h3>
 
   <div class="meta method-meta">
-      <p>
-          Defined in
-      <a href="../files/lib_providers_EntityProvider.js.html#l231"><code>lib\providers\EntityProvider.js:231</code></a>
+    <p>Inherited from
+      <a href="../classes/Database.html#method_insert">
+        Database
+      </a>
+        but overwritten in
+      <a href="../files/lib_database_mongodb_MongoDatabase.js.html#l88"><code>lib\database\mongodb\MongoDatabase.js:88</code></a>
   </p>
 
 
@@ -713,92 +467,12 @@ var provider = new CustomProvider(api.applicationStorage.getDatabase()));</code>
 
   <h3>Syntax</h3>
   <div class="blue-method-syntax">
-  <h3 class="name"><code>remove</code></h3>
+  <h3 class="name"><code>insert</code></h3>
 
         <div class="args">
             <span class="paren">(</span><ul class="args-list inline commas">
                 <li class="arg">
-                        <code>id</code>
-                </li>
-                <li class="arg">
-                        <code>callback</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-
-
-
-
-
-
-        <span class="flag async">async</span>
-
-  </div>
-    <div class="description">
-      <h3>Summary</h3>
-        <p>Removes an entity.</p>
-<p>If the entity has the property &quot;locked&quot;, it won't be removed.</p>
-
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">id</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
-
-
-                    <div class="param-description">
-                        <p>The id of the entity to remove</p>
-
-                    </div>
-
-                </li>
-                <li class="param">
-                        <code class="param-name">callback</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Function" class="crosslink external" target="_blank">Function</a></span>
-
-
-                    <div class="param-description">
-                        <p>The function to call when it's done</p>
-<ul>
-<li><strong>Error</strong> The error if an error occurred, null otherwise</li>
-<li><strong>Number</strong> The number of removed items</li>
-</ul>
-
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-
-
-</div>
-<div id="method_update" class="method item">
-  <h3 class="blue-method-name">update</h3>
-
-  <div class="meta method-meta">
-      <p>
-          Defined in
-      <a href="../files/lib_providers_EntityProvider.js.html#l176"><code>lib\providers\EntityProvider.js:176</code></a>
-  </p>
-
-
-
-  </div>
-
-  <h3>Syntax</h3>
-  <div class="blue-method-syntax">
-  <h3 class="name"><code>update</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>id</code>
+                        <code>collection</code>
                 </li>
                 <li class="arg">
                         <code>data</code>
@@ -820,8 +494,7 @@ var provider = new CustomProvider(api.applicationStorage.getDatabase()));</code>
   </div>
     <div class="description">
       <h3>Summary</h3>
-        <p>Updates an entity.</p>
-<p>If the entity has the property &quot;locked&quot;, it won't be updated.</p>
+        <p>Inserts a document into a collection.</p>
 
     </div>
 
@@ -830,23 +503,23 @@ var provider = new CustomProvider(api.applicationStorage.getDatabase()));</code>
 
             <ul class="params-list">
                 <li class="param">
-                        <code class="param-name">id</code>
+                        <code class="param-name">collection</code>
                         <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
 
 
                     <div class="param-description">
-                        <p>The id of the entity to update</p>
+                        <p>The collection to work on</p>
 
                     </div>
 
                 </li>
                 <li class="param">
                         <code class="param-name">data</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
+                        <span class="type">Objet</span>
 
 
                     <div class="param-description">
-                        <p>Entity data, its structure depends on the entity type</p>
+                        <p>The document to insert into the collection</p>
 
                     </div>
 
@@ -860,7 +533,460 @@ var provider = new CustomProvider(api.applicationStorage.getDatabase()));</code>
                         <p>The function to call when it's done</p>
 <ul>
 <li><strong>Error</strong> The error if an error occurred, null otherwise</li>
-<li><strong>Number</strong> The number of updated items</li>
+</ul>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_remove" class="method item">
+  <h3 class="blue-method-name">remove</h3>
+
+  <div class="meta method-meta">
+    <p>Inherited from
+      <a href="../classes/Database.html#method_remove">
+        Database
+      </a>
+        but overwritten in
+      <a href="../files/lib_database_mongodb_MongoDatabase.js.html#l103"><code>lib\database\mongodb\MongoDatabase.js:103</code></a>
+  </p>
+
+
+
+  </div>
+
+  <h3>Syntax</h3>
+  <div class="blue-method-syntax">
+  <h3 class="name"><code>remove</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>collection</code>
+                </li>
+                <li class="arg">
+                        <code>criteria</code>
+                </li>
+                <li class="arg">
+                        <code>callback</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+        <span class="flag async">async</span>
+
+  </div>
+    <div class="description">
+      <h3>Summary</h3>
+        <p>Removes a document from a collection.</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">collection</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+
+
+                    <div class="param-description">
+                        <p>The collection to work on</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">criteria</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
+
+
+                    <div class="param-description">
+                        <p>The remove criteria</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">callback</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Function" class="crosslink external" target="_blank">Function</a></span>
+
+
+                    <div class="param-description">
+                        <p>The function to call when it's done</p>
+<ul>
+<li><strong>Error</strong> The error if an error occurred, null otherwise</li>
+</ul>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_removeProp" class="method item">
+  <h3 class="blue-method-name">removeProp</h3>
+
+  <div class="meta method-meta">
+    <p>Inherited from
+      <a href="../classes/Database.html#method_removeProp">
+        Database
+      </a>
+        but overwritten in
+      <a href="../files/lib_database_mongodb_MongoDatabase.js.html#l120"><code>lib\database\mongodb\MongoDatabase.js:120</code></a>
+  </p>
+
+
+
+  </div>
+
+  <h3>Syntax</h3>
+  <div class="blue-method-syntax">
+  <h3 class="name"><code>removeProp</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>collection</code>
+                </li>
+                <li class="arg">
+                        <code>prop</code>
+                </li>
+                <li class="arg">
+                        <code>callback</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+        <span class="flag async">async</span>
+
+  </div>
+    <div class="description">
+      <h3>Summary</h3>
+        <p>Removes a property on all documents in the collection.</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">collection</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+
+
+                    <div class="param-description">
+                        <p>The collection to work on</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">prop</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+
+
+                    <div class="param-description">
+                        <p>The property name to remove</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">callback</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Function" class="crosslink external" target="_blank">Function</a></span>
+
+
+                    <div class="param-description">
+                        <p>The function to call when it's done</p>
+<ul>
+<li><strong>Error</strong> The error if an error occurred, null otherwise</li>
+</ul>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_search" class="method item">
+  <h3 class="blue-method-name">search</h3>
+
+  <div class="meta method-meta">
+      <p>
+          Defined in
+      <a href="../files/lib_database_mongodb_MongoDatabase.js.html#l200"><code>lib\database\mongodb\MongoDatabase.js:200</code></a>
+  </p>
+
+
+
+  </div>
+
+  <h3>Syntax</h3>
+  <div class="blue-method-syntax">
+  <h3 class="name"><code>search</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>collection</code>
+                </li>
+                <li class="arg">
+                        <code class="optional">[criteria]</code>
+                </li>
+                <li class="arg">
+                        <code class="optional">[projection]</code>
+                </li>
+                <li class="arg">
+                        <code class="optional">[limit]</code>
+                </li>
+                <li class="arg">
+                        <code class="optional">[page]</code>
+                </li>
+                <li class="arg">
+                        <code class="optional">[sort]</code>
+                </li>
+                <li class="arg">
+                        <code>callback</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+        <span class="flag async">async</span>
+
+  </div>
+    <div class="description">
+      <h3>Summary</h3>
+        <p>Gets an ordered list of documents by page.</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">collection</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+
+
+                    <div class="param-description">
+                        <p>The collection to work on</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name optional">[criteria]</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+
+
+                    <div class="param-description">
+                        <p>MongoDB criterias</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name optional">[projection]</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+
+
+                    <div class="param-description">
+                        <p>MongoDB projection</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name optional">[limit]</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Number" class="crosslink external" target="_blank">Number</a></span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+
+
+                    <div class="param-description">
+                        <p>The maximum number of expected documents</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name optional">[page]</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Number" class="crosslink external" target="_blank">Number</a></span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+
+
+                    <div class="param-description">
+                        <p>The expected page</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name optional">[sort]</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+
+
+                    <div class="param-description">
+                        <p>A sort object</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">callback</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Function" class="crosslink external" target="_blank">Function</a></span>
+
+
+                    <div class="param-description">
+                        <p>The function to call when it's done</p>
+<ul>
+<li><strong>Error</strong> The error if an error occurred, null otherwise</li>
+<li><strong>Array</strong> The list of documents</li>
+<li><strong>Object</strong> Pagination information</li>
+</ul>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_update" class="method item">
+  <h3 class="blue-method-name">update</h3>
+
+  <div class="meta method-meta">
+    <p>Inherited from
+      <a href="../classes/Database.html#method_update">
+        Database
+      </a>
+        but overwritten in
+      <a href="../files/lib_database_mongodb_MongoDatabase.js.html#l151"><code>lib\database\mongodb\MongoDatabase.js:151</code></a>
+  </p>
+
+
+
+  </div>
+
+  <h3>Syntax</h3>
+  <div class="blue-method-syntax">
+  <h3 class="name"><code>update</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>collection</code>
+                </li>
+                <li class="arg">
+                        <code>criteria</code>
+                </li>
+                <li class="arg">
+                        <code>data</code>
+                </li>
+                <li class="arg">
+                        <code>callback</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+        <span class="flag async">async</span>
+
+  </div>
+    <div class="description">
+      <h3>Summary</h3>
+        <p>Updates a document.</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">collection</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+
+
+                    <div class="param-description">
+                        <p>The collection to work on</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">criteria</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
+
+
+                    <div class="param-description">
+                        <p>MongoDB criterias</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">data</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
+
+
+                    <div class="param-description">
+                        <p>Document data</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">callback</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Function" class="crosslink external" target="_blank">Function</a></span>
+
+
+                    <div class="param-description">
+                        <p>The function to call when it's done</p>
+<ul>
+<li><strong>Error</strong> The error if an error occurred, null otherwise</li>
 </ul>
 
                     </div>

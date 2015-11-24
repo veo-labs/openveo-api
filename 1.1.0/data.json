@@ -2,7 +2,7 @@
     "project": {
         "name": "OpenVeo server API for plugins",
         "description": "OpenVeo server side API for plugins",
-        "version": "1.0.0"
+        "version": "1.1.0"
     },
     "files": {
         "lib\\database\\mongodb\\MongoDatabase.js": {
@@ -497,7 +497,7 @@
         {
             "file": "lib\\database\\mongodb\\MongoDatabase.js",
             "line": 120,
-            "description": "Removes a property on all collection's documents.",
+            "description": "Removes a property on all documents in the collection.",
             "itemtype": "method",
             "name": "removeProp",
             "async": 1,
@@ -1035,14 +1035,14 @@
         {
             "file": "lib\\providers\\EntityProvider.js",
             "line": 231,
-            "description": "Removes an entity.\n\nIf the entity has the property \"locked\", it won't be removed.",
+            "description": "Removes a property on all documents in the collection.",
             "itemtype": "method",
-            "name": "remove",
+            "name": "removeProp",
             "async": 1,
             "params": [
                 {
-                    "name": "id",
-                    "description": "The id of the entity to remove",
+                    "name": "prop",
+                    "description": "The property name to remove",
                     "type": "String"
                 },
                 {
@@ -1149,6 +1149,33 @@
         {
             "file": "lib\\Database.js",
             "line": 109,
+            "description": "Removes a property on all documents in the collection.",
+            "itemtype": "method",
+            "name": "removeProp",
+            "async": 1,
+            "params": [
+                {
+                    "name": "collection",
+                    "description": "The collection to work on",
+                    "type": "String"
+                },
+                {
+                    "name": "prop",
+                    "description": "The property name to remove",
+                    "type": "String"
+                },
+                {
+                    "name": "callback",
+                    "description": "The function to call when it's done\n  - **Error** The error if an error occurred, null otherwise",
+                    "type": "Function"
+                }
+            ],
+            "class": "Database",
+            "module": "database"
+        },
+        {
+            "file": "lib\\Database.js",
+            "line": 123,
             "description": "Updates a document.",
             "itemtype": "method",
             "name": "update",
@@ -1180,7 +1207,7 @@
         },
         {
             "file": "lib\\Database.js",
-            "line": 124,
+            "line": 138,
             "description": "Gets a list of documents.",
             "itemtype": "method",
             "name": "get",

@@ -2,7 +2,7 @@
 <html lang="en" class="yui-overrride">
 <head>
     <meta charset="utf-8">
-    <title>EntityProvider - OpenVeo server API for plugins</title>
+    <title>fileSystem - OpenVeo server API for plugins</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700' rel='stylesheet' type='text/css'>
@@ -18,7 +18,7 @@
             <h1 class="blue-main-title">OpenVeo server API for plugins</h1>
         </div>
         <div class="yui3-u-1-4 version project-version">
-            API Docs for: 1.0.0
+            API Docs for: 1.1.0
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -93,97 +93,25 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-<h1>EntityProvider</h1>
+<h1>fileSystem</h1>
 <div class="meta">
 
 
         <div class="foundat">
-            Defined in: <a href="../files/lib_providers_EntityProvider.js.html#l9"><code>lib\providers\EntityProvider.js:9</code></a>
+            Defined in: <a href="../files/lib_fileSystem.js.html#l3"><code>lib\fileSystem.js:3</code></a>
         </div>
 
-            Module: <a href="../modules/providers.html">providers</a>
+            Module: <a href="../modules/fileSystem.html">fileSystem</a>
 
 </div>
 
 
 <h3>Summary</h3>
 <div class="intro">
-    <p>Defines class EntityProvider.</p>
-<p>The EntityProvider offers basic CRUD (<strong>C</strong>read <strong>R</strong>ead <strong>U</strong>pdate <strong>D</strong>elete) operations on a collection.<br/>
-EntityProvider must not be used directly. Use one of its sub class instead.</p>
-<p>Each entity model as it's own associated Provider (sub class of EntityProvider).</p>
+    <p>Provides functions to interact with the file system as an extension to the Node.js filesystem module.</p>
 
 </div>
 
-    <div class="constructor">
-        <h2>Constructor</h2>
-<div id="method_EntityProvider" class="method item">
-  <h3 class="blue-method-name">EntityProvider</h3>
-
-  <div class="meta method-meta">
-      <p>
-          Defined in
-      <a href="../files/lib_providers_EntityProvider.js.html#l9"><code>lib\providers\EntityProvider.js:9</code></a>
-  </p>
-
-
-
-  </div>
-
-  <h3>Syntax</h3>
-  <div class="blue-method-syntax">
-  <h3 class="name"><code>EntityProvider</code></h3>
-
-        <span class="paren">()</span>
-
-
-
-
-
-
-
-
-  </div>
-    <div class="description">
-      <h3>Summary</h3>
-        
-    </div>
-
-
-
-        <div class="example">
-            <h4>Example:</h4>
-
-            <div class="example-content">
-<pre class="code prettyprint"><code>// Example for implementing a new EntityProvider named &quot;CustomProvider&quot;
-
-// CustomProvider.js
-
- var util = require('util');
- var api = require('@openveo/api');
-
- function CustomProvider(database) {
-
-   // Initialize the entity provider with collection &quot;customCollection&quot;
-   api.EntityProvider.prototype.init.call(this, database, 'customCollection');
-
- }
-
- // CustomProvider must extend EntityProvider
- module.exports = CustomProvider;
- util.inherits(CustomProvider, api.EntityProvider);</code></pre>
-<pre class="code prettyprint"><code>// Example for how to use CustomProvider defined in previous example
-
-var api = require('@openveo/api');
-
-var CustomProvider = process.require('CustomProvider.js');
-var provider = new CustomProvider(api.applicationStorage.getDatabase()));</code></pre>
-
-            </div>
-        </div>
-
-</div>
-    </div>
 
 <div id="classdocs" class="tabview">
     <ul class="api-class-tabs">
@@ -201,35 +129,35 @@ var provider = new CustomProvider(api.applicationStorage.getDatabase()));</code>
 
                     <ul class="index-list methods">
                             <li class="index-item method">
-                                <a href="#method_add">add</a>
+                                <a href="#method_copy">copy</a>
 
                             </li>
                             <li class="index-item method">
-                                <a href="#method_get">get</a>
+                                <a href="#method_extract">extract</a>
 
                             </li>
                             <li class="index-item method">
-                                <a href="#method_getByFilter">getByFilter</a>
+                                <a href="#method_getConfDir">getConfDir</a>
 
                             </li>
                             <li class="index-item method">
-                                <a href="#method_getOne">getOne</a>
-
-                            </li>
-                            <li class="index-item method protected">
-                                <a href="#method_init">init</a>
+                                <a href="#method_getJSONFileContent">getJSONFileContent</a>
 
                             </li>
                             <li class="index-item method">
-                                <a href="#method_remove">remove</a>
+                                <a href="#method_mkdir">mkdir</a>
+
+                            </li>
+                            <li class="index-item method private">
+                                <a href="#method_mkdirRecursive">mkdirRecursive</a>
 
                             </li>
                             <li class="index-item method">
-                                <a href="#method_remove">remove</a>
+                                <a href="#method_rmdir">rmdir</a>
 
                             </li>
-                            <li class="index-item method">
-                                <a href="#method_update">update</a>
+                            <li class="index-item method private">
+                                <a href="#method_rmdirRecursive">rmdirRecursive</a>
 
                             </li>
                     </ul>
@@ -242,13 +170,13 @@ var provider = new CustomProvider(api.applicationStorage.getDatabase()));</code>
             <div id="methods" class="api-class-tabpanel">
                 <h2 class="off-left">Methods</h2>
 
-<div id="method_add" class="method item">
-  <h3 class="blue-method-name">add</h3>
+<div id="method_copy" class="method item">
+  <h3 class="blue-method-name">copy</h3>
 
   <div class="meta method-meta">
       <p>
           Defined in
-      <a href="../files/lib_providers_EntityProvider.js.html#l159"><code>lib\providers\EntityProvider.js:159</code></a>
+      <a href="../files/lib_fileSystem.js.html#l197"><code>lib\fileSystem.js:197</code></a>
   </p>
 
 
@@ -257,12 +185,15 @@ var provider = new CustomProvider(api.applicationStorage.getDatabase()));</code>
 
   <h3>Syntax</h3>
   <div class="blue-method-syntax">
-  <h3 class="name"><code>add</code></h3>
+  <h3 class="name"><code>copy</code></h3>
 
         <div class="args">
             <span class="paren">(</span><ul class="args-list inline commas">
                 <li class="arg">
-                        <code>data</code>
+                        <code>sourceFilePath</code>
+                </li>
+                <li class="arg">
+                        <code>destinationFilePath</code>
                 </li>
                 <li class="arg">
                         <code>callback</code>
@@ -281,7 +212,8 @@ var provider = new CustomProvider(api.applicationStorage.getDatabase()));</code>
   </div>
     <div class="description">
       <h3>Summary</h3>
-        <p>Adds a new entity.</p>
+        <p>Copies a file from one directory to another.</p>
+<p>If directory does not exist it will be automatically created.</p>
 
     </div>
 
@@ -290,234 +222,23 @@ var provider = new CustomProvider(api.applicationStorage.getDatabase()));</code>
 
             <ul class="params-list">
                 <li class="param">
-                        <code class="param-name">data</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
-
-
-                    <div class="param-description">
-                        <p>Data to store into the collection, its structure depends on the entity type</p>
-
-                    </div>
-
-                </li>
-                <li class="param">
-                        <code class="param-name">callback</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Function" class="crosslink external" target="_blank">Function</a></span>
-
-
-                    <div class="param-description">
-                        <p>The function to call when it's done</p>
-<ul>
-<li><strong>Error</strong> The error if an error occurred, null otherwise</li>
-</ul>
-
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-
-
-</div>
-<div id="method_get" class="method item">
-  <h3 class="blue-method-name">get</h3>
-
-  <div class="meta method-meta">
-      <p>
-          Defined in
-      <a href="../files/lib_providers_EntityProvider.js.html#l143"><code>lib\providers\EntityProvider.js:143</code></a>
-  </p>
-
-
-
-  </div>
-
-  <h3>Syntax</h3>
-  <div class="blue-method-syntax">
-  <h3 class="name"><code>get</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>callback</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-
-
-
-
-
-
-        <span class="flag async">async</span>
-
-  </div>
-    <div class="description">
-      <h3>Summary</h3>
-        <p>Gets all entities.</p>
-
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">callback</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Function" class="crosslink external" target="_blank">Function</a></span>
-
-
-                    <div class="param-description">
-                        <p>The function to call when it's done</p>
-<ul>
-<li><strong>Error</strong> The error if an error occurred, null otherwise</li>
-<li><strong>Array</strong> The list of entities</li>
-</ul>
-
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-
-
-</div>
-<div id="method_getByFilter" class="method item">
-  <h3 class="blue-method-name">getByFilter</h3>
-
-  <div class="meta method-meta">
-      <p>
-          Defined in
-      <a href="../files/lib_providers_EntityProvider.js.html#l100"><code>lib\providers\EntityProvider.js:100</code></a>
-  </p>
-
-
-
-  </div>
-
-  <h3>Syntax</h3>
-  <div class="blue-method-syntax">
-  <h3 class="name"><code>getByFilter</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>filter</code>
-                </li>
-                <li class="arg">
-                        <code>callback</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-
-
-
-
-
-
-        <span class="flag async">async</span>
-
-  </div>
-    <div class="description">
-      <h3>Summary</h3>
-        <p>Gets an entity filter by custom filter.</p>
-
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">filter</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
-
-
-                    <div class="param-description">
-                        <p>A MongoDB filter</p>
-
-                    </div>
-
-                </li>
-                <li class="param">
-                        <code class="param-name">callback</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Function" class="crosslink external" target="_blank">Function</a></span>
-
-
-                    <div class="param-description">
-                        <p>The function to call when it's done</p>
-<ul>
-<li><strong>Error</strong> The error if an error occurred, null otherwise</li>
-<li><strong>Object</strong> The entity</li>
-</ul>
-
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-
-
-</div>
-<div id="method_getOne" class="method item">
-  <h3 class="blue-method-name">getOne</h3>
-
-  <div class="meta method-meta">
-      <p>
-          Defined in
-      <a href="../files/lib_providers_EntityProvider.js.html#l75"><code>lib\providers\EntityProvider.js:75</code></a>
-  </p>
-
-
-
-  </div>
-
-  <h3>Syntax</h3>
-  <div class="blue-method-syntax">
-  <h3 class="name"><code>getOne</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>id</code>
-                </li>
-                <li class="arg">
-                        <code>callback</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-
-
-
-
-
-
-        <span class="flag async">async</span>
-
-  </div>
-    <div class="description">
-      <h3>Summary</h3>
-        <p>Gets an entity.</p>
-
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">id</code>
+                        <code class="param-name">sourceFilePath</code>
                         <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
 
 
                     <div class="param-description">
-                        <p>The entity id</p>
+                        <p>Path of the file to move</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">destinationFilePath</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+
+
+                    <div class="param-description">
+                        <p>Final path of the file</p>
 
                     </div>
 
@@ -528,10 +249,9 @@ var provider = new CustomProvider(api.applicationStorage.getDatabase()));</code>
 
 
                     <div class="param-description">
-                        <p>The function to call when it's done</p>
+                        <p>The function to call when done</p>
 <ul>
 <li><strong>Error</strong> The error if an error occurred, null otherwise</li>
-<li><strong>Object</strong> The entity</li>
 </ul>
 
                     </div>
@@ -543,13 +263,13 @@ var provider = new CustomProvider(api.applicationStorage.getDatabase()));</code>
 
 
 </div>
-<div id="method_init" class="method item protected">
-  <h3 class="blue-method-name">init</h3>
+<div id="method_extract" class="method item">
+  <h3 class="blue-method-name">extract</h3>
 
   <div class="meta method-meta">
       <p>
           Defined in
-      <a href="../files/lib_providers_EntityProvider.js.html#l55"><code>lib\providers\EntityProvider.js:55</code></a>
+      <a href="../files/lib_fileSystem.js.html#l139"><code>lib\fileSystem.js:139</code></a>
   </p>
 
 
@@ -558,87 +278,15 @@ var provider = new CustomProvider(api.applicationStorage.getDatabase()));</code>
 
   <h3>Syntax</h3>
   <div class="blue-method-syntax">
-  <h3 class="name"><code>init</code></h3>
+  <h3 class="name"><code>extract</code></h3>
 
         <div class="args">
             <span class="paren">(</span><ul class="args-list inline commas">
                 <li class="arg">
-                        <code>database</code>
+                        <code>filePath</code>
                 </li>
                 <li class="arg">
-                        <code>collection</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-
-
-        <span class="flag protected">protected</span>
-
-
-
-
-
-  </div>
-    <div class="description">
-      <h3>Summary</h3>
-        <p>Initializes an EntityProvider with a collection.</p>
-
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">database</code>
-                        <span class="type"><a href="../classes/Database.html" class="crosslink">Database</a></span>
-
-
-                    <div class="param-description">
-                        <p>The database to interact with</p>
-
-                    </div>
-
-                </li>
-                <li class="param">
-                        <code class="param-name">collection</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
-
-
-                    <div class="param-description">
-                        <p>The collection name where entities are stored</p>
-
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-
-
-</div>
-<div id="method_remove" class="method item">
-  <h3 class="blue-method-name">remove</h3>
-
-  <div class="meta method-meta">
-      <p>
-          Defined in
-      <a href="../files/lib_providers_EntityProvider.js.html#l203"><code>lib\providers\EntityProvider.js:203</code></a>
-  </p>
-
-
-
-  </div>
-
-  <h3>Syntax</h3>
-  <div class="blue-method-syntax">
-  <h3 class="name"><code>remove</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>id</code>
+                        <code>destinationPath</code>
                 </li>
                 <li class="arg">
                         <code>callback</code>
@@ -657,8 +305,7 @@ var provider = new CustomProvider(api.applicationStorage.getDatabase()));</code>
   </div>
     <div class="description">
       <h3>Summary</h3>
-        <p>Removes an entity.</p>
-<p>If the entity has the property &quot;locked&quot;, it won't be removed.</p>
+        <p>Extracts a tar file to the given directory.</p>
 
     </div>
 
@@ -667,12 +314,24 @@ var provider = new CustomProvider(api.applicationStorage.getDatabase()));</code>
 
             <ul class="params-list">
                 <li class="param">
-                        <code class="param-name">id</code>
+                        <code class="param-name">filePath</code>
                         <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
 
 
                     <div class="param-description">
-                        <p>The id of the entity to remove</p>
+                        <p>Path of the file to extract</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">destinationPath</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+
+
+                    <div class="param-description">
+                        <p>Path of the directory where to
+extract files</p>
 
                     </div>
 
@@ -683,10 +342,9 @@ var provider = new CustomProvider(api.applicationStorage.getDatabase()));</code>
 
 
                     <div class="param-description">
-                        <p>The function to call when it's done</p>
+                        <p>The function to call when done</p>
 <ul>
 <li><strong>Error</strong> The error if an error occurred, null otherwise</li>
-<li><strong>Number</strong> The number of removed items</li>
 </ul>
 
                     </div>
@@ -698,13 +356,13 @@ var provider = new CustomProvider(api.applicationStorage.getDatabase()));</code>
 
 
 </div>
-<div id="method_remove" class="method item">
-  <h3 class="blue-method-name">remove</h3>
+<div id="method_getConfDir" class="method item">
+  <h3 class="blue-method-name">getConfDir</h3>
 
   <div class="meta method-meta">
       <p>
           Defined in
-      <a href="../files/lib_providers_EntityProvider.js.html#l231"><code>lib\providers\EntityProvider.js:231</code></a>
+      <a href="../files/lib_fileSystem.js.html#l331"><code>lib\fileSystem.js:331</code></a>
   </p>
 
 
@@ -713,12 +371,66 @@ var provider = new CustomProvider(api.applicationStorage.getDatabase()));</code>
 
   <h3>Syntax</h3>
   <div class="blue-method-syntax">
-  <h3 class="name"><code>remove</code></h3>
+  <h3 class="name"><code>getConfDir</code></h3>
+
+        <span class="paren">()</span>
+
+        <span class="returns-inline">
+            <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+        </span>
+
+
+
+
+
+
+
+  </div>
+    <div class="description">
+      <h3>Summary</h3>
+        <p>Gets OpenVeo configuration directory path.</p>
+<p>OpenVeo configuration is stored in user home directory.</p>
+
+    </div>
+
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>:
+                <div class="blue-return-desc">
+                    <p>OpenVeo configuration directory path</p>
+
+                </div>
+
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_getJSONFileContent" class="method item">
+  <h3 class="blue-method-name">getJSONFileContent</h3>
+
+  <div class="meta method-meta">
+      <p>
+          Defined in
+      <a href="../files/lib_fileSystem.js.html#l246"><code>lib\fileSystem.js:246</code></a>
+  </p>
+
+
+
+  </div>
+
+  <h3>Syntax</h3>
+  <div class="blue-method-syntax">
+  <h3 class="name"><code>getJSONFileContent</code></h3>
 
         <div class="args">
             <span class="paren">(</span><ul class="args-list inline commas">
                 <li class="arg">
-                        <code>id</code>
+                        <code>filePath</code>
                 </li>
                 <li class="arg">
                         <code>callback</code>
@@ -737,8 +449,8 @@ var provider = new CustomProvider(api.applicationStorage.getDatabase()));</code>
   </div>
     <div class="description">
       <h3>Summary</h3>
-        <p>Removes an entity.</p>
-<p>If the entity has the property &quot;locked&quot;, it won't be removed.</p>
+        <p>Gets a JSON file content.</p>
+<p>This will verify that the file exists first.</p>
 
     </div>
 
@@ -747,12 +459,12 @@ var provider = new CustomProvider(api.applicationStorage.getDatabase()));</code>
 
             <ul class="params-list">
                 <li class="param">
-                        <code class="param-name">id</code>
+                        <code class="param-name">filePath</code>
                         <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
 
 
                     <div class="param-description">
-                        <p>The id of the entity to remove</p>
+                        <p>The path of the file to read</p>
 
                     </div>
 
@@ -763,10 +475,10 @@ var provider = new CustomProvider(api.applicationStorage.getDatabase()));</code>
 
 
                     <div class="param-description">
-                        <p>The function to call when it's done</p>
+                        <p>The function to call when done</p>
 <ul>
 <li><strong>Error</strong> The error if an error occurred, null otherwise</li>
-<li><strong>Number</strong> The number of removed items</li>
+<li><strong>String</strong> The file content or null if an error occurred</li>
 </ul>
 
                     </div>
@@ -778,13 +490,13 @@ var provider = new CustomProvider(api.applicationStorage.getDatabase()));</code>
 
 
 </div>
-<div id="method_update" class="method item">
-  <h3 class="blue-method-name">update</h3>
+<div id="method_mkdir" class="method item">
+  <h3 class="blue-method-name">mkdir</h3>
 
   <div class="meta method-meta">
       <p>
           Defined in
-      <a href="../files/lib_providers_EntityProvider.js.html#l176"><code>lib\providers\EntityProvider.js:176</code></a>
+      <a href="../files/lib_fileSystem.js.html#l292"><code>lib\fileSystem.js:292</code></a>
   </p>
 
 
@@ -793,15 +505,12 @@ var provider = new CustomProvider(api.applicationStorage.getDatabase()));</code>
 
   <h3>Syntax</h3>
   <div class="blue-method-syntax">
-  <h3 class="name"><code>update</code></h3>
+  <h3 class="name"><code>mkdir</code></h3>
 
         <div class="args">
             <span class="paren">(</span><ul class="args-list inline commas">
                 <li class="arg">
-                        <code>id</code>
-                </li>
-                <li class="arg">
-                        <code>data</code>
+                        <code>directoryPath</code>
                 </li>
                 <li class="arg">
                         <code>callback</code>
@@ -820,8 +529,9 @@ var provider = new CustomProvider(api.applicationStorage.getDatabase()));</code>
   </div>
     <div class="description">
       <h3>Summary</h3>
-        <p>Updates an entity.</p>
-<p>If the entity has the property &quot;locked&quot;, it won't be updated.</p>
+        <p>Creates a directory.</p>
+<p>If parent directory does not exist, it will be automatically created.
+If directory already exists, it won't do anything.</p>
 
     </div>
 
@@ -830,23 +540,12 @@ var provider = new CustomProvider(api.applicationStorage.getDatabase()));</code>
 
             <ul class="params-list">
                 <li class="param">
-                        <code class="param-name">id</code>
+                        <code class="param-name">directoryPath</code>
                         <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
 
 
                     <div class="param-description">
-                        <p>The id of the entity to update</p>
-
-                    </div>
-
-                </li>
-                <li class="param">
-                        <code class="param-name">data</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
-
-
-                    <div class="param-description">
-                        <p>Entity data, its structure depends on the entity type</p>
+                        <p>The directory system path to create</p>
 
                     </div>
 
@@ -857,10 +556,247 @@ var provider = new CustomProvider(api.applicationStorage.getDatabase()));</code>
 
 
                     <div class="param-description">
-                        <p>The function to call when it's done</p>
+                        <p>The function to call when done</p>
 <ul>
 <li><strong>Error</strong> The error if an error occurred, null otherwise</li>
-<li><strong>Number</strong> The number of updated items</li>
+</ul>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_mkdirRecursive" class="method item private">
+  <h3 class="blue-method-name">mkdirRecursive</h3>
+
+  <div class="meta method-meta">
+      <p>
+          Defined in
+      <a href="../files/lib_fileSystem.js.html#l16"><code>lib\fileSystem.js:16</code></a>
+  </p>
+
+
+
+  </div>
+
+  <h3>Syntax</h3>
+  <div class="blue-method-syntax">
+  <h3 class="name"><code>mkdirRecursive</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>directoryPath</code>
+                </li>
+                <li class="arg">
+                        <code>callback</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+        <span class="flag private">private</span>
+
+
+
+
+        <span class="flag async">async</span>
+
+  </div>
+    <div class="description">
+      <h3>Summary</h3>
+        <p>Creates a directory recursively and asynchronously.</p>
+<p>If parent directories do not exist, they will be automatically created.</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">directoryPath</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+
+
+                    <div class="param-description">
+                        <p>The directory system path to create</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">callback</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Function" class="crosslink external" target="_blank">Function</a></span>
+
+
+                    <div class="param-description">
+                        <p>The function to call when done</p>
+<ul>
+<li><strong>Error</strong> The error if an error occurred, null otherwise</li>
+</ul>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_rmdir" class="method item">
+  <h3 class="blue-method-name">rmdir</h3>
+
+  <div class="meta method-meta">
+      <p>
+          Defined in
+      <a href="../files/lib_fileSystem.js.html#l313"><code>lib\fileSystem.js:313</code></a>
+  </p>
+
+
+
+  </div>
+
+  <h3>Syntax</h3>
+  <div class="blue-method-syntax">
+  <h3 class="name"><code>rmdir</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>directoryPath</code>
+                </li>
+                <li class="arg">
+                        <code>callback</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+        <span class="flag async">async</span>
+
+  </div>
+    <div class="description">
+      <h3>Summary</h3>
+        <p>Removes a directory and all its content recursively and asynchronously.</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">directoryPath</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+
+
+                    <div class="param-description">
+                        <p>Path of the directory to remove</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">callback</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Function" class="crosslink external" target="_blank">Function</a></span>
+
+
+                    <div class="param-description">
+                        <p>The function to call when done</p>
+<ul>
+<li><strong>Error</strong> The error if an error occurred, null otherwise</li>
+</ul>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_rmdirRecursive" class="method item private">
+  <h3 class="blue-method-name">rmdirRecursive</h3>
+
+  <div class="meta method-meta">
+      <p>
+          Defined in
+      <a href="../files/lib_fileSystem.js.html#l56"><code>lib\fileSystem.js:56</code></a>
+  </p>
+
+
+
+  </div>
+
+  <h3>Syntax</h3>
+  <div class="blue-method-syntax">
+  <h3 class="name"><code>rmdirRecursive</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>directoryPath</code>
+                </li>
+                <li class="arg">
+                        <code>callback</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+        <span class="flag private">private</span>
+
+
+
+
+        <span class="flag async">async</span>
+
+  </div>
+    <div class="description">
+      <h3>Summary</h3>
+        <p>Removes a directory and all its content recursively and asynchronously.</p>
+<p>It is assumed that the directory exists.</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">directoryPath</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+
+
+                    <div class="param-description">
+                        <p>Path of the directory to remove</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">callback</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Function" class="crosslink external" target="_blank">Function</a></span>
+
+
+                    <div class="param-description">
+                        <p>The function to call when done</p>
+<ul>
+<li><strong>Error</strong> The error if an error occurred, null otherwise</li>
 </ul>
 
                     </div>

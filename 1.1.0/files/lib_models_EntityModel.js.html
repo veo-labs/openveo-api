@@ -2,7 +2,7 @@
 <html lang="en" class="yui-overrride">
 <head>
     <meta charset="utf-8">
-    <title>lib\logger.js - OpenVeo server API for plugins</title>
+    <title>lib\models\EntityModel.js - OpenVeo server API for plugins</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700' rel='stylesheet' type='text/css'>
@@ -18,7 +18,7 @@
             <h1 class="blue-main-title">OpenVeo server API for plugins</h1>
         </div>
         <div class="yui3-u-1-4 version project-version">
-            API Docs for: 1.0.0
+            API Docs for: 1.1.0
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -93,78 +93,175 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-<h1 class="file-heading">File: lib\logger.js</h1>
+<h1 class="file-heading">File: lib\models\EntityModel.js</h1>
 
 <div class="file">
     <pre class="code prettyprint linenums">
 &#x27;use strict&#x27;;
 
-  /**
-   * Provides functions to manage loggers.
-   *
-   * @module logger
-   * @class logger
-   * @main logger
-   */
-
-// Module dependencies
-var winston = require(&#x27;winston&#x27;);
+/**
+ * @module models
+ */
 
 /**
- * Gets a new logger by its name or initializes one.
+ * Defines class EntityModel.
+ *
+ * The EntityModel provides basic CRUD (**C**read **R**ead **U**pdate **D**elete) operations on entities.&lt;br/&gt;
+ * All entities models must extend EntityModel. EntityModel must not be used directly. Use one of its sub class
+ * instead.
+ *
+ * Each entity as it&#x27;s own associated Model (sub class of EntityModel).
  *
  * @example
- *     var loggerAPI = require(&#x27;@openveo/api&#x27;).logger;
  *
- *     var conf =  {
- *      &#x27;fileName&#x27; : &#x27;/tmp/openveo/logs/openveo.log&#x27;,
- *      &#x27;level&#x27; : &#x27;debug&#x27;,
- *      &#x27;maxFileSize&#x27; : 1048576,
- *      &#x27;maxFiles&#x27; : 2
- *     };
+ *     // Example for implementing a new EntityModel named &quot;CustomModel&quot;
  *
- *     // Initializes logger &quot;openveo&quot;
- *     var logger = loggerAPI.get(&#x27;openveo&#x27;, conf);
+ *     // CustomModel.js
  *
- *     // Log something
- *     logger.info(&#x27;A simple log&#x27;);
+ *     var util = require(&#x27;util&#x27;);
+ *     var api = require(&#x27;@openveo/api&#x27;);
+ *     var CustomProvider = process.require(&#x27;CustomProvider.js&#x27;);
+ *
+ *     function CustomModel() {
+ *
+ *       // Initialize the entity model with a dedicated provider
+ *       api.EntityModel.prototype.init.call(this, new CustomProvider(api.applicationStorage.getDatabase()));
+ *
+ *     }
+ *
+ *     // CustomModel must extends EntityModel
+ *     module.exports = CustomModel;
+ *     util.inherits(CustomModel, api.EntityModel);
  *
  * @example
- *     var loggerAPI = require(&#x27;@openveo/api&#x27;).logger;
  *
- *     // Retrieve logger &quot;openveo&quot; which have already been initialized
- *     var logger = loggerAPI.get(&#x27;openveo&#x27;);
+ *     // Example for how to use CustomModel defined in previous example
+ *
+ *     var api = require(&#x27;@openveo/api&#x27;);
+ *
+ *     var CustomModel = process.require(&#x27;CustomModel.js&#x27;);
+ *     var model = new CustomModel();
+ *
+ * @class EntityModel
+ * @constructor
+ */
+function EntityModel() {
+}
+
+module.exports = EntityModel;
+
+/**
+ * Initializes an EntityModel with a provider.
+ *
+ * @method init
+ * @protected
+ * @param {EntityProvider} provider The entity provider
+ */
+EntityModel.prototype.init = function(provider) {
+  this.provider = provider;
+
+  if (!this.provider)
+    throw new Error(&#x27;An EntityModel needs a provider&#x27;);
+};
+
+/**
+ * Gets a single entity by its id.
+ *
+ * @method getOne
+ * @async
+ * @param {String} id The entity id
+ * @param {Function} callback The function to call when it&#x27;s done
+ *   - **Error** The error if an error occurred, null otherwise
+ *   - **Object** The entity
+ */
+EntityModel.prototype.getOne = function(id, callback) {
+  this.provider.getOne(id, callback);
+};
+
+/**
+ * Gets all entities.
  *
  * @method get
- * @param {String} name The name of the logger
- * @param {Object} [conf] Logger configuration to initialize a new logger
- * Available debug levels are :
- *  - silly
- *  - debug
- *  - verbose
- *  - info
- *  - warn
- *  - error
+ * @async
+ * @param {Function} callback The function to call when it&#x27;s done
+ *   - **Error** The error if an error occurred, null otherwise
+ *   - **Array** The list of entities
  */
-module.exports.get = function(name, conf) {
-  if (conf) {
+EntityModel.prototype.get = function(callback) {
+  this.provider.get(callback);
+};
 
-    // Create logger
-    winston.loggers.add(name, {
-      file: {
-        level: conf.level,
-        filename: conf.fileName,
-        maxsize: conf.maxFileSize,
-        maxFiles: conf.maxFiles
-      }
-    });
+/**
+ * Gets a list of filtered entities
+ *
+ * @param {type} callback
+ * @returns {undefined}
+ */
+EntityModel.prototype.getByFilter = function(filter, callback) {
+  this.provider.getByFilter(filter, callback);
+};
 
-    // Remove default logger, which log to the standard output, in production environment
-    if (process.env.NODE_ENV == &#x27;production&#x27;)
-      winston.loggers.get(name).remove(winston.transports.Console);
-  }
+/**
+ * Gets a paginated list of filtered entities
+ *
+ * @param {type} filter
+ * @param {type} count
+ * @param {type} page
+ * @param {type} sort
+ * @param {boolean} populate
+ * @param {type} callback
+ * @returns {undefined}
+ */
+EntityModel.prototype.getPaginatedFilteredEntities = function(filter, count, page, sort, populate, callback) {
+  // TODO change filter format to not directly do a DB call
+  this.provider.getPaginatedFilteredEntities(filter, count, page, sort, callback);
+};
 
-  return winston.loggers.get(name);
+/**
+ * Adds a new entity.
+ *
+ * @method add
+ * @async
+ * @param {Object} data Entity data to store into the collection, its structure depends on the type of entity
+ * @param {Function} callback The function to call when it&#x27;s done
+ *   - **Error** The error if an error occurred, null otherwise
+ *   - **Object** The added entity
+ */
+EntityModel.prototype.add = function(data, callback) {
+  data.id = String(Date.now());
+  this.provider.add(data, function(error) {
+    if (callback)
+      callback(error, data);
+  });
+};
+
+/**
+ * Updates an entity.
+ *
+ * @method update
+ * @async
+ * @param {String} id The id of the entity to update
+ * @param {Object} data Entity data, its structure depends on the type of entity
+ * @param {Function} callback The function to call when it&#x27;s done
+ *   - **Error** The error if an error occurred, null otherwise
+ *   - **Number** The number of updated items
+ */
+EntityModel.prototype.update = function(id, data, callback) {
+  this.provider.update(id, data, callback);
+};
+
+/**
+ * Removes an entity.
+ *
+ * @method remove
+ * @async
+ * @param {String} id The id of the entity to remove
+ * @param {Function} callback The function to call when it&#x27;s done
+ *   - **Error** The error if an error occurred, null otherwise
+ *   - **Number** The number of removed items
+ */
+EntityModel.prototype.remove = function(id, callback) {
+  this.provider.remove(id, callback);
 };
 
     </pre>

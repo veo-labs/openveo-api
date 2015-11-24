@@ -18,7 +18,7 @@
             <h1 class="blue-main-title">OpenVeo server API for plugins</h1>
         </div>
         <div class="yui3-u-1-4 version project-version">
-            API Docs for: 1.0.0
+            API Docs for: 1.1.0
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -328,13 +328,11 @@ EntityProvider.prototype.remove = function(id, callback) {
 };
 
 /**
- * Removes an entity.
+ * Removes a property on all documents in the collection.
  *
- * If the entity has the property &quot;locked&quot;, it won&#x27;t be removed.
- *
- * @method remove
+ * @method removeProp
  * @async
- * @param {String} id The id of the entity to remove
+ * @param {String} prop The property name to remove
  * @param {Function} callback The function to call when it&#x27;s done
  *   - **Error** The error if an error occurred, null otherwise
  *   - **Number** The number of removed items

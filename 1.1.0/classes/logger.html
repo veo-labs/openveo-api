@@ -2,7 +2,7 @@
 <html lang="en" class="yui-overrride">
 <head>
     <meta charset="utf-8">
-    <title>lib\logger.js - OpenVeo server API for plugins</title>
+    <title>logger - OpenVeo server API for plugins</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700' rel='stylesheet' type='text/css'>
@@ -18,7 +18,7 @@
             <h1 class="blue-main-title">OpenVeo server API for plugins</h1>
         </div>
         <div class="yui3-u-1-4 version project-version">
-            API Docs for: 1.0.0
+            API Docs for: 1.1.0
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -93,82 +93,172 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-<h1 class="file-heading">File: lib\logger.js</h1>
+<h1>logger</h1>
+<div class="meta">
 
-<div class="file">
-    <pre class="code prettyprint linenums">
-&#x27;use strict&#x27;;
 
-  /**
-   * Provides functions to manage loggers.
-   *
-   * @module logger
-   * @class logger
-   * @main logger
-   */
+        <div class="foundat">
+            Defined in: <a href="../files/lib_logger.js.html#l3"><code>lib\logger.js:3</code></a>
+        </div>
 
-// Module dependencies
-var winston = require(&#x27;winston&#x27;);
+            Module: <a href="../modules/logger.html">logger</a>
 
-/**
- * Gets a new logger by its name or initializes one.
- *
- * @example
- *     var loggerAPI = require(&#x27;@openveo/api&#x27;).logger;
- *
- *     var conf =  {
- *      &#x27;fileName&#x27; : &#x27;/tmp/openveo/logs/openveo.log&#x27;,
- *      &#x27;level&#x27; : &#x27;debug&#x27;,
- *      &#x27;maxFileSize&#x27; : 1048576,
- *      &#x27;maxFiles&#x27; : 2
- *     };
- *
- *     // Initializes logger &quot;openveo&quot;
- *     var logger = loggerAPI.get(&#x27;openveo&#x27;, conf);
- *
- *     // Log something
- *     logger.info(&#x27;A simple log&#x27;);
- *
- * @example
- *     var loggerAPI = require(&#x27;@openveo/api&#x27;).logger;
- *
- *     // Retrieve logger &quot;openveo&quot; which have already been initialized
- *     var logger = loggerAPI.get(&#x27;openveo&#x27;);
- *
- * @method get
- * @param {String} name The name of the logger
- * @param {Object} [conf] Logger configuration to initialize a new logger
- * Available debug levels are :
- *  - silly
- *  - debug
- *  - verbose
- *  - info
- *  - warn
- *  - error
- */
-module.exports.get = function(name, conf) {
-  if (conf) {
+</div>
 
-    // Create logger
-    winston.loggers.add(name, {
-      file: {
-        level: conf.level,
-        filename: conf.fileName,
-        maxsize: conf.maxFileSize,
-        maxFiles: conf.maxFiles
-      }
-    });
 
-    // Remove default logger, which log to the standard output, in production environment
-    if (process.env.NODE_ENV == &#x27;production&#x27;)
-      winston.loggers.get(name).remove(winston.transports.Console);
-  }
+<h3>Summary</h3>
+<div class="intro">
+    <p>Provides functions to manage loggers.</p>
 
-  return winston.loggers.get(name);
+</div>
+
+
+<div id="classdocs" class="tabview">
+    <ul class="api-class-tabs">
+        <li class="api-class-tab index"><a href="#index">Index</a></li>
+
+            <li class="api-class-tab methods"><a href="#methods">Methods</a></li>
+    </ul>
+
+    <div>
+        <div id="index" class="api-class-tabpanel index">
+            <h2 class="off-left">Item Index</h2>
+
+                <div class="index-section methods">
+                    <h3>Methods</h3>
+
+                    <ul class="index-list methods">
+                            <li class="index-item method">
+                                <a href="#method_get">get</a>
+
+                            </li>
+                    </ul>
+                </div>
+
+
+
+        </div>
+
+            <div id="methods" class="api-class-tabpanel">
+                <h2 class="off-left">Methods</h2>
+
+<div id="method_get" class="method item">
+  <h3 class="blue-method-name">get</h3>
+
+  <div class="meta method-meta">
+      <p>
+          Defined in
+      <a href="../files/lib_logger.js.html#l14"><code>lib\logger.js:14</code></a>
+  </p>
+
+
+
+  </div>
+
+  <h3>Syntax</h3>
+  <div class="blue-method-syntax">
+  <h3 class="name"><code>get</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>name</code>
+                </li>
+                <li class="arg">
+                        <code class="optional">[conf]</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+  </div>
+    <div class="description">
+      <h3>Summary</h3>
+        <p>Gets a new logger by its name or initializes one.</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">name</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+
+
+                    <div class="param-description">
+                        <p>The name of the logger</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name optional">[conf]</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+
+
+                    <div class="param-description">
+                        <p>Logger configuration to initialize a new logger
+Available debug levels are :</p>
+<ul>
+<li>silly</li>
+<li>debug</li>
+<li>verbose</li>
+<li>info</li>
+<li>warn</li>
+<li>error</li>
+</ul>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+        <div class="example">
+            <h4>Example:</h4>
+
+            <div class="example-content">
+<pre class="code prettyprint"><code>var loggerAPI = require('@openveo/api').logger;
+
+var conf =  {
+ 'fileName' : '/tmp/openveo/logs/openveo.log',
+ 'level' : 'debug',
+ 'maxFileSize' : 1048576,
+ 'maxFiles' : 2
 };
 
-    </pre>
+// Initializes logger &quot;openveo&quot;
+var logger = loggerAPI.get('openveo', conf);
+
+// Log something
+logger.info('A simple log');</code></pre>
+<pre class="code prettyprint"><code>var loggerAPI = require('@openveo/api').logger;
+
+// Retrieve logger &quot;openveo&quot; which have already been initialized
+var logger = loggerAPI.get('openveo');</code></pre>
+
+            </div>
+        </div>
+
 </div>
+            </div>
+
+
+
+    </div>
+</div>
+
+
                     </div>
                 </div>
             </div>
