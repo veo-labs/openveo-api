@@ -36,7 +36,7 @@
     "yuidoc-theme-blue": ">=0.1.9"
   },
   "peerDependencies": {
-    "@openveo/core": "~1.0.0"
+    "@openveo/core": ">=1.0.0 <1.2.0"
   },
   "scripts": {
     "eslint": "grunt eslint",
