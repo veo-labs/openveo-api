@@ -1,3 +1,7 @@
+# 1.1.1 / 2015-11-25
+
+Modify @openveo/core compatibility version to accept all versions &gt;=1.0.0 and &lt;1.2.0
+
 # 1.1.0 / 2015-11-24
 
 - Update fileSystem.copy to create destination directory if it does not exist
