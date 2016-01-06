@@ -13,6 +13,7 @@ module.exports.Plugin = process.requireAPI('lib/Plugin.js');
 module.exports.Database = process.requireAPI('lib/Database.js');
 module.exports.applicationStorage = process.requireAPI('lib/applicationStorage.js');
 module.exports.fileSystem = process.requireAPI('lib/fileSystem.js');
+module.exports.i18n = process.requireAPI('lib/i18n.js');
 module.exports.util = process.requireAPI('lib/util.js');
 module.exports.logger = process.requireAPI('lib/logger.js');
 module.exports.EntityModel = process.requireAPI('lib/models/EntityModel.js');
