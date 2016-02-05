@@ -14,7 +14,7 @@ describe('fileSystem', function() {
   });
 
   // extract method
-  describe('extract', function() {
+  describe('extract test', function() {
 
     it('Should be able to extract a tar file', function(done) {
       fileSystem.extract(path.join(__dirname, '/fileSystem/package.tar'), path.join(
@@ -83,6 +83,20 @@ describe('fileSystem', function() {
         __dirname, '/fileSystem/session/.sessionCopy'), function(error) {
           if (!error) {
             fileSystem.rmdir(path.join(__dirname, '/fileSystem/session'), function(error) {
+              if (!error)
+                done();
+            });
+          }
+          else
+            assert.ok(false);
+        });
+    });
+
+    it('Should be able to copy a directory test', function(done) {
+      fileSystem.copy(path.join(__dirname, '/fileSystem/dir1'), path.join(
+        __dirname, '/fileSystem/dir1Copied'), function(error) {
+          if (!error) {
+            fileSystem.rmdir(path.join(__dirname, '/fileSystem/dir1Copied'), function(error) {
               if (!error)
                 done();
             });
