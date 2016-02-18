@@ -2,6 +2,8 @@
 
 // Module dependencies
 var path = require('path');
+var fs = require('fs');
+var async = require('async');
 var assert = require('chai').assert;
 
 // fileSystem.js
@@ -104,6 +106,44 @@ describe('fileSystem', function() {
           else
             assert.ok(false);
         });
+    });
+
+    it('Should be able to copy an empty directory', function(done) {
+      async.series([
+
+        // First create a directory
+        function(callback) {
+          fileSystem.mkdir(path.join(__dirname, '/fileSystem/toRemove'), callback);
+        },
+
+        // Copy directory
+        function(callback) {
+          fileSystem.copy(path.join(__dirname, '/fileSystem/toRemove'), path.join(
+            __dirname, '/fileSystem/toRemoveCopied'), callback);
+        },
+
+        // Test if directory exists
+        function(callback) {
+          fs.exists(path.join(__dirname, '/fileSystem/toRemoveCopied'), function(exists) {
+            callback((exists) ? null : new Error('Directory has not been copied'));
+          });
+        },
+
+        // Remove copied directory
+        function(callback) {
+          fileSystem.rmdir(path.join(__dirname, '/fileSystem/toRemoveCopied'), callback);
+        },
+
+        // Remove directory
+        function(callback) {
+          fileSystem.rmdir(path.join(__dirname, '/fileSystem/toRemove'), callback);
+        }
+      ], function(error, results) {
+        if (!error)
+          done();
+        else
+          assert.ok(false);
+      });
     });
 
   });
