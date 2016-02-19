@@ -1,3 +1,16 @@
+# 2.0.0 / 2016-02-19
+
+- Add support for Arrays in require('@openveo/api').util.merge function
+- Add Database close method
+- Dissociate add and get on the logger. "get" method was used to both create and get a logger. Two methods are now available "add" and "get". Thus get method no longer create a new logger, use add instead
+- Add translations API. Available through require('@openveo/api').i18n
+- Use real unique String ids when adding new entities
+- Correct bug when recursively creating directory using require('@openveo/api').fileSystem.mkdir with concurrent calls
+- require('@openveo/api').fileSystem.copy can now copy both files and directories, not just files
+- Update MongoDB database interface relative to MongoDB driver 2.0, Be careful Database methods may not return the same arguments
+- Change the prototype Database.removeProp method to add a filter argument
+- Correct bug when an error occured during search ("callback method called twice")
+
 # 1.1.2 / 2015-11-25
 
 Remove peer dependency on @openveo/core project
