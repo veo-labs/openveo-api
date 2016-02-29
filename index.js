@@ -18,3 +18,4 @@ module.exports.util = process.requireAPI('lib/util.js');
 module.exports.logger = process.requireAPI('lib/logger.js');
 module.exports.EntityModel = process.requireAPI('lib/models/EntityModel.js');
 module.exports.EntityProvider = process.requireAPI('lib/providers/EntityProvider.js');
+module.exports.middlewares = process.requireAPI('lib/middlewares/index.js');
