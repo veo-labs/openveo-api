@@ -39,8 +39,7 @@ describe('fileSystem', function() {
           fileSystem.rmdir(path.join(__dirname, '/fileSystem/test1'), function() {
             done();
           });
-        }
-        else
+        } else
           assert.ok(false);
       });
     });
@@ -69,8 +68,7 @@ describe('fileSystem', function() {
         if (!error) {
           assert.isObject(data);
           done();
-        }
-        else
+        } else
           assert.ok(false);
       });
     });
@@ -88,8 +86,7 @@ describe('fileSystem', function() {
               if (!error)
                 done();
             });
-          }
-          else
+          } else
             assert.ok(false);
         });
     });
@@ -102,8 +99,7 @@ describe('fileSystem', function() {
               if (!error)
                 done();
             });
-          }
-          else
+          } else
             assert.ok(false);
         });
     });
