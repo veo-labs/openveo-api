@@ -18,6 +18,7 @@ module.exports.util = process.requireAPI('lib/util.js');
 module.exports.logger = process.requireAPI('lib/logger.js');
 module.exports.EntityModel = process.requireAPI('lib/models/EntityModel.js');
 module.exports.TaxonomyModel = process.requireAPI('lib/models/TaxonomyModel.js');
+module.exports.ContentModel = process.requireAPI('lib/models/ContentModel.js');
 module.exports.EntityProvider = process.requireAPI('lib/providers/EntityProvider.js');
 module.exports.TaxonomyProvider = process.requireAPI('lib/providers/TaxonomyProvider.js');
 module.exports.middlewares = process.requireAPI('lib/middlewares/index.js');
