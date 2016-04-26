@@ -62,6 +62,74 @@ describe('util', function() {
 
   });
 
+  // joinArray function
+  describe('joinArray', function() {
+
+    it('Should be able to make union of two arrays', function() {
+      var obj1 = {obj1: 'obj1'};
+      var obj2 = {obj2: 'obj2'};
+      var joinedArray = util.joinArray(
+        [1, 2, 3, obj1, obj2, 'string1', null, undefined],
+        [2, 4, obj2, 'string1', 'string2', null, undefined]
+      );
+      assert.equal(joinedArray.length, 10);
+    });
+
+    it('Should explode if one or both arguments or not arrays', function() {
+      assert.throws(function() {
+        util.joinArray([], null);
+      });
+      assert.throws(function() {
+        util.joinArray(null, []);
+      });
+      assert.throws(function() {
+        util.joinArray(null, null);
+      });
+      assert.throws(function() {
+        util.joinArray('string', 'string');
+      });
+      assert.throws(function() {
+        util.joinArray(42, 42);
+      });
+      assert.throws(function() {
+        util.joinArray({}, {});
+      });
+    });
+
+  });
+
+  // intersectArray function
+  describe.only('intersectArray', function() {
+
+    it('Should be able to make intersection of two arrays', function() {
+      var obj1 = {obj1: 'obj1'};
+      var obj2 = {obj2: 'obj2'};
+      var intersectedArray = util.intersectArray(
+        [1, 2, 3, obj1, obj2, 'string1', null, undefined],
+        [2, 4, obj2, 'string1', 'string2', null, undefined]);
+      assert.equal(intersectedArray.length, 5);
+    });
+
+    it('Should explode if one or both arguments or not arrays', function() {
+      assert.throws(function() {
+        util.intersectArray([], null);
+      });
+      assert.throws(function() {
+        util.intersectArray(null, null);
+      });
+      assert.throws(function() {
+        util.intersectArray('string', 'string');
+      });
+      assert.throws(function() {
+        util.intersectArray(42, 42);
+      });
+      assert.throws(function() {
+        util.intersectArray({}, {});
+      });
+    });
+
+  });
+
   // shallowValidateObject function
   describe('shallowValidateObject', function() {
 
