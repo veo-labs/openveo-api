@@ -23,3 +23,4 @@ module.exports.EntityProvider = process.requireAPI('lib/providers/EntityProvider
 module.exports.TaxonomyProvider = process.requireAPI('lib/providers/TaxonomyProvider.js');
 module.exports.middlewares = process.requireAPI('lib/middlewares/index.js');
 module.exports.errors = process.requireAPI('lib/errors/index.js');
+module.exports.controllers = process.requireAPI('lib/controllers/index.js');
