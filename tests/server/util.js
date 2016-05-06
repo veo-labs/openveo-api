@@ -99,7 +99,7 @@ describe('util', function() {
   });
 
   // intersectArray function
-  describe.only('intersectArray', function() {
+  describe('intersectArray', function() {
 
     it('Should be able to make intersection of two arrays', function() {
       var obj1 = {obj1: 'obj1'};
