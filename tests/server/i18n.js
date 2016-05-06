@@ -14,7 +14,11 @@ describe('i18n', function() {
       [
         {
           name: 'example',
-          i18nDirectory: path.normalize(path.join(__dirname, '/i18n'))
+          i18nDirectory: path.normalize(path.join(__dirname, 'i18n', 'example'))
+        },
+        {
+          name: 'example2',
+          i18nDirectory: path.normalize(path.join(__dirname, 'i18n', 'example2'))
         }
       ]
       );
@@ -25,46 +29,46 @@ describe('i18n', function() {
   describe('getTranslations', function() {
 
     it('Should return a JSON object', function(done) {
-      i18n.getTranslations('languages', 'fr', function(translations) {
+      i18n.getTranslations('languages', 'fr', function(error, translations) {
         assert.isDefined(translations);
         assert.isObject(translations);
-        assert.equal(translations.ENGLISH, 'anglais');
+        assert.equal(translations.EXAMPLE.ENGLISH, 'anglais');
         done();
       });
     });
 
     it('Should return null if no translation found', function(done) {
-      i18n.getTranslations('no-translation', 'fr', function(translations) {
+      i18n.getTranslations('no-translation', 'fr', function(error, translations) {
         assert.isNull(translations);
         done();
       });
     });
 
     it('Should return null if dictionary is not specified', function(done) {
-      i18n.getTranslations(null, 'fr', function(translations) {
+      i18n.getTranslations(null, 'fr', function(error, translations) {
         assert.isNull(translations);
         done();
       });
     });
 
     it('Should be able to get translation of a particular language', function(done) {
-      i18n.getTranslations('login', 'en', function(translations) {
-        assert.equal(translations.LOGIN.LOGIN, 'User');
+      i18n.getTranslations('french', 'fr', function(error, translations) {
+        assert.equal(translations.EXAMPLE.FRENCH, 'Français');
         done();
       });
     });
 
     it('Should be able to get a translation by language and country code', function(done) {
-      i18n.getTranslations('canadian', 'en-CA', function(translations) {
-        assert.equal(translations.DOLLAR, 'Loonie');
+      i18n.getTranslations('canadian', 'en-CA', function(error, translations) {
+        assert.equal(translations.EXAMPLE.DOLLAR, 'Loonie');
         done();
       });
     });
 
-    it('Should be able to get both plugin translations and openveo translations (merged)', function(done) {
-      i18n.getTranslations('admin-back-office', 'en', function(translations) {
-        assert.equal(translations.MENU.DASHBOARD, 'Dashboard');
-        assert.equal(translations.MENU.EXAMPLE, 'Example');
+    it('Should be able to get plugins translations (merged)', function(done) {
+      i18n.getTranslations('admin-back-office', 'en', function(error, translations) {
+        assert.equal(translations.EXAMPLE.MENU.EXAMPLE, 'Example');
+        assert.equal(translations.EXAMPLE2.MENU.EXAMPLE2, 'Example2');
         done();
       });
     });
