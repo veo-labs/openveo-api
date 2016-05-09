@@ -1,13 +1,11 @@
 'use strict';
 
-// Module dependencies
 var assert = require('chai').assert;
 
 // util.js
 describe('util', function() {
   var util;
 
-  // Intiializes tests
   before(function() {
     util = process.requireAPI('lib/util.js');
   });
@@ -15,7 +13,7 @@ describe('util', function() {
   // merge function
   describe('merge', function() {
 
-    it('Should be able to merge two objects with depth = 1', function() {
+    it('should be able to merge two objects with depth = 1', function() {
       var mergedObject = util.merge(
         {
           property1: 'value1',
@@ -32,7 +30,7 @@ describe('util', function() {
       assert.equal(mergedObject.property3, 'value3');
     });
 
-    it('Should be able to recursively merge two objects with depth > 1', function() {
+    it('should be able to recursively merge two objects with depth > 1', function() {
       var mergedObject = util.merge(
         {
           property1: {
@@ -55,9 +53,28 @@ describe('util', function() {
       );
 
       assert.equal(mergedObject.property1.subProperty1.subSubProperty1, 'subSubValue1');
+      assert.equal(mergedObject.property1.subProperty1.subSubProperty1, 'subSubValue1');
       assert.equal(mergedObject.property1.subProperty1.subSubProperty2, 'subSubValue2');
       assert.equal(mergedObject.property1.subProperty2, 'subProperty2');
       assert.equal(mergedObject.property1.subProperty3(), 'function');
+    });
+
+    it('should return the first object if second object is not specified', function() {
+      var object1 = {
+        property1: 'value1',
+        property2: 'value2'
+      };
+      var mergedObject = util.merge(object1, null);
+      assert.strictEqual(mergedObject, object1);
+    });
+
+    it('should return the second object if first object is not specified', function() {
+      var object2 = {
+        property1: 'value1',
+        property2: 'value2'
+      };
+      var mergedObject = util.merge(null, object2);
+      assert.strictEqual(mergedObject, object2);
     });
 
   });
@@ -65,35 +82,35 @@ describe('util', function() {
   // joinArray function
   describe('joinArray', function() {
 
-    it('Should be able to make union of two arrays', function() {
+    it('should be able to make union of two arrays', function() {
       var obj1 = {obj1: 'obj1'};
       var obj2 = {obj2: 'obj2'};
       var joinedArray = util.joinArray(
         [1, 2, 3, obj1, obj2, 'string1', null, undefined],
         [2, 4, obj2, 'string1', 'string2', null, undefined]
       );
-      assert.equal(joinedArray.length, 10);
+      assert.sameMembers(joinedArray, [1, 2, 3, 4, obj1, obj2, 'string1', 'string2', null, undefined]);
     });
 
-    it('Should explode if one or both arguments or not arrays', function() {
+    it('should explode if one or both arguments or not arrays', function() {
       assert.throws(function() {
         util.joinArray([], null);
-      });
+      }, Error, null, 'Expected exception when joining an array with null');
       assert.throws(function() {
         util.joinArray(null, []);
-      });
+      }, Error, null, 'Expected exception when joining null with an array');
       assert.throws(function() {
         util.joinArray(null, null);
-      });
+      }, Error, null, 'Expected exception when joining null with null');
       assert.throws(function() {
         util.joinArray('string', 'string');
-      });
+      }, Error, null, 'Expected exception when joining two strings');
       assert.throws(function() {
         util.joinArray(42, 42);
-      });
+      }, Error, null, 'Expected exception when joining two numbers');
       assert.throws(function() {
         util.joinArray({}, {});
-      });
+      }, Error, null, 'Expected exception when joining two objects');
     });
 
   });
@@ -101,31 +118,72 @@ describe('util', function() {
   // intersectArray function
   describe('intersectArray', function() {
 
-    it('Should be able to make intersection of two arrays', function() {
+    it('should be able to make intersection of two arrays', function() {
       var obj1 = {obj1: 'obj1'};
       var obj2 = {obj2: 'obj2'};
       var intersectedArray = util.intersectArray(
         [1, 2, 3, obj1, obj2, 'string1', null, undefined],
         [2, 4, obj2, 'string1', 'string2', null, undefined]);
-      assert.equal(intersectedArray.length, 5);
+
+      assert.sameMembers(intersectedArray, [2, obj2, 'string1', null, undefined]);
     });
 
-    it('Should explode if one or both arguments or not arrays', function() {
+    it('should explode if one or both arguments or not arrays', function() {
       assert.throws(function() {
         util.intersectArray([], null);
-      });
+      }, Error, null, 'Expected exception when intersecting an array with null');
       assert.throws(function() {
         util.intersectArray(null, null);
-      });
+      }, Error, null, 'Expected exception when intersecting null with null');
+      assert.throws(function() {
+        util.intersectArray(undefined, undefined);
+      }, Error, null, 'Expected exception when intersecting undefined with undefined');
       assert.throws(function() {
         util.intersectArray('string', 'string');
-      });
+      }, Error, null, 'Expected exception when intersecting two strings');
       assert.throws(function() {
         util.intersectArray(42, 42);
-      });
+      }, Error, null, 'Expected exception when intersecting two numbers');
       assert.throws(function() {
         util.intersectArray({}, {});
+      }, Error, null, 'Expected exception when intersecting two objects');
+    });
+
+  });
+
+  // isEmailValid function
+  describe('isEmailValid', function() {
+
+    it('should be able to validate an email', function() {
+      var validEmails = [
+        'peter.venkman@ghosts.com',
+        'peter-venkman@ghosts',
+        'peter+venkman@ghosts.com',
+        'peter venkman@ghosts.com',
+        'p@ghosts',
+        '#!$%&\'*+-/=?^_`{}|~@ghosts.com'
+      ];
+      var invalidEmails = [
+        '@ghosts',
+        'peter-venkman',
+        'peter-venkman.com',
+        '"petervenkman"@ghosts.com'
+      ];
+
+      validEmails.forEach(function(email) {
+        assert.ok(util.isEmailValid(email), 'Expected ' + email + ' to be valid');
       });
+
+      invalidEmails.forEach(function(email) {
+        assert.notOk(util.isEmailValid(email), 'Expected ' + email + ' to be valid');
+      });
+    });
+
+    it('should return false if the email is not a valid string', function() {
+      assert.notOk(util.isEmailValid([]), 'Expected an array to be an invalid email');
+      assert.notOk(util.isEmailValid(42), 'Expected a number to be an invalid email');
+      assert.notOk(util.isEmailValid(null), 'Expected null to be an invalid email');
+      assert.notOk(util.isEmailValid(undefined), 'Expected undefined to be an invalid email');
     });
 
   });
@@ -133,7 +191,7 @@ describe('util', function() {
   // shallowValidateObject function
   describe('shallowValidateObject', function() {
 
-    it('Should ignore unexpected property', function() {
+    it('should ignore unexpected property', function() {
       var validatedObject = util.shallowValidateObject({
         unnexpectedProperty: 'value'
       }, {});
@@ -141,7 +199,7 @@ describe('util', function() {
       assert.isUndefined(validatedObject.unnexpectedProperty);
     });
 
-    it('Should set value to null if type is not implemented', function() {
+    it('should set value to null if type is not implemented', function() {
       var validatedObject = util.shallowValidateObject({
         stringProperty: 'value'
       }, {
@@ -151,10 +209,25 @@ describe('util', function() {
       assert.isNull(validatedObject.stringProperty);
     });
 
+    it('should return an empty object if no validation object is specified', function() {
+      var validatedObject = util.shallowValidateObject({
+        myProperty: 'value'
+      }, null);
+
+      assert.isObject(validatedObject);
+      assert.equal(Object.keys(validatedObject).length, 0, 'Expected object to be empty');
+    });
+
+    it('should throws an exception if no object is specified', function() {
+      assert.throws(function() {
+        util.shallowValidateObject(null, {stringProperty: {type: 'string'}});
+      }, TypeError, null, 'Expected exception when validating null');
+    });
+
     // string type
     describe('string', function() {
 
-      it('Should be able to validate a string', function() {
+      it('should be able to validate a string', function() {
         var value = 'string value';
         var validatedObject = util.shallowValidateObject({
           stringProperty: value
@@ -165,7 +238,7 @@ describe('util', function() {
         assert.equal(validatedObject.stringProperty, value);
       });
 
-      it('Should set value to null if no value is found', function() {
+      it('should set value to null if no value is found', function() {
         var validatedObject = util.shallowValidateObject({}, {
           stringProperty: {type: 'string'}
         });
@@ -173,7 +246,7 @@ describe('util', function() {
         assert.isNull(validatedObject.stringProperty);
       });
 
-      it('Should set value to the default value if value is not found', function() {
+      it('should set value to the default value if value is not found', function() {
         var defaultValue = 'default value';
         var validatedObject = util.shallowValidateObject({}, {
           stringProperty: {type: 'string', default: defaultValue}
@@ -182,7 +255,7 @@ describe('util', function() {
         assert.equal(validatedObject.stringProperty, defaultValue);
       });
 
-      it('Should throw an error if property is required and not found', function() {
+      it('should throw an error if property is required and not found', function() {
         try {
           util.shallowValidateObject({}, {
             stringProperty: {type: 'string', required: true}
@@ -194,7 +267,7 @@ describe('util', function() {
         assert.ok(false);
       });
 
-      it('Should convert value to string if it\'s not', function() {
+      it('should convert value to string if it\'s not', function() {
         var validatedObject;
         var value;
 
@@ -236,7 +309,7 @@ describe('util', function() {
         assert.equal(validatedObject.stringProperty, '1');
       });
 
-      it('Should throw an error if value is not available in the list of values', function() {
+      it('should throw an error if value is not available in the list of values', function() {
         var value = 'value';
 
         try {
@@ -252,7 +325,7 @@ describe('util', function() {
         assert.ok(false);
       });
 
-      it('Should be able to validate a value from a list of values', function() {
+      it('should be able to validate a value from a list of values', function() {
         var value = 'value1';
         var validatedObject;
 
@@ -274,7 +347,7 @@ describe('util', function() {
     // number type
     describe('number', function() {
 
-      it('Should be able to validate a number', function() {
+      it('should be able to validate a number', function() {
         var value = 10;
         var validatedObject = util.shallowValidateObject({
           numberProperty: value
@@ -285,7 +358,7 @@ describe('util', function() {
         assert.equal(validatedObject.numberProperty, value);
       });
 
-      it('Should be able to validate a number with a list of numbers', function() {
+      it('should be able to validate a number with a list of numbers', function() {
         var value = 3;
         var validatedObject = util.shallowValidateObject({
           numberProperty: value
@@ -296,7 +369,7 @@ describe('util', function() {
         assert.equal(validatedObject.numberProperty, value);
       });
 
-      it('Should set value to null if no value is found', function() {
+      it('should set value to null if no value is found', function() {
         var validatedObject = util.shallowValidateObject({}, {
           numberProperty: {type: 'number'}
         });
@@ -304,7 +377,7 @@ describe('util', function() {
         assert.isNull(validatedObject.numberProperty);
       });
 
-      it('Should throw an error if the value is not part of the list of numbers', function() {
+      it('should throw an error if the value is not part of the list of numbers', function() {
         var value = 30;
 
         try {
@@ -320,7 +393,7 @@ describe('util', function() {
         assert.ok(false);
       });
 
-      it('Should throw an error if property is required and not found', function() {
+      it('should throw an error if property is required and not found', function() {
         try {
           util.shallowValidateObject({}, {
             numberProperty: {type: 'number', required: true}
@@ -332,7 +405,7 @@ describe('util', function() {
         assert.ok(false);
       });
 
-      it('Should be able to validate that the number is greater than another one', function() {
+      it('should be able to validate that the number is greater than another one', function() {
         try {
           util.shallowValidateObject({
             numberProperty: 30
@@ -346,7 +419,7 @@ describe('util', function() {
         assert.ok(true);
       });
 
-      it('Should be able to validate that the number is lesser than another one', function() {
+      it('should be able to validate that the number is lesser than another one', function() {
         try {
           util.shallowValidateObject({
             numberProperty: 10
@@ -360,7 +433,7 @@ describe('util', function() {
         assert.ok(true);
       });
 
-      it('Should be able to validate that the number is greater of equal to another one', function() {
+      it('should be able to validate that the number is greater of equal to another one', function() {
         try {
           util.shallowValidateObject({
             numberProperty: 20
@@ -374,7 +447,7 @@ describe('util', function() {
         assert.ok(true);
       });
 
-      it('Should be able to validate that the number is lesser of equal to another one', function() {
+      it('should be able to validate that the number is lesser of equal to another one', function() {
         try {
           util.shallowValidateObject({
             numberProperty: 20
@@ -388,7 +461,7 @@ describe('util', function() {
         assert.ok(true);
       });
 
-      it('Should throw an error if greater than validation failed', function() {
+      it('should throw an error if greater than validation failed', function() {
         try {
           util.shallowValidateObject({
             numberProperty: 20
@@ -402,7 +475,7 @@ describe('util', function() {
         assert.ok(false);
       });
 
-      it('Should throw an error if lesser than validation failed', function() {
+      it('should throw an error if lesser than validation failed', function() {
         try {
           util.shallowValidateObject({
             numberProperty: 30
@@ -416,7 +489,7 @@ describe('util', function() {
         assert.ok(false);
       });
 
-      it('Should throw an error if greater or equal validation failed', function() {
+      it('should throw an error if greater or equal validation failed', function() {
         try {
           util.shallowValidateObject({
             numberProperty: 20
@@ -430,7 +503,7 @@ describe('util', function() {
         assert.ok(false);
       });
 
-      it('Should throw an error if lesser or equal validation failed', function() {
+      it('should throw an error if lesser or equal validation failed', function() {
         try {
           util.shallowValidateObject({
             numberProperty: 30
@@ -444,7 +517,7 @@ describe('util', function() {
         assert.ok(false);
       });
 
-      it('Should set value to null if value is not a number', function() {
+      it('should set value to null if value is not a number', function() {
         var validatedObject;
         var value;
 
@@ -482,7 +555,7 @@ describe('util', function() {
     // array type
     describe('array', function() {
 
-      it('Should be able to validate an array<string> type', function() {
+      it('should be able to validate an array<string> type', function() {
         var values = ['value1', 'value2'];
 
         var validatedObject = util.shallowValidateObject({
@@ -494,7 +567,7 @@ describe('util', function() {
         assert.equal(validatedObject.arrayProperty.length, values.length);
       });
 
-      it('Should accept a string and convert it to an array<string>', function() {
+      it('should accept a string and convert it to an array<string>', function() {
         var value = 'value';
 
         var validatedObject = util.shallowValidateObject({
@@ -507,7 +580,7 @@ describe('util', function() {
         assert.equal(validatedObject.arrayProperty[0], value);
       });
 
-      it('Should accept a number and convert it to an array<number>', function() {
+      it('should accept a number and convert it to an array<number>', function() {
         var value = 20;
 
         var validatedObject = util.shallowValidateObject({
@@ -520,7 +593,7 @@ describe('util', function() {
         assert.equal(validatedObject.arrayProperty[0], value);
       });
 
-      it('Should set value to null if value is an object', function() {
+      it('should set value to null if value is an object', function() {
         var validatedObject;
         validatedObject = util.shallowValidateObject({
           arrayProperty: {}
@@ -540,7 +613,7 @@ describe('util', function() {
 
       });
 
-      it('Should convert values which are not strings or numbers', function() {
+      it('should convert values which are not strings or numbers', function() {
         var validatedObject;
 
         validatedObject = util.shallowValidateObject({
@@ -565,7 +638,7 @@ describe('util', function() {
     // date type
     describe('date', function() {
 
-      it('Should be able to validate a literal date', function() {
+      it('should be able to validate a literal date', function() {
         var dateLiteral = '03/22/2016';
         var date = new Date(dateLiteral);
         var validatedObject = util.shallowValidateObject({
@@ -577,7 +650,7 @@ describe('util', function() {
         assert.equal(validatedObject.dateProperty, date.getTime());
       });
 
-      it('Should be able to validate a date', function() {
+      it('should be able to validate a date', function() {
         var date = new Date('03/22/2016');
         var validatedObject = util.shallowValidateObject({
           dateProperty: date
@@ -588,7 +661,7 @@ describe('util', function() {
         assert.equal(validatedObject.dateProperty, date.getTime());
       });
 
-      it('Should be able to validate that a date is greater than another one', function() {
+      it('should be able to validate that a date is greater than another one', function() {
         var date = new Date('03/22/2016');
         var validatedObject = util.shallowValidateObject({
           dateProperty: date
@@ -599,7 +672,7 @@ describe('util', function() {
         assert.equal(validatedObject.dateProperty, date.getTime());
       });
 
-      it('Should be able to validate that a date is lesser than another one', function() {
+      it('should be able to validate that a date is lesser than another one', function() {
         var date = new Date('03/22/2016');
         var validatedObject = util.shallowValidateObject({
           dateProperty: date
@@ -610,7 +683,7 @@ describe('util', function() {
         assert.equal(validatedObject.dateProperty, date.getTime());
       });
 
-      it('Should be able to validate that a date is greater or equal to another one', function() {
+      it('should be able to validate that a date is greater or equal to another one', function() {
         var date = new Date('03/23/2016');
         var validatedObject = util.shallowValidateObject({
           dateProperty: date
@@ -621,7 +694,7 @@ describe('util', function() {
         assert.equal(validatedObject.dateProperty, date.getTime());
       });
 
-      it('Should be able to validate that a date is lesser or equal to another one', function() {
+      it('should be able to validate that a date is lesser or equal to another one', function() {
         var date = new Date('03/23/2016');
         var validatedObject = util.shallowValidateObject({
           dateProperty: date

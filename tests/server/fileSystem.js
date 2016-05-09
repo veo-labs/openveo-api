@@ -1,31 +1,72 @@
 'use strict';
 
-// Module dependencies
 var path = require('path');
 var fs = require('fs');
-var async = require('async');
 var assert = require('chai').assert;
 
 // fileSystem.js
 describe('fileSystem', function() {
   var fileSystem;
 
-  // Initializes tests
   before(function() {
     fileSystem = process.requireAPI('lib/fileSystem.js');
   });
 
   // extract method
-  describe('extract test', function() {
+  describe('extract', function() {
+    var tarFile = path.join(__dirname, '/fileSystem/file.tar');
+    var extractedDirectory = path.join(__dirname, '/fileSystem/extract');
+    var tarContent = ['.session', 'slide_00000.jpeg', 'slide_00001.jpeg', 'synchro.xml'];
 
-    it('Should be able to extract a tar file', function(done) {
-      fileSystem.extract(path.join(__dirname, '/fileSystem/package.tar'), path.join(
-        __dirname, '/fileSystem/package'), function(error) {
-          if (!error)
-            done();
-          else
-            assert.ok(false);
-        });
+    // Remove extracted directory after each test
+    afterEach(function(done) {
+      fileSystem.rmdir(extractedDirectory, function(error) {
+        done();
+      });
+    });
+
+    it('should be able to extract a tar file', function(done) {
+      fileSystem.extract(tarFile, extractedDirectory, function(error) {
+        if (!error) {
+          fs.readdir(extractedDirectory, function(error, tarFiles) {
+            if (error)
+              assert.ok(false, 'Failed reading extracted content : ' + error.message);
+            else {
+              assert.isDefined(tarFiles, 'Expected files in the tar');
+              assert.sameMembers(tarFiles, tarContent, 'Unexpected tar content');
+              done();
+            }
+          });
+        } else
+          assert.ok(false, 'Extraction failed : ' + error.message);
+      });
+    });
+
+    it('should return an error in case of invalid tar file path', function(done) {
+      fileSystem.extract(null, extractedDirectory, function(error) {
+        if (error)
+          done();
+        else
+          assert.ok(false, 'Expected an error');
+      });
+    });
+
+    it('should return an error in case of invalid destination path', function(done) {
+      fileSystem.extract(null, extractedDirectory, function(error) {
+        if (error)
+          done();
+        else
+          assert.ok(false, 'Expected an error');
+      });
+    });
+
+    it('should return an error if the given tar file is not a valid tar', function(done) {
+      fileSystem.extract(path.join(__dirname, '/fileSystem/invalidTar.tar'), extractedDirectory, function(error) {
+        if (error)
+          done();
+        else
+          assert.ok(false, 'Expected an error');
+      });
     });
 
   });
@@ -33,14 +74,28 @@ describe('fileSystem', function() {
   // mkdir method
   describe('mkdir', function() {
 
-    it('Should be able to create a directory and parent directories', function(done) {
-      fileSystem.mkdir(path.join(__dirname, '/fileSystem/test1/test2/test3'), function(error) {
-        if (!error) {
-          fileSystem.rmdir(path.join(__dirname, '/fileSystem/test1'), function() {
-            done();
-          });
-        } else
-          assert.ok(false);
+    // Remove created directory after each test
+    afterEach(function(done) {
+      fileSystem.rmdir(path.join(__dirname, '/fileSystem/mkdir1'), function() {
+        done();
+      });
+    });
+
+    it('should be able to create a directory', function(done) {
+      fileSystem.mkdir(path.join(__dirname, '/fileSystem/mkdir1/mkdir2/mkdir3'), function(error) {
+        if (!error)
+          done();
+        else
+          assert.ok(false, 'Directory creation failed with message : ' + error.message);
+      });
+    });
+
+    it('should return an error in case of invalid directory path', function(done) {
+      fileSystem.mkdir(null, function(error) {
+        if (error)
+          done();
+        else
+          assert.ok(false, 'Expected an error');
       });
     });
 
@@ -48,13 +103,42 @@ describe('fileSystem', function() {
 
   // rmdir method
   describe('rmdir', function() {
+    var directoryPath = path.join(__dirname, '/fileSystem/rmdir');
 
-    it('Should be able to recursively remove a directory with all its content', function(done) {
-      fileSystem.rmdir(path.join(__dirname, '/fileSystem/package'), function(error) {
-        if (!error)
+    // Create directory before each test
+    beforeEach(function(done) {
+      fileSystem.mkdir(directoryPath, function() {
+        done();
+      });
+    });
+
+    // Remove created directory after each test
+    afterEach(function(done) {
+      fileSystem.rmdir(directoryPath, function() {
+        done();
+      });
+    });
+
+    it('should be able to recursively remove a directory with all its content', function(done) {
+      fileSystem.rmdir(directoryPath, function(error) {
+        if (!error) {
+          fs.exists(directoryPath, function(exists) {
+            if (!exists)
+              done();
+            else
+              assert.ok(false, 'Expected directory to be removed');
+          });
+        } else
+          assert.ok(false, 'Remove directory failed : ' + error.message);
+      });
+    });
+
+    it('should return an error in case of invalid directory path', function(done) {
+      fileSystem.rmdir(null, function(error) {
+        if (error)
           done();
         else
-          assert.ok(false);
+          assert.ok(false, 'Expected an error');
       });
     });
 
@@ -62,14 +146,33 @@ describe('fileSystem', function() {
 
   // getJSONFileContent method
   describe('getJSONFileContent', function() {
+    var filePath = path.join(__dirname, '/fileSystem/file.json');
 
-    it('Should be able to get a file content as JSON', function(done) {
-      fileSystem.getJSONFileContent(path.join(__dirname, '/fileSystem/.session'), function(error, data) {
+    it('should be able to get a file content as JSON', function(done) {
+      fileSystem.getJSONFileContent(filePath, function(error, data) {
         if (!error) {
-          assert.isObject(data);
+          assert.deepEqual(data, require(filePath));
           done();
         } else
-          assert.ok(false);
+          assert.ok(false, 'getJSONFileContent failed : ' + error.message);
+      });
+    });
+
+    it('should return an error in case of invalid file path', function(done) {
+      fileSystem.getJSONFileContent(null, function(error) {
+        if (error)
+          done();
+        else
+          assert.ok(false, 'Expected an error');
+      });
+    });
+
+    it('should return an error in case of invalid file', function(done) {
+      fileSystem.getJSONFileContent('invalidFile', function(error) {
+        if (error)
+          done();
+        else
+          assert.ok(false, 'Expected an error');
       });
     });
 
@@ -77,67 +180,81 @@ describe('fileSystem', function() {
 
   // copy method
   describe('copy', function() {
+    var filePath = path.join(__dirname, '/fileSystem/file.json');
+    var directoryPath = path.join(__dirname, '/fileSystem/dir1');
+    var copyDirPath = path.join(__dirname, '/fileSystem/copy');
+    var copyFilePath = path.join(copyDirPath, 'file-copy.json');
 
-    it('Should be able to copy a file', function(done) {
-      fileSystem.copy(path.join(__dirname, '/fileSystem/.session'), path.join(
-        __dirname, '/fileSystem/session/.sessionCopy'), function(error) {
-          if (!error) {
-            fileSystem.rmdir(path.join(__dirname, '/fileSystem/session'), function(error) {
-              if (!error)
-                done();
-            });
-          } else
-            assert.ok(false);
-        });
+    // Remove copied directory after each test
+    afterEach(function(done) {
+      fileSystem.rmdir(copyDirPath, function() {
+        done();
+      });
     });
 
-    it('Should be able to copy a directory test', function(done) {
-      fileSystem.copy(path.join(__dirname, '/fileSystem/dir1'), path.join(
-        __dirname, '/fileSystem/dir1Copied'), function(error) {
-          if (!error) {
-            fileSystem.rmdir(path.join(__dirname, '/fileSystem/dir1Copied'), function(error) {
-              if (!error)
-                done();
-            });
-          } else
-            assert.ok(false);
-        });
-    });
+    /**
+     * Gets directory tree.
+     *
+     * @param {String} directoryPath Path to the directory to read
+     * @param {Function} callback Function to call when its done with
+     *  - **Array** The list of files in the tree
+     */
+    function getDirectoryTree(directoryPath, callback) {
+      var tree = [];
+      fs.readdir(directoryPath, function(error, resources) {
+        var pendingResourceNumber = resources.length;
 
-    it('Should be able to copy an empty directory', function(done) {
-      async.series([
-
-        // First create a directory
-        function(callback) {
-          fileSystem.mkdir(path.join(__dirname, '/fileSystem/toRemove'), callback);
-        },
-
-        // Copy directory
-        function(callback) {
-          fileSystem.copy(path.join(__dirname, '/fileSystem/toRemove'), path.join(
-            __dirname, '/fileSystem/toRemoveCopied'), callback);
-        },
-
-        // Test if directory exists
-        function(callback) {
-          fs.exists(path.join(__dirname, '/fileSystem/toRemoveCopied'), function(exists) {
-            callback((exists) ? null : new Error('Directory has not been copied'));
-          });
-        },
-
-        // Remove copied directory
-        function(callback) {
-          fileSystem.rmdir(path.join(__dirname, '/fileSystem/toRemoveCopied'), callback);
-        },
-
-        // Remove directory
-        function(callback) {
-          fileSystem.rmdir(path.join(__dirname, '/fileSystem/toRemove'), callback);
+        if (!pendingResourceNumber) {
+          callback(tree);
+          return;
         }
-      ], function(error, results) {
-        if (!error)
+
+        resources.forEach(function(resource) {
+          var resourcePath = path.join(directoryPath, resource);
+          fs.stat(resourcePath, function(error, stats) {
+            tree.push(resource);
+
+            if (stats.isFile()) {
+              pendingResourceNumber--;
+
+              if (!pendingResourceNumber)
+                callback(tree);
+            } else {
+              getDirectoryTree(resourcePath, function(subTree) {
+                tree = tree.concat(subTree);
+
+                pendingResourceNumber--;
+                if (!pendingResourceNumber)
+                  callback(tree);
+              });
+            }
+          });
+        });
+      });
+    }
+
+    it('should be able to copy a file', function(done) {
+      fileSystem.copy(filePath, copyFilePath, function(error) {
+        if (!error) {
+          var originalFile = require(filePath);
+          var copy = require(copyFilePath);
+          assert.deepEqual(originalFile, copy, 'Expected copy to have the same content');
           done();
-        else
+        } else
+          assert.ok(false, 'Copy failed : ' + error.message);
+      });
+    });
+
+    it('should be able to copy a directory', function(done) {
+      fileSystem.copy(directoryPath, copyDirPath, function(error) {
+        if (!error) {
+          getDirectoryTree(directoryPath, function(tree) {
+            getDirectoryTree(copyDirPath, function(copyTree) {
+              assert.sameMembers(tree, copyTree, 'Expected copy directory to have same resources as the original');
+              done();
+            });
+          });
+        } else
           assert.ok(false);
       });
     });

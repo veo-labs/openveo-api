@@ -1,6 +1,5 @@
 'use strict';
 
-// Module dependencies
 var path = require('path');
 var assert = require('chai').assert;
 var applicationStorage = process.requireAPI('lib/applicationStorage.js');
@@ -14,11 +13,11 @@ describe('i18n', function() {
       [
         {
           name: 'example',
-          i18nDirectory: path.normalize(path.join(__dirname, 'i18n', 'example'))
+          i18nDirectory: path.join(__dirname, 'i18n', 'example')
         },
         {
           name: 'example2',
-          i18nDirectory: path.normalize(path.join(__dirname, 'i18n', 'example2'))
+          i18nDirectory: path.join(__dirname, 'i18n', 'example2')
         }
       ]
       );
@@ -28,47 +27,53 @@ describe('i18n', function() {
   // getTranslations method
   describe('getTranslations', function() {
 
-    it('Should return a JSON object', function(done) {
-      i18n.getTranslations('languages', 'fr', function(error, translations) {
-        assert.isDefined(translations);
-        assert.isObject(translations);
-        assert.equal(translations.EXAMPLE.ENGLISH, 'anglais');
-        done();
-      });
-    });
-
-    it('Should return null if no translation found', function(done) {
-      i18n.getTranslations('no-translation', 'fr', function(error, translations) {
-        assert.isNull(translations);
-        done();
-      });
-    });
-
-    it('Should return null if dictionary is not specified', function(done) {
-      i18n.getTranslations(null, 'fr', function(error, translations) {
-        assert.isNull(translations);
-        done();
-      });
-    });
-
-    it('Should be able to get translation of a particular language', function(done) {
+    it('should be able to get translation of a particular language', function(done) {
       i18n.getTranslations('french', 'fr', function(error, translations) {
+        assert.isUndefined(error, 'Getting translations failed : ' + (error && error.message));
         assert.equal(translations.EXAMPLE.FRENCH, 'Français');
         done();
       });
     });
 
-    it('Should be able to get a translation by language and country code', function(done) {
+    it('should be able to get a translation of a particular language and country', function(done) {
       i18n.getTranslations('canadian', 'en-CA', function(error, translations) {
         assert.equal(translations.EXAMPLE.DOLLAR, 'Loonie');
         done();
       });
     });
 
-    it('Should be able to get plugins translations (merged)', function(done) {
-      i18n.getTranslations('admin-back-office', 'en', function(error, translations) {
-        assert.equal(translations.EXAMPLE.MENU.EXAMPLE, 'Example');
-        assert.equal(translations.EXAMPLE2.MENU.EXAMPLE2, 'Example2');
+    it('should not wrap translations if already wrapped', function(done) {
+      i18n.getTranslations('wrapped', 'en', function(error, translations) {
+        assert.equal(translations.EXAMPLE.WRAPPED, 'wrapped');
+        done();
+      });
+    });
+
+    it('should return null if no translation found', function(done) {
+      i18n.getTranslations('no-translation', 'fr', function(error, translations) {
+        assert.isNull(translations);
+        done();
+      });
+    });
+
+    it('should return null if dictionary is not specified', function(done) {
+      i18n.getTranslations(null, 'fr', function(error, translations) {
+        assert.isNull(translations);
+        done();
+      });
+    });
+
+    it('should return translations in english if no language is not specified', function(done) {
+      i18n.getTranslations('english', null, function(error, translations) {
+        assert.equal(translations.EXAMPLE.ENGLISH, 'English');
+        done();
+      });
+    });
+
+    it('should be able to get translations for all plugins (merged)', function(done) {
+      i18n.getTranslations('common', 'en', function(error, translations) {
+        assert.equal(translations.EXAMPLE.COMMON, 'Common');
+        assert.equal(translations.EXAMPLE2.COMMON, 'Common');
         done();
       });
     });
