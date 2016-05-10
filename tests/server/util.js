@@ -93,24 +93,29 @@ describe('util', function() {
     });
 
     it('should explode if one or both arguments or not arrays', function() {
+      var invalidValues = [undefined, null, 42, {}];
+
+      invalidValues.forEach(function(invalidValue) {
+        assert.throws(function() {
+          util.joinArray(invalidValue, []);
+        }, Error, null, 'Expected exception when parameter 1 is ' + typeof invalidValue);
+
+        assert.throws(function() {
+          util.joinArray([], invalidValue);
+        }, Error, null, 'Expected exception when parameter 2 is ' + typeof invalidValue);
+
+        assert.throws(function() {
+          util.joinArray(invalidValue, invalidValue);
+        }, Error, null, 'Expected exception when both parameters are ' + typeof invalidValue);
+      });
+
       assert.throws(function() {
-        util.joinArray([], null);
-      }, Error, null, 'Expected exception when joining an array with null');
-      assert.throws(function() {
-        util.joinArray(null, []);
-      }, Error, null, 'Expected exception when joining null with an array');
-      assert.throws(function() {
-        util.joinArray(null, null);
-      }, Error, null, 'Expected exception when joining null with null');
+        util.joinArray([], 'string');
+      }, Error, null, 'Expected exception when parameter 2 is a string');
+
       assert.throws(function() {
         util.joinArray('string', 'string');
-      }, Error, null, 'Expected exception when joining two strings');
-      assert.throws(function() {
-        util.joinArray(42, 42);
-      }, Error, null, 'Expected exception when joining two numbers');
-      assert.throws(function() {
-        util.joinArray({}, {});
-      }, Error, null, 'Expected exception when joining two objects');
+      }, Error, null, 'Expected exception when both parameters are strings');
     });
 
   });
@@ -129,24 +134,21 @@ describe('util', function() {
     });
 
     it('should explode if one or both arguments or not arrays', function() {
-      assert.throws(function() {
-        util.intersectArray([], null);
-      }, Error, null, 'Expected exception when intersecting an array with null');
-      assert.throws(function() {
-        util.intersectArray(null, null);
-      }, Error, null, 'Expected exception when intersecting null with null');
-      assert.throws(function() {
-        util.intersectArray(undefined, undefined);
-      }, Error, null, 'Expected exception when intersecting undefined with undefined');
-      assert.throws(function() {
-        util.intersectArray('string', 'string');
-      }, Error, null, 'Expected exception when intersecting two strings');
-      assert.throws(function() {
-        util.intersectArray(42, 42);
-      }, Error, null, 'Expected exception when intersecting two numbers');
-      assert.throws(function() {
-        util.intersectArray({}, {});
-      }, Error, null, 'Expected exception when intersecting two objects');
+      var invalidValues = [undefined, null, 42, {}];
+
+      invalidValues.forEach(function(invalidValue) {
+        assert.throws(function() {
+          util.intersectArray(invalidValue, ['string']);
+        }, Error, null, 'Expected exception when parameter 1 is ' + typeof invalidValue);
+
+        assert.throws(function() {
+          util.intersectArray(['string'], invalidValue);
+        }, Error, null, 'Expected exception when parameter 2 is ' + typeof invalidValue);
+
+        assert.throws(function() {
+          util.intersectArray(invalidValue, invalidValue);
+        }, Error, null, 'Expected exception when both parameters are ' + typeof invalidValue);
+      });
     });
 
   });
