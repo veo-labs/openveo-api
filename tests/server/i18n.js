@@ -29,7 +29,7 @@ describe('i18n', function() {
 
     it('should be able to get translation of a particular language', function(done) {
       i18n.getTranslations('french', 'fr', function(error, translations) {
-        assert.isUndefined(error, 'Getting translations failed : ' + (error && error.message));
+        assert.isNull(error, 'Getting translations failed : ' + (error && error.message));
         assert.equal(translations.EXAMPLE.FRENCH, 'Français');
         done();
       });
