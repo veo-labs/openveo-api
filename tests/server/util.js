@@ -190,6 +190,38 @@ describe('util', function() {
 
   });
 
+  // isContained function
+  describe('isContained', function() {
+
+    it('should be able to test if a value is contained into another', function() {
+      var values = [
+        'string',
+        42,
+        ['string1', 'string2'],
+        {
+          key: 'value',
+          key2: 42,
+          key3: ['string'],
+          key4: [42],
+          key5: {
+            key51: 'value'
+          },
+          key6: [{
+            key61: ['string'],
+            key62: 42
+          }]
+        },
+        undefined,
+        null
+      ];
+
+      values.forEach(function(value) {
+        assert.ok(util.isContained(value, value), 'Expected same ' + JSON.stringify(value) + ' to be valid');
+      });
+    });
+
+  });
+
   // shallowValidateObject function
   describe('shallowValidateObject', function() {
 
