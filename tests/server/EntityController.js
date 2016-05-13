@@ -139,6 +139,23 @@ describe('EntityController', function() {
       });
     });
 
+    it('should send an HTTP not found error if entity is not found', function(done) {
+      EntityModel.prototype.getOne = function(id, filter, callback) {
+        callback(null);
+      };
+
+      var response = {
+        send: function(entity) {
+          assert.ok(false, 'Unexpected response');
+        }
+      };
+
+      entityController.getEntityAction({params: {id: 1}}, response, function(error) {
+        assert.equal(error.httpCode, 404);
+        done();
+      });
+    });
+
   });
 
   // updateEntityAction method
