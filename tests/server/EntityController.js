@@ -195,23 +195,6 @@ describe('EntityController', function() {
       });
     });
 
-    it('should send an HTTP server error if model has not update any entity', function(done) {
-      EntityModel.prototype.update = function(id, data, callback) {
-        callback(null, 0);
-      };
-
-      var response = {
-        send: function(res) {
-          assert.ok(false, 'Unexpected response');
-        }
-      };
-
-      entityController.updateEntityAction({params: {id: 1}, body: {}}, response, function(error) {
-        assert.equal(error.httpCode, 500);
-        done();
-      });
-    });
-
     it('should send an HTTP missing parameter error if id is not specified', function(done) {
       var response = {
         send: function(entity) {
