@@ -233,14 +233,14 @@ describe('util', function() {
       assert.isUndefined(validatedObject.unnexpectedProperty);
     });
 
-    it('should set value to null if type is not implemented', function() {
+    it('should ignore value if type is not implemented', function() {
       var validatedObject = util.shallowValidateObject({
         stringProperty: 'value'
       }, {
         stringProperty: {type: 'unknown'}
       });
 
-      assert.isNull(validatedObject.stringProperty);
+      assert.isUndefined(validatedObject.stringProperty);
     });
 
     it('should return an empty object if no validation object is specified', function() {
@@ -272,12 +272,12 @@ describe('util', function() {
         assert.equal(validatedObject.stringProperty, value);
       });
 
-      it('should set value to null if no value is found', function() {
+      it('should ignore property if value is not found', function() {
         var validatedObject = util.shallowValidateObject({}, {
           stringProperty: {type: 'string'}
         });
 
-        assert.isNull(validatedObject.stringProperty);
+        assert.isUndefined(validatedObject.stringProperty);
       });
 
       it('should set value to the default value if value is not found', function() {
@@ -403,12 +403,12 @@ describe('util', function() {
         assert.equal(validatedObject.numberProperty, value);
       });
 
-      it('should set value to null if no value is found', function() {
+      it('should ignore value if no value is found', function() {
         var validatedObject = util.shallowValidateObject({}, {
           numberProperty: {type: 'number'}
         });
 
-        assert.isNull(validatedObject.numberProperty);
+        assert.isUndefined(validatedObject.numberProperty);
       });
 
       it('should throw an error if the value is not part of the list of numbers', function() {
@@ -551,7 +551,7 @@ describe('util', function() {
         assert.ok(false);
       });
 
-      it('should set value to null if value is not a number', function() {
+      it('should ignore property if value is not a number', function() {
         var validatedObject;
         var value;
 
@@ -562,7 +562,7 @@ describe('util', function() {
           numberProperty: {type: 'number'}
         });
 
-        assert.isNull(validatedObject.numberProperty);
+        assert.isUndefined(validatedObject.numberProperty);
 
         // Boolean
         validatedObject = util.shallowValidateObject({
@@ -571,7 +571,7 @@ describe('util', function() {
           numberProperty: {type: 'number'}
         });
 
-        assert.isNull(validatedObject.numberProperty);
+        assert.isUndefined(validatedObject.numberProperty);
 
         // Array
         value = ['value1', 'value2'];
@@ -581,7 +581,7 @@ describe('util', function() {
           numberProperty: {type: 'number'}
         });
 
-        assert.isNull(validatedObject.numberProperty);
+        assert.isUndefined(validatedObject.numberProperty);
       });
 
     });
@@ -627,7 +627,7 @@ describe('util', function() {
         assert.equal(validatedObject.arrayProperty[0], value);
       });
 
-      it('should set value to null if value is an object', function() {
+      it('should ignore property if value is an object', function() {
         var validatedObject;
         validatedObject = util.shallowValidateObject({
           arrayProperty: {}
@@ -635,7 +635,7 @@ describe('util', function() {
           arrayProperty: {type: 'array<string>'}
         });
 
-        assert.isNull(validatedObject.arrayProperty);
+        assert.isUndefined(validatedObject.arrayProperty);
 
         validatedObject = util.shallowValidateObject({
           arrayProperty: {}
@@ -643,7 +643,7 @@ describe('util', function() {
           arrayProperty: {type: 'array<number>'}
         });
 
-        assert.isNull(validatedObject.arrayProperty);
+        assert.isUndefined(validatedObject.arrayProperty);
 
       });
 
