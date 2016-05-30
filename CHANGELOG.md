@@ -1,3 +1,14 @@
+# 3.0.0 / 2016-05-30
+- Update logger
+- Update Models to define Entity and ContentEntity
+- Update Plugin interface
+- Add Taxonomy Model in API
+- Add Controller interface
+- Add search index
+- Add increase function in database interface
+- Add migration script
+- Add Helper to validate JSON Object
+
 # 2.0.0 / 2016-02-19
 
 - Add support for Arrays in require('@openveo/api').util.merge function
