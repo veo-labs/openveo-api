@@ -1,0 +1,3079 @@
+{
+    "project": {
+        "name": "OpenVeo server API for plugins",
+        "description": "OpenVeo server side API for plugins",
+        "version": "3.0.0"
+    },
+    "files": {
+        "lib/controllers/ContentController.js": {
+            "name": "lib/controllers/ContentController.js",
+            "modules": {},
+            "classes": {
+                "ContentController": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "lib/controllers/Controller.js": {
+            "name": "lib/controllers/Controller.js",
+            "modules": {},
+            "classes": {
+                "Controller": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "lib/controllers/EntityController.js": {
+            "name": "lib/controllers/EntityController.js",
+            "modules": {},
+            "classes": {
+                "EntityController": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "lib/controllers/doc.js": {
+            "name": "lib/controllers/doc.js",
+            "modules": {
+                "controllers": 1
+            },
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "lib/controllers/httpErrors.js": {
+            "name": "lib/controllers/httpErrors.js",
+            "modules": {
+                "http-errors": 1
+            },
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "lib/database/mongodb/MongoDatabase.js": {
+            "name": "lib/database/mongodb/MongoDatabase.js",
+            "modules": {},
+            "classes": {
+                "MongoDatabase": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "lib/database/mongodb/doc.js": {
+            "name": "lib/database/mongodb/doc.js",
+            "modules": {
+                "mongodb": 1
+            },
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "lib/errors/AccessError.js": {
+            "name": "lib/errors/AccessError.js",
+            "modules": {},
+            "classes": {
+                "AccessError": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "lib/errors/doc.js": {
+            "name": "lib/errors/doc.js",
+            "modules": {
+                "errors": 1
+            },
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "lib/middlewares/disableCacheMiddleware.js": {
+            "name": "lib/middlewares/disableCacheMiddleware.js",
+            "modules": {},
+            "classes": {
+                "disableCacheMiddleware": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "lib/middlewares/doc.js": {
+            "name": "lib/middlewares/doc.js",
+            "modules": {
+                "middlewares": 1
+            },
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "lib/middlewares/logRequestMiddleware.js": {
+            "name": "lib/middlewares/logRequestMiddleware.js",
+            "modules": {},
+            "classes": {
+                "logRequestMiddleware": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "lib/models/ContentModel.js": {
+            "name": "lib/models/ContentModel.js",
+            "modules": {},
+            "classes": {
+                "ContentModel": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "lib/models/EntityModel.js": {
+            "name": "lib/models/EntityModel.js",
+            "modules": {},
+            "classes": {
+                "EntityModel": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "lib/models/doc.js": {
+            "name": "lib/models/doc.js",
+            "modules": {
+                "models": 1
+            },
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "lib/providers/EntityProvider.js": {
+            "name": "lib/providers/EntityProvider.js",
+            "modules": {},
+            "classes": {
+                "EntityProvider": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "lib/providers/doc.js": {
+            "name": "lib/providers/doc.js",
+            "modules": {
+                "providers": 1
+            },
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "lib/Database.js": {
+            "name": "lib/Database.js",
+            "modules": {
+                "database": 1
+            },
+            "classes": {
+                "Database": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "lib/Plugin.js": {
+            "name": "lib/Plugin.js",
+            "modules": {
+                "plugin": 1
+            },
+            "classes": {
+                "Plugin": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "lib/applicationStorage.js": {
+            "name": "lib/applicationStorage.js",
+            "modules": {
+                "application-storage": 1
+            },
+            "classes": {
+                "applicationStorage": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "lib/fileSystem.js": {
+            "name": "lib/fileSystem.js",
+            "modules": {
+                "fileSystem": 1
+            },
+            "classes": {
+                "fileSystem": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "lib/i18n.js": {
+            "name": "lib/i18n.js",
+            "modules": {
+                "core-i18n": 1
+            },
+            "classes": {
+                "core-i18n": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "lib/logger.js": {
+            "name": "lib/logger.js",
+            "modules": {
+                "logger": 1
+            },
+            "classes": {
+                "logger": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "lib/util.js": {
+            "name": "lib/util.js",
+            "modules": {
+                "util": 1
+            },
+            "classes": {
+                "util": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        }
+    },
+    "modules": {
+        "controllers": {
+            "name": "controllers",
+            "submodules": {},
+            "elements": {},
+            "classes": {
+                "ContentController": 1,
+                "Controller": 1,
+                "EntityController": 1
+            },
+            "fors": {},
+            "namespaces": {},
+            "tag": "main",
+            "file": "lib/controllers/EntityController.js",
+            "line": 12,
+            "description": "Router controllers.",
+            "itemtype": "main"
+        },
+        "http-errors": {
+            "name": "http-errors",
+            "submodules": {},
+            "elements": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {},
+            "tag": "main",
+            "file": "lib/controllers/httpErrors.js",
+            "line": 3,
+            "description": "The list of API HTTP errors with, for each error, its associated hexadecimal code and HTTP return code.",
+            "itemtype": "main"
+        },
+        "mongodb": {
+            "name": "mongodb",
+            "submodules": {},
+            "elements": {},
+            "classes": {
+                "MongoDatabase": 1
+            },
+            "fors": {},
+            "namespaces": {},
+            "tag": "main",
+            "file": "lib/database/mongodb/MongoDatabase.js",
+            "line": 15,
+            "description": "MongoDB database specific implementation.",
+            "itemtype": "main"
+        },
+        "errors": {
+            "name": "errors",
+            "submodules": {},
+            "elements": {},
+            "classes": {
+                "AccessError": 1
+            },
+            "fors": {},
+            "namespaces": {},
+            "tag": "main",
+            "file": "lib/errors/AccessError.js",
+            "line": 9,
+            "description": "All OpenVeo specific errors.",
+            "itemtype": "main"
+        },
+        "middlewares": {
+            "name": "middlewares",
+            "submodules": {},
+            "elements": {},
+            "classes": {
+                "disableCacheMiddleware": 1,
+                "logRequestMiddleware": 1
+            },
+            "fors": {},
+            "namespaces": {},
+            "tag": "main",
+            "file": "lib/middlewares/logRequestMiddleware.js",
+            "line": 7,
+            "description": "Middlewares module includes ExpressJS middlewares.",
+            "itemtype": "main"
+        },
+        "models": {
+            "name": "models",
+            "submodules": {},
+            "elements": {},
+            "classes": {
+                "ContentModel": 1,
+                "EntityModel": 1
+            },
+            "fors": {},
+            "namespaces": {},
+            "tag": "main",
+            "file": "lib/models/EntityModel.js",
+            "line": 9,
+            "description": "A bunch of models to manipulate datas retrieved from providers.",
+            "itemtype": "main"
+        },
+        "providers": {
+            "name": "providers",
+            "submodules": {},
+            "elements": {},
+            "classes": {
+                "EntityProvider": 1
+            },
+            "fors": {},
+            "namespaces": {},
+            "tag": "main",
+            "file": "lib/providers/EntityProvider.js",
+            "line": 9,
+            "description": "A bunch of providers to manipulate datas retrieved from a storage.",
+            "itemtype": "main"
+        },
+        "database": {
+            "name": "database",
+            "submodules": {},
+            "elements": {},
+            "classes": {
+                "Database": 1
+            },
+            "fors": {},
+            "namespaces": {},
+            "tag": "module",
+            "file": "lib/Database.js",
+            "line": 9,
+            "description": "Defines Database interface."
+        },
+        "plugin": {
+            "name": "plugin",
+            "submodules": {},
+            "elements": {},
+            "classes": {
+                "Plugin": 1
+            },
+            "fors": {},
+            "namespaces": {},
+            "tag": "module",
+            "file": "lib/Plugin.js",
+            "line": 9,
+            "description": "Defines a Plugin."
+        },
+        "application-storage": {
+            "name": "application-storage",
+            "submodules": {},
+            "elements": {},
+            "classes": {
+                "applicationStorage": 1
+            },
+            "fors": {},
+            "namespaces": {},
+            "tag": "main",
+            "file": "lib/applicationStorage.js",
+            "line": 3,
+            "description": "Application storage is a global storage for core and plugins, to be\nable to share information between both core and plugins.\n\nInformation stored in the application storage must be limited.",
+            "itemtype": "main"
+        },
+        "fileSystem": {
+            "name": "fileSystem",
+            "submodules": {},
+            "elements": {},
+            "classes": {
+                "fileSystem": 1
+            },
+            "fors": {},
+            "namespaces": {},
+            "tag": "main",
+            "file": "lib/fileSystem.js",
+            "line": 3,
+            "description": "Provides functions to interact with the file system as an extension to the Node.js filesystem module.",
+            "itemtype": "main"
+        },
+        "core-i18n": {
+            "name": "core-i18n",
+            "submodules": {},
+            "elements": {},
+            "classes": {
+                "core-i18n": 1
+            },
+            "fors": {},
+            "namespaces": {},
+            "tag": "main",
+            "file": "lib/i18n.js",
+            "line": 3,
+            "description": "Provides functions to help translates the application. Translations\nare grouped by dictionaries.",
+            "itemtype": "main"
+        },
+        "logger": {
+            "name": "logger",
+            "submodules": {},
+            "elements": {},
+            "classes": {
+                "logger": 1
+            },
+            "fors": {},
+            "namespaces": {},
+            "tag": "main",
+            "file": "lib/logger.js",
+            "line": 3,
+            "description": "Provides functions to manage loggers.",
+            "itemtype": "main"
+        },
+        "util": {
+            "name": "util",
+            "submodules": {},
+            "elements": {},
+            "classes": {
+                "util": 1
+            },
+            "fors": {},
+            "namespaces": {},
+            "tag": "main",
+            "file": "lib/util.js",
+            "line": 5,
+            "description": "Provides functions for common JavaScript operations.",
+            "example": [
+                "\n\n    // Get util\n    var util = require('@openveo/api').util;"
+            ],
+            "itemtype": "main"
+        }
+    },
+    "classes": {
+        "ContentController": {
+            "name": "ContentController",
+            "shortname": "ContentController",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "controllers",
+            "namespace": "",
+            "file": "lib/controllers/ContentController.js",
+            "line": 10,
+            "description": "Provides route actions for all requests relative to content entities.",
+            "is_constructor": 1,
+            "extends": "EntityController",
+            "params": [
+                {
+                    "name": "Entity",
+                    "description": "An entity function extending EntityModel",
+                    "type": "Function"
+                }
+            ]
+        },
+        "Controller": {
+            "name": "Controller",
+            "shortname": "Controller",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "controllers",
+            "namespace": "",
+            "file": "lib/controllers/Controller.js",
+            "line": 7,
+            "description": "Defines class Controller.",
+            "is_constructor": 1
+        },
+        "EntityController": {
+            "name": "EntityController",
+            "shortname": "EntityController",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "controllers",
+            "namespace": "",
+            "file": "lib/controllers/EntityController.js",
+            "line": 12,
+            "description": "Provides route actions for all requests relative to entities.",
+            "is_constructor": 1,
+            "extends": "Controller",
+            "params": [
+                {
+                    "name": "Entity",
+                    "description": "An entity function extending EntityModel",
+                    "type": "Function"
+                }
+            ]
+        },
+        "MongoDatabase": {
+            "name": "MongoDatabase",
+            "shortname": "MongoDatabase",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "mongodb",
+            "namespace": "",
+            "file": "lib/database/mongodb/MongoDatabase.js",
+            "line": 15,
+            "description": "Defines a MongoDB Database.\n\nMongoDatabase must not be used directly. Use Database to get an instance of MongoDatabase.",
+            "example": [
+                "\n\n    var api = require('@openveo/api');\n\n    // Example of a MongoDB database configuration object\n    var databaseConf = {\n      \"type\" : \"mongodb\", // Database type\n      \"host\" : \"localhost\", // MongoDB server host\n      \"port\" : 27017, // MongoDB port\n      \"database\" : \"DATABASE_NAME\", // Replace DATABASE_NAME by the name of the OpenVeo database\n      \"username\" : \"DATABASE_USER_NAME\", // Replace DATABASE_USER_NAME by the name of the database user\n      \"password\" : \"DATABASE_USER_PWD\", // Replace DATABASE_USER_PWD  by the password of the database user\n      \"replicaSet\" : \"REPLICA_SET_NAME\", // Replace REPLICA_SET_NAME by the name of the ReplicaSet\n      \"seedlist\": \"IP_1:PORT_1,IP_2:PORT_2\" // The comma separated list of secondary servers\n    };\n\n    // Get a MongoDB database instance\n    var db = api.Database.getDatabase(databaseConf);"
+            ],
+            "extends": "Database",
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "Object",
+                    "description": "databaseConf A database configuration object"
+                }
+            ]
+        },
+        "AccessError": {
+            "name": "AccessError",
+            "shortname": "AccessError",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "errors",
+            "namespace": "",
+            "file": "lib/errors/AccessError.js",
+            "line": 9,
+            "description": "Defines an AccessError.\n\nAccess errors are thrown when a user tried to manipulate a content without requested permissions.",
+            "extends": "Error",
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "message",
+                    "description": "The error message",
+                    "type": "String"
+                }
+            ]
+        },
+        "disableCacheMiddleware": {
+            "name": "disableCacheMiddleware",
+            "shortname": "disableCacheMiddleware",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "middlewares",
+            "namespace": "",
+            "file": "lib/middlewares/disableCacheMiddleware.js",
+            "line": 7,
+            "description": "Defines an express middleware to deactivate user agent cache of requests.\n\nCache-Control : no-cache to force caches to request the original server\nCache-Control : no-store to force caches not to keep any copy of the response\nCache-Control : must-revalidate to force caches to ask original server validation of a stale response\nPragma : no-cache to be backward compatible with HTTP/1.0 caches\nExpires : 0 to mark all responses as staled",
+            "itemtype": "method"
+        },
+        "logRequestMiddleware": {
+            "name": "logRequestMiddleware",
+            "shortname": "logRequestMiddleware",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "middlewares",
+            "namespace": "",
+            "file": "lib/middlewares/logRequestMiddleware.js",
+            "line": 7,
+            "description": "Defines an express middleware to log request information (header, method, path).",
+            "itemtype": "method"
+        },
+        "ContentModel": {
+            "name": "ContentModel",
+            "shortname": "ContentModel",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "models",
+            "namespace": "",
+            "file": "lib/models/ContentModel.js",
+            "line": 77,
+            "description": "Defines a ContentModel class to manipulate content entities.\n\nA content entity associate a user to the entity and add controls for CRUD operations.\n\nContentModel must not be used directly. Create a sub class instead.",
+            "example": [
+                "\n\n    // Example for implementing a new ContentModel named \"CustomModel\"\n\n    // CustomModel.js\n\n    var util = require('util');\n    var api = require('@openveo/api');\n    var CustomProvider = process.require('CustomProvider.js');\n\n    function CustomModel(user) {\n\n      // Initialize the content model with a dedicated provider\n      api.ContentModel.call(this, user, new CustomProvider(api.applicationStorage.getDatabase()));\n\n    }\n\n    // CustomModel must extends ContentModel\n    module.exports = CustomModel;\n    util.inherits(CustomModel, api.ContentModel);",
+                "\n\n    // Example for how to use CustomModel defined in previous example\n\n    var api = require('@openveo/api');\n\n    var CustomModel = process.require('CustomModel.js');\n    var model = new CustomModel();"
+            ],
+            "is_constructor": 1,
+            "extends": "EntityModel",
+            "params": [
+                {
+                    "name": "user",
+                    "description": "The user that will manipulate the entities",
+                    "type": "Object"
+                },
+                {
+                    "name": "provider",
+                    "description": "The entity provider",
+                    "type": "EntityProvider"
+                }
+            ]
+        },
+        "EntityModel": {
+            "name": "EntityModel",
+            "shortname": "EntityModel",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "models",
+            "namespace": "",
+            "file": "lib/models/EntityModel.js",
+            "line": 9,
+            "description": "Defines class EntityModel.\n\nThe EntityModel provides basic CRUD (**C**reate **R**ead **U**pdate **D**elete) operations on entities.<br/>\nAll entities models must extend EntityModel. EntityModel must not be used directly. Use one of its sub class\ninstead.\n\nEach entity as it's own associated Model (sub class of EntityModel).",
+            "example": [
+                "\n\n    // Example for implementing a new EntityModel named \"CustomModel\"\n\n    // CustomModel.js\n\n    var util = require('util');\n    var api = require('@openveo/api');\n    var CustomProvider = process.require('CustomProvider.js');\n\n    function CustomModel() {\n\n      // Initialize the entity model with a dedicated provider\n      api.EntityModel.call(this, new CustomProvider(api.applicationStorage.getDatabase()));\n\n    }\n\n    // CustomModel must extends EntityModel\n    module.exports = CustomModel;\n    util.inherits(CustomModel, api.EntityModel);",
+                "\n\n    // Example for how to use CustomModel defined in previous example\n\n    var api = require('@openveo/api');\n\n    var CustomModel = process.require('CustomModel.js');\n    var model = new CustomModel();"
+            ],
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "provider",
+                    "description": "The entity provider",
+                    "type": "EntityProvider"
+                }
+            ]
+        },
+        "EntityProvider": {
+            "name": "EntityProvider",
+            "shortname": "EntityProvider",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "providers",
+            "namespace": "",
+            "file": "lib/providers/EntityProvider.js",
+            "line": 9,
+            "description": "Defines class EntityProvider.\n\nThe EntityProvider offers basic CRUD (**C**read **R**ead **U**pdate **D**elete) operations on a collection.<br/>\nEntityProvider must not be used directly. Use one of its sub class instead.\n\nEach entity model as it's own associated Provider (sub class of EntityProvider).",
+            "example": [
+                "\n\n    // Example for implementing a new EntityProvider named \"CustomProvider\"\n\n    // CustomProvider.js\n\n     var util = require('util');\n     var api = require('@openveo/api');\n\n     function CustomProvider(database) {\n\n       // Initialize the entity provider with collection \"customCollection\"\n       api.EntityProvider.call(this, database, 'customCollection');\n\n     }\n\n     // CustomProvider must extend EntityProvider\n     module.exports = CustomProvider;\n     util.inherits(CustomProvider, api.EntityProvider);",
+                "\n\n    // Example for how to use CustomProvider defined in previous example\n\n    var api = require('@openveo/api');\n\n    var CustomProvider = process.require('CustomProvider.js');\n    var provider = new CustomProvider(api.applicationStorage.getDatabase()));"
+            ],
+            "is_constructor": 1
+        },
+        "Database": {
+            "name": "Database",
+            "shortname": "Database",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "database",
+            "namespace": "",
+            "file": "lib/Database.js",
+            "line": 9,
+            "description": "Saves database configuration.",
+            "example": [
+                "\n\n    // Example for how to use MongoDB database\n\n    var api = require('@openveo/api');\n    var databaseConf = {\n     ...\n    };\n\n    // Create a new instance of the database\n    var db = api.Database.get(databaseConf);\n\n    // Prefer using OpenVeo database instance\n    var db = api.applicationStorage.getDatabase();"
+            ],
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "databaseConf",
+                    "description": "A database configuration object",
+                    "type": "Object"
+                }
+            ]
+        },
+        "Plugin": {
+            "name": "Plugin",
+            "shortname": "Plugin",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "plugin",
+            "namespace": "",
+            "file": "lib/Plugin.js",
+            "line": 9,
+            "description": "Each plugin which wants to be loaded by core must inherit from this class.\n\nThis Class must not be used directly, instead create a sub class.",
+            "example": [
+                "\n\n    // Example for implementing a new Plugin named \"MyPlugin\"\n\n    // MyPlugin.js\n\n    var openVeoAPI = require('@openveo/api');\n    function MyPlugin(){\n\n      // Creates admin and front new routers\n      this.router = express.Router();\n      this.adminRouter = express.Router();\n      this.webServiceRouter = express.Router();\n\n      // Define routes directly here or in the configuration file\n\n    }\n\n    MyPlugin.prototype.start = function() {\n      console.log('My plugin loaded');\n    };\n\n    module.exports = MyPlugin;\n    util.inherits(MyPlugin, openVeoAPI.Plugin);"
+            ],
+            "is_constructor": 1
+        },
+        "applicationStorage": {
+            "name": "applicationStorage",
+            "shortname": "applicationStorage",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "application-storage",
+            "namespace": "",
+            "file": "lib/applicationStorage.js",
+            "line": 3,
+            "description": "Application storage is a global storage for core and plugins, to be\nable to share information between both core and plugins.\n\nInformation stored in the application storage must be limited."
+        },
+        "fileSystem": {
+            "name": "fileSystem",
+            "shortname": "fileSystem",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "fileSystem",
+            "namespace": "",
+            "file": "lib/fileSystem.js",
+            "line": 3,
+            "description": "Provides functions to interact with the file system as an extension to the Node.js filesystem module."
+        },
+        "core-i18n": {
+            "name": "core-i18n",
+            "shortname": "core-i18n",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "core-i18n",
+            "namespace": "",
+            "file": "lib/i18n.js",
+            "line": 3,
+            "description": "Provides functions to help translates the application. Translations\nare grouped by dictionaries."
+        },
+        "logger": {
+            "name": "logger",
+            "shortname": "logger",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "logger",
+            "namespace": "",
+            "file": "lib/logger.js",
+            "line": 3,
+            "description": "Provides functions to manage loggers."
+        },
+        "util": {
+            "name": "util",
+            "shortname": "util",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "util",
+            "namespace": "",
+            "file": "lib/util.js",
+            "line": 5,
+            "description": "Provides functions for common JavaScript operations.",
+            "example": [
+                "\n\n    // Get util\n    var util = require('@openveo/api').util;"
+            ]
+        }
+    },
+    "elements": {},
+    "classitems": [
+        {
+            "file": "lib/controllers/EntityController.js",
+            "line": 32,
+            "description": "Gets a list of entities.",
+            "example": [
+                "\n    {\n      \"entities\" : [ ... ]\n    }"
+            ],
+            "itemtype": "method",
+            "name": "getEntitiesAction",
+            "class": "EntityController",
+            "module": "controllers"
+        },
+        {
+            "file": "lib/controllers/EntityController.js",
+            "line": 57,
+            "description": "Gets a specific entity.\n\nExpects the following url parameters :\n - **id** The id of the entity to retrieve",
+            "example": [
+                "\n    {\n      \"entity\" : { ... }\n    }"
+            ],
+            "itemtype": "method",
+            "name": "getEntityAction",
+            "class": "EntityController",
+            "module": "controllers"
+        },
+        {
+            "file": "lib/controllers/EntityController.js",
+            "line": 96,
+            "description": "Updates an entity.\n\nExpects the following url parameters :\n - **id** The id of the entity to update\n\nAlso expects data in body.",
+            "itemtype": "method",
+            "name": "updateEntityAction",
+            "class": "EntityController",
+            "module": "controllers"
+        },
+        {
+            "file": "lib/controllers/EntityController.js",
+            "line": 130,
+            "description": "Adds an entity.\n\nAlso expects entity data in body.",
+            "example": [
+                "\n    {\n      \"entity\" : { ... }\n    }"
+            ],
+            "itemtype": "method",
+            "name": "addEntityAction",
+            "class": "EntityController",
+            "module": "controllers"
+        },
+        {
+            "file": "lib/controllers/EntityController.js",
+            "line": 164,
+            "description": "Removes an entity.\n\nExpects the following url parameters :\n - **id** The id of the entity to remove",
+            "itemtype": "method",
+            "name": "removeEntityAction",
+            "class": "EntityController",
+            "module": "controllers"
+        },
+        {
+            "file": "lib/database/mongodb/MongoDatabase.js",
+            "line": 51,
+            "description": "Establishes connection to the database.",
+            "itemtype": "method",
+            "name": "connect",
+            "async": 1,
+            "params": [
+                {
+                    "name": "callback",
+                    "description": "The function to call when connection to the database is established\n  - **Error** The error if an error occurred, null otherwise",
+                    "type": "Function"
+                }
+            ],
+            "class": "MongoDatabase",
+            "module": "mongodb"
+        },
+        {
+            "file": "lib/database/mongodb/MongoDatabase.js",
+            "line": 86,
+            "description": "Closes connection to the database.",
+            "itemtype": "method",
+            "name": "close",
+            "async": 1,
+            "params": [
+                {
+                    "name": "callback",
+                    "description": "The function to call when connection is closed\n  - **Error** The error if an error occurred, null otherwise",
+                    "type": "Function"
+                }
+            ],
+            "class": "MongoDatabase",
+            "module": "mongodb"
+        },
+        {
+            "file": "lib/database/mongodb/MongoDatabase.js",
+            "line": 98,
+            "description": "Inserts several documents into a collection.",
+            "itemtype": "method",
+            "name": "insert",
+            "async": 1,
+            "params": [
+                {
+                    "name": "collection",
+                    "description": "The collection to work on",
+                    "type": "String"
+                },
+                {
+                    "name": "data",
+                    "description": "Document(s) to insert into the collection",
+                    "type": "Array"
+                },
+                {
+                    "name": "callback",
+                    "description": "The function to call when it's done\n  - **Error** The error if an error occurred, null otherwise\n  - **Number** The total amount of documents inserted\n  - **Array** All the documents inserted",
+                    "type": "Function"
+                }
+            ],
+            "class": "MongoDatabase",
+            "module": "mongodb"
+        },
+        {
+            "file": "lib/database/mongodb/MongoDatabase.js",
+            "line": 124,
+            "description": "Removes several documents from a collection.",
+            "itemtype": "method",
+            "name": "remove",
+            "async": 1,
+            "params": [
+                {
+                    "name": "collection",
+                    "description": "The collection to work on",
+                    "type": "String"
+                },
+                {
+                    "name": "filter",
+                    "description": "Filters formatted like MongoDB filters",
+                    "type": "Object"
+                },
+                {
+                    "name": "callback",
+                    "description": "The function to call when it's done\n  - **Error** The error if an error occurred, null otherwise\n  - **Number** The number of deleted documents",
+                    "type": "Function"
+                }
+            ],
+            "class": "MongoDatabase",
+            "module": "mongodb"
+        },
+        {
+            "file": "lib/database/mongodb/MongoDatabase.js",
+            "line": 149,
+            "description": "Removes a property on all documents in the collection.",
+            "itemtype": "method",
+            "name": "removeProp",
+            "async": 1,
+            "params": [
+                {
+                    "name": "collection",
+                    "description": "The collection to work on",
+                    "type": "String"
+                },
+                {
+                    "name": "property",
+                    "description": "The property name to remove",
+                    "type": "String"
+                },
+                {
+                    "name": "filter",
+                    "description": "Filters formatted like MongoDB filters",
+                    "type": "Object"
+                },
+                {
+                    "name": "callback",
+                    "description": "The function to call when it's done\n  - **Error** The error if an error occurred, null otherwise\n  - **Number** The number of updated documents",
+                    "type": "Function"
+                }
+            ],
+            "class": "MongoDatabase",
+            "module": "mongodb"
+        },
+        {
+            "file": "lib/database/mongodb/MongoDatabase.js",
+            "line": 183,
+            "description": "Updates several documents from collection.",
+            "itemtype": "method",
+            "name": "update",
+            "async": 1,
+            "params": [
+                {
+                    "name": "collection",
+                    "description": "The collection to work on",
+                    "type": "String"
+                },
+                {
+                    "name": "filter",
+                    "description": "Filters formatted like MongoDB filters",
+                    "type": "Object"
+                },
+                {
+                    "name": "data",
+                    "description": "Document data",
+                    "type": "Object"
+                },
+                {
+                    "name": "callback",
+                    "description": "The function to call when it's done\n  - **Error** The error if an error occurred, null otherwise\n  - **Number** The number of updated documents",
+                    "type": "Function"
+                }
+            ],
+            "class": "MongoDatabase",
+            "module": "mongodb"
+        },
+        {
+            "file": "lib/database/mongodb/MongoDatabase.js",
+            "line": 211,
+            "description": "Gets a list of documents.",
+            "itemtype": "method",
+            "name": "get",
+            "async": 1,
+            "params": [
+                {
+                    "name": "collection",
+                    "description": "The collection to work on",
+                    "type": "String"
+                },
+                {
+                    "name": "criteria",
+                    "description": "MongoDB criterias",
+                    "type": "Object",
+                    "optional": true
+                },
+                {
+                    "name": "projection",
+                    "description": "MongoDB projection",
+                    "type": "Object",
+                    "optional": true
+                },
+                {
+                    "name": "limit",
+                    "description": "A limit number of items to retrieve (all by default)",
+                    "type": "Number",
+                    "optional": true
+                },
+                {
+                    "name": "callback",
+                    "description": "The function to call when it's done\n  - **Error** The error if an error occurred, null otherwise\n  - **Array** The retrieved documents",
+                    "type": "Function"
+                }
+            ],
+            "class": "MongoDatabase",
+            "module": "mongodb"
+        },
+        {
+            "file": "lib/database/mongodb/MongoDatabase.js",
+            "line": 240,
+            "description": "Gets an ordered list of documents by page.",
+            "itemtype": "method",
+            "name": "search",
+            "async": 1,
+            "params": [
+                {
+                    "name": "collection",
+                    "description": "The collection to work on",
+                    "type": "String"
+                },
+                {
+                    "name": "criteria",
+                    "description": "MongoDB criterias",
+                    "type": "Object",
+                    "optional": true
+                },
+                {
+                    "name": "projection",
+                    "description": "MongoDB projection",
+                    "type": "Object",
+                    "optional": true
+                },
+                {
+                    "name": "limit",
+                    "description": "The maximum number of expected documents",
+                    "type": "Number",
+                    "optional": true
+                },
+                {
+                    "name": "page",
+                    "description": "The expected page",
+                    "type": "Number",
+                    "optional": true
+                },
+                {
+                    "name": "sort",
+                    "description": "A sort object",
+                    "type": "Object",
+                    "optional": true
+                },
+                {
+                    "name": "callback",
+                    "description": "The function to call when it's done\n  - **Error** The error if an error occurred, null otherwise\n  - **Array** The list of documents\n  - **Object** Pagination information",
+                    "type": "Function"
+                }
+            ],
+            "class": "MongoDatabase",
+            "module": "mongodb"
+        },
+        {
+            "file": "lib/database/mongodb/MongoDatabase.js",
+            "line": 290,
+            "description": "Gets the list of indexes for a collection.",
+            "itemtype": "method",
+            "name": "getIndexes",
+            "async": 1,
+            "params": [
+                {
+                    "name": "collection",
+                    "description": "The collection to work on",
+                    "type": "String"
+                },
+                {
+                    "name": "callback",
+                    "description": "The function to call when it's done\n  - **Error** The error if an error occurred, null otherwise\n  - **Array** The list of indexes",
+                    "type": "Function"
+                }
+            ],
+            "class": "MongoDatabase",
+            "module": "mongodb"
+        },
+        {
+            "file": "lib/database/mongodb/MongoDatabase.js",
+            "line": 309,
+            "description": "Creates indexes for a collection.",
+            "itemtype": "method",
+            "name": "createIndexes",
+            "async": 1,
+            "params": [
+                {
+                    "name": "collection",
+                    "description": "The collection to work on",
+                    "type": "String"
+                },
+                {
+                    "name": "indexes",
+                    "description": "A list of indexes using MongoDB format",
+                    "type": "Array"
+                },
+                {
+                    "name": "callback",
+                    "description": "The function to call when it's done\n  - **Error** The error if an error occurred, null otherwise\n  - **Object** Information about the operation",
+                    "type": "Function"
+                }
+            ],
+            "class": "MongoDatabase",
+            "module": "mongodb"
+        },
+        {
+            "file": "lib/database/mongodb/MongoDatabase.js",
+            "line": 329,
+            "description": "Gets an express-session store for this database.",
+            "itemtype": "method",
+            "name": "getStore",
+            "params": [
+                {
+                    "name": "collection",
+                    "description": "The collection to work on",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "An express-session store",
+                "type": "Store"
+            },
+            "class": "MongoDatabase",
+            "module": "mongodb"
+        },
+        {
+            "file": "lib/database/mongodb/MongoDatabase.js",
+            "line": 341,
+            "description": "increase values in several documents from collection.",
+            "itemtype": "method",
+            "name": "increase",
+            "async": 1,
+            "params": [
+                {
+                    "name": "collection",
+                    "description": "The collection to work on",
+                    "type": "String"
+                },
+                {
+                    "name": "filter",
+                    "description": "Filters formatted like MongoDB filters",
+                    "type": "Object"
+                },
+                {
+                    "name": "data",
+                    "description": "Document data",
+                    "type": "Object"
+                },
+                {
+                    "name": "callback",
+                    "description": "The function to call when it's done\n  - **Error** The error if an error occurred, null otherwise\n  - **Number** The number of increased documents",
+                    "type": "Function"
+                }
+            ],
+            "class": "MongoDatabase",
+            "module": "mongodb"
+        },
+        {
+            "file": "lib/database/mongodb/MongoDatabase.js",
+            "line": 369,
+            "description": "Renames a collection.",
+            "itemtype": "method",
+            "name": "renameCollection",
+            "async": 1,
+            "params": [
+                {
+                    "name": "collection",
+                    "description": "The collection to work on",
+                    "type": "String"
+                },
+                {
+                    "name": "target",
+                    "description": "The new name of the collection",
+                    "type": "String"
+                },
+                {
+                    "name": "callback",
+                    "description": "The function to call when it's done\n  - **Error** The error if an error occurred, null otherwise",
+                    "type": "Function"
+                }
+            ],
+            "class": "MongoDatabase",
+            "module": "mongodb"
+        },
+        {
+            "file": "lib/database/mongodb/MongoDatabase.js",
+            "line": 395,
+            "description": "Remove a collection from the database",
+            "itemtype": "method",
+            "name": "removeCollection",
+            "async": 1,
+            "params": [
+                {
+                    "name": "collection",
+                    "description": "The collection to work on",
+                    "type": "String"
+                },
+                {
+                    "name": "callback",
+                    "description": "The function to call when it's done\n  - **Error** The error if an error occurred, null otherwise",
+                    "type": "Function"
+                }
+            ],
+            "class": "MongoDatabase",
+            "module": "mongodb"
+        },
+        {
+            "file": "lib/models/ContentModel.js",
+            "line": 14,
+            "description": "Gets the list of groups from a user.",
+            "example": [
+                "\n\n    // Example of user permissions\n    ['get-group-Jekrn20Rl', 'update-group-Jekrn20Rl', 'delete-group-YldO3Jie3', 'some-other-permission']\n\n    // Example of returned groups\n    {\n      'Jekrn20Rl': ['get', 'update'], // User only has get / update permissions on group 'Jekrn20Rl'\n      'YldO3Jie3': ['delete'], // User only has delete permission on group 'YldO3Jie3'\n      ...\n    }"
+            ],
+            "itemtype": "method",
+            "name": "getUserGroups",
+            "access": "private",
+            "tagname": "",
+            "params": [
+                {
+                    "name": "user",
+                    "description": "The user to extract groups from",
+                    "type": "Object"
+                }
+            ],
+            "return": {
+                "description": "Groups organized by ids",
+                "type": "Object"
+            },
+            "class": "ContentModel",
+            "module": "models"
+        },
+        {
+            "file": "lib/models/ContentModel.js",
+            "line": 56,
+            "description": "Gets the list of groups of a user, with authorization on a certain operation.\n\nAll user groups with authorization on the operation are returned.",
+            "itemtype": "method",
+            "name": "getUserAuthorizedGroups",
+            "access": "private",
+            "tagname": "",
+            "params": [
+                {
+                    "name": "operation",
+                    "description": "The operation (get, update or delete)",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "The list of user group ids with authorization on the operation",
+                "type": "Array"
+            },
+            "class": "ContentModel",
+            "module": "models"
+        },
+        {
+            "file": "lib/models/ContentModel.js",
+            "line": 134,
+            "description": "Tests if user is the administrator.",
+            "itemtype": "method",
+            "name": "isUserAdmin",
+            "return": {
+                "description": "true if the user is the administrator, false otherwise",
+                "type": "Boolean"
+            },
+            "class": "ContentModel",
+            "module": "models"
+        },
+        {
+            "file": "lib/models/ContentModel.js",
+            "line": 144,
+            "description": "Validates that the user is authorized to manipulate a content entity.\n\nUser is authorized to manipulate the entity if one of the following conditions is met :\n - No user is associated to the model\n - The entity belongs to the anonymous user\n - User is the super administrator\n - User is the owner of the entity\n - Entity has associated groups and user has permission to perform the operation on the group",
+            "itemtype": "method",
+            "name": "isUserAuthorized",
+            "params": [
+                {
+                    "name": "entity",
+                    "description": "The entity to manipulate",
+                    "type": "Object"
+                },
+                {
+                    "name": "operation",
+                    "description": "The operation to perform on the entity",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "true if the user can manipulate the entity, false otherwise",
+                "type": "Boolean"
+            },
+            "class": "ContentModel",
+            "module": "models"
+        },
+        {
+            "file": "lib/models/ContentModel.js",
+            "line": 176,
+            "description": "Gets a single content entity by its id.\n\nIf the user has not the necessary permissions, an error will be returned.",
+            "itemtype": "method",
+            "name": "getOne",
+            "async": 1,
+            "params": [
+                {
+                    "name": "id",
+                    "description": "The entity id",
+                    "type": "String"
+                },
+                {
+                    "name": "filter",
+                    "description": "A MongoDB filter",
+                    "type": "Object"
+                },
+                {
+                    "name": "callback",
+                    "description": "The function to call when it's done\n  - **Error** The error if an error occurred, null otherwise\n  - **Object** The entity",
+                    "type": "Function"
+                }
+            ],
+            "class": "ContentModel",
+            "module": "models"
+        },
+        {
+            "file": "lib/models/ContentModel.js",
+            "line": 199,
+            "description": "Gets all content entities.\n\nOnly entities that the user can manipulate are returned.",
+            "itemtype": "method",
+            "name": "get",
+            "async": 1,
+            "params": [
+                {
+                    "name": "filter",
+                    "description": "A MongoDB filter",
+                    "type": "Object"
+                },
+                {
+                    "name": "callback",
+                    "description": "The function to call when it's done\n  - **Error** The error if an error occurred, null otherwise\n  - **Array** The list of entities",
+                    "type": "Function"
+                }
+            ],
+            "class": "ContentModel",
+            "module": "models"
+        },
+        {
+            "file": "lib/models/ContentModel.js",
+            "line": 215,
+            "description": "Gets an ordered list of entities by page.\n\nOnly entities that the user can manipulate are returned.",
+            "itemtype": "method",
+            "name": "getPaginatedFilteredEntities",
+            "async": 1,
+            "params": [
+                {
+                    "name": "filter",
+                    "description": "MongoDB filter",
+                    "type": "Object",
+                    "optional": true
+                },
+                {
+                    "name": "limit",
+                    "description": "The maximum number of expected entities",
+                    "type": "Number",
+                    "optional": true
+                },
+                {
+                    "name": "page",
+                    "description": "The expected page",
+                    "type": "Number",
+                    "optional": true
+                },
+                {
+                    "name": "sort",
+                    "description": "A sort object",
+                    "type": "Object",
+                    "optional": true
+                },
+                {
+                    "name": "populate",
+                    "description": "true to automatically populate results with additional information",
+                    "type": "Boolean",
+                    "optional": true
+                },
+                {
+                    "name": "callback",
+                    "description": "The function to call when it's done\n  - **Error** The error if an error occurred, null otherwise\n  - **Array** The list of entities\n  - **Object** Pagination information",
+                    "type": "Function"
+                }
+            ],
+            "class": "ContentModel",
+            "module": "models"
+        },
+        {
+            "file": "lib/models/ContentModel.js",
+            "line": 236,
+            "description": "Adds a new content entity.\n\nInformation about the user (which becomes the owner) is added to the entity before recording.",
+            "itemtype": "method",
+            "name": "add",
+            "async": 1,
+            "params": [
+                {
+                    "name": "data",
+                    "description": "Entity data to store into the collection, its structure depends on the type of entity",
+                    "type": "Object"
+                },
+                {
+                    "name": "callback",
+                    "description": "The function to call when it's done\n  - **Error** The error if an error occurred, null otherwise\n  - **Number** The total amount of items inserted\n  - **Object** The added entity",
+                    "type": "Function"
+                }
+            ],
+            "class": "ContentModel",
+            "module": "models"
+        },
+        {
+            "file": "lib/models/ContentModel.js",
+            "line": 261,
+            "description": "Updates an entity.\n\nUser must have permission to update the entity.",
+            "itemtype": "method",
+            "name": "update",
+            "async": 1,
+            "params": [
+                {
+                    "name": "id",
+                    "description": "The id of the entity to update",
+                    "type": "String"
+                },
+                {
+                    "name": "data",
+                    "description": "Entity data, its structure depends on the type of entity",
+                    "type": "Object"
+                },
+                {
+                    "name": "callback",
+                    "description": "The function to call when it's done\n  - **Error** The error if an error occurred, null otherwise\n  - **Number** The number of updated items",
+                    "type": "Function"
+                }
+            ],
+            "class": "ContentModel",
+            "module": "models"
+        },
+        {
+            "file": "lib/models/ContentModel.js",
+            "line": 287,
+            "description": "Removes one or several entities.\n\nUser must have permission to remove the entity.",
+            "itemtype": "method",
+            "name": "remove",
+            "async": 1,
+            "params": [
+                {
+                    "name": "ids",
+                    "description": "Id(s) of the document(s) to remove from the collection",
+                    "type": "String|Array"
+                },
+                {
+                    "name": "callback",
+                    "description": "The function to call when it's done\n  - **Error** The error if an error occurred, null otherwise\n  - **Number** The number of deleted entities",
+                    "type": "Function"
+                }
+            ],
+            "class": "ContentModel",
+            "module": "models"
+        },
+        {
+            "file": "lib/models/ContentModel.js",
+            "line": 316,
+            "description": "Adds access rule to the given filter reference.",
+            "itemtype": "method",
+            "name": "addAccessFilter",
+            "params": [
+                {
+                    "name": "filter",
+                    "description": "The filter to add the access rule to",
+                    "type": "Object"
+                }
+            ],
+            "return": {
+                "description": "The filter",
+                "type": "Object"
+            },
+            "class": "ContentModel",
+            "module": "models"
+        },
+        {
+            "file": "lib/models/EntityModel.js",
+            "line": 61,
+            "description": "Gets a single entity by its id.",
+            "itemtype": "method",
+            "name": "getOne",
+            "async": 1,
+            "params": [
+                {
+                    "name": "id",
+                    "description": "The entity id",
+                    "type": "String"
+                },
+                {
+                    "name": "filter",
+                    "description": "A MongoDB filter",
+                    "type": "Object"
+                },
+                {
+                    "name": "callback",
+                    "description": "The function to call when it's done\n  - **Error** The error if an error occurred, null otherwise\n  - **Object** The entity",
+                    "type": "Function"
+                }
+            ],
+            "class": "EntityModel",
+            "module": "models"
+        },
+        {
+            "file": "lib/models/EntityModel.js",
+            "line": 76,
+            "description": "Gets all entities.",
+            "itemtype": "method",
+            "name": "get",
+            "async": 1,
+            "params": [
+                {
+                    "name": "filter",
+                    "description": "A MongoDB filter",
+                    "type": "Object"
+                },
+                {
+                    "name": "callback",
+                    "description": "The function to call when it's done\n  - **Error** The error if an error occurred, null otherwise\n  - **Array** The list of entities",
+                    "type": "Function"
+                }
+            ],
+            "class": "EntityModel",
+            "module": "models"
+        },
+        {
+            "file": "lib/models/EntityModel.js",
+            "line": 90,
+            "description": "Gets an ordered list of entities by page.",
+            "itemtype": "method",
+            "name": "getPaginatedFilteredEntities",
+            "async": 1,
+            "params": [
+                {
+                    "name": "filter",
+                    "description": "MongoDB filter",
+                    "type": "Object",
+                    "optional": true
+                },
+                {
+                    "name": "limit",
+                    "description": "The maximum number of expected entities",
+                    "type": "Number",
+                    "optional": true
+                },
+                {
+                    "name": "page",
+                    "description": "The expected page",
+                    "type": "Number",
+                    "optional": true
+                },
+                {
+                    "name": "sort",
+                    "description": "A sort object",
+                    "type": "Object",
+                    "optional": true
+                },
+                {
+                    "name": "populate",
+                    "description": "true to automatically populate results with additional information",
+                    "type": "Boolean",
+                    "optional": true
+                },
+                {
+                    "name": "callback",
+                    "description": "The function to call when it's done\n  - **Error** The error if an error occurred, null otherwise\n  - **Array** The list of entities\n  - **Object** Pagination information",
+                    "type": "Function"
+                }
+            ],
+            "class": "EntityModel",
+            "module": "models"
+        },
+        {
+            "file": "lib/models/EntityModel.js",
+            "line": 110,
+            "description": "Adds a new entity.",
+            "itemtype": "method",
+            "name": "add",
+            "async": 1,
+            "params": [
+                {
+                    "name": "data",
+                    "description": "Entity data to store into the collection, its structure depends on the type of entity",
+                    "type": "Object"
+                },
+                {
+                    "name": "callback",
+                    "description": "The function to call when it's done\n  - **Error** The error if an error occurred, null otherwise\n  - **Number** The total amount of items inserted\n  - **Object** The added entity",
+                    "type": "Function"
+                }
+            ],
+            "class": "EntityModel",
+            "module": "models"
+        },
+        {
+            "file": "lib/models/EntityModel.js",
+            "line": 129,
+            "description": "Updates an entity.",
+            "itemtype": "method",
+            "name": "update",
+            "async": 1,
+            "params": [
+                {
+                    "name": "id",
+                    "description": "The id of the entity to update",
+                    "type": "String"
+                },
+                {
+                    "name": "data",
+                    "description": "Entity data, its structure depends on the type of entity",
+                    "type": "Object"
+                },
+                {
+                    "name": "callback",
+                    "description": "The function to call when it's done\n  - **Error** The error if an error occurred, null otherwise\n  - **Number** The number of updated items",
+                    "type": "Function"
+                }
+            ],
+            "class": "EntityModel",
+            "module": "models"
+        },
+        {
+            "file": "lib/models/EntityModel.js",
+            "line": 144,
+            "description": "Removes one or several entities.",
+            "itemtype": "method",
+            "name": "remove",
+            "async": 1,
+            "params": [
+                {
+                    "name": "ids",
+                    "description": "Id(s) of the document(s) to remove from the collection",
+                    "type": "String|Array"
+                },
+                {
+                    "name": "callback",
+                    "description": "The function to call when it's done\n  - **Error** The error if an error occurred, null otherwise\n  - **Number** The number of deleted entities",
+                    "type": "Function"
+                }
+            ],
+            "class": "EntityModel",
+            "module": "models"
+        },
+        {
+            "file": "lib/providers/EntityProvider.js",
+            "line": 62,
+            "description": "Gets an entity.",
+            "itemtype": "method",
+            "name": "getOne",
+            "async": 1,
+            "params": [
+                {
+                    "name": "id",
+                    "description": "The entity id",
+                    "type": "String"
+                },
+                {
+                    "name": "filter",
+                    "description": "A MongoDB filter",
+                    "type": "Object"
+                },
+                {
+                    "name": "callback",
+                    "description": "The function to call when it's done\n  - **Error** The error if an error occurred, null otherwise\n  - **Object** The entity",
+                    "type": "Function"
+                }
+            ],
+            "class": "EntityProvider",
+            "module": "providers"
+        },
+        {
+            "file": "lib/providers/EntityProvider.js",
+            "line": 89,
+            "description": "Gets an ordered list of entities by page.",
+            "itemtype": "method",
+            "name": "getPaginatedFilteredEntities",
+            "async": 1,
+            "params": [
+                {
+                    "name": "filter",
+                    "description": "MongoDB filter",
+                    "type": "Object",
+                    "optional": true
+                },
+                {
+                    "name": "limit",
+                    "description": "The maximum number of expected entities",
+                    "type": "Number",
+                    "optional": true
+                },
+                {
+                    "name": "page",
+                    "description": "The expected page",
+                    "type": "Number",
+                    "optional": true
+                },
+                {
+                    "name": "sort",
+                    "description": "A sort object",
+                    "type": "Object",
+                    "optional": true
+                },
+                {
+                    "name": "callback",
+                    "description": "The function to call when it's done\n  - **Error** The error if an error occurred, null otherwise\n  - **Array** The list of entities\n  - **Object** Pagination information",
+                    "type": "Function"
+                }
+            ],
+            "class": "EntityProvider",
+            "module": "providers"
+        },
+        {
+            "file": "lib/providers/EntityProvider.js",
+            "line": 107,
+            "description": "Gets all entities.",
+            "itemtype": "method",
+            "name": "get",
+            "async": 1,
+            "params": [
+                {
+                    "name": "filter",
+                    "description": "A MongoDB filter",
+                    "type": "Object"
+                },
+                {
+                    "name": "callback",
+                    "description": "The function to call when it's done\n  - **Error** The error if an error occurred, null otherwise\n  - **Array** The list of entities",
+                    "type": "Function"
+                }
+            ],
+            "class": "EntityProvider",
+            "module": "providers"
+        },
+        {
+            "file": "lib/providers/EntityProvider.js",
+            "line": 124,
+            "description": "Adds a new entity.",
+            "itemtype": "method",
+            "name": "add",
+            "async": 1,
+            "params": [
+                {
+                    "name": "data",
+                    "description": "Data to store into the collection, its structure depends on the entity type",
+                    "type": "Object"
+                },
+                {
+                    "name": "callback",
+                    "description": "The function to call when it's done\n  - **Error** The error if an error occurred, null otherwise\n  - **Number** The total amount of documents inserted\n  - **Array** All the documents inserted",
+                    "type": "Function",
+                    "optional": true
+                }
+            ],
+            "class": "EntityProvider",
+            "module": "providers"
+        },
+        {
+            "file": "lib/providers/EntityProvider.js",
+            "line": 145,
+            "description": "Updates an entity.\n\nIf the entity has the property \"locked\", it won't be updated.",
+            "itemtype": "method",
+            "name": "update",
+            "async": 1,
+            "params": [
+                {
+                    "name": "id",
+                    "description": "The id of the entity to update",
+                    "type": "String"
+                },
+                {
+                    "name": "data",
+                    "description": "Entity data, its structure depends on the entity type",
+                    "type": "Object"
+                },
+                {
+                    "name": "callback",
+                    "description": "The function to call when it's done\n  - **Error** The error if an error occurred, null otherwise\n  - **Number** The number of updated items",
+                    "type": "Function"
+                }
+            ],
+            "class": "EntityProvider",
+            "module": "providers"
+        },
+        {
+            "file": "lib/providers/EntityProvider.js",
+            "line": 170,
+            "description": "Removes one or several entities.\n\nIf the entity has the property \"locked\", it won't be removed.",
+            "itemtype": "method",
+            "name": "remove",
+            "async": 1,
+            "params": [
+                {
+                    "name": "ids",
+                    "description": "Id(s) of the document(s) to remove from the collection",
+                    "type": "String|Array"
+                },
+                {
+                    "name": "callback",
+                    "description": "The function to call when it's done\n  - **Error** The error if an error occurred, null otherwise\n  - **Number** The number of deleted entities",
+                    "type": "Function"
+                }
+            ],
+            "class": "EntityProvider",
+            "module": "providers"
+        },
+        {
+            "file": "lib/providers/EntityProvider.js",
+            "line": 194,
+            "description": "Removes a property on all documents in the collection.\n\nIf the entity has the property \"locked\", it won't be updated.",
+            "itemtype": "method",
+            "name": "removeProp",
+            "async": 1,
+            "params": [
+                {
+                    "name": "property",
+                    "description": "The property name to remove",
+                    "type": "String"
+                },
+                {
+                    "name": "callback",
+                    "description": "The function to call when it's done\n  - **Error** The error if an error occurred, null otherwise\n  - **Number** The number of modified entities",
+                    "type": "Function"
+                }
+            ],
+            "class": "EntityProvider",
+            "module": "providers"
+        },
+        {
+            "file": "lib/providers/EntityProvider.js",
+            "line": 217,
+            "description": "Increase an entity.\n\nIf the entity has the property \"locked\", it won't be increased.",
+            "itemtype": "method",
+            "name": "increase",
+            "async": 1,
+            "params": [
+                {
+                    "name": "id",
+                    "description": "The id of the entity to update",
+                    "type": "String"
+                },
+                {
+                    "name": "data",
+                    "description": "Object which key is the parameter to increase and value, amount of increase/decrease\n  - Ex: {views: 56, priority: -5}",
+                    "type": "Object"
+                },
+                {
+                    "name": "callback",
+                    "description": "The function to call when it's done\n  - **Error** The error if an error occurred, null otherwise\n  - **Number** The number of updated items",
+                    "type": "Function"
+                }
+            ],
+            "class": "EntityProvider",
+            "module": "providers"
+        },
+        {
+            "file": "lib/Database.js",
+            "line": 41,
+            "description": "Gets an instance of a Database using the given\ndatabase configuration.",
+            "itemtype": "method",
+            "name": "getDatabase",
+            "static": 1,
+            "params": [
+                {
+                    "name": "databaseConf",
+                    "description": "A database configuration object",
+                    "type": "Object"
+                }
+            ],
+            "return": {
+                "description": "A Database instance",
+                "type": "Database"
+            },
+            "class": "Database",
+            "module": "database"
+        },
+        {
+            "file": "lib/Database.js",
+            "line": 68,
+            "description": "Establishes connection to the database.",
+            "itemtype": "method",
+            "name": "connect",
+            "async": 1,
+            "params": [
+                {
+                    "name": "callback",
+                    "description": "The function to call when connection to the database is established\n  - **Error** The error if an error occurred, null otherwise",
+                    "type": "Function"
+                }
+            ],
+            "class": "Database",
+            "module": "database"
+        },
+        {
+            "file": "lib/Database.js",
+            "line": 80,
+            "description": "Closes connection to the database.",
+            "itemtype": "method",
+            "name": "close",
+            "async": 1,
+            "params": [
+                {
+                    "name": "callback",
+                    "description": "The function to call when connection is closed\n  - **Error** The error if an error occurred, null otherwise",
+                    "type": "Function"
+                }
+            ],
+            "class": "Database",
+            "module": "database"
+        },
+        {
+            "file": "lib/Database.js",
+            "line": 92,
+            "description": "Inserts several documents into a collection.",
+            "itemtype": "method",
+            "name": "insert",
+            "async": 1,
+            "params": [
+                {
+                    "name": "collection",
+                    "description": "The collection to work on",
+                    "type": "String"
+                },
+                {
+                    "name": "data",
+                    "description": "Document(s) to insert into the collection",
+                    "type": "Array"
+                },
+                {
+                    "name": "callback",
+                    "description": "The function to call when it's done\n  - **Error** The error if an error occurred, null otherwise\n  - **Number** The total amount of documents inserted\n  - **Array** All the documents inserted",
+                    "type": "Function"
+                }
+            ],
+            "class": "Database",
+            "module": "database"
+        },
+        {
+            "file": "lib/Database.js",
+            "line": 108,
+            "description": "Removes several documents from a collection.",
+            "itemtype": "method",
+            "name": "remove",
+            "async": 1,
+            "params": [
+                {
+                    "name": "collection",
+                    "description": "The collection to work on",
+                    "type": "String"
+                },
+                {
+                    "name": "filter",
+                    "description": "Filters formatted like MongoDB filters",
+                    "type": "Object"
+                },
+                {
+                    "name": "callback",
+                    "description": "The function to call when it's done\n  - **Error** The error if an error occurred, null otherwise\n  - **Number** The number of deleted documents",
+                    "type": "Function"
+                }
+            ],
+            "class": "Database",
+            "module": "database"
+        },
+        {
+            "file": "lib/Database.js",
+            "line": 123,
+            "description": "Removes a property on all documents in the collection.",
+            "itemtype": "method",
+            "name": "removeProp",
+            "async": 1,
+            "params": [
+                {
+                    "name": "collection",
+                    "description": "The collection to work on",
+                    "type": "String"
+                },
+                {
+                    "name": "property",
+                    "description": "The property name to remove",
+                    "type": "String"
+                },
+                {
+                    "name": "filter",
+                    "description": "Filters formatted like MongoDB filters",
+                    "type": "Object"
+                },
+                {
+                    "name": "callback",
+                    "description": "The function to call when it's done\n  - **Error** The error if an error occurred, null otherwise\n  - **Number** The number of updated documents",
+                    "type": "Function"
+                }
+            ],
+            "class": "Database",
+            "module": "database"
+        },
+        {
+            "file": "lib/Database.js",
+            "line": 139,
+            "description": "Updates several documents from collection.",
+            "itemtype": "method",
+            "name": "update",
+            "async": 1,
+            "params": [
+                {
+                    "name": "collection",
+                    "description": "The collection to work on",
+                    "type": "String"
+                },
+                {
+                    "name": "filter",
+                    "description": "Filters formatted like MongoDB filters",
+                    "type": "Object"
+                },
+                {
+                    "name": "data",
+                    "description": "Document data",
+                    "type": "Object"
+                },
+                {
+                    "name": "callback",
+                    "description": "The function to call when it's done\n  - **Error** The error if an error occurred, null otherwise\n  - **Number** The number of updated documents",
+                    "type": "Function"
+                }
+            ],
+            "class": "Database",
+            "module": "database"
+        },
+        {
+            "file": "lib/Database.js",
+            "line": 155,
+            "description": "Gets a list of documents.",
+            "itemtype": "method",
+            "name": "get",
+            "async": 1,
+            "params": [
+                {
+                    "name": "collection",
+                    "description": "The collection to work on",
+                    "type": "String"
+                },
+                {
+                    "name": "criteria",
+                    "description": "MongoDB criterias",
+                    "type": "Object",
+                    "optional": true
+                },
+                {
+                    "name": "projection",
+                    "description": "MongoDB projection",
+                    "type": "Object",
+                    "optional": true
+                },
+                {
+                    "name": "limit",
+                    "description": "A limit number of items to retrieve (all by default)",
+                    "type": "Number",
+                    "optional": true
+                },
+                {
+                    "name": "callback",
+                    "description": "The function to call when it's done\n  - **Error** The error if an error occurred, null otherwise\n  - **Array** The retrieved documents",
+                    "type": "Function"
+                }
+            ],
+            "class": "Database",
+            "module": "database"
+        },
+        {
+            "file": "lib/Database.js",
+            "line": 172,
+            "description": "Gets an ordered list of documents by page.",
+            "itemtype": "method",
+            "name": "search",
+            "async": 1,
+            "params": [
+                {
+                    "name": "collection",
+                    "description": "The collection to work on",
+                    "type": "String"
+                },
+                {
+                    "name": "criteria",
+                    "description": "MongoDB criterias",
+                    "type": "Object",
+                    "optional": true
+                },
+                {
+                    "name": "projection",
+                    "description": "MongoDB projection",
+                    "type": "Object",
+                    "optional": true
+                },
+                {
+                    "name": "limit",
+                    "description": "The maximum number of expected documents",
+                    "type": "Number",
+                    "optional": true
+                },
+                {
+                    "name": "page",
+                    "description": "The expected page",
+                    "type": "Number",
+                    "optional": true
+                },
+                {
+                    "name": "sort",
+                    "description": "A sort object",
+                    "type": "Object",
+                    "optional": true
+                },
+                {
+                    "name": "callback",
+                    "description": "The function to call when it's done\n  - **Error** The error if an error occurred, null otherwise\n  - **Array** The list of documents\n  - **Object** Pagination information",
+                    "type": "Function"
+                }
+            ],
+            "class": "Database",
+            "module": "database"
+        },
+        {
+            "file": "lib/Database.js",
+            "line": 192,
+            "description": "Gets the list of indexes for a collection.",
+            "itemtype": "method",
+            "name": "getIndexes",
+            "async": 1,
+            "params": [
+                {
+                    "name": "collection",
+                    "description": "The collection to work on",
+                    "type": "String"
+                },
+                {
+                    "name": "callback",
+                    "description": "The function to call when it's done\n  - **Error** The error if an error occurred, null otherwise\n  - **Array** The list of indexes",
+                    "type": "Function"
+                }
+            ],
+            "class": "Database",
+            "module": "database"
+        },
+        {
+            "file": "lib/Database.js",
+            "line": 206,
+            "description": "Creates indexes for a collection.",
+            "itemtype": "method",
+            "name": "createIndexes",
+            "async": 1,
+            "params": [
+                {
+                    "name": "collection",
+                    "description": "The collection to work on",
+                    "type": "String"
+                },
+                {
+                    "name": "indexes",
+                    "description": "A list of indexes using MongoDB format",
+                    "type": "Array"
+                },
+                {
+                    "name": "callback",
+                    "description": "The function to call when it's done\n  - **Error** The error if an error occurred, null otherwise\n  - **Object** Information about the operation",
+                    "type": "Function"
+                }
+            ],
+            "class": "Database",
+            "module": "database"
+        },
+        {
+            "file": "lib/Database.js",
+            "line": 221,
+            "description": "Gets an express-session store for the database.",
+            "itemtype": "method",
+            "name": "getStore",
+            "params": [
+                {
+                    "name": "collection",
+                    "description": "The collection to work on",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "An express-session store",
+                "type": "Store"
+            },
+            "class": "Database",
+            "module": "database"
+        },
+        {
+            "file": "lib/Database.js",
+            "line": 232,
+            "description": "increase values in several documents from collection.",
+            "itemtype": "method",
+            "name": "increase",
+            "async": 1,
+            "params": [
+                {
+                    "name": "collection",
+                    "description": "The collection to work on",
+                    "type": "String"
+                },
+                {
+                    "name": "filter",
+                    "description": "Filters formatted like MongoDB filters",
+                    "type": "Object"
+                },
+                {
+                    "name": "data",
+                    "description": "Document data",
+                    "type": "Object"
+                },
+                {
+                    "name": "callback",
+                    "description": "The function to call when it's done\n  - **Error** The error if an error occurred, null otherwise\n  - **Number** The number of increased documents",
+                    "type": "Function"
+                }
+            ],
+            "class": "Database",
+            "module": "database"
+        },
+        {
+            "file": "lib/Database.js",
+            "line": 248,
+            "description": "Renames a collection.",
+            "itemtype": "method",
+            "name": "renameCollection",
+            "async": 1,
+            "params": [
+                {
+                    "name": "collection",
+                    "description": "The collection to work on",
+                    "type": "String"
+                },
+                {
+                    "name": "target",
+                    "description": "The new name of the collection",
+                    "type": "String"
+                },
+                {
+                    "name": "callback",
+                    "description": "The function to call when it's done\n  - **Error** The error if an error occurred, null otherwise",
+                    "type": "Function"
+                }
+            ],
+            "class": "Database",
+            "module": "database"
+        },
+        {
+            "file": "lib/Database.js",
+            "line": 262,
+            "description": "Remove a collection from the database",
+            "itemtype": "method",
+            "name": "removeCollection",
+            "async": 1,
+            "params": [
+                {
+                    "name": "collection",
+                    "description": "The collection to work on",
+                    "type": "String"
+                },
+                {
+                    "name": "callback",
+                    "description": "The function to call when it's done\n  - **Error** The error if an error occurred, null otherwise",
+                    "type": "Function"
+                }
+            ],
+            "class": "Database",
+            "module": "database"
+        },
+        {
+            "file": "lib/Plugin.js",
+            "line": 48,
+            "description": "The plugin public express router (all routes mounted on this router will be public).",
+            "itemtype": "property",
+            "name": "router",
+            "default": "null",
+            "type": "Router",
+            "class": "Plugin",
+            "module": "plugin"
+        },
+        {
+            "file": "lib/Plugin.js",
+            "line": 57,
+            "description": "The plugin back end express router (all routes mounted on this router will require user authentication).",
+            "itemtype": "property",
+            "name": "adminRouter",
+            "default": "null",
+            "type": "Router",
+            "class": "Plugin",
+            "module": "plugin"
+        },
+        {
+            "file": "lib/Plugin.js",
+            "line": 66,
+            "description": "The plugin web service express router (all routes mounted on this router will require a web\nservice authentication).",
+            "itemtype": "property",
+            "name": "webServiceRouter",
+            "default": "null",
+            "type": "Router",
+            "class": "Plugin",
+            "module": "plugin"
+        },
+        {
+            "file": "lib/Plugin.js",
+            "line": 76,
+            "description": "Offers the possibility to initialize the plugin.\n\nA plugin may want, for example, to use this method to create indexes for its collections.",
+            "itemtype": "method",
+            "name": "init",
+            "async": 1,
+            "params": [
+                {
+                    "name": "callback",
+                    "description": "Function to call when it's done with :\n - **Error** An error if something went wrong, null otherwise",
+                    "type": "Function"
+                }
+            ],
+            "class": "Plugin",
+            "module": "plugin"
+        },
+        {
+            "file": "lib/Plugin.js",
+            "line": 88,
+            "description": "Indicates that the plugin is fully loaded in application process and can be started.",
+            "itemtype": "method",
+            "name": "start",
+            "async": 1,
+            "params": [
+                {
+                    "name": "callback",
+                    "description": "Function to call when it's done with :\n - **Error** An error if something went wrong, null otherwise",
+                    "type": "Function"
+                }
+            ],
+            "class": "Plugin",
+            "module": "plugin"
+        },
+        {
+            "file": "lib/applicationStorage.js",
+            "line": 24,
+            "description": "Gets the list of loaded openveo plugins.",
+            "example": [
+                "\n\n    var api = require('@openveo/api');\n    api.applicationStorage.getPlugins();"
+            ],
+            "itemtype": "method",
+            "name": "getPlugins",
+            "return": {
+                "description": "The list of loaded plugins",
+                "type": "Array"
+            },
+            "class": "applicationStorage",
+            "module": "application-storage"
+        },
+        {
+            "file": "lib/applicationStorage.js",
+            "line": 39,
+            "description": "Sets the list of openveo plugins.",
+            "itemtype": "method",
+            "name": "setPlugins",
+            "params": [
+                {
+                    "name": "subPlugins",
+                    "description": "The list of plugins",
+                    "type": "Array"
+                }
+            ],
+            "class": "applicationStorage",
+            "module": "application-storage"
+        },
+        {
+            "file": "lib/applicationStorage.js",
+            "line": 49,
+            "description": "Gets the computed back office menu with all links.",
+            "example": [
+                "\n\n    var api = require('@openveo/api');\n    api.applicationStorage.getMenu();"
+            ],
+            "itemtype": "method",
+            "name": "getMenu",
+            "return": {
+                "description": "The list of back office links",
+                "type": "Array"
+            },
+            "class": "applicationStorage",
+            "module": "application-storage"
+        },
+        {
+            "file": "lib/applicationStorage.js",
+            "line": 64,
+            "description": "Sets the back office menu list of links.",
+            "itemtype": "method",
+            "name": "setMenu",
+            "params": [
+                {
+                    "name": "newMenu",
+                    "description": "The list of back office menu links",
+                    "type": "Array"
+                }
+            ],
+            "class": "applicationStorage",
+            "module": "application-storage"
+        },
+        {
+            "file": "lib/applicationStorage.js",
+            "line": 74,
+            "description": "Gets the current database instance.",
+            "example": [
+                "\n\n    var api = require('@openveo/api');\n    api.applicationStorage.getDatabase();"
+            ],
+            "itemtype": "method",
+            "name": "getDatabase",
+            "return": {
+                "description": "A Database object",
+                "type": "Database"
+            },
+            "class": "applicationStorage",
+            "module": "application-storage"
+        },
+        {
+            "file": "lib/applicationStorage.js",
+            "line": 89,
+            "description": "Sets a new database instance as the current database.",
+            "itemtype": "method",
+            "name": "setDatabase",
+            "params": [
+                {
+                    "name": "newDatabase",
+                    "description": "The new database of the application",
+                    "type": "Database"
+                }
+            ],
+            "class": "applicationStorage",
+            "module": "application-storage"
+        },
+        {
+            "file": "lib/applicationStorage.js",
+            "line": 99,
+            "description": "Sets the web service list of scopes.",
+            "itemtype": "method",
+            "name": "setWebServiceScopes",
+            "params": [
+                {
+                    "name": "newScopes",
+                    "description": "The new list of scopes of the web service",
+                    "type": "Object"
+                }
+            ],
+            "class": "applicationStorage",
+            "module": "application-storage"
+        },
+        {
+            "file": "lib/applicationStorage.js",
+            "line": 109,
+            "description": "Gets the list of web service scopes defined by core and plugins.",
+            "example": [
+                "\n\n    var api = require('@openveo/api');\n    api.applicationStorage.getWebServiceScopes();"
+            ],
+            "itemtype": "method",
+            "name": "getWebServiceScopes",
+            "return": {
+                "description": "scopes",
+                "type": "Object"
+            },
+            "class": "applicationStorage",
+            "module": "application-storage"
+        },
+        {
+            "file": "lib/applicationStorage.js",
+            "line": 124,
+            "description": "Sets the list of permissions.",
+            "itemtype": "method",
+            "name": "setPermissions",
+            "params": [
+                {
+                    "name": "permissions",
+                    "description": "The new list of permissions",
+                    "type": "Object"
+                }
+            ],
+            "class": "applicationStorage",
+            "module": "application-storage"
+        },
+        {
+            "file": "lib/applicationStorage.js",
+            "line": 134,
+            "description": "Gets the list of permissions defined by core and plugins.",
+            "example": [
+                "\n\n    var api = require('@openveo/api');\n    api.applicationStorage.getPermissions();"
+            ],
+            "itemtype": "method",
+            "name": "getPermissions",
+            "return": {
+                "description": "permissions",
+                "type": "Object"
+            },
+            "class": "applicationStorage",
+            "module": "application-storage"
+        },
+        {
+            "file": "lib/applicationStorage.js",
+            "line": 149,
+            "description": "Sets the list of entities.",
+            "itemtype": "method",
+            "name": "setEntities",
+            "params": [
+                {
+                    "name": "newEntities",
+                    "description": "The list of entities",
+                    "type": "Object"
+                }
+            ],
+            "class": "applicationStorage",
+            "module": "application-storage"
+        },
+        {
+            "file": "lib/applicationStorage.js",
+            "line": 159,
+            "description": "Gets the list of entities defined by both core and loaded plugins.",
+            "example": [
+                "\n\n    var api = require('@openveo/api');\n    api.applicationStorage.getEntities();"
+            ],
+            "itemtype": "method",
+            "name": "getEntities",
+            "return": {
+                "description": "entities",
+                "type": "Object"
+            },
+            "class": "applicationStorage",
+            "module": "application-storage"
+        },
+        {
+            "file": "lib/applicationStorage.js",
+            "line": 174,
+            "description": "Gets the id of the super administrator.",
+            "example": [
+                "\n\n    var api = require('@openveo/api');\n    api.applicationStorage.getSuperAdminId();"
+            ],
+            "itemtype": "method",
+            "name": "getSuperAdminId",
+            "return": {
+                "description": "The super administrator id",
+                "type": "String"
+            },
+            "class": "applicationStorage",
+            "module": "application-storage"
+        },
+        {
+            "file": "lib/applicationStorage.js",
+            "line": 189,
+            "description": "Sets the id of the super administrator.\n\nIt can be set only once.",
+            "itemtype": "method",
+            "name": "setSuperAdminId",
+            "params": [
+                {
+                    "name": "id",
+                    "description": "The id of the super administrator",
+                    "type": "String"
+                }
+            ],
+            "throws": {
+                "description": "An error if super administrator id is already set",
+                "type": "Error"
+            },
+            "class": "applicationStorage",
+            "module": "application-storage"
+        },
+        {
+            "file": "lib/applicationStorage.js",
+            "line": 205,
+            "description": "Gets the id of the anonymous user.",
+            "example": [
+                "\n\n    var api = require('@openveo/api');\n    api.applicationStorage.getAnonymousUserId();"
+            ],
+            "itemtype": "method",
+            "name": "getAnonymousUserId",
+            "return": {
+                "description": "The super administrator id",
+                "type": "String"
+            },
+            "class": "applicationStorage",
+            "module": "application-storage"
+        },
+        {
+            "file": "lib/applicationStorage.js",
+            "line": 220,
+            "description": "Sets the id of the anonymous user.\n\nIt can be set only once.",
+            "itemtype": "method",
+            "name": "setAnonymousUserId",
+            "params": [
+                {
+                    "name": "id",
+                    "description": "The id of the anonymous user",
+                    "type": "String"
+                }
+            ],
+            "throws": {
+                "description": "An error if anonymous user id is already set",
+                "type": "Error"
+            },
+            "class": "applicationStorage",
+            "module": "application-storage"
+        },
+        {
+            "file": "lib/fileSystem.js",
+            "line": 15,
+            "description": "Creates a directory recursively and asynchronously.\n\nIf parent directories do not exist, they will be automatically created.",
+            "itemtype": "method",
+            "name": "mkdirRecursive",
+            "access": "private",
+            "tagname": "",
+            "async": 1,
+            "params": [
+                {
+                    "name": "directoryPath",
+                    "description": "The directory system path to create",
+                    "type": "String"
+                },
+                {
+                    "name": "callback",
+                    "description": "The function to call when done\n  - **Error** The error if an error occurred, null otherwise",
+                    "type": "Function"
+                }
+            ],
+            "class": "fileSystem",
+            "module": "fileSystem"
+        },
+        {
+            "file": "lib/fileSystem.js",
+            "line": 67,
+            "description": "Removes a directory and all its content recursively and asynchronously.\n\nIt is assumed that the directory exists.",
+            "itemtype": "method",
+            "name": "rmdirRecursive",
+            "access": "private",
+            "tagname": "",
+            "async": 1,
+            "params": [
+                {
+                    "name": "directoryPath",
+                    "description": "Path of the directory to remove",
+                    "type": "String"
+                },
+                {
+                    "name": "callback",
+                    "description": "The function to call when done\n  - **Error** The error if an error occurred, null otherwise",
+                    "type": "Function"
+                }
+            ],
+            "class": "fileSystem",
+            "module": "fileSystem"
+        },
+        {
+            "file": "lib/fileSystem.js",
+            "line": 150,
+            "description": "Copies a file.\n\nIf directory does not exist it will be automatically created.",
+            "itemtype": "method",
+            "name": "copyFile",
+            "access": "private",
+            "tagname": "",
+            "async": 1,
+            "params": [
+                {
+                    "name": "sourceFilePath",
+                    "description": "Path of the file",
+                    "type": "String"
+                },
+                {
+                    "name": "destinationFilePath",
+                    "description": "Final path of the file",
+                    "type": "String"
+                },
+                {
+                    "name": "callback",
+                    "description": "The function to call when done\n  - **Error** The error if an error occurred, null otherwise",
+                    "type": "Function"
+                }
+            ],
+            "class": "fileSystem",
+            "module": "fileSystem"
+        },
+        {
+            "file": "lib/fileSystem.js",
+            "line": 202,
+            "description": "Extracts a tar file to the given directory.",
+            "itemtype": "method",
+            "name": "extract",
+            "async": 1,
+            "params": [
+                {
+                    "name": "filePath",
+                    "description": "Path of the file to extract",
+                    "type": "String"
+                },
+                {
+                    "name": "destinationPath",
+                    "description": "Path of the directory where to\nextract files",
+                    "type": "String"
+                },
+                {
+                    "name": "callback",
+                    "description": "The function to call when done\n  - **Error** The error if an error occurred, null otherwise",
+                    "type": "Function",
+                    "optional": true
+                }
+            ],
+            "class": "fileSystem",
+            "module": "fileSystem"
+        },
+        {
+            "file": "lib/fileSystem.js",
+            "line": 271,
+            "description": "Copies a file or a directory.",
+            "itemtype": "method",
+            "name": "copy",
+            "async": 1,
+            "params": [
+                {
+                    "name": "sourcePath",
+                    "description": "Path of the source to copy",
+                    "type": "String"
+                },
+                {
+                    "name": "destinationSourcePath",
+                    "description": "Final path of the source",
+                    "type": "String"
+                },
+                {
+                    "name": "callback",
+                    "description": "The function to call when done\n  - **Error** The error if an error occurred, null otherwise",
+                    "type": "Function"
+                }
+            ],
+            "class": "fileSystem",
+            "module": "fileSystem"
+        },
+        {
+            "file": "lib/fileSystem.js",
+            "line": 338,
+            "description": "Gets a JSON file content.\n\nThis will verify that the file exists first.",
+            "itemtype": "method",
+            "name": "getJSONFileContent",
+            "async": 1,
+            "params": [
+                {
+                    "name": "filePath",
+                    "description": "The path of the file to read",
+                    "type": "String"
+                },
+                {
+                    "name": "callback",
+                    "description": "The function to call when done\n  - **Error** The error if an error occurred, null otherwise\n  - **String** The file content or null if an error occurred",
+                    "type": "Function"
+                }
+            ],
+            "throws": {
+                "description": "An error if callback is not speficied",
+                "type": "TypeError"
+            },
+            "class": "fileSystem",
+            "module": "fileSystem"
+        },
+        {
+            "file": "lib/fileSystem.js",
+            "line": 387,
+            "description": "Creates a directory.\n\nIf parent directory does not exist, it will be automatically created.\nIf directory already exists, it won't do anything.",
+            "itemtype": "method",
+            "name": "mkdir",
+            "async": 1,
+            "params": [
+                {
+                    "name": "directoryPath",
+                    "description": "The directory system path to create",
+                    "type": "String"
+                },
+                {
+                    "name": "callback",
+                    "description": "The function to call when done\n  - **Error** The error if an error occurred, null otherwise",
+                    "type": "Function",
+                    "optional": true
+                }
+            ],
+            "class": "fileSystem",
+            "module": "fileSystem"
+        },
+        {
+            "file": "lib/fileSystem.js",
+            "line": 418,
+            "description": "Removes a directory and all its content recursively and asynchronously.",
+            "itemtype": "method",
+            "name": "rmdir",
+            "async": 1,
+            "params": [
+                {
+                    "name": "directoryPath",
+                    "description": "Path of the directory to remove",
+                    "type": "String"
+                },
+                {
+                    "name": "callback",
+                    "description": "The function to call when done\n  - **Error** The error if an error occurred, null otherwise",
+                    "type": "Function",
+                    "optional": true
+                }
+            ],
+            "class": "fileSystem",
+            "module": "fileSystem"
+        },
+        {
+            "file": "lib/fileSystem.js",
+            "line": 446,
+            "description": "Gets OpenVeo configuration directory path.\n\nOpenVeo configuration is stored in user home directory.",
+            "itemtype": "method",
+            "name": "getConfDir",
+            "return": {
+                "description": "OpenVeo configuration directory path",
+                "type": "String"
+            },
+            "class": "fileSystem",
+            "module": "fileSystem"
+        },
+        {
+            "file": "lib/i18n.js",
+            "line": 18,
+            "description": "Gets a dictionary of translations by its name and language.\nSearch is made on i18n directory and all plugin's i18n directories.\nIf the same dictionary name is found twice (same file name in different i18n directories),\ndictionaries are merged.",
+            "example": [
+                "\n    var i18n = require('@openveo/api').i18n;\n    i18n.getTranslations('login', 'fr-FR', function(error, translations){\n      console.log(translations);\n    });",
+                "\n    var i18n = require('@openveo/api').i18n;\n    i18n.getTranslations(\"back-office\", \"en\", function(error, translations){\n      console.log(translations);\n    });"
+            ],
+            "itemtype": "method",
+            "name": "getTranslations",
+            "async": 1,
+            "params": [
+                {
+                    "name": "dictionary",
+                    "description": "The name of the dictionary, this is the name of the dictionary file without\nextension",
+                    "type": "String"
+                },
+                {
+                    "name": "code",
+                    "description": "The language country code (e.g. en-US)",
+                    "type": "String"
+                },
+                {
+                    "name": "callback",
+                    "description": "Function to call when its done\n - **Error** An error if something went wrong\n - **Object** A JavaScript object containing all translations",
+                    "type": "Function"
+                }
+            ],
+            "class": "core-i18n",
+            "module": "core-i18n"
+        },
+        {
+            "file": "lib/logger.js",
+            "line": 13,
+            "description": "Adds a new file logger.\n\nAdded loggers will also log to process standard output in development mode (not in production).",
+            "example": [
+                "\n    var loggerAPI = require('@openveo/api').logger;\n\n    var conf =  {\n     'fileName' : '/tmp/openveo/logs/openveo.log', // File to log to\n     'level' : 'debug', // Debug level\n     'maxFileSize' : 1048576, // Maximum file size (in bytes)\n     'maxFiles' : 2, // Maximum number of archived files\n     'console': false // Deactivate logs in standard output\n    };\n\n    // Initializes logger \"openveo\"\n    loggerAPI.add('openveo', conf);\n    var logger = loggerAPI.get('openveo');\n\n    // Log something\n    logger.info('A simple log');"
+            ],
+            "itemtype": "method",
+            "name": "add",
+            "params": [
+                {
+                    "name": "name",
+                    "description": "The name of the logger",
+                    "type": "String"
+                },
+                {
+                    "name": "conf",
+                    "description": "Logger configuration to initialize a new logger\nAvailable debug levels are :\n - silly\n - debug\n - verbose\n - info\n - warn\n - error",
+                    "type": "Object",
+                    "optional": true
+                }
+            ],
+            "class": "logger",
+            "module": "logger"
+        },
+        {
+            "file": "lib/logger.js",
+            "line": 69,
+            "description": "Gets a logger.",
+            "example": [
+                "\n    var loggerAPI = require('@openveo/api').logger;\n\n    // Get openveo logger\n    var logger = loggerAPI.get('openveo');\n\n    // Log something\n    logger.info('A simple log');"
+            ],
+            "itemtype": "method",
+            "name": "get",
+            "params": [
+                {
+                    "name": "name",
+                    "description": "The name of the logger",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "A winston logger",
+                "type": "Object"
+            },
+            "class": "logger",
+            "module": "logger"
+        },
+        {
+            "file": "lib/util.js",
+            "line": 18,
+            "description": "Merges, recursively, all properties of object2 in object1.\n\nThis will not create copies of objects.",
+            "itemtype": "method",
+            "name": "merge",
+            "params": [
+                {
+                    "name": "object1",
+                    "description": "The JavaScript final object",
+                    "type": "Object"
+                },
+                {
+                    "name": "object2",
+                    "description": "A second JavaScript object to merge into\nthe first one",
+                    "type": "Object"
+                }
+            ],
+            "return": {
+                "description": "object1",
+                "type": "Object"
+            },
+            "class": "util",
+            "module": "util"
+        },
+        {
+            "file": "lib/util.js",
+            "line": 60,
+            "description": "Makes union of two arrays.",
+            "itemtype": "method",
+            "name": "joinArray",
+            "params": [
+                {
+                    "name": "array1",
+                    "description": "An array",
+                    "type": "Array",
+                    "optional": true
+                },
+                {
+                    "name": "array2",
+                    "description": "An array",
+                    "type": "Array",
+                    "optional": true
+                }
+            ],
+            "return": {
+                "description": "The union of the two arrays",
+                "type": "Array"
+            },
+            "class": "util",
+            "module": "util"
+        },
+        {
+            "file": "lib/util.js",
+            "line": 74,
+            "description": "Makes intersection of two arrays.",
+            "itemtype": "method",
+            "name": "intersectArray",
+            "params": [
+                {
+                    "name": "array1",
+                    "description": "An array",
+                    "type": "Array",
+                    "optional": true
+                },
+                {
+                    "name": "array2",
+                    "description": "An array",
+                    "type": "Array",
+                    "optional": true
+                }
+            ],
+            "return": {
+                "description": "The intersection of the two arrays",
+                "type": "Array"
+            },
+            "class": "util",
+            "module": "util"
+        },
+        {
+            "file": "lib/util.js",
+            "line": 88,
+            "description": "Checks if an email address is valid or not.",
+            "itemtype": "method",
+            "name": "isEmailValid",
+            "params": [
+                {
+                    "name": "email",
+                    "description": "The email address",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "true if the email is valid, false otherwise",
+                "type": "Boolean"
+            },
+            "class": "util",
+            "module": "util"
+        },
+        {
+            "file": "lib/util.js",
+            "line": 101,
+            "description": "Checks if a value is isContained into another comparing primitive types.\n\nAll values in expectedValue must be found in value to pass the test.",
+            "itemtype": "method",
+            "name": "isContained",
+            "params": [
+                {
+                    "name": "expectedValue",
+                    "description": "The value expecting to be found in \"value\"",
+                    "type": "Object|Number|String|Array"
+                }
+            ],
+            "return": {
+                "description": "true if the expected value has been found in value",
+                "type": "Boolean"
+            },
+            "class": "util",
+            "module": "util"
+        },
+        {
+            "file": "lib/util.js",
+            "line": 133,
+            "description": "Validates first level object properties using the given validation description object.\n\nIt helps validating that an object, coming from a request query string parameters correspond to the expected\ntype, if it has to be required, if it must be contained into a list of values etc.\n\nAvailable features by types :\n - **string**\n   - **default** Specify a default value\n   - **required** Boolean to indicate if the value is required (if default is specified, value will always be set)\n   - **in** Specify an array of strings to validate that the value is inside this array\n - **number**\n   - **default** Specify a default value\n   - **required** Boolean to indicate if the value is required (if default is specified, value will always be set)\n   - **in** Specify an array of numbers to validate that the value is inside this array\n   - **gt** Specify a number to validate that the value is greater than this number\n   - **lt** Specify a number to validate that the value is lesser than this number\n   - **gte** Specify a number to validate that the value is greater or equal to this number\n   - **lte** Specify a number to validate that the value is lesser or equal to this number\n - **array<string>**\n   - **required** Boolean to indicate if the value is required (an empty array is not an error)\n - **array<number>**\n   - **required** Boolean to indicate if the value is required (an empty array is not an error)\n - **date**\n   - **required** Boolean to indicate if the value is required\n   - **gt** Specify a date to validate that the value is greater than this date\n   - **lt** Specify a date to validate that the value is lesser than this date\n   - **gte** Specify a date to validate that the value is greater or equal to this date\n   - **lte** Specify a date to validate that the value is lesser or equal to this date\n - **object**\n   - **default** Specify a default value\n   - **required** Boolean to indicate if the value is required (if default is specified, value will always be set)",
+            "example": [
+                "\n\n    // Get util\n    var util = require('@openveo/api').util;\n\n    // Validate parameters\n    var params = util.shallowValidateObject({\n      myStringProperty: 'my value',\n      myNumberProperty: 25,\n      myArrayStringProperty: ['value1', 'value2']\n      myArrayNumberProperty: [10, 5]\n      myDateProperty: '02/25/2016'\n      myObjectProperty: {firstKey: 'firstValue'}\n    }, {\n      myStringProperty: {type: 'string', required: true, default: 'default', in: ['my value', 'value']},\n      myNumberProperty: {type: 'number', required: true, default: 0, in: [0, 5, 10], gte: 0, lte: 5},\n      myArrayStringProperty: {type: 'array<string>', required: true},\n      myArrayNumberProperty: {type: 'array<number>', required: true},\n      myDateProperty: {type: 'date', required: true, gte: '02/20/2016', lte: '03/30/2016'}\n      myObjectProperty: {type: 'object', required: true}\n    });\n\n    console.log(params);"
+            ],
+            "itemtype": "method",
+            "name": "shallowValidateObject",
+            "params": [
+                {
+                    "name": "objectToAnalyze",
+                    "description": "The object to analyze",
+                    "type": "Object"
+                },
+                {
+                    "name": "validationDescription",
+                    "description": "The validation description object",
+                    "type": "Object"
+                }
+            ],
+            "return": {
+                "description": "A new object with the list of properties as expected",
+                "type": "Object"
+            },
+            "class": "util",
+            "module": "util"
+        }
+    ],
+    "warnings": []
+}

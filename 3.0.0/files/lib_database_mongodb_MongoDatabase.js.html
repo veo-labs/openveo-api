@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en" class="yui-overrride">
+<head>
+    <meta charset="utf-8">
+    <title>lib/database/mongodb/MongoDatabase.js - OpenVeo server API for plugins</title>
+    <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
+    <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
+    <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700' rel='stylesheet' type='text/css'>
+    <link rel="shortcut icon" type="image/png" href="../assets/favicon.png">
+    <script src="http://yui.yahooapis.com/combo?3.9.1/build/yui/yui-min.js"></script>
+    <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
+</head>
+<body class="yui3-skin-sam">
+
+<div id="doc">
+    <div id="hd" class="yui3-g header">
+        <div class="yui3-u-3-4">
+            <h1 class="blue-main-title">OpenVeo server API for plugins</h1>
+        </div>
+        <div class="yui3-u-1-4 version project-version">
+            API Docs for: 3.0.0
+        </div>
+    </div>
+    <div id="bd" class="yui3-g">
+
+        <div class="yui3-u-1-4">
+            <div id="docs-sidebar" class="sidebar apidocs">
+                <div id="api-list">
+                    <h2 class="off-left">APIs</h2>
+                    <div id="api-tabview" class="tabview">
+                        <ul class="tabs">
+                            <li><a href="#api-classes">Classes</a></li>
+                            <li><a href="#api-modules">Modules</a></li>
+                        </ul>
+                
+                        <div id="api-tabview-filter">
+                            <input type="search" id="api-filter" placeholder="Type to filter APIs">
+                        </div>
+                
+                        <div id="api-tabview-panel">
+                            <ul id="api-classes" class="apis classes">
+                                <li><a href="../classes/AccessError.html">AccessError</a></li>
+                                <li><a href="../classes/applicationStorage.html">applicationStorage</a></li>
+                                <li><a href="../classes/ContentController.html">ContentController</a></li>
+                                <li><a href="../classes/ContentModel.html">ContentModel</a></li>
+                                <li><a href="../classes/Controller.html">Controller</a></li>
+                                <li><a href="../classes/core-i18n.html">core-i18n</a></li>
+                                <li><a href="../classes/Database.html">Database</a></li>
+                                <li><a href="../classes/disableCacheMiddleware.html">disableCacheMiddleware</a></li>
+                                <li><a href="../classes/EntityController.html">EntityController</a></li>
+                                <li><a href="../classes/EntityModel.html">EntityModel</a></li>
+                                <li><a href="../classes/EntityProvider.html">EntityProvider</a></li>
+                                <li><a href="../classes/fileSystem.html">fileSystem</a></li>
+                                <li><a href="../classes/logger.html">logger</a></li>
+                                <li><a href="../classes/logRequestMiddleware.html">logRequestMiddleware</a></li>
+                                <li><a href="../classes/MongoDatabase.html">MongoDatabase</a></li>
+                                <li><a href="../classes/Plugin.html">Plugin</a></li>
+                                <li><a href="../classes/util.html">util</a></li>
+                            </ul>
+                
+                            <ul id="api-modules" class="apis modules">
+                                <li><a href="../modules/application-storage.html">application-storage</a></li>
+                                <li><a href="../modules/controllers.html">controllers</a></li>
+                                <li><a href="../modules/core-i18n.html">core-i18n</a></li>
+                                <li><a href="../modules/database.html">database</a></li>
+                                <li><a href="../modules/errors.html">errors</a></li>
+                                <li><a href="../modules/fileSystem.html">fileSystem</a></li>
+                                <li><a href="../modules/http-errors.html">http-errors</a></li>
+                                <li><a href="../modules/logger.html">logger</a></li>
+                                <li><a href="../modules/middlewares.html">middlewares</a></li>
+                                <li><a href="../modules/models.html">models</a></li>
+                                <li><a href="../modules/mongodb.html">mongodb</a></li>
+                                <li><a href="../modules/plugin.html">plugin</a></li>
+                                <li><a href="../modules/providers.html">providers</a></li>
+                                <li><a href="../modules/util.html">util</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="yui3-u-3-4">
+                <div id="api-options">
+                    Show:
+                    <label for="api-show-inherited">
+                        <input type="checkbox" id="api-show-inherited" checked>
+                        Inherited
+                    </label>
+            
+                    <label for="api-show-protected">
+                        <input type="checkbox" id="api-show-protected">
+                        Protected
+                    </label>
+            
+                    <label for="api-show-private">
+                        <input type="checkbox" id="api-show-private">
+                        Private
+                    </label>
+                    <label for="api-show-deprecated">
+                        <input type="checkbox" id="api-show-deprecated">
+                        Deprecated
+                    </label>
+            
+                </div>
+            
+            <div class="apidocs">
+                <div id="docs-main">
+                    <div class="content">
+<h1 class="file-heading">File: lib/database/mongodb/MongoDatabase.js</h1>
+
+<div class="file">
+    <pre class="code prettyprint linenums">
+&#x27;use strict&#x27;;
+
+/**
+ * @module mongodb
+ */
+
+var util = require(&#x27;util&#x27;);
+var mongodb = require(&#x27;mongodb&#x27;);
+var session = require(&#x27;express-session&#x27;);
+var MongoStore = require(&#x27;connect-mongo&#x27;)(session);
+var Database = process.requireAPI(&#x27;lib/Database.js&#x27;);
+var utilExt = process.requireAPI(&#x27;lib/util.js&#x27;);
+var MongoClient = mongodb.MongoClient;
+
+/**
+ * Defines a MongoDB Database.
+ *
+ * MongoDatabase must not be used directly. Use Database to get an instance of MongoDatabase.
+ *
+ * @example
+ *
+ *     var api = require(&#x27;@openveo/api&#x27;);
+ *
+ *     // Example of a MongoDB database configuration object
+ *     var databaseConf = {
+ *       &quot;type&quot; : &quot;mongodb&quot;, // Database type
+ *       &quot;host&quot; : &quot;localhost&quot;, // MongoDB server host
+ *       &quot;port&quot; : 27017, // MongoDB port
+ *       &quot;database&quot; : &quot;DATABASE_NAME&quot;, // Replace DATABASE_NAME by the name of the OpenVeo database
+ *       &quot;username&quot; : &quot;DATABASE_USER_NAME&quot;, // Replace DATABASE_USER_NAME by the name of the database user
+ *       &quot;password&quot; : &quot;DATABASE_USER_PWD&quot;, // Replace DATABASE_USER_PWD  by the password of the database user
+ *       &quot;replicaSet&quot; : &quot;REPLICA_SET_NAME&quot;, // Replace REPLICA_SET_NAME by the name of the ReplicaSet
+ *       &quot;seedlist&quot;: &quot;IP_1:PORT_1,IP_2:PORT_2&quot; // The comma separated list of secondary servers
+ *     };
+ *
+ *     // Get a MongoDB database instance
+ *     var db = api.Database.getDatabase(databaseConf);
+ *
+ * @class MongoDatabase
+ * @extends Database
+ * @constructor
+ * @param Object databaseConf A database configuration object
+ */
+function MongoDatabase(databaseConf) {
+  Database.call(this, databaseConf);
+}
+
+module.exports = MongoDatabase;
+util.inherits(MongoDatabase, Database);
+
+/**
+ * Establishes connection to the database.
+ *
+ * @method connect
+ * @async
+ * @param {Function} callback The function to call when connection to the database is established
+ *   - **Error** The error if an error occurred, null otherwise
+ */
+MongoDatabase.prototype.connect = function(callback) {
+  var self = this;
+  var connectionUrl = &#x27;mongodb://&#x27; + this.conf.username + &#x27;:&#x27; + this.conf.password + &#x27;@&#x27; + this.conf.host + &#x27;:&#x27; + this.conf.port;
+  var database = &#x27;/&#x27; + this.conf.database;
+  var seedlist = &#x27;,&#x27; + this.conf.seedlist;
+  var replicaset = &#x27;?replicaSet=&#x27; + this.conf.replicaSet + &#x27;&amp;readPreference=secondary&#x27;;
+
+  // Connect to a Replica Set or not
+  if (this.conf.seedlist != undefined &amp;&amp;
+      this.conf.seedlist != &#x27;&#x27; &amp;&amp;
+      this.conf.replicaSet != undefined &amp;&amp;
+      this.conf.replicaSet != &#x27;&#x27;) {
+    connectionUrl = connectionUrl + seedlist + database + replicaset;
+  } else
+    connectionUrl = connectionUrl + database;
+
+  MongoClient.connect(connectionUrl, function(error, db) {
+
+    // Connection succeeded
+    if (!error)
+      self.db = db;
+
+    callback(error);
+  });
+
+};
+
+/**
+ * Closes connection to the database.
+ *
+ * @method close
+ * @async
+ * @param {Function} callback The function to call when connection is closed
+ *   - **Error** The error if an error occurred, null otherwise
+ */
+MongoDatabase.prototype.close = function(callback) {
+  this.db.close(callback);
+};
+
+/**
+ * Inserts several documents into a collection.
+ *
+ * @method insert
+ * @async
+ * @param {String} collection The collection to work on
+ * @param {Array} data Document(s) to insert into the collection
+ * @param {Function} callback The function to call when it&#x27;s done
+ *   - **Error** The error if an error occurred, null otherwise
+ *   - **Number** The total amount of documents inserted
+ *   - **Array** All the documents inserted
+ */
+MongoDatabase.prototype.insert = function(collection, data, callback) {
+  this.db.collection(collection, function(error, fetchedCollection) {
+    if (error)
+      return callback(error);
+
+    fetchedCollection.insertMany(data, function(error, result) {
+      if (error)
+        callback(error);
+      else
+        callback(null, result.insertedCount, result.ops);
+    });
+  });
+};
+
+/**
+ * Removes several documents from a collection.
+ *
+ * @method remove
+ * @async
+ * @param {String} collection The collection to work on
+ * @param {Object} filter Filters formatted like MongoDB filters
+ * @param {Function} callback The function to call when it&#x27;s done
+ *   - **Error** The error if an error occurred, null otherwise
+ *   - **Number** The number of deleted documents
+ */
+MongoDatabase.prototype.remove = function(collection, filter, callback) {
+  this.db.collection(collection, function(error, fetchedCollection) {
+    if (error)
+      return callback(error);
+
+    fetchedCollection.deleteMany(filter, function(error, result) {
+      if (error)
+        callback(error);
+      else
+        callback(null, result.deletedCount);
+    });
+  });
+};
+
+/**
+ * Removes a property on all documents in the collection.
+ *
+ * @method removeProp
+ * @async
+ * @param {String} collection The collection to work on
+ * @param {String} property The property name to remove
+ * @param {Object} filter Filters formatted like MongoDB filters
+ * @param {Function} callback The function to call when it&#x27;s done
+ *   - **Error** The error if an error occurred, null otherwise
+ *   - **Number** The number of updated documents
+ */
+MongoDatabase.prototype.removeProp = function(collection, property, filter, callback) {
+  var mongoFilter = {};
+  mongoFilter[property] = {$exists: true};
+  mongoFilter = utilExt.merge(mongoFilter, filter);
+
+  var update = {};
+  update[&#x27;$unset&#x27;] = {};
+  update[&#x27;$unset&#x27;][property] = &#x27;&#x27;;
+
+  this.db.collection(collection, function(error, fetchedCollection) {
+    if (error)
+      return callback(error);
+
+    fetchedCollection.updateMany(mongoFilter, update, function(error, result) {
+      if (error)
+        callback(error);
+      else
+        callback(null, result.modifiedCount);
+    });
+  });
+};
+
+/**
+ * Updates several documents from collection.
+ *
+ * @method update
+ * @async
+ * @param {String} collection The collection to work on
+ * @param {Object} filter Filters formatted like MongoDB filters
+ * @param {Object} data Document data
+ * @param {Function} callback The function to call when it&#x27;s done
+ *   - **Error** The error if an error occurred, null otherwise
+ *   - **Number** The number of updated documents
+ */
+MongoDatabase.prototype.update = function(collection, filter, data, callback) {
+  var update = {$set: data};
+
+  this.db.collection(collection, function(error, fetchedCollection) {
+    if (error)
+      return callback(error);
+
+    fetchedCollection.updateMany(filter, update, function(error, result) {
+      if (error)
+        callback(error);
+      else
+        callback(null, result.modifiedCount);
+    });
+  });
+};
+
+/**
+ * Gets a list of documents.
+ *
+ * @method get
+ * @async
+ * @param {String} collection The collection to work on
+ * @param {Object} [criteria] MongoDB criterias
+ * @param {Object} [projection] MongoDB projection
+ * @param {Number} [limit] A limit number of items to retrieve (all by default)
+ * @param {Function} callback The function to call when it&#x27;s done
+ *   - **Error** The error if an error occurred, null otherwise
+ *   - **Array** The retrieved documents
+ */
+MongoDatabase.prototype.get = function(collection, criteria, projection, limit, callback) {
+  this.db.collection(collection, function(error, fetchedCollection) {
+    if (error)
+      return callback(error);
+
+    criteria = criteria || {};
+    projection = projection || {};
+    limit = limit || -1;
+
+    if (limit === -1)
+      fetchedCollection.find(criteria, projection).toArray(callback);
+    else
+      fetchedCollection.find(criteria, projection).limit(limit).toArray(callback);
+  });
+};
+
+/**
+ * Gets an ordered list of documents by page.
+ *
+ * @method search
+ * @async
+ * @param {String} collection The collection to work on
+ * @param {Object} [criteria] MongoDB criterias
+ * @param {Object} [projection] MongoDB projection
+ * @param {Number} [limit] The maximum number of expected documents
+ * @param {Number} [page] The expected page
+ * @param {Object} [sort] A sort object
+ * @param {Function} callback The function to call when it&#x27;s done
+ *   - **Error** The error if an error occurred, null otherwise
+ *   - **Array** The list of documents
+ *   - **Object** Pagination information
+ */
+MongoDatabase.prototype.search = function(collection, criteria, projection, limit, page, sort, callback) {
+  this.db.collection(collection, function(error, fetchedCollection) {
+    if (error)
+      return callback(error);
+
+    criteria = criteria || {};
+    projection = projection || {};
+    limit = limit || -1;
+    sort = sort || {};
+    var skip = limit * (page - 1) || 0;
+
+    if (limit === -1)
+      fetchedCollection.find(criteria, projection).sort(sort).toArray(callback);
+    else {
+      var cursor = fetchedCollection.find(criteria, projection).sort(sort).skip(skip).limit(limit);
+      cursor.toArray(function(err, res) {
+        if (err) return callback(err, null, null);
+        cursor.count(false, null, function(error, count) {
+          if (error) callback(error, null, null);
+          var paginate = {
+            limit: limit,
+            page: page,
+            pages: Math.ceil(count / limit),
+            size: count
+          };
+          var resultArray = res || [];
+          callback(error, resultArray, paginate);
+        });
+      });
+    }
+
+  });
+};
+
+/**
+ * Gets the list of indexes for a collection.
+ *
+ * @method getIndexes
+ * @async
+ * @param {String} collection The collection to work on
+ * @param {Function} callback The function to call when it&#x27;s done
+ *   - **Error** The error if an error occurred, null otherwise
+ *   - **Array** The list of indexes
+ */
+MongoDatabase.prototype.getIndexes = function(collection, callback) {
+  this.db.collection(collection, function(error, fetchedCollection) {
+    if (error)
+      return callback(error);
+
+    fetchedCollection.indexes(callback);
+  });
+};
+
+/**
+ * Creates indexes for a collection.
+ *
+ * @method createIndexes
+ * @async
+ * @param {String} collection The collection to work on
+ * @param {Array} indexes A list of indexes using MongoDB format
+ * @param {Function} callback The function to call when it&#x27;s done
+ *   - **Error** The error if an error occurred, null otherwise
+ *   - **Object** Information about the operation
+ */
+MongoDatabase.prototype.createIndexes = function(collection, indexes, callback) {
+  this.db.collection(collection, function(error, fetchedCollection) {
+    if (error)
+      return callback(error);
+
+    fetchedCollection.createIndexes(indexes, callback);
+  });
+};
+
+/**
+ * Gets an express-session store for this database.
+ *
+ * @method getStore
+ * @param {String} collection The collection to work on
+ * @return {Store} An express-session store
+ */
+MongoDatabase.prototype.getStore = function(collection) {
+  return new MongoStore({db: this.db, collection: collection});
+};
+
+
+/**
+ * increase values in several documents from collection.
+ *
+ * @method increase
+ * @async
+ * @param {String} collection The collection to work on
+ * @param {Object} filter Filters formatted like MongoDB filters
+ * @param {Object} data Document data
+ * @param {Function} callback The function to call when it&#x27;s done
+ *   - **Error** The error if an error occurred, null otherwise
+ *   - **Number** The number of increased documents
+ */
+MongoDatabase.prototype.increase = function(collection, filter, data, callback) {
+  var increase = {$inc: data};
+
+  this.db.collection(collection, function(error, fetchedCollection) {
+    if (error)
+      return callback(error);
+
+    fetchedCollection.updateMany(filter, increase, function(error, result) {
+      if (error)
+        callback(error);
+      else
+        callback(null, result.modifiedCount);
+    });
+  });
+};
+
+/**
+ * Renames a collection.
+ *
+ * @method renameCollection
+ * @async
+ * @param {String} collection The collection to work on
+ * @param {String} target The new name of the collection
+ * @param {Function} callback The function to call when it&#x27;s done
+ *   - **Error** The error if an error occurred, null otherwise
+ */
+MongoDatabase.prototype.renameCollection = function(collection, target, callback) {
+  var self = this;
+
+  self.db.listCollections({name: collection}).toArray(function(error, item) {
+    if (!item.length)
+      return callback();
+
+    self.db.collection(collection, function(error, fetchedCollection) {
+      if (error)
+        return callback(error);
+
+      fetchedCollection.rename(target, callback);
+    });
+  });
+};
+
+/**
+ * Remove a collection from the database
+ *
+ * @method removeCollection
+ * @async
+ * @param {String} collection The collection to work on
+ * @param {Function} callback The function to call when it&#x27;s done
+ *   - **Error** The error if an error occurred, null otherwise
+ */
+MongoDatabase.prototype.removeCollection = function(collection, callback) {
+  this.db.dropCollection(collection, callback);
+};
+
+    </pre>
+</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../assets/vendor/prettify/prettify-min.js"></script>
+<script>prettyPrint();</script>
+<script src="../assets/js/yui-prettify.js"></script>
+<script src="../assets/../api.js"></script>
+<script src="../assets/js/api-filter.js"></script>
+<script src="../assets/js/api-list.js"></script>
+<script src="../assets/js/api-search.js"></script>
+<script src="../assets/js/apidocs.js"></script>
+</body>
+</html>
