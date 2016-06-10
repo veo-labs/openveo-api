@@ -1,3 +1,7 @@
+# 3.0.1 / 2016-06-10
+
+- Add interface to know if a user is content owner
+
 # 3.0.0 / 2016-05-30
 - Update logger
 - Update Models to define Entity and ContentEntity
