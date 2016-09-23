@@ -19,7 +19,7 @@
     "url": "https://github.com/veo-labs/openveo-api.git"
   },
   "dependencies": {
-    "tar": "2.2.1"
+    "tar-fs": "1.13.2"
   },
   "devDependencies": {
     "chai": "3.5.0",
