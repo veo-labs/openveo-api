@@ -1,3 +1,7 @@
+# 3.0.3 / 2016-09-26
+
+- Debug tar extract on large files by changing dependency
+
 # 3.0.2 / 2016-09-09
 
 - Store session secret in application storage
