@@ -586,8 +586,8 @@ describe('util', function() {
 
     });
 
-    // array type
-    describe('array', function() {
+    // array<string> type
+    describe('array<string>', function() {
 
       it('should be able to validate an array<string> type', function() {
         var values = ['value1', 'value2'];
@@ -614,6 +614,43 @@ describe('util', function() {
         assert.equal(validatedObject.arrayProperty[0], value);
       });
 
+      it('should ignore property if value is an object', function() {
+        var validatedObject = util.shallowValidateObject({
+          arrayProperty: {}
+        }, {
+          arrayProperty: {type: 'array<string>'}
+        });
+
+        assert.isUndefined(validatedObject.arrayProperty);
+      });
+
+      it('should convert values which are not strings', function() {
+        var validatedObject = util.shallowValidateObject({
+          arrayProperty: [{key: 'value'}, 'value', ['value']]
+        }, {
+          arrayProperty: {type: 'array<string>'}
+        });
+
+        assert.equal(validatedObject.arrayProperty.length, 3);
+      });
+
+    });
+
+    // array<number> type
+    describe('array<number>', function() {
+
+      it('should be able to validate an array<number> type', function() {
+        var values = [42, 43];
+
+        var validatedObject = util.shallowValidateObject({
+          arrayProperty: values
+        }, {
+          arrayProperty: {type: 'array<number>'}
+        });
+
+        assert.equal(validatedObject.arrayProperty.length, values.length);
+      });
+
       it('should accept a number and convert it to an array<number>', function() {
         var value = 20;
 
@@ -628,43 +665,60 @@ describe('util', function() {
       });
 
       it('should ignore property if value is an object', function() {
-        var validatedObject;
-        validatedObject = util.shallowValidateObject({
-          arrayProperty: {}
-        }, {
-          arrayProperty: {type: 'array<string>'}
-        });
-
-        assert.isUndefined(validatedObject.arrayProperty);
-
-        validatedObject = util.shallowValidateObject({
+        var validatedObject = util.shallowValidateObject({
           arrayProperty: {}
         }, {
           arrayProperty: {type: 'array<number>'}
         });
 
         assert.isUndefined(validatedObject.arrayProperty);
-
       });
 
-      it('should convert values which are not strings or numbers', function() {
-        var validatedObject;
-
-        validatedObject = util.shallowValidateObject({
+      it('should convert values which are not numbers', function() {
+        var validatedObject = util.shallowValidateObject({
           arrayProperty: [{}, 25, []]
         }, {
           arrayProperty: {type: 'array<number>'}
         });
 
         assert.equal(validatedObject.arrayProperty.length, 1);
+      });
 
-        validatedObject = util.shallowValidateObject({
-          arrayProperty: [{key: 'value'}, 'value', ['value']]
+    });
+
+    // array<object> type
+    describe('array<object>', function() {
+
+      it('should be able to validate an array<object> type', function() {
+        var values = [{}, {}];
+
+        var validatedObject = util.shallowValidateObject({
+          arrayProperty: values
         }, {
-          arrayProperty: {type: 'array<string>'}
+          arrayProperty: {type: 'array<object>'}
         });
 
-        assert.equal(validatedObject.arrayProperty.length, 3);
+        assert.equal(validatedObject.arrayProperty.length, values.length);
+      });
+
+      it('should ignore property if value is an object', function() {
+        var validatedObject = util.shallowValidateObject({
+          arrayProperty: {}
+        }, {
+          arrayProperty: {type: 'array<object>'}
+        });
+
+        assert.isUndefined(validatedObject.arrayProperty);
+      });
+
+      it('should ignore values which are not objects', function() {
+        var validatedObject = util.shallowValidateObject({
+          arrayProperty: [{}, 25, []]
+        }, {
+          arrayProperty: {type: 'array<object>'}
+        });
+
+        assert.equal(validatedObject.arrayProperty.length, 1);
       });
 
     });
@@ -737,6 +791,53 @@ describe('util', function() {
         });
 
         assert.equal(validatedObject.dateProperty, date.getTime());
+      });
+
+    });
+
+    // boolean type
+    describe('boolean', function() {
+
+      it('should convert value to a Boolean if not null or undefined', function() {
+        var values = ['a', {}, [], 42, /.*/];
+
+        values.forEach(function(value) {
+          var validatedObject = util.shallowValidateObject({
+            booleanProperty: value
+          }, {
+            booleanProperty: {type: 'boolean'}
+          });
+
+          assert.strictEqual(validatedObject.booleanProperty, true);
+        });
+      });
+
+      it('should ignore value if null or undefined', function() {
+        var values = [null, undefined];
+
+        values.forEach(function(value) {
+          var validatedObject = util.shallowValidateObject({
+            booleanProperty: value
+          }, {
+            booleanProperty: {type: 'boolean'}
+          });
+
+          assert.isUndefined(validatedObject.booleanProperty);
+        });
+      });
+
+      it('should use default value if null or undefined', function() {
+        var values = [null, undefined];
+
+        values.forEach(function(value) {
+          var validatedObject = util.shallowValidateObject({
+            booleanProperty: value
+          }, {
+            booleanProperty: {type: 'boolean', default: true}
+          });
+
+          assert.strictEqual(validatedObject.booleanProperty, true);
+        });
       });
 
     });
