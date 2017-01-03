@@ -1,3 +1,8 @@
+# 3.1.0 / 2017-01-03
+
+- Improve util by adding boolean and object value in shallowValidateObject function
+- Debug javascript error in i18n lib
+
 # 3.0.3 / 2016-09-26
 
 - Debug tar extract on large files by changing dependency
