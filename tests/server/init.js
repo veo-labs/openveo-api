@@ -3,10 +3,9 @@
 var path = require('path');
 
 // Set module root directory
-process.root = path.join(__dirname, './root/');
-process.rootAPI = path.join(__dirname, '../../');
-process.requireAPI = function(filePath) {
-  return require(path.normalize(process.rootAPI + '/' + filePath));
+process.rootApi = path.join(__dirname, '../../');
+process.requireApi = function(filePath) {
+  return require(path.normalize(process.rootApi + '/' + filePath));
 };
 
-process.logger = process.requireAPI('lib/logger.js').get('openveo');
+process.logger = process.requireApi('lib/logger.js').get('openveo');

@@ -1,3 +1,38 @@
+# 4.0.0 /
+
+## BREAKING CHANGES
+
+- **Database** previously exposed on require('@openveo/api').Database is now exposed through a **database** namespace (e.g. require('@openveo/api').database.Database)
+- **Plugin** previously exposed on require('@openveo/api').Plugin is now exposed through a **plugin** namespace (e.g. require('@openveo/api').plugin.Plugin)
+- **EntityModel** previously exposed on require('@openveo/api').EntityModel is now exposed through a **models** namespace (e.g. require('@openveo/api').models.EntityModel)
+- **ContentModel** previously exposed on require('@openveo/api').ContentModel is now exposed through a **models** namespace (e.g. require('@openveo/api').models.ContentModel)
+- **EntityProvider** previously exposed on require('@openveo/api').EntityProvider is now exposed through a **providers** namespace (e.g. require('@openveo/api').providers.EntityProvider)
+- require('@openveo/api').applicationStorage has been removed. Use require('@openveo/api').api.getCoreApi() instead
+- Most of the properties of exposed classes are now unalterable
+- Drop support for Node.js &lt;7.4.0
+- Drop support for NPM &lt;4.0.5
+
+## NEW FEATURES
+
+- A new namespace "socket" has been added to expose tools to create socket servers and socket namespaces
+- A new namespace "emitters" has been added to expose extensions of Node.js events.EventEmitter
+- A generic Provider has been added for all providers (e.g. require('@openveo/api').providers.Provider)
+- A generic Model has been added for all models (e.g. require('@openveo/api').models.Model)
+- An important feature is APIs for Plugins, each plugin can now expose APIs to other plugins (see documentation for more details)
+
+## DEPENDENCIES
+
+- **tar-fs** has been updated from 1.13.2 to **1.15.0**
+- **grunt** has been updated from 0.4.5 to **1.0.1**
+- **grunt-eslint** has been updated from 18.1.0 to **19.0.0**
+- **grunt-gh-pages** has been updated from 1.1.0 to **2.0.0**
+- **grunt-mocha-test** has been updated from 0.12.7 to **0.13.2**
+- **mocha** has been updated from 2.4.5 to **3.2.0**
+- **pre-commit** has been updated from 1.1.2 to **1.2.2**
+- **grunt-extend-config** has been removed
+- **grunt-init** has been removed
+- **glob** has been removed
+
 # 3.1.0 / 2017-01-03
 
 - Improve util by adding boolean and object value in shallowValidateObject function
