@@ -16,6 +16,8 @@
 
 - A new namespace "socket" has been added to expose tools to create socket servers and socket namespaces
 - A new namespace "emitters" has been added to expose extensions of Node.js events.EventEmitter
+- A new namespace "grunt" has been added to expose grunt tasks
+- A rename grunt task has been added to rename a source (file or directory)
 - A generic Provider has been added for all providers (e.g. require('@openveo/api').providers.Provider)
 - A generic Model has been added for all models (e.g. require('@openveo/api').models.Model)
 - An important feature is APIs for Plugins, each plugin can now expose APIs to other plugins (see documentation for more details)

@@ -1,7 +1,13 @@
 'use strict';
 
 /* eslint no-sync: 0 */
+var path = require('path');
 var fs = require('fs');
+
+process.rootApi = __dirname;
+process.requireApi = function(filePath) {
+  return require(path.join(process.rootApi, filePath));
+};
 
 /**
  * Loads a bunch of grunt configuration files from the given directory.

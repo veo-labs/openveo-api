@@ -23,3 +23,4 @@ module.exports.controllers = process.requireApi('lib/controllers/index.js');
 module.exports.errors = process.requireApi('lib/errors/index.js');
 module.exports.socket = process.requireApi('lib/socket/index.js');
 module.exports.emitters = process.requireApi('lib/emitters/index.js');
+module.exports.grunt = process.requireApi('lib/grunt/index.js');
