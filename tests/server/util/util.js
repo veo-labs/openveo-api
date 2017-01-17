@@ -286,15 +286,11 @@ describe('util', function() {
       });
 
       it('should throw an error if property is required and not found', function() {
-        try {
+        assert.throws(function() {
           util.shallowValidateObject({}, {
             stringProperty: {type: 'string', required: true}
           });
-        } catch (error) {
-          return assert.ok(true);
-        }
-
-        assert.ok(false);
+        });
       });
 
       it('should convert value to string if it\'s not', function() {
@@ -342,32 +338,26 @@ describe('util', function() {
       it('should throw an error if value is not available in the list of values', function() {
         var value = 'value';
 
-        try {
+        assert.throws(function() {
           util.shallowValidateObject({
             stringProperty: value
           }, {
             stringProperty: {type: 'string', in: ['value1', 'value2']}
           });
-        } catch (error) {
-          return assert.ok(true);
-        }
-
-        assert.ok(false);
+        });
       });
 
       it('should be able to validate a value from a list of values', function() {
         var value = 'value1';
         var validatedObject;
 
-        try {
+        assert.doesNotThrow(function() {
           validatedObject = util.shallowValidateObject({
             stringProperty: value
           }, {
-            stringProperty: {type: 'string', in: ['value1', 'value2']}
+            stringProperty: {type: 'string', in: [value, 'value2']}
           });
-        } catch (error) {
-          return assert.ok(false);
-        }
+        });
 
         assert.equal(validatedObject.stringProperty, value);
       });
@@ -410,141 +400,101 @@ describe('util', function() {
       it('should throw an error if the value is not part of the list of numbers', function() {
         var value = 30;
 
-        try {
+        assert.throws(function() {
           util.shallowValidateObject({
             numberProperty: value
           }, {
             numberProperty: {type: 'number', in: [1, 2, 3, 4]}
           });
-        } catch (error) {
-          return assert.ok(true);
-        }
-
-        assert.ok(false);
+        });
       });
 
       it('should throw an error if property is required and not found', function() {
-        try {
+        assert.throws(function() {
           util.shallowValidateObject({}, {
             numberProperty: {type: 'number', required: true}
           });
-        } catch (error) {
-          return assert.ok(true);
-        }
-
-        assert.ok(false);
+        });
       });
 
       it('should be able to validate that the number is greater than another one', function() {
-        try {
+        assert.doesNotThrow(function() {
           util.shallowValidateObject({
             numberProperty: 30
           }, {
             numberProperty: {type: 'number', gt: 25}
           });
-        } catch (error) {
-          return assert.ok(false);
-        }
-
-        assert.ok(true);
+        });
       });
 
       it('should be able to validate that the number is lesser than another one', function() {
-        try {
+        assert.doesNotThrow(function() {
           util.shallowValidateObject({
             numberProperty: 10
           }, {
             numberProperty: {type: 'number', lt: 20}
           });
-        } catch (error) {
-          return assert.ok(false);
-        }
-
-        assert.ok(true);
+        });
       });
 
       it('should be able to validate that the number is greater of equal to another one', function() {
-        try {
+        assert.doesNotThrow(function() {
           util.shallowValidateObject({
             numberProperty: 20
           }, {
             numberProperty: {type: 'number', gte: 20}
           });
-        } catch (error) {
-          return assert.ok(false);
-        }
-
-        assert.ok(true);
+        });
       });
 
       it('should be able to validate that the number is lesser of equal to another one', function() {
-        try {
+        assert.doesNotThrow(function() {
           util.shallowValidateObject({
             numberProperty: 20
           }, {
             numberProperty: {type: 'number', lte: 20}
           });
-        } catch (error) {
-          return assert.ok(false);
-        }
-
-        assert.ok(true);
+        });
       });
 
       it('should throw an error if greater than validation failed', function() {
-        try {
+        assert.throws(function() {
           util.shallowValidateObject({
             numberProperty: 20
           }, {
             numberProperty: {type: 'number', gt: 25}
           });
-        } catch (error) {
-          return assert.ok(true);
-        }
-
-        assert.ok(false);
+        });
       });
 
       it('should throw an error if lesser than validation failed', function() {
-        try {
+        assert.throws(function() {
           util.shallowValidateObject({
             numberProperty: 30
           }, {
             numberProperty: {type: 'number', lt: 25}
           });
-        } catch (error) {
-          return assert.ok(true);
-        }
-
-        assert.ok(false);
+        });
       });
 
       it('should throw an error if greater or equal validation failed', function() {
-        try {
+        assert.throws(function() {
           util.shallowValidateObject({
             numberProperty: 20
           }, {
             numberProperty: {type: 'number', gte: 25}
           });
-        } catch (error) {
-          return assert.ok(true);
-        }
-
-        assert.ok(false);
+        });
       });
 
       it('should throw an error if lesser or equal validation failed', function() {
-        try {
+        assert.throws(function() {
           util.shallowValidateObject({
             numberProperty: 30
           }, {
             numberProperty: {type: 'number', lte: 20}
           });
-        } catch (error) {
-          return assert.ok(true);
-        }
-
-        assert.ok(false);
+        });
       });
 
       it('should ignore property if value is not a number', function() {
