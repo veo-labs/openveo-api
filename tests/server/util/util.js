@@ -1,5 +1,7 @@
 'use strict';
 
+var fs = require('fs');
+var path = require('path');
 var assert = require('chai').assert;
 var util = process.requireApi('lib/util.js');
 
@@ -784,6 +786,93 @@ describe('util', function() {
 
           assert.strictEqual(validatedObject.booleanProperty, true);
         });
+      });
+
+    });
+
+    // file type
+    describe('file', function() {
+      var TYPES = ['JPG', 'GIF', 'PNG'];
+
+      TYPES.forEach(function(TYPE) {
+        it('should convert binary ' + TYPE + ' data into an object with type and Buffer', function(done) {
+          fs.readFile(path.join(__dirname, 'resources/' + TYPE + '.' + TYPE.toLowerCase()), function(error, data) {
+            var validatedObject = util.shallowValidateObject({
+              fileProperty: data.toString('binary')
+            }, {
+              fileProperty: {type: 'file'}
+            });
+
+            assert.equal(validatedObject.fileProperty.type, TYPE, 'Unexpected file type');
+            assert.instanceOf(validatedObject.fileProperty.file, Buffer, 'Expected a buffer');
+            done();
+          });
+        });
+
+        it('should convert ' + TYPE + ' buffer into an object with type and Buffer', function(done) {
+          fs.readFile(path.join(__dirname, 'resources/' + TYPE + '.' + TYPE.toLowerCase()), function(error, data) {
+            var validatedObject = util.shallowValidateObject({
+              fileProperty: Buffer.from(data, 'binary')
+            }, {
+              fileProperty: {type: 'file'}
+            });
+
+            assert.equal(validatedObject.fileProperty.type, TYPE, 'Unexpected file type');
+            assert.instanceOf(validatedObject.fileProperty.file, Buffer, 'Expected a buffer');
+            done();
+          });
+        });
+
+        it('should ignore value if not a string', function() {
+          var values = [null, undefined, 42, {}, []];
+
+          values.forEach(function(value) {
+            var validatedObject = util.shallowValidateObject({
+              fileProperty: value
+            }, {
+              fileProperty: {type: 'file'}
+            });
+
+            assert.isUndefined(validatedObject.fileProperty);
+          });
+        });
+
+        it('should throw an error if property is required and not found', function() {
+          assert.throws(function() {
+            util.shallowValidateObject({}, {
+              fileProperty: {type: 'file', required: true}
+            });
+          });
+        });
+
+        it('should throw an error if file type is not supported', function() {
+          assert.throws(function() {
+            util.shallowValidateObject({
+              fileProperty: Buffer.from('Wrong file type').toString('binary')
+            }, {
+              fileProperty: {type: 'file', required: true, in: TYPES}
+            });
+          });
+        });
+
+        it('should throw an error if file is not one of the expected types', function(done) {
+          fs.readFile(path.join(__dirname, 'resources/' + TYPE + '.' + TYPE.toLowerCase()), function(error, data) {
+            var otherTypes = TYPES.filter(function(type) {
+              return type !== TYPE;
+            });
+
+            assert.throws(function() {
+              util.shallowValidateObject({
+                fileProperty: data.toString('binary')
+              }, {
+                fileProperty: {type: 'file', in: otherTypes}
+              });
+            });
+
+            done();
+          });
+        });
+
       });
 
     });

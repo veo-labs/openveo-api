@@ -22,6 +22,7 @@
 - A generic Provider has been added for all providers (e.g. require('@openveo/api').providers.Provider)
 - A generic Model has been added for all models (e.g. require('@openveo/api').models.Model)
 - An important feature is APIs for Plugins, each plugin can now expose APIs to other plugins (see documentation for more details)
+- Add file validation to the util.shallowValidateObject function. Actually supported files are PNG, GIF and JPG.
 
 ## DEPENDENCIES
 
