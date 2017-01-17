@@ -11,6 +11,8 @@
 - Most of the properties of exposed classes are now unalterable
 - Drop support for Node.js &lt;7.4.0
 - Drop support for NPM &lt;4.0.5
+- logger.get does not create a logger anymore, use logger.add instead
+- logger.add without configuration still creates a logger but without Console transport. Consequently it is no longer possible to create a logger with a simple console transport stream.
 
 ## NEW FEATURES
 

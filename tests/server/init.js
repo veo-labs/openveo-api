@@ -8,4 +8,4 @@ process.requireApi = function(filePath) {
   return require(path.normalize(process.rootApi + '/' + filePath));
 };
 
-process.logger = process.requireApi('lib/logger.js').get('openveo');
+process.logger = process.requireApi('lib/logger.js').add('openveo');
