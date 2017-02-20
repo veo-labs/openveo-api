@@ -424,7 +424,7 @@ describe('util', function() {
           util.shallowValidateObject({
             numberProperty: 30
           }, {
-            numberProperty: {type: 'number', gt: 25}
+            numberProperty: {type: 'number', gt: 0}
           });
         });
       });
@@ -432,9 +432,9 @@ describe('util', function() {
       it('should be able to validate that the number is lesser than another one', function() {
         assert.doesNotThrow(function() {
           util.shallowValidateObject({
-            numberProperty: 10
+            numberProperty: -10
           }, {
-            numberProperty: {type: 'number', lt: 20}
+            numberProperty: {type: 'number', lt: 0}
           });
         });
       });
@@ -442,9 +442,9 @@ describe('util', function() {
       it('should be able to validate that the number is greater of equal to another one', function() {
         assert.doesNotThrow(function() {
           util.shallowValidateObject({
-            numberProperty: 20
+            numberProperty: 0
           }, {
-            numberProperty: {type: 'number', gte: 20}
+            numberProperty: {type: 'number', gte: 0}
           });
         });
       });
@@ -452,9 +452,9 @@ describe('util', function() {
       it('should be able to validate that the number is lesser of equal to another one', function() {
         assert.doesNotThrow(function() {
           util.shallowValidateObject({
-            numberProperty: 20
+            numberProperty: 0
           }, {
-            numberProperty: {type: 'number', lte: 20}
+            numberProperty: {type: 'number', lte: 0}
           });
         });
       });

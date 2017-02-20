@@ -1,5 +1,9 @@
 # 4.0.0 /
 
+## BUG FIXES
+
+- Fix util.shallowValidateObject when using gt, lt, gte or lte at 0. Validation always succeeded, ignoring gt, lt, gte and lte.
+
 ## BREAKING CHANGES
 
 - **Database** previously exposed on require('@openveo/api').Database is now exposed through a **database** namespace (e.g. require('@openveo/api').database.Database)
