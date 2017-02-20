@@ -532,6 +532,15 @@ describe('util', function() {
         assert.isUndefined(validatedObject.numberProperty);
       });
 
+      it('should ignore property if not defined', function() {
+        var validatedObject = util.shallowValidateObject({
+        }, {
+          numberProperty: {type: 'number', gt: 0}
+        });
+
+        assert.isUndefined(validatedObject.numberProperty);
+      });
+
     });
 
     // array<string> type

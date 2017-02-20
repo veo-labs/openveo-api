@@ -3,6 +3,7 @@
 ## BUG FIXES
 
 - Fix util.shallowValidateObject when using gt, lt, gte or lte at 0. Validation always succeeded, ignoring gt, lt, gte and lte.
+- Fix util.shallowValidateObject when validating an undefined number. Validating an undefined number was failing even if not required. It now throws an error only if not defined and required.
 
 ## BREAKING CHANGES
 
