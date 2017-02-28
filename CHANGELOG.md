@@ -12,12 +12,16 @@
 - **EntityModel** previously exposed on require('@openveo/api').EntityModel is now exposed through a **models** namespace (e.g. require('@openveo/api').models.EntityModel)
 - **ContentModel** previously exposed on require('@openveo/api').ContentModel is now exposed through a **models** namespace (e.g. require('@openveo/api').models.ContentModel)
 - **EntityProvider** previously exposed on require('@openveo/api').EntityProvider is now exposed through a **providers** namespace (e.g. require('@openveo/api').providers.EntityProvider)
-- require('@openveo/api').applicationStorage has been removed. Use require('@openveo/api').api.getCoreApi() instead
+- require('@openveo/api').applicationStorage has been removed. Use process.api instead
+- require('@openveo/api').i18n has been removed. Use process.api instead
 - Most of the properties of exposed classes are now unalterable
 - Drop support for Node.js &lt;7.4.0
 - Drop support for NPM &lt;4.0.5
 - logger.get does not create a logger anymore, use logger.add instead
 - logger.add without configuration still creates a logger but without Console transport. Consequently it is no longer possible to create a logger with a simple console transport stream.
+- ContentModel.isUserAdmin and ContentModel.isUserOwner now expect the user as parameter
+- Models extending ContentModel need to implement getSuperAdminId and getAnonymousId methods
+- Controllers extending EntityController (or ContentController by extension) does not need to specify the model and provider constructors when calling the super constructor but need to implement the getModel method
 
 ## NEW FEATURES
 
@@ -28,7 +32,6 @@
 - A remove grunt task has been added to remove resources (files or directories)
 - A generic Provider has been added for all providers (e.g. require('@openveo/api').providers.Provider)
 - A generic Model has been added for all models (e.g. require('@openveo/api').models.Model)
-- An important feature is APIs for Plugins, each plugin can now expose APIs to other plugins (see documentation for more details)
 - Add file validation to the util.shallowValidateObject function. Actually supported files are PNG, GIF and JPG.
 - util.shallowValidateObject is now capable to validate a timestamp as a string for a date
 

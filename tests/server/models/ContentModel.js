@@ -6,9 +6,6 @@ var ContentModel = process.requireApi('lib/models/ContentModel.js');
 var EntityProvider = process.requireApi('lib/providers/EntityProvider.js');
 var Database = process.requireApi('lib/database/Database.js');
 var AccessError = process.requireApi('lib/errors/AccessError.js');
-var pluginManager = process.requireApi('lib/plugin/pluginManager.js');
-var Plugin = process.requireApi('lib/plugin/Plugin.js');
-var api = process.requireApi('lib/api.js');
 
 // ContentModel.js
 describe('ContentModel', function() {
@@ -16,61 +13,35 @@ describe('ContentModel', function() {
   var ADMIN_ID = '0';
   var ANONYMOUS_ID = '1';
   var provider;
-  var CorePlugin;
-  var MyEntityProvider;
+  var TestEntityProvider;
+  var TestContentModel;
 
   // Mocks
   beforeEach(function() {
-    CorePlugin = function() {
-      CorePlugin.super_.call(this);
-
-      var superAdminId;
-      var anonymousUserId;
-
-      this.name = 'core';
-      this.api = {
-        setSuperAdminId: function(id) {
-          superAdminId = id;
-        },
-        setAnonymousUserId: function(id) {
-          anonymousUserId = id;
-        },
-        getSuperAdminId: function() {
-          return superAdminId;
-        },
-        getAnonymousUserId: function() {
-          return anonymousUserId;
-        }
-      };
+    TestContentModel = function(user, provider) {
+      TestContentModel.super_.call(this, user, provider);
     };
 
-    MyEntityProvider = function(database, collection) {
-      MyEntityProvider.super_.call(this, database, collection);
+    TestContentModel.prototype.getSuperAdminId = function() {
+      return ADMIN_ID;
     };
 
-    util.inherits(CorePlugin, Plugin);
-    util.inherits(MyEntityProvider, EntityProvider);
+    TestContentModel.prototype.getAnonymousId = function() {
+      return ANONYMOUS_ID;
+    };
+
+    TestEntityProvider = function(database, collection) {
+      TestEntityProvider.super_.call(this, database, collection);
+    };
+
+    util.inherits(TestContentModel, ContentModel);
+    util.inherits(TestEntityProvider, EntityProvider);
   });
 
   // Prepare tests
   beforeEach(function() {
-    pluginManager.addPlugin(new CorePlugin());
-
     database = new Database({});
-
-    var coreApi = api.getCoreApi();
-    coreApi.setSuperAdminId(ADMIN_ID);
-    coreApi.setAnonymousUserId(ANONYMOUS_ID);
-    provider = new EntityProvider(database, 'my_collection');
-  });
-
-  // Remove all plugins
-  afterEach(function() {
-    var plugins = pluginManager.getPlugins();
-
-    plugins.forEach(function(plugin) {
-      pluginManager.removePlugin(plugin.name);
-    });
+    provider = new TestEntityProvider(database, 'my_collection');
   });
 
   it('should expose user associated groups', function() {
@@ -83,7 +54,7 @@ describe('ContentModel', function() {
         'wrongoperation-group-' + groupName
       ]
     };
-    var model = new ContentModel(user, provider);
+    var model = new TestContentModel(user, provider);
 
     assert.sameMembers(['get', 'update'], model.groups[groupName]);
   });
@@ -93,14 +64,14 @@ describe('ContentModel', function() {
 
     it('should be able to indicate if the associated user is the administrator', function() {
       var user = {id: ADMIN_ID};
-      var model = new ContentModel(user, provider);
-      assert.ok(model.isUserAdmin(), 'Expected user to be the administrator');
+      var model = new TestContentModel(user, provider);
+      assert.ok(model.isUserAdmin(user), 'Expected user to be the administrator');
 
       user.id = '42';
-      assert.notOk(model.isUserAdmin(), 'Expected user not to be the administrator');
+      assert.notOk(model.isUserAdmin(user), 'Expected user not to be the administrator');
 
       user = null;
-      assert.notOk(model.isUserAdmin(), 'Expected null not to be the administrator');
+      assert.notOk(model.isUserAdmin(user), 'Expected null not to be the administrator');
     });
 
   });
@@ -111,7 +82,7 @@ describe('ContentModel', function() {
     it('should authorize the administrator to perform any kind of operation on all entities', function() {
       var entity;
       var user = {id: ADMIN_ID};
-      var model = new ContentModel(user, provider);
+      var model = new TestContentModel(user, provider);
 
       entity = {metadata: {user: ANONYMOUS_ID}};
       assert.ok(model.isUserAuthorized(entity, 'get'), 'Expected admin to perform a get on an anonymous entity');
@@ -127,7 +98,7 @@ describe('ContentModel', function() {
     it('should authorize anyone to perform any kind of operation on anonymous entities', function() {
       var entity;
       var user = {id: '42'};
-      var model = new ContentModel(user, provider);
+      var model = new TestContentModel(user, provider);
 
       entity = {metadata: {user: ANONYMOUS_ID}};
       assert.ok(model.isUserAuthorized(entity, 'get'), 'Expected anyone to perform a get on an anonymous entity');
@@ -148,7 +119,7 @@ describe('ContentModel', function() {
           'delete-group-' + groupName
         ]
       };
-      var model = new ContentModel(user, provider);
+      var model = new TestContentModel(user, provider);
 
       entity = {metadata: {user: '43', groups: ['mygroup']}};
       assert.ok(model.isUserAuthorized(entity, 'get'), 'Expected user to perform a get on an entity of his group');
@@ -161,7 +132,7 @@ describe('ContentModel', function() {
     it('should not authorize a user to perform operation on the entity of another user', function() {
       var entity;
       var user = {id: '42'};
-      var model = new ContentModel(user, provider);
+      var model = new TestContentModel(user, provider);
 
       entity = {metadata: {user: '43'}};
       assert.notOk(model.isUserAuthorized(entity, 'get'), 'Unexpected user to perform a get on someone else entity');
@@ -183,21 +154,21 @@ describe('ContentModel', function() {
         ]
       };
 
-      model = new ContentModel(user, provider);
+      model = new TestContentModel(user, provider);
       assert.notOk(model.isUserAuthorized(entity, 'get'), 'Unexpected user to perform a get without permission');
 
       user.permissions = [
         'get-group-' + groupName,
         'delete-group-' + groupName
       ];
-      model = new ContentModel(user, provider);
+      model = new TestContentModel(user, provider);
       assert.notOk(model.isUserAuthorized(entity, 'update'), 'Unexpected user to perform an update without permission');
 
       user.permissions = [
         'get-group-' + groupName,
         'update-group-' + groupName
       ];
-      model = new ContentModel(user, provider);
+      model = new TestContentModel(user, provider);
       assert.notOk(model.isUserAuthorized(entity, 'delete'), 'Unexpected user to perform a delete without permission');
     });
 
@@ -209,12 +180,12 @@ describe('ContentModel', function() {
     it('should be able to return an entity as retrieved by the provider', function() {
       var expectedEntity = {};
       var user = {id: ADMIN_ID};
-      MyEntityProvider.prototype.getOne = function(id, filter, callback) {
+      TestEntityProvider.prototype.getOne = function(id, filter, callback) {
         callback(null, expectedEntity);
       };
 
-      provider = new MyEntityProvider(database, 'my_collection');
-      var model = new ContentModel(user, provider);
+      provider = new TestEntityProvider(database, 'my_collection');
+      var model = new TestContentModel(user, provider);
 
       model.getOne('42', null, function(error, entity) {
         assert.strictEqual(entity, expectedEntity);
@@ -224,12 +195,12 @@ describe('ContentModel', function() {
     it('should return an access error if user does not have the authorization to perform a get', function() {
       var expectedEntity = {};
       var user = {id: '42'};
-      MyEntityProvider.prototype.getOne = function(id, filter, callback) {
+      TestEntityProvider.prototype.getOne = function(id, filter, callback) {
         callback(null, expectedEntity);
       };
 
-      provider = new MyEntityProvider(database, 'my_collection');
-      var model = new ContentModel(user, provider);
+      provider = new TestEntityProvider(database, 'my_collection');
+      var model = new TestContentModel(user, provider);
 
       model.getOne('1', null, function(error, entity) {
         assert.ok(error instanceof AccessError);
@@ -244,15 +215,15 @@ describe('ContentModel', function() {
     it('should be able to ask the provider to update an entity', function() {
       var expectedEntity = {};
       var user = {id: ADMIN_ID};
-      MyEntityProvider.prototype.getOne = function(id, filter, callback) {
+      TestEntityProvider.prototype.getOne = function(id, filter, callback) {
         callback(null, expectedEntity);
       };
-      MyEntityProvider.prototype.update = function(id, data, callback) {
+      TestEntityProvider.prototype.update = function(id, data, callback) {
         callback(null, 1);
       };
 
-      provider = new MyEntityProvider(database, 'my_collection');
-      var model = new ContentModel(user, provider);
+      provider = new TestEntityProvider(database, 'my_collection');
+      var model = new TestContentModel(user, provider);
 
       model.update('42', {}, function(error, updatedCount) {
         assert.equal(updatedCount, 1);
@@ -262,15 +233,15 @@ describe('ContentModel', function() {
     it('should return an access error if user does not have the authorization to perform an update', function() {
       var expectedEntity = {};
       var user = {id: '42'};
-      MyEntityProvider.prototype.getOne = function(id, filter, callback) {
+      TestEntityProvider.prototype.getOne = function(id, filter, callback) {
         callback(null, expectedEntity);
       };
-      MyEntityProvider.prototype.update = function(id, data, callback) {
+      TestEntityProvider.prototype.update = function(id, data, callback) {
         assert.ok(false, 'Unexpected update request');
       };
 
-      provider = new MyEntityProvider(database, 'my_collection');
-      var model = new ContentModel(user, provider);
+      provider = new TestEntityProvider(database, 'my_collection');
+      var model = new TestContentModel(user, provider);
 
       model.getOne('1', null, function(error, entity) {
         assert.ok(error instanceof AccessError);
@@ -285,15 +256,15 @@ describe('ContentModel', function() {
     it('should be able to ask the provider to remove an entity', function() {
       var expectedEntities = [{id: '42'}];
       var user = {id: ADMIN_ID};
-      MyEntityProvider.prototype.get = function(filter, callback) {
+      TestEntityProvider.prototype.get = function(filter, callback) {
         callback(null, expectedEntities);
       };
-      MyEntityProvider.prototype.remove = function(ids, callback) {
+      TestEntityProvider.prototype.remove = function(ids, callback) {
         callback(null, ids.length);
       };
 
-      provider = new MyEntityProvider(database, 'my_collection');
-      var model = new ContentModel(user, provider);
+      provider = new TestEntityProvider(database, 'my_collection');
+      var model = new TestContentModel(user, provider);
 
       model.remove(expectedEntities[0].id, function(error, deletedCount) {
         assert.equal(deletedCount, expectedEntities.length);
@@ -303,15 +274,15 @@ describe('ContentModel', function() {
     it('should return an access error if user does not have the authorization to perform a delete', function() {
       var expectedEntities = [{id: '1'}];
       var user = {id: '42'};
-      MyEntityProvider.prototype.get = function(filter, callback) {
+      TestEntityProvider.prototype.get = function(filter, callback) {
         callback(null, expectedEntities);
       };
-      MyEntityProvider.prototype.remove = function(ids, callback) {
+      TestEntityProvider.prototype.remove = function(ids, callback) {
         callback(null, ids.length);
       };
 
-      provider = new MyEntityProvider(database, 'my_collection');
-      var model = new ContentModel(user, provider);
+      provider = new TestEntityProvider(database, 'my_collection');
+      var model = new TestContentModel(user, provider);
 
       model.remove(expectedEntities[0].id, function(error, deletedCount) {
         assert.equal(deletedCount, 0);
@@ -325,7 +296,7 @@ describe('ContentModel', function() {
 
     it('should not filter when user is the administrator', function() {
       var user = {id: ADMIN_ID};
-      var model = new ContentModel(user, provider);
+      var model = new TestContentModel(user, provider);
 
       var filter = model.addAccessFilter({});
       assert.notProperty(filter, '$or', 'Unexpected filter');
@@ -333,7 +304,7 @@ describe('ContentModel', function() {
 
     it('should filter by the user id and the id of the anonymous user', function() {
       var user = {id: '42'};
-      var model = new ContentModel(user, provider);
+      var model = new TestContentModel(user, provider);
       var filter = model.addAccessFilter({});
 
       filter.$or.forEach(function(or) {
@@ -352,7 +323,7 @@ describe('ContentModel', function() {
           'get-group-' + groupName2
         ]
       };
-      var model = new ContentModel(user, provider);
+      var model = new TestContentModel(user, provider);
       var filter = model.addAccessFilter({});
 
       filter.$or.forEach(function(or) {

@@ -9,10 +9,8 @@ process.requireApi = function(filePath) {
 };
 
 module.exports.fileSystem = process.requireApi('lib/fileSystem.js');
-module.exports.i18n = process.requireApi('lib/i18n.js');
 module.exports.util = process.requireApi('lib/util.js');
 module.exports.logger = process.requireApi('lib/logger.js');
-module.exports.api = process.requireApi('lib/api.js');
 
 module.exports.database = process.requireApi('lib/database/index.js');
 module.exports.plugin = process.requireApi('lib/plugin/index.js');

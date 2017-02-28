@@ -30,7 +30,7 @@ describe('EntityController', function() {
     };
 
     TestEntityController.prototype.getModel = function() {
-      return new this.Model(new this.Provider(new Database({})));
+      return new TestEntityModel(new TestEntityProvider(new Database({})));
     };
 
     util.inherits(TestEntityModel, EntityModel);
@@ -40,29 +40,7 @@ describe('EntityController', function() {
 
   // Prepare tests using mocks
   beforeEach(function() {
-    testEntityController = new TestEntityController(TestEntityModel, TestEntityProvider);
-  });
-
-  // Model property
-  describe('Model', function() {
-
-    it('should not be editable', function() {
-      assert.throws(function() {
-        testEntityController.Model = null;
-      });
-    });
-
-  });
-
-  // Provider property
-  describe('Provider', function() {
-
-    it('should not be editable', function() {
-      assert.throws(function() {
-        testEntityController.Provider = null;
-      });
-    });
-
+    testEntityController = new TestEntityController();
   });
 
   // getEntitiesAction method
