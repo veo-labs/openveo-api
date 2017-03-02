@@ -22,6 +22,7 @@
 - ContentModel.isUserAdmin and ContentModel.isUserOwner now expect the user as parameter
 - Models extending ContentModel need to implement getSuperAdminId and getAnonymousId methods
 - Controllers extending EntityController (or ContentController by extension) does not need to specify the model and provider constructors when calling the super constructor but need to implement the getModel method
+- MongoDatabase search *page* parameter now starts at 0 instead of 1
 
 ## NEW FEATURES
 
