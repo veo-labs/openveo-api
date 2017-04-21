@@ -30,6 +30,7 @@
 - A generic Model has been added for all models (e.g. require('@openveo/api').models.Model)
 - Add file validation to the util.shallowValidateObject function. Actually supported files are PNG, GIF and JPG.
 - util.shallowValidateObject is now capable to validate a timestamp as a string for a date
+- Add require('@openveo/api').fileSystem.readdir function to get resources of a directory and all its sub directories
 
 ## BUG FIXES
 

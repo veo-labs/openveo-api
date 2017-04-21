@@ -236,4 +236,53 @@ describe('fileSystem', function() {
 
   });
 
+  // readdir method
+  describe('readdir', function() {
+
+    it('should be able to read a directory recursively', function(done) {
+      var expectedResources = [
+        path.join(__dirname, '/resources/dir1/dir1.txt'),
+        path.join(__dirname, '/resources/dir1/dir2'),
+        path.join(__dirname, '/resources/dir1/dir2/dir2.txt'),
+        path.join(__dirname, '/resources/dir1/dir2/dir3'),
+        path.join(__dirname, '/resources/dir1/dir2/dir3/dir3.txt')
+      ];
+
+      fileSystem.readdir(path.join(__dirname, '/resources/dir1'), function(error, paths) {
+        if (!error) {
+          paths.forEach(function(resourcePath) {
+            assert.oneOf(resourcePath.path, expectedResources);
+          });
+          done();
+        } else
+          assert.ok(false, 'readdir failed : ' + error.message);
+      });
+    });
+
+    it('should execute callback with an error if directoryPath is not a String', function() {
+      var invalidTypes = [42, {}, [], true];
+
+      invalidTypes.forEach(function(invalidType) {
+        fileSystem.readdir(invalidType, function(error) {
+          assert.isDefined(error, 'Expected an error for directoryPath "' + invalidType + '"');
+        });
+      });
+    });
+
+    it('should execute callback with an error if directory does not exist', function(done) {
+      fileSystem.readdir('wrong directory path', function(error) {
+        assert.isDefined(error);
+        done();
+      });
+    });
+
+    it('should execute callback with an error if it is not a directory', function(done) {
+      fileSystem.readdir(path.join(__dirname, '/resources/dir1/dir1.txt'), function(error) {
+        assert.isDefined(error);
+        done();
+      });
+    });
+
+  });
+
 });
