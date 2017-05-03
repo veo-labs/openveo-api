@@ -10,8 +10,6 @@ Icon?
 # Windows
 Thumbs.db
 Desktop.ini
-
-# Windows XP
 ehthumbs.db
 
 # Project npm dependencies
@@ -23,13 +21,13 @@ nbproject
 # Unit tests
 /tests
 
-# Documentation (yuidoc)
+# Documentation
 /site
-/.grunt
 
 # Grunt files
 /Gruntfile.js
 /tasks
+/.grunt
 
 # Git
 .gitignore

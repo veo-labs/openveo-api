@@ -11,8 +11,6 @@ Icon?
 # Windows
 Thumbs.db
 Desktop.ini
-
-# Windows XP
 ehthumbs.db
 
 # Project npm dependencies
@@ -21,6 +19,8 @@ ehthumbs.db
 # IDE
 nbproject
 
-# Documentation (yuidoc)
+# Documentation
 /site
+
+# Grunt files
 /.grunt
