@@ -16,11 +16,11 @@ var api = require('@openveo/api');
 
 # API
 
-Documentation is available on [Github pages](http://veo-labs.github.io/openveo-api/3.1.0).
+Documentation is available on [Github pages](http://veo-labs.github.io/openveo-api/4.0.0).
 
 # Contributors
 
-Maintainer : [Veo-Labs](http://www.veo-labs.com/)
+Maintainer: [Veo-Labs](http://www.veo-labs.com/)
 
 # License
 
