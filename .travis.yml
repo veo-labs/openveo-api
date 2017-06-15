@@ -6,3 +6,9 @@ before_script:
 script:
   - grunt eslint
   - grunt mochaTest
+
+# whitelist
+branches:
+  only:
+    - master
+    - develop
