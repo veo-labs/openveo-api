@@ -6,9 +6,13 @@ before_script:
 script:
   - grunt eslint
   - grunt mochaTest
-
-# whitelist
 branches:
   only:
     - master
     - develop
+notifications:
+  email:
+    recipients:
+      - maxime.beguin@veo-labs.com
+    on_success: always
+    on_failure: always
