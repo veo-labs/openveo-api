@@ -12,7 +12,7 @@ branches:
 notifications:
   email:
     recipients:
-      - maxime.beguin@veo-labs.com
+      - platform@veo-labs.com
     on_success: always
     on_failure: always
 git:
