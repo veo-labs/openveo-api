@@ -29,7 +29,7 @@
     "express-session": "1.14.2"
   },
   "devDependencies": {
-    "chai": "3.5.0",
+    "chai": "4.0.2",
     "chai-spies": "0.7.1",
     "grunt": "1.0.1",
     "grunt-contrib-yuidoc": "1.0.0",
