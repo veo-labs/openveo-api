@@ -1021,4 +1021,53 @@ describe('util', function() {
 
   });
 
+  // getPropertyFromArray method
+  describe('getPropertyFromArray', function() {
+
+    it('should be able to get values of a property from an Array of objects', function() {
+      var expectedValues = [42, 43];
+      var expectedProperty = 'id';
+      var list = [];
+
+      expectedValues.forEach(function(value) {
+        list.push({[expectedProperty]: value});
+      });
+
+      var values = util.getPropertyFromArray('id', list);
+      assert.sameMembers(values, expectedValues);
+    });
+
+    it('should be able to get values of a property from an Array of objects recursively', function() {
+      var expectedValues = [42, 43];
+      var expectedProperty = 'id';
+      var expectedRecursiveProperty = 'subItems';
+      var list = [
+        {
+          [expectedProperty]: expectedValues[0],
+          [expectedRecursiveProperty]: [
+            {[expectedProperty]: expectedValues[1]}
+          ]
+        }
+      ];
+
+      var values = util.getPropertyFromArray('id', list, expectedRecursiveProperty);
+      assert.sameMembers(values, expectedValues);
+    });
+
+    it('should return an empty Array if property is not specified', function() {
+      var list = [{}, {}];
+      var expectedRecursiveProperty = 'subItems';
+      var values = util.getPropertyFromArray(null, list, expectedRecursiveProperty);
+      assert.isEmpty(values);
+    });
+
+    it('should return an empty Array if list is not specified', function() {
+      var expectedProperty = 'id';
+      var expectedRecursiveProperty = 'subItems';
+      var values = util.getPropertyFromArray(expectedProperty, null, expectedRecursiveProperty);
+      assert.isEmpty(values);
+    });
+
+  });
+
 });
