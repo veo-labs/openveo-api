@@ -12,6 +12,7 @@
 - Add require('@openveo/api').fileSystem.getFileTypeFromBuffer to get the type of a file as a buffer
 - Add require('@openveo/api').util.validateFiles to validate that files types are as expected
 - Add require('@openveo/api').util.getPropertyFromArray to retrieve values of a property inside an array of objects
+- Add support for MP4 and TAR for require('@openveo/api').util.shadowValidateObject
 
 # 4.0.0 / 2017-05-04
 
