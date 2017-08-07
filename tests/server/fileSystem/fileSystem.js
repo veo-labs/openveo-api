@@ -285,4 +285,86 @@ describe('fileSystem', function() {
 
   });
 
+  // readFile method
+  describe('readFile', function() {
+
+    it('should be able to read part of a file', function(done) {
+      var filePath = path.join(__dirname, '/resources/files/GIF.gif');
+
+      fs.readFile(filePath, function(error, data) {
+        var expectedBytes = data.toString('hex', 1, 4);
+
+        fileSystem.readFile(filePath, 1, 3, function(error, buffer) {
+          assert.isNull(error);
+          assert.equal(buffer.toString('hex'), expectedBytes);
+          done();
+        });
+      });
+    });
+
+    it('should read all file if neither offset nor length is specified', function(done) {
+      var filePath = path.join(__dirname, '/resources/files/GIF.gif');
+
+      fs.readFile(filePath, function(error, data) {
+        var expectedBytes = data.toString('hex');
+
+        fileSystem.readFile(filePath, null, null, function(error, buffer) {
+          assert.isNull(error);
+          assert.equal(buffer.toString('hex'), expectedBytes);
+          done();
+        });
+      });
+    });
+
+    it('should read the rest of the file if length is not specified', function(done) {
+      var filePath = path.join(__dirname, '/resources/files/GIF.gif');
+
+      fs.readFile(filePath, function(error, data) {
+        var expectedBytes = data.toString('hex', 1, data.length);
+
+        fileSystem.readFile(filePath, 1, null, function(error, buffer) {
+          assert.isNull(error);
+          assert.equal(buffer.toString('hex'), expectedBytes);
+          done();
+        });
+      });
+    });
+
+    it('should start reading at 0 if offset is not specified', function(done) {
+      var filePath = path.join(__dirname, '/resources/files/GIF.gif');
+
+      fs.readFile(filePath, function(error, data) {
+        var expectedBytes = data.toString('hex', 0, 4);
+
+        fileSystem.readFile(filePath, null, 4, function(error, buffer) {
+          assert.isNull(error);
+          assert.equal(buffer.toString('hex'), expectedBytes);
+          done();
+        });
+      });
+    });
+
+    it('should be able to read the file if bytes to read exceed the size of the file', function(done) {
+      var filePath = path.join(__dirname, '/resources/files/GIF.gif');
+
+      fs.readFile(filePath, function(error, data) {
+        var expectedBytes = data.toString('hex');
+
+        fileSystem.readFile(filePath, null, 42000000, function(error, buffer) {
+          assert.isNull(error);
+          assert.equal(buffer.toString('hex'), expectedBytes);
+          done();
+        });
+      });
+    });
+
+    it('should execute callback with an error if file does not exist', function(done) {
+      fileSystem.readFile('wrongFilePath', 1, 3, function(error, buffer) {
+        assert.isDefined(error);
+        done();
+      });
+    });
+
+  });
+
 });

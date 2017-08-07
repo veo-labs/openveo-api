@@ -8,6 +8,7 @@
 
 - Add require('@openveo/api').multipart.MultipartParser to help parse a request containing multipart data (including files)
 - Improve require('@openveo/api').util.shadowValidateObject to add the possibility to validate values of array&lt;string&gt; and array&lt;number&gt; against a list of values using the *in* property
+- Add require('@openveo/api').fileSystem.readFile to read part of a file
 
 # 4.0.0 / 2017-05-04
 
