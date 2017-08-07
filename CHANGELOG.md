@@ -4,6 +4,10 @@
 
 - **chai** has been upgraded from 3.5.0 to **4.0.2**
 
+## NEW FEATURES
+
+- Add require('@openveo/api').multipart.MultipartParser to help parse a request containing multipart data (including files)
+
 # 4.0.0 / 2017-05-04
 
 ## BREAKING CHANGES
