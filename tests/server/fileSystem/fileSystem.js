@@ -367,4 +367,30 @@ describe('fileSystem', function() {
 
   });
 
+  // getFileTypeFromBuffer method
+  describe('getFileTypeFromBuffer', function() {
+    var TYPES = [
+      fileSystem.FILE_TYPES.JPG,
+      fileSystem.FILE_TYPES.GIF,
+      fileSystem.FILE_TYPES.PNG,
+      fileSystem.FILE_TYPES.TAR,
+      fileSystem.FILE_TYPES.MP4
+    ];
+
+    TYPES.forEach(function(TYPE) {
+
+      it('should be able to get the file type from a buffer corresponding to a file of type ' + TYPE, function(done) {
+        fs.readFile(path.join(__dirname, 'resources/files/' + TYPE + '.' + TYPE.toLowerCase()), function(error, data) {
+          assert.equal(fileSystem.getFileTypeFromBuffer(data), TYPE);
+          done();
+        });
+      });
+
+    });
+
+    it('should return the unknown type if buffer does not correspond to a supported file', function() {
+      assert.equal(fileSystem.getFileTypeFromBuffer(Buffer.from('Not a file')), fileSystem.FILE_TYPES.UNKNOWN);
+    });
+  });
+
 });
