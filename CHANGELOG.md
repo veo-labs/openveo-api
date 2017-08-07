@@ -10,6 +10,7 @@
 - Improve require('@openveo/api').util.shadowValidateObject to add the possibility to validate values of array&lt;string&gt; and array&lt;number&gt; against a list of values using the *in* property
 - Add require('@openveo/api').fileSystem.readFile to read part of a file
 - Add require('@openveo/api').fileSystem.getFileTypeFromBuffer to get the type of a file as a buffer
+- Add require('@openveo/api').util.validateFiles to validate that files types are as expected
 
 # 4.0.0 / 2017-05-04
 

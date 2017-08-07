@@ -4,6 +4,7 @@ var fs = require('fs');
 var path = require('path');
 var assert = require('chai').assert;
 var util = process.requireApi('lib/util.js');
+var fileSystem = process.requireApi('lib/fileSystem.js');
 
 // util.js
 describe('util', function() {
@@ -856,9 +857,16 @@ describe('util', function() {
 
     // file type
     describe('file', function() {
-      var TYPES = ['JPG', 'GIF', 'PNG'];
+      var TYPES = [
+        fileSystem.FILE_TYPES.JPG,
+        fileSystem.FILE_TYPES.GIF,
+        fileSystem.FILE_TYPES.PNG,
+        fileSystem.FILE_TYPES.TAR,
+        fileSystem.FILE_TYPES.MP4
+      ];
 
       TYPES.forEach(function(TYPE) {
+
         it('should convert binary ' + TYPE + ' data into an object with type and Buffer', function(done) {
           fs.readFile(path.join(__dirname, 'resources/' + TYPE + '.' + TYPE.toLowerCase()), function(error, data) {
             var validatedObject = util.shallowValidateObject({
@@ -939,6 +947,76 @@ describe('util', function() {
 
       });
 
+    });
+
+  });
+
+  // validateFiles method
+  describe('validateFiles', function() {
+    var TYPES = [
+      fileSystem.FILE_TYPES.JPG,
+      fileSystem.FILE_TYPES.GIF,
+      fileSystem.FILE_TYPES.PNG,
+      fileSystem.FILE_TYPES.TAR,
+      fileSystem.FILE_TYPES.MP4
+    ];
+
+    TYPES.forEach(function(TYPE) {
+
+      it('should be able to validate a file of type ' + TYPE, function(done) {
+        util.validateFiles({
+          file: path.join(__dirname, '/resources/' + TYPE + '.' + TYPE.toLowerCase())
+        }, {
+          file: {in: [TYPE]}
+        }, function(error, files) {
+          assert.isNull(error);
+          assert.ok(files.file.isValid);
+          assert.equal(files.file.type, TYPE);
+          done();
+        });
+      });
+
+    });
+
+    it('should consider an unknown file with .tar extension as a tar file', function(done) {
+      util.validateFiles({
+        file: path.join(__dirname, '/resources/wrongTar.tar')
+      }, {
+        file: {in: [fileSystem.FILE_TYPES.TAR]}
+      }, function(error, files) {
+        assert.isNull(error);
+        assert.ok(files.file.isValid);
+        assert.equal(files.file.type, fileSystem.FILE_TYPES.TAR);
+        done();
+      });
+    });
+
+    it('should execute callback with an error if no files provided', function(done) {
+      util.validateFiles(null, {
+        file: {in: [fileSystem.FILE_TYPES.JPG]}
+      }, function(error, files) {
+        assert.isDefined(error);
+        assert.isUndefined(files);
+        done();
+      });
+    });
+
+    it('should execute callback with an error if no validation description provided', function(done) {
+      util.validateFiles({
+        file: path.join(__dirname, '/resources/GIF.gif')
+      }, null, function(error, files) {
+        assert.isDefined(error);
+        assert.isUndefined(files);
+        done();
+      });
+    });
+
+    it('should execute callback with an error if neither validation nor files provided', function(done) {
+      util.validateFiles(null, null, function(error, files) {
+        assert.isDefined(error);
+        assert.isUndefined(files);
+        done();
+      });
     });
 
   });
