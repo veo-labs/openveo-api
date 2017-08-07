@@ -591,6 +591,28 @@ describe('util', function() {
         assert.equal(validatedObject.arrayProperty.length, 3);
       });
 
+      it('should be able to validate strings inside the array', function() {
+        var expectedValue = 'value1';
+        var validatedObject = util.shallowValidateObject({
+          arrayProperty: [expectedValue]
+        }, {
+          arrayProperty: {type: 'array<string>', in: [expectedValue, 'value2']}
+        });
+
+        assert.equal(validatedObject.arrayProperty[0], expectedValue);
+        assert.equal(validatedObject.arrayProperty.length, 1);
+      });
+
+      it('should throw an error if a string inside the array cannot be found inside in', function() {
+        assert.throws(function() {
+          util.shallowValidateObject({
+            arrayProperty: ['wrong value']
+          }, {
+            arrayProperty: {type: 'array<string>', in: ['expected value']}
+          });
+        });
+      });
+
     });
 
     // array<number> type
@@ -639,6 +661,28 @@ describe('util', function() {
         });
 
         assert.equal(validatedObject.arrayProperty.length, 1);
+      });
+
+      it('should be able to validate numbers inside the array', function() {
+        var expectedValue = 42;
+        var validatedObject = util.shallowValidateObject({
+          arrayProperty: [expectedValue]
+        }, {
+          arrayProperty: {type: 'array<number>', in: [expectedValue, 43]}
+        });
+
+        assert.equal(validatedObject.arrayProperty[0], expectedValue);
+        assert.equal(validatedObject.arrayProperty.length, 1);
+      });
+
+      it('should throw an error if a number inside the array cannot be found inside in', function() {
+        assert.throws(function() {
+          util.shallowValidateObject({
+            arrayProperty: [1]
+          }, {
+            arrayProperty: {type: 'array<number>', in: [42]}
+          });
+        });
       });
 
     });
