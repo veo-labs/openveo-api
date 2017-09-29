@@ -23,3 +23,4 @@ module.exports.socket = process.requireApi('lib/socket/index.js');
 module.exports.emitters = process.requireApi('lib/emitters/index.js');
 module.exports.grunt = process.requireApi('lib/grunt/index.js');
 module.exports.multipart = process.requireApi('lib/multipart/index.js');
+module.exports.passport = process.requireApi('lib/passport/index.js');
