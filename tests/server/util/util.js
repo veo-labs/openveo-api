@@ -1097,4 +1097,48 @@ describe('util', function() {
 
   });
 
+  // evaluateDeepObjectProperties method
+  describe('evaluateDeepObjectProperties', function() {
+
+    it('should be able to evaluate a property path on an object', function() {
+      var expectedValues = ['string', [], 42, {}, function() {}];
+
+      expectedValues.forEach(function(expectedValue) {
+        assert.strictEqual(util.evaluateDeepObjectProperties('deep.deep.property', {
+          deep: {
+            deep: {
+              property: expectedValue
+            }
+          }
+        }), expectedValue);
+      });
+    });
+
+    it('should be able to evaluate a property path with only one level', function() {
+      var expectedValue = 'value';
+      assert.strictEqual(util.evaluateDeepObjectProperties('property', {
+        property: expectedValue
+      }), expectedValue);
+    });
+
+    it('should return null if object is not an object', function() {
+      var invalidValues = [42, 'string'];
+
+      invalidValues.forEach(function(invalidValue) {
+        assert.isNull(util.evaluateDeepObjectProperties('property', invalidValue));
+      });
+    });
+
+    it('should throw an error if object is null or undefined', function() {
+      var invalidValues = [null, undefined];
+
+      invalidValues.forEach(function(invalidValue) {
+        assert.throws(function() {
+          util.evaluateDeepObjectProperties('property', invalidValue);
+        }, TypeError, null, 'Expected exception when object parameter is ' + typeof invalidValue);
+      });
+    });
+
+  });
+
 });
