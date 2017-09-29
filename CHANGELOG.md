@@ -4,6 +4,7 @@
 
 - Add require('@openveo/api').util.areSameArrays to shallow validates that two arrays contain the same values, no more no less
 - Add require('@openveo/api').util.evaluateDeepObjectProperties to evaluate a path of properties on an object without making use of the JavaScript eval function
+- Add hook mechanism for plugins. Plugins can now use PluginApi.registerAction, PluginApi.unregisterAction and PluginApi.executeHook to respectively register an action on a hook, unregister an action from a hook and execute all registered actions for a hook
 
 # 4.1.0 / 2017-09-12
 

@@ -18,7 +18,8 @@ module.exports = {
       'tests/server/providers/*.js',
       'tests/server/socket/*.js',
       'tests/server/grunt/*.js',
-      'tests/server/util/*.js'
+      'tests/server/util/*.js',
+      'tests/server/plugin/*.js'
     ]
   }
 
