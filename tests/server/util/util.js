@@ -152,6 +152,33 @@ describe('util', function() {
 
   });
 
+  // areSameArrays function
+  describe('areSameArrays', function() {
+
+    it('should be able to compare two arrays', function() {
+      var values = ['string', 42, {}, function() {}, []];
+      assert.ok(util.areSameArrays(['value1'], ['value1']));
+
+      values.forEach(function(value) {
+        assert.ok(util.areSameArrays([value], [value]));
+      });
+    });
+
+    it('should ignore the order when comparing', function() {
+      assert.ok(util.areSameArrays(['value1', 'value2'], ['value2', 'value1']));
+    });
+
+    it('should compare references not copies', function() {
+      assert.notOk(util.areSameArrays([{}], [{}]));
+      assert.notOk(util.areSameArrays([function() {}], [function() {}]));
+      assert.notOk(util.areSameArrays([[]], [[]]));
+    });
+
+    it('should return false if one array contains more than the values of the other', function() {
+      assert.notOk(util.areSameArrays(['value1'], ['value1', 'value2']));
+    });
+  });
+
   // isEmailValid function
   describe('isEmailValid', function() {
 
