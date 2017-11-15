@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="en" class="yui-overrride">
+<head>
+    <meta charset="utf-8">
+    <title>lib/util.js - OpenVeo server API for plugins</title>
+    <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
+    <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
+    <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700' rel='stylesheet' type='text/css'>
+    <link rel="shortcut icon" type="image/png" href="../assets/favicon.png">
+    <script src="http://yui.yahooapis.com/combo?3.9.1/build/yui/yui-min.js"></script>
+    <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
+</head>
+<body class="yui3-skin-sam">
+
+<div id="doc">
+    <div id="hd" class="yui3-g header">
+        <div class="yui3-u-3-4">
+            <h1 class="blue-main-title">OpenVeo server API for plugins</h1>
+        </div>
+        <div class="yui3-u-1-4 version project-version">
+            API Docs for: 4.3.0
+        </div>
+    </div>
+    <div id="bd" class="yui3-g">
+
+        <div class="yui3-u-1-4">
+            <div id="docs-sidebar" class="sidebar apidocs">
+                <div id="api-list">
+                    <h2 class="off-left">APIs</h2>
+                    <div id="api-tabview" class="tabview">
+                        <ul class="tabs">
+                            <li><a href="#api-classes">Classes</a></li>
+                            <li><a href="#api-modules">Modules</a></li>
+                        </ul>
+                
+                        <div id="api-tabview-filter">
+                            <input type="search" id="api-filter" placeholder="Type to filter APIs">
+                        </div>
+                
+                        <div id="api-tabview-panel">
+                            <ul id="api-classes" class="apis classes">
+                                <li><a href="../classes/AccessError.html">AccessError</a></li>
+                                <li><a href="../classes/AdvancedEmitter.html">AdvancedEmitter</a></li>
+                                <li><a href="../classes/AdvancedEvent.html">AdvancedEvent</a></li>
+                                <li><a href="../classes/CAS.html">CAS</a></li>
+                                <li><a href="../classes/CAS1.html">CAS1</a></li>
+                                <li><a href="../classes/CAS2.html">CAS2</a></li>
+                                <li><a href="../classes/CAS3.html">CAS3</a></li>
+                                <li><a href="../classes/CasStrategy.html">CasStrategy</a></li>
+                                <li><a href="../classes/ComponentExpression.html">ComponentExpression</a></li>
+                                <li><a href="../classes/ConfigExpression.html">ConfigExpression</a></li>
+                                <li><a href="../classes/ConstantExpression.html">ConstantExpression</a></li>
+                                <li><a href="../classes/ContentController.html">ContentController</a></li>
+                                <li><a href="../classes/ContentModel.html">ContentModel</a></li>
+                                <li><a href="../classes/Controller.html">Controller</a></li>
+                                <li><a href="../classes/Database.html">Database</a></li>
+                                <li><a href="../classes/DirectiveExpression.html">DirectiveExpression</a></li>
+                                <li><a href="../classes/disableCacheMiddleware.html">disableCacheMiddleware</a></li>
+                                <li><a href="../classes/ElementExpression.html">ElementExpression</a></li>
+                                <li><a href="../classes/EntityController.html">EntityController</a></li>
+                                <li><a href="../classes/EntityModel.html">EntityModel</a></li>
+                                <li><a href="../classes/EntityProvider.html">EntityProvider</a></li>
+                                <li><a href="../classes/Expression.html">Expression</a></li>
+                                <li><a href="../classes/factory.html">factory</a></li>
+                                <li><a href="../classes/fileSystem.html">fileSystem</a></li>
+                                <li><a href="../classes/FilterExpression.html">FilterExpression</a></li>
+                                <li><a href="../classes/http-errors.html">http-errors</a></li>
+                                <li><a href="../classes/InjectExpression.html">InjectExpression</a></li>
+                                <li><a href="../classes/logger.html">logger</a></li>
+                                <li><a href="../classes/logRequestMiddleware.html">logRequestMiddleware</a></li>
+                                <li><a href="../classes/Model.html">Model</a></li>
+                                <li><a href="../classes/ModuleExpression.html">ModuleExpression</a></li>
+                                <li><a href="../classes/MongoDatabase.html">MongoDatabase</a></li>
+                                <li><a href="../classes/MultipartParser.html">MultipartParser</a></li>
+                                <li><a href="../classes/ngDpTask.html">ngDpTask</a></li>
+                                <li><a href="../classes/NotFoundError.html">NotFoundError</a></li>
+                                <li><a href="../classes/Pilot.html">Pilot</a></li>
+                                <li><a href="../classes/Plugin.html">Plugin</a></li>
+                                <li><a href="../classes/PluginApi.html">PluginApi</a></li>
+                                <li><a href="../classes/Provider.html">Provider</a></li>
+                                <li><a href="../classes/removeTask.html">removeTask</a></li>
+                                <li><a href="../classes/renameTask.html">renameTask</a></li>
+                                <li><a href="../classes/RouteExpression.html">RouteExpression</a></li>
+                                <li><a href="../classes/SocketController.html">SocketController</a></li>
+                                <li><a href="../classes/SocketNamespace.html">SocketNamespace</a></li>
+                                <li><a href="../classes/SocketServer.html">SocketServer</a></li>
+                                <li><a href="../classes/STRATEGIES.html">STRATEGIES</a></li>
+                                <li><a href="../classes/util.html">util</a></li>
+                                <li><a href="../classes/ValueExpression.html">ValueExpression</a></li>
+                            </ul>
+                
+                            <ul id="api-modules" class="apis modules">
+                                <li><a href="../modules/controllers.html">controllers</a></li>
+                                <li><a href="../modules/database.html">database</a></li>
+                                <li><a href="../modules/emitters.html">emitters</a></li>
+                                <li><a href="../modules/errors.html">errors</a></li>
+                                <li><a href="../modules/fileSystem.html">fileSystem</a></li>
+                                <li><a href="../modules/grunt.html">grunt</a></li>
+                                <li><a href="../modules/logger.html">logger</a></li>
+                                <li><a href="../modules/middlewares.html">middlewares</a></li>
+                                <li><a href="../modules/models.html">models</a></li>
+                                <li><a href="../modules/multipart.html">multipart</a></li>
+                                <li><a href="../modules/passport.html">passport</a></li>
+                                <li><a href="../modules/plugin.html">plugin</a></li>
+                                <li><a href="../modules/providers.html">providers</a></li>
+                                <li><a href="../modules/socket.html">socket</a></li>
+                                <li><a href="../modules/util.html">util</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="yui3-u-3-4">
+                <div id="api-options">
+                    Show:
+                    <label for="api-show-inherited">
+                        <input type="checkbox" id="api-show-inherited" checked>
+                        Inherited
+                    </label>
+            
+                    <label for="api-show-protected">
+                        <input type="checkbox" id="api-show-protected">
+                        Protected
+                    </label>
+            
+                    <label for="api-show-private">
+                        <input type="checkbox" id="api-show-private">
+                        Private
+                    </label>
+                    <label for="api-show-deprecated">
+                        <input type="checkbox" id="api-show-deprecated">
+                        Deprecated
+                    </label>
+            
+                </div>
+            
+            <div class="apidocs">
+                <div id="docs-main">
+                    <div class="content">
+<h1 class="file-heading">File: lib/util.js</h1>
+
+<div class="file">
+    <pre class="code prettyprint linenums">
+&#x27;use strict&#x27;;
+
+var path = require(&#x27;path&#x27;);
+var util = require(&#x27;util&#x27;);
+var async = require(&#x27;async&#x27;);
+var fileSystem = process.requireApi(&#x27;lib/fileSystem.js&#x27;);
+
+/**
+ * Provides functions for common JavaScript operations.
+ *
+ *     // Load module &quot;util&quot;
+ *     var util = require(&#x27;@openveo/api&#x27;).util;
+ *
+ * @module util
+ * @class util
+ * @main util
+ */
+
+/**
+ * Merges, recursively, all properties of object2 in object1.
+ *
+ * This will not create copies of objects.
+ *
+ * @method merge
+ * @static
+ * @param {Object} object1 The JavaScript final object
+ * @param {Object} object2 A second JavaScript object to merge into
+ * the first one
+ * @return {Object} object1
+ */
+module.exports.merge = function(object1, object2) {
+  if (!object2)
+    return object1;
+
+  if (!object1)
+    return object2;
+
+  for (var property in object2) {
+
+    try {
+
+      // Object property is an object
+      // Recusively merge its properties
+      if (typeof object2[property] === &#x27;object&#x27; &amp;&amp; !util.isArray(object2[property])) {
+        object1[property] = object1[property] || {};
+        object1[property] = this.merge(object1[property], object2[property]);
+      } else
+        object1[property] = object2[property];
+
+    } catch (e) {
+
+      // Property does not exist in object1, create it
+      object1[property] = object2[property];
+
+    }
+
+  }
+
+  return object1;
+};
+
+/**
+ * Makes union of two arrays.
+ *
+ * @method joinArray
+ * @static
+ * @param {Array} [array1] An array
+ * @param {Array} [array2] An array
+ * @return {Array} The union of the two arrays
+ */
+module.exports.joinArray = function(array1, array2) {
+  return array1.concat(array2.filter(function(item) {
+    return array1.indexOf(item) &lt; 0;
+  }));
+};
+
+/**
+ * Makes intersection of two arrays.
+ *
+ * @method intersectArray
+ * @static
+ * @param {Array} [array1] An array
+ * @param {Array} [array2] An array
+ * @return {Array} The intersection of the two arrays
+ */
+module.exports.intersectArray = function(array1, array2) {
+  return array2.filter(function(item) {
+    return array1.indexOf(item) &gt;= 0;
+  });
+};
+
+/**
+ * Compares two arrays.
+ *
+ * Shallow validates that two arrays contains the same elements, no more no less.
+ *
+ * @method areSameArrays
+ * @static
+ * @param {Array} [array1] An array
+ * @param {Array} [array2] An array
+ * @return {Boolean} true if arrays are the same, false otherwise
+ */
+module.exports.areSameArrays = function(array1, array2) {
+  if (array1.length === array2.length &amp;&amp; this.intersectArray(array1, array2).length === array1.length)
+    return true;
+  else
+    return false;
+};
+
+/**
+ * Checks if an email address is valid or not.
+ *
+ * @method isEmailValid
+ * @static
+ * @param {String} email The email address
+ * @return {Boolean} true if the email is valid, false otherwise
+ */
+module.exports.isEmailValid = function(email) {
+  var reg = new RegExp(&#x27;[a-z0-9!#$%&amp;\&#x27;*+\/=?^_&#x60;{|}~-]+(?:\.[a-z0-9!#$%&amp;\&#x27;*+\/=?^_&#x60;{|}~-]+)*@(?:[a-z0-9]&#x27; +
+                       &#x27;(?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?&#x27;);
+  return reg.test(email);
+};
+
+/**
+ * Checks if a value is isContained into another comparing primitive types.
+ *
+ * All values in expectedValue must be found in value to pass the test.
+ *
+ * @method isContained
+ * @static
+ * @param {Object|Number|String|Array} expectedValue The value expecting to be found in &quot;value&quot;
+ * @return {Boolean} true if the expected value has been found in value
+ */
+module.exports.isContained = function(expectedValue, value) {
+  if (Object.prototype.toString.call(expectedValue) === &#x27;[object Array]&#x27;) {
+    if (Object.prototype.toString.call(value) !== &#x27;[object Array]&#x27;)
+      return false;
+
+    for (var i = 0; i &lt; expectedValue.length; i++) {
+      if (!this.isContained(expectedValue[i], value[i]))
+        return false;
+    }
+  } else if (Object.prototype.toString.call(expectedValue) === &#x27;[object Object]&#x27;) {
+    if (Object.prototype.toString.call(value) !== &#x27;[object Object]&#x27;)
+      return false;
+
+    for (var property in expectedValue) {
+      if (!this.isContained(expectedValue[property], value[property]))
+        return false;
+    }
+  } else if (expectedValue !== value)
+    return false;
+
+  return true;
+};
+
+/**
+ * Validates first level object properties using the given validation description object.
+ *
+ * It helps validating that an object, coming from a request query string parameters correspond to the expected
+ * type, if it has to be required, if it must be contained into a list of values etc.
+ *
+ * Available features by types :
+ *  - **string**
+ *    - **default** Specify a default value
+ *    - **required** Boolean to indicate if the value is required (if default is specified, value will always be set)
+ *    - **in** Specify an array of strings to validate that the value is inside this array
+ *  - **number**
+ *    - **default** Specify a default value
+ *    - **required** Boolean to indicate if the value is required (if default is specified, value will always be set)
+ *    - **in** Specify an array of numbers to validate that the value is inside this array
+ *    - **gt** Specify a number to validate that the value is greater than this number
+ *    - **lt** Specify a number to validate that the value is lesser than this number
+ *    - **gte** Specify a number to validate that the value is greater or equal to this number
+ *    - **lte** Specify a number to validate that the value is lesser or equal to this number
+ *  - **array&amp;lt;string&amp;gt;**
+ *    - **required** Boolean to indicate if the value is required (an empty array is not an error)
+ *    - **in** Specify an array of values to validate that each value of the array is inside this array
+ *  - **array&amp;lt;number&amp;gt;**
+ *    - **required** Boolean to indicate if the value is required (an empty array is not an error)
+ *    - **in** Specify an array of values to validate that each value of the array is inside this array
+ *  - **array&amp;lt;object&amp;gt;**
+ *    - **required** Boolean to indicate if the value is required (an empty array is not an error)
+ *  - **date**
+ *    - **required** Boolean to indicate if the value is required
+ *    - **gt** Specify a date to validate that the value is greater than this date
+ *    - **lt** Specify a date to validate that the value is lesser than this date
+ *    - **gte** Specify a date to validate that the value is greater or equal to this date
+ *    - **lte** Specify a date to validate that the value is lesser or equal to this date
+ *  - **object**
+ *    - **default** Specify a default value
+ *    - **required** Boolean to indicate if the value is required (if default is specified, value will always be set)
+ *  - **boolean**
+ *    - **default** Specify a default value
+ *    - **required** Boolean to indicate if the value is required (if default is specified, value will always be set)
+ *  - **file**
+ *    - **required** Boolean to indicate if the value is required
+ *    - **in** Specify an array of types to validate that the file&#x27;s type is inside this array
+ *
+ * @example
+ *
+ *     // Get util
+ *     var util = require(&#x27;@openveo/api&#x27;).util;
+ *     var fileSystem = require(&#x27;@openveo/api&#x27;).fileSystem;
+ *
+ *     // Validate parameters
+ *     var params = util.shallowValidateObject({
+ *       myStringProperty: &#x27;my value&#x27;,
+ *       myNumberProperty: 25,
+ *       myArrayStringProperty: [&#x27;value1&#x27;, &#x27;value2&#x27;],
+ *       myArrayNumberProperty: [10, 5],
+ *       myArrayObjectProperty: [{}, {}],
+ *       myDateProperty: &#x27;02/25/2016&#x27;,
+ *       myObjectProperty: {firstKey: &#x27;firstValue&#x27;},
+ *       myBooleanProperty: true,
+ *       myFileProperty: 88 13 70 17 // At least the first 300 bytes of the file
+ *     }, {
+ *       myStringProperty: {type: &#x27;string&#x27;, required: true, default: &#x27;default&#x27;, in: [&#x27;my value&#x27;, &#x27;value&#x27;]},
+ *       myNumberProperty: {type: &#x27;number&#x27;, required: true, default: 0, in: [0, 5, 10], gte: 0, lte: 5},
+ *       myArrayStringProperty: {type: &#x27;array&lt;string&gt;&#x27;, required: true, in: [&#x27;value1&#x27;, &#x27;value2&#x27;]},
+ *       myArrayNumberProperty: {type: &#x27;array&lt;number&gt;&#x27;, required: true, in: [42, 43]},
+ *       myArrayObjectProperty: {type: &#x27;array&lt;object&gt;&#x27;, required: true},
+ *       myDateProperty: {type: &#x27;date&#x27;, required: true, gte: &#x27;02/20/2016&#x27;, lte: &#x27;03/30/2016&#x27;},
+ *       myObjectProperty: {type: &#x27;object&#x27;, required: true},
+ *       myBooleanProperty: {type: &#x27;boolean&#x27;, required: true},
+ *       myFileProperty: {type: &#x27;file&#x27;, required: true, in: [
+ *         fileSystem.FILE_TYPES.JPG,
+ *         fileSystem.FILE_TYPES.PNG,
+ *         fileSystem.FILE_TYPES.GIF,
+ *         fileSystem.FILE_TYPES.MP4,
+ *         fileSystem.FILE_TYPES.TAR
+ *       ]}
+ *     });
+ *
+ *     console.log(params);
+ *
+ * @method shallowValidateObject
+ * @static
+ * @param {Object} objectToAnalyze The object to analyze
+ * @param {Object} validationDescription The validation description object
+ * @return {Object} A new object with the list of properties as expected
+ * @throws {Error} An error if a property does not respect its associated rules
+ */
+module.exports.shallowValidateObject = function(objectToAnalyze, validationDescription) {
+  var properties = {};
+
+  // Iterate through the list of expected properties
+  for (var name in validationDescription) {
+    var expectedProperty = validationDescription[name];
+    var value = objectToAnalyze[name];
+
+    if (expectedProperty) {
+
+      // This property was expected
+
+      // Options
+      var required = expectedProperty.required || false;
+      var inside = expectedProperty.in || null;
+      var defaultValue = expectedProperty.default !== undefined ? expectedProperty.default : null;
+      var gt = expectedProperty.gt !== undefined ? expectedProperty.gt : null;
+      var lt = expectedProperty.lt !== undefined ? expectedProperty.lt : null;
+      var gte = expectedProperty.gte !== undefined ? expectedProperty.gte : null;
+      var lte = expectedProperty.lte !== undefined ? expectedProperty.lte : null;
+
+      switch (expectedProperty.type) {
+        case &#x27;string&#x27;:
+          value = value !== undefined ? String(value) : defaultValue;
+          if (inside &amp;&amp; inside.indexOf(value) &lt; 0)
+            throw new Error(&#x27;Property &#x27; + name + &#x27; must be one of &#x27; + inside.join(&#x27;, &#x27;));
+          break;
+        case &#x27;number&#x27;:
+          value = value !== undefined ? parseInt(value) : defaultValue;
+          value = isNaN(value) ? defaultValue : value;
+          if (gt !== null) gt = parseInt(gt);
+          if (lt !== null) lt = parseInt(lt);
+          if (gte !== null) gte = parseInt(gte);
+          if (lte !== null) lte = parseInt(lte);
+
+          if (value === null) break;
+
+          if (gt !== null &amp;&amp; value &lt;= gt)
+            throw new Error(&#x27;Property &#x27; + name + &#x27; must be greater than &#x27; + gt);
+
+          if (lt !== null &amp;&amp; value &gt;= lt)
+            throw new Error(&#x27;Property &#x27; + name + &#x27; must be lesser than &#x27; + lt);
+
+          if (gte !== null &amp;&amp; value &lt; gte)
+            throw new Error(&#x27;Property &#x27; + name + &#x27; must be greater or equal to &#x27; + gte);
+
+          if (lte !== null &amp;&amp; value &gt; lte)
+            throw new Error(&#x27;Property &#x27; + name + &#x27; must be lesser or equal to &#x27; + lte);
+
+          if (inside &amp;&amp; inside.indexOf(value) &lt; 0)
+            throw new Error(&#x27;Property &#x27; + name + &#x27; must be one of &#x27; + inside.join(&#x27;, &#x27;));
+
+          break;
+        case &#x27;array&lt;string&gt;&#x27;:
+        case &#x27;array&lt;number&gt;&#x27;:
+        case &#x27;array&lt;object&gt;&#x27;:
+          var arrayType = /array&lt;([^&gt;]*)&gt;/.exec(expectedProperty.type)[1];
+
+          if (typeof value === &#x27;string&#x27; || typeof value === &#x27;number&#x27;) {
+            value = arrayType === &#x27;string&#x27; ? String(value) : parseInt(value);
+            value = value ? [value] : null;
+          } else if (Object.prototype.toString.call(value) === &#x27;[object Array]&#x27;) {
+            var arrayValues = [];
+            for (var i = 0; i &lt; value.length; i++) {
+
+              if (arrayType === &#x27;string&#x27; || arrayType === &#x27;number&#x27;) {
+                var convertedValue = arrayType === &#x27;string&#x27; ? String(value[i]) : parseInt(value[i]);
+                if (convertedValue) {
+
+                  if (inside &amp;&amp; inside.indexOf(convertedValue) &lt; 0)
+                    throw new Error(&#x27;Property &#x27; + name + &#x27; has a value (&#x27; + convertedValue +
+                                    &#x27;) which is not part of &#x27; + inside.join(&#x27;or &#x27;));
+
+                  arrayValues.push(convertedValue);
+                }
+              }
+
+              if (arrayType === &#x27;object&#x27; &amp;&amp; Object.prototype.toString.call(value[i]) === &#x27;[object Object]&#x27;)
+                arrayValues.push(value[i]);
+            }
+
+            value = arrayValues.length ? arrayValues : null;
+          } else
+            value = null;
+
+          break;
+        case &#x27;file&#x27;:
+          if (typeof value === &#x27;string&#x27; || (value instanceof Buffer)) {
+            var fileBuffer = (value instanceof Buffer) ? value : Buffer.from(value, &#x27;binary&#x27;);
+            var fileType = fileSystem.getFileTypeFromBuffer(fileBuffer);
+
+            if (!fileType) {
+              throw new Error(
+                &#x27;Property &#x27; + name + &#x27; must be a supported file (&#x27; +
+                Object.keys(fileSystem.FILE_TYPES).join(&#x27;, &#x27;) + &#x27;)&#x27;
+              );
+            }
+
+            if (inside &amp;&amp; inside.indexOf(fileType) &lt; 0)
+              throw new Error(&#x27;Property &#x27; + name + &#x27; must be a &#x27; + inside.join(&#x27;or &#x27;) + &#x27; file&#x27;);
+
+            value = {type: fileType, file: fileBuffer};
+            break;
+          }
+
+          value = null;
+          break;
+        case &#x27;date&#x27;:
+          var date;
+
+          if (!value)
+            value = null;
+          else {
+            if (typeof value === &#x27;string&#x27;) {
+
+              // Convert literal date into Date object
+              if (!isNaN(new Date(value).getTime()))
+                date = new Date(value).getTime();
+              else if (!isNaN(parseInt(value)))
+                date = new Date(parseInt(value)).getTime();
+              else
+                date = null;
+
+            } else if (Object.prototype.toString.call(value) === &#x27;[object Date]&#x27;) {
+
+              // Already a Date object
+              date = value.getTime();
+
+            }
+
+            if (date)
+              value = date;
+
+            if (gt) {
+              var gtDate = typeof gt === &#x27;object&#x27; ? gt : new Date(gt);
+              if (value &lt;= gtDate.getTime())
+                throw new Error(&#x27;Property &#x27; + name + &#x27; must be greater than &#x27; + gtDate.toString());
+            }
+
+            if (lt) {
+              var ltDate = typeof lt === &#x27;object&#x27; ? lt : new Date(lt);
+              if (value &gt;= ltDate.getTime())
+                throw new Error(&#x27;Property &#x27; + name + &#x27; must be lesser than &#x27; + ltDate.toString());
+            }
+
+            if (gte) {
+              var gteDate = typeof gte === &#x27;object&#x27; ? gte : new Date(gte);
+              if (value &lt; gteDate.getTime())
+                throw new Error(&#x27;Property &#x27; + name + &#x27; must be greater or equal to &#x27; + gteDate.toString());
+            }
+
+            if (lte) {
+              var lteDate = typeof lte === &#x27;object&#x27; ? lte : new Date(lte);
+              if (value &gt; lteDate.getTime())
+                throw new Error(&#x27;Property &#x27; + name + &#x27; must be lesser or equal to &#x27; + lteDate.toString());
+            }
+          }
+          break;
+        case &#x27;object&#x27;:
+          var valueType = Object.prototype.toString.call(value);
+          value = value !== undefined &amp;&amp; valueType ? value : defaultValue;
+          break;
+        case &#x27;boolean&#x27;:
+          value = (value === undefined || value === null) ? defaultValue : Boolean(value);
+          break;
+        default:
+          value = null;
+      }
+
+      if (required &amp;&amp; (value === null || typeof value === &#x27;undefined&#x27;))
+        throw new Error(&#x27;Property &#x27; + name + &#x27; required&#x27;);
+      else if (value !== null &amp;&amp; typeof value !== &#x27;undefined&#x27;)
+        properties[name] = value;
+
+    }
+
+  }
+
+  return properties;
+};
+
+/**
+ * Validates that files are in the expected type.
+ *
+ * Available features for validation object:
+ *  - **in** Specify an array of types to validate that the file type is inside this array
+ *
+ * @example
+ *
+ *     // Get util
+ *     var util = require(&#x27;@openveo/api&#x27;).util;
+ *     var fileSystem = require(&#x27;@openveo/api&#x27;).fileSystem;
+ *
+ *     // Validate parameters
+ *     var params = util.validateFiles({
+ *       myFirstFile: &#x27;/tmp/myFirstFile.mp4&#x27;,
+ *       mySecondFile: &#x27;/tmp/mySecondFile.tar&#x27;
+ *     }, {
+ *       myFirstFile: {in: [fileSystem.FILE_TYPES.MP4]},
+ *       mySecondFile: {in: [fileSystem.FILE_TYPES.TAR]}
+ *     }, function(error, files) {
+ *       if (error) {
+ *         console.log(&#x27;An error occurred during validation with message: &#x27; + error.message);
+ *       }
+ *
+ *       console.log(&#x27;Is file valid ? &#x27; + files.myFirstFile.isValid);
+ *       console.log(&#x27;File type: &#x27; + files.myFirstFile.type);
+ *     });
+ *
+ *     console.log(params);
+ *
+ * @method validateFiles
+ * @static
+ * @async
+ * @param {Object} filesToAnalyze Files to validate with keys as files identifiers and values as
+ * files absolute paths
+ * @param {Object} validationDescription The validation description object with keys as files identifiers
+ * and values as validation objects
+ * @param {Function} callback The function to call when done
+ *   - **Error** The error if an error occurred, null otherwise
+ *   - **Object** Files with keys as the files identifiers and values as Objects containing validation
+ *     information: isValid and type (from util.FILE_TYPES)
+ */
+module.exports.validateFiles = function(filesToAnalyze, validationDescription, callback) {
+  var files = {};
+  var asyncFunctions = [];
+
+  var getAsyncFunction = function(id, filePath) {
+    return function(callback) {
+      fileSystem.readFile(filePath, 0, 300, function(error, buffer) {
+        if (error) return callback(error);
+
+        var pathDescriptor = path.parse(filePath);
+        var fileType = fileSystem.getFileTypeFromBuffer(buffer);
+        files[id] = {isValid: false};
+
+        if (fileType === fileSystem.FILE_TYPES.UNKNOWN &amp;&amp; pathDescriptor.ext === &#x27;.tar&#x27;)
+          files[id].type = fileSystem.FILE_TYPES.TAR;
+        else
+          files[id].type = fileType;
+
+        if (validationDescription[id].in.indexOf(files[id].type) &gt; -1 &amp;&amp;
+           (!validationDescription[id].validateExtension || pathDescriptor.ext.toLowerCase() === &#x27;.&#x27; + fileType))
+          files[id].isValid = true;
+
+        callback();
+      });
+    };
+  };
+
+  for (var id in filesToAnalyze) {
+    if (filesToAnalyze[id] &amp;&amp; validationDescription &amp;&amp; validationDescription[id])
+      asyncFunctions.push(getAsyncFunction(id, filesToAnalyze[id]));
+  }
+
+  if (!asyncFunctions.length)
+    return callback(new Error(&#x27;No files to analyze&#x27;));
+
+  async.parallel(asyncFunctions, function(error) {
+    if (error) return callback(error);
+    callback(null, files);
+  });
+};
+
+/**
+ * Gets a specific property from an Array of Objects.
+ *
+ * @example
+ *
+ *     // Get util
+ *     var util = require(&#x27;@openveo/api&#x27;).util;
+ *
+ *     // Get property &#x27;id&#x27; of each objects of the array
+ *     var params = util.getPropertyFromArray(&#x27;id&#x27;, [
+ *       {id: 0},
+ *       {id: 1},
+ *       {id: 2, items: [{id: 3}]}
+ *     ], &#x27;items&#x27;);
+ *
+ *     // [0, 1, 2, 3]
+ *     console.log(params);
+ *
+ * @method getPropertyFromArray
+ * @static
+ * @param {String} property The name of the property to fetch
+ * @param {Array} list The list of objects to look into
+ * @param {String} [recursiveProperty] The name of the recursive property to look into
+ * @return {Array} The list of values for the given property
+ */
+module.exports.getPropertyFromArray = function(property, list, recursiveProperty) {
+  var self = this;
+  var values = [];
+
+  if (!list || !list.length || !property)
+    return values;
+
+  list.forEach(function(item) {
+    values.push(item[property]);
+
+    if (recursiveProperty &amp;&amp; item[recursiveProperty])
+      values = values.concat(self.getPropertyFromArray(property, item[recursiveProperty], recursiveProperty));
+  });
+
+  return values;
+};
+
+/**
+ * Evaluates a path of properties on an object.
+ *
+ * It does not use the JavaScript eval function.
+ *
+ * @example
+ *
+ *     // Get util
+ *     var util = require(&#x27;@openveo/api&#x27;).util;
+ *
+ *     // Get property &#x27;my.deep.property&#x27; of the object
+ *     var value = util.evaluateDeepObjectProperties(&#x27;my.deep.property&#x27;, {
+ *       my {
+ *         deep {
+ *           property: &#x27;My deep property value&#x27;
+ *         }
+ *       }
+ *     });
+ *
+ *     // &quot;My deep property value&quot;
+ *     console.log(value);
+ *
+ * @method evaluateDeepObjectProperties
+ * @static
+ * @param {String} propertyPath The path of the property to retreive from the object
+ * @param {Object} objectToAnalyze The object containing the requested property
+ * @return {Mixed} The value of the property
+ */
+module.exports.evaluateDeepObjectProperties = function(propertyPath, objectToAnalyze) {
+  if (!propertyPath) return null;
+
+  var propertyNames = propertyPath.split(&#x27;.&#x27;);
+  var value = objectToAnalyze;
+
+  for (var i = 0; i &lt; propertyNames.length; i++) {
+    if (!value[propertyNames[i]]) return null;
+    value = value[propertyNames[i]];
+  }
+
+  return value;
+};
+
+    </pre>
+</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../assets/vendor/prettify/prettify-min.js"></script>
+<script>prettyPrint();</script>
+<script src="../assets/js/yui-prettify.js"></script>
+<script src="../assets/../api.js"></script>
+<script src="../assets/js/api-filter.js"></script>
+<script src="../assets/js/api-list.js"></script>
+<script src="../assets/js/api-search.js"></script>
+<script src="../assets/js/apidocs.js"></script>
+</body>
+</html>
