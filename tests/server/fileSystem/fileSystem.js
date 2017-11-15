@@ -380,10 +380,13 @@ describe('fileSystem', function() {
     TYPES.forEach(function(TYPE) {
 
       it('should be able to get the file type from a buffer corresponding to a file of type ' + TYPE, function(done) {
-        fs.readFile(path.join(__dirname, 'resources/files/' + TYPE + '.' + TYPE.toLowerCase()), function(error, data) {
-          assert.equal(fileSystem.getFileTypeFromBuffer(data), TYPE);
-          done();
-        });
+        fs.readFile(
+          path.join(__dirname, 'resources/files/' + TYPE.toUpperCase() + '.' + TYPE.toLowerCase()),
+          function(error, data) {
+            assert.equal(fileSystem.getFileTypeFromBuffer(data), TYPE);
+            done();
+          }
+        );
       });
 
     });

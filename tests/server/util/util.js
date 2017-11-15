@@ -895,31 +895,37 @@ describe('util', function() {
       TYPES.forEach(function(TYPE) {
 
         it('should convert binary ' + TYPE + ' data into an object with type and Buffer', function(done) {
-          fs.readFile(path.join(__dirname, 'resources/' + TYPE + '.' + TYPE.toLowerCase()), function(error, data) {
-            var validatedObject = util.shallowValidateObject({
-              fileProperty: data.toString('binary')
-            }, {
-              fileProperty: {type: 'file'}
-            });
+          fs.readFile(
+            path.join(__dirname, 'resources/' + TYPE.toUpperCase() + '.' + TYPE.toLowerCase()),
+            function(error, data) {
+              var validatedObject = util.shallowValidateObject({
+                fileProperty: data.toString('binary')
+              }, {
+                fileProperty: {type: 'file'}
+              });
 
-            assert.equal(validatedObject.fileProperty.type, TYPE, 'Unexpected file type');
-            assert.instanceOf(validatedObject.fileProperty.file, Buffer, 'Expected a buffer');
-            done();
-          });
+              assert.equal(validatedObject.fileProperty.type, TYPE, 'Unexpected file type');
+              assert.instanceOf(validatedObject.fileProperty.file, Buffer, 'Expected a buffer');
+              done();
+            }
+          );
         });
 
         it('should convert ' + TYPE + ' buffer into an object with type and Buffer', function(done) {
-          fs.readFile(path.join(__dirname, 'resources/' + TYPE + '.' + TYPE.toLowerCase()), function(error, data) {
-            var validatedObject = util.shallowValidateObject({
-              fileProperty: Buffer.from(data, 'binary')
-            }, {
-              fileProperty: {type: 'file'}
-            });
+          fs.readFile(
+            path.join(__dirname, 'resources/' + TYPE.toUpperCase() + '.' + TYPE.toLowerCase()),
+            function(error, data) {
+              var validatedObject = util.shallowValidateObject({
+                fileProperty: Buffer.from(data, 'binary')
+              }, {
+                fileProperty: {type: 'file'}
+              });
 
-            assert.equal(validatedObject.fileProperty.type, TYPE, 'Unexpected file type');
-            assert.instanceOf(validatedObject.fileProperty.file, Buffer, 'Expected a buffer');
-            done();
-          });
+              assert.equal(validatedObject.fileProperty.type, TYPE, 'Unexpected file type');
+              assert.instanceOf(validatedObject.fileProperty.file, Buffer, 'Expected a buffer');
+              done();
+            }
+          );
         });
 
         it('should ignore value if not a string', function() {
@@ -992,7 +998,7 @@ describe('util', function() {
 
       it('should be able to validate a file of type ' + TYPE, function(done) {
         util.validateFiles({
-          file: path.join(__dirname, '/resources/' + TYPE + '.' + TYPE.toLowerCase())
+          file: path.join(__dirname, '/resources/' + TYPE.toUpperCase() + '.' + TYPE.toLowerCase())
         }, {
           file: {in: [TYPE]}
         }, function(error, files) {
