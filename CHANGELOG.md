@@ -1,3 +1,9 @@
+# 4.3.0 /
+
+## NEW FEATURES
+
+- require('@openveo/api').util.validateFiles is now capable of also validating file extensions
+
 # 4.2.0 / 2017-10-18
 
 ## NEW FEATURES

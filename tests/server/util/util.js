@@ -1009,7 +1009,38 @@ describe('util', function() {
         });
       });
 
+      it('should be able to validate a file of type ' + TYPE + ' and its extension', function(done) {
+        util.validateFiles({
+          file: path.join(__dirname, '/resources/' + TYPE.toUpperCase() + '.' + TYPE.toLowerCase())
+        }, {
+          file: {in: [TYPE]},
+          validateExtension: true
+        }, function(error, files) {
+          assert.isNull(error);
+          assert.ok(files.file.isValid);
+          assert.equal(files.file.type, TYPE);
+          done();
+        });
+      });
+
     });
+
+    it('should consider file invalid if extension does not correspond to its type while "validateExtension" is set',
+      function(done) {
+        util.validateFiles({
+          file: path.join(__dirname, '/resources/tarWithWrongExtension.tar.part')
+        }, {
+          file: {
+            in: [fileSystem.FILE_TYPES.TAR],
+            validateExtension: true
+          }
+        }, function(error, files) {
+          assert.isNull(error);
+          assert.notOk(files.file.isValid);
+          done();
+        });
+      }
+    );
 
     it('should consider an unknown file with .tar extension as a tar file', function(done) {
       util.validateFiles({
