@@ -1,3 +1,9 @@
+# 4.4.0 / YYYY-MM-DD
+
+## NEW FEATURES
+
+- Add require('@openveo/api').grunt.ngDpTask as a grunt task to analyze an AngularJS application and generate a file containing the list of CSS and JavaScript files respecting the order of AngularJS dependencies. Use it to make sure that your AngularJS files and their associated CSS files are loaded in the right order. Is is based on the premise that the AngularJS application is organiszed in components and sub components
+
 # 4.3.0 / 2017-11-15
 
 ## NEW FEATURES
