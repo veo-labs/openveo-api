@@ -65,6 +65,7 @@
                                 <li><a href="../classes/fileSystem.html">fileSystem</a></li>
                                 <li><a href="../classes/FilterExpression.html">FilterExpression</a></li>
                                 <li><a href="../classes/http-errors.html">http-errors</a></li>
+                                <li><a href="../classes/imageProcessorMiddleware.html">imageProcessorMiddleware</a></li>
                                 <li><a href="../classes/InjectExpression.html">InjectExpression</a></li>
                                 <li><a href="../classes/logger.html">logger</a></li>
                                 <li><a href="../classes/logRequestMiddleware.html">logRequestMiddleware</a></li>
@@ -154,7 +155,7 @@
 <h3>Summary</h3>
 <div class="intro">
     <p>An AngularJS JavaScript $filter expression.</p>
-<p>AngularJS route expressions uses $filter:
+<p>Filters can be injected using AngularJS $filter service:
 $filter('filterName');</p>
 
 </div>
@@ -283,7 +284,6 @@ $filter('filterName');</p>
 
 
 
-        <span class="flag async">async</span>
 
   </div>
     <div class="description">
@@ -315,7 +315,7 @@ $filter('filterName');</p>
   <div class="meta method-meta">
       <p>
           Defined in
-      <a href="../files/lib_grunt_ngDpTask_FilterExpression.js.html#l34"><code>lib&#x2F;grunt&#x2F;ngDpTask&#x2F;FilterExpression.js:34</code></a>
+      <a href="../files/lib_grunt_ngDpTask_FilterExpression.js.html#l33"><code>lib&#x2F;grunt&#x2F;ngDpTask&#x2F;FilterExpression.js:33</code></a>
   </p>
 
 
@@ -337,12 +337,15 @@ $filter('filterName');</p>
 
 
 
-        <span class="flag async">async</span>
 
   </div>
     <div class="description">
       <h3>Summary</h3>
-        <p>Validates that the expression is a $inject expression.</p>
+        <p>Validates that the expression is a valid $filter expression.</p>
+<p>An AngularJS $filter expression must have one argument:</p>
+<ul>
+<li>The name of the filter to inject</li>
+</ul>
 
     </div>
 
@@ -353,7 +356,7 @@ $filter('filterName');</p>
             <div class="returns-description">
                 <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean" class="crosslink external" target="_blank">Boolean</a></span>:
                 <div class="blue-return-desc">
-                    <p>true if this is a valid $inject expression</p>
+                    <p>true if this is a valid $filter expression</p>
 
                 </div>
 

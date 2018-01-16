@@ -65,6 +65,7 @@
                                 <li><a href="../classes/fileSystem.html">fileSystem</a></li>
                                 <li><a href="../classes/FilterExpression.html">FilterExpression</a></li>
                                 <li><a href="../classes/http-errors.html">http-errors</a></li>
+                                <li><a href="../classes/imageProcessorMiddleware.html">imageProcessorMiddleware</a></li>
                                 <li><a href="../classes/InjectExpression.html">InjectExpression</a></li>
                                 <li><a href="../classes/logger.html">logger</a></li>
                                 <li><a href="../classes/logRequestMiddleware.html">logRequestMiddleware</a></li>
@@ -159,14 +160,14 @@ var ConstantExpression = process.requireApi(&#x27;lib/grunt/ngDpTask/ConstantExp
  */
 
 /**
- * Gets an instance of a Expression.
+ * Gets an instance of an Expression.
  *
  * @method get
  * @static
- * @param {String} name The AngularJS element name as definy by Expression.ELEMENTS
+ * @param {String} name The AngularJS element name (see Expression.ELEMENTS)
  * @param {Object} expression The definition expression as returned by esprima
  * @return {Expression} The definition expression
- * @throws {TypeError} If database type is unknown
+ * @throws {TypeError} If expression type is unknown
  */
 module.exports.getElementExpression = function(name, expression) {
   if (name &amp;&amp; expression) {

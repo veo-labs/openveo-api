@@ -300,6 +300,15 @@
             "fors": {},
             "namespaces": {}
         },
+        "lib/middlewares/imageProcessorMiddleware.js": {
+            "name": "lib/middlewares/imageProcessorMiddleware.js",
+            "modules": {},
+            "classes": {
+                "imageProcessorMiddleware": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
         "lib/middlewares/index.js": {
             "name": "lib/middlewares/index.js",
             "modules": {
@@ -669,6 +678,7 @@
             "elements": {},
             "classes": {
                 "disableCacheMiddleware": 1,
+                "imageProcessorMiddleware": 1,
                 "logRequestMiddleware": 1
             },
             "fors": {},
@@ -1181,7 +1191,7 @@
             "namespace": "",
             "file": "lib/grunt/ngDpTask/ConfigExpression.js",
             "line": 6,
-            "description": "An AngularJS JavaScript config expression.\n\nAngularJS config expressions uses angular.module.config():\nangular.module('AngularJsModule', ['Dependency1', function(Dependency1) {});",
+            "description": "An AngularJS JavaScript config expression.\n\nAngularJS config expressions uses angular.module.config():\nangular.module('AngularJsModule').config(['Dependency1', function(Dependency1) {});",
             "is_constructor": 1,
             "params": [
                 {
@@ -1291,7 +1301,7 @@
             "namespace": "",
             "file": "lib/grunt/ngDpTask/FilterExpression.js",
             "line": 6,
-            "description": "An AngularJS JavaScript $filter expression.\n\nAngularJS route expressions uses $filter:\n$filter('filterName');",
+            "description": "An AngularJS JavaScript $filter expression.\n\nFilters can be injected using AngularJS $filter service:\n$filter('filterName');",
             "is_constructor": 1,
             "params": [
                 {
@@ -1335,7 +1345,7 @@
             "namespace": "",
             "file": "lib/grunt/ngDpTask/ModuleExpression.js",
             "line": 6,
-            "description": "A JavaScript module expression as angularJsApp.module().",
+            "description": "A JavaScript module expression as angularJsApp.module('module').",
             "is_constructor": 1,
             "params": [
                 {
@@ -1400,8 +1410,8 @@
             "module": "grunt",
             "namespace": "",
             "file": "lib/grunt/ngDpTask/ngDpTask.js",
-            "line": 337,
-            "description": "Defines a grunt task to build the topology tree of an AngularJS application.\n\nAngularJS applications, which respect components architecture, need to be loaded in the right order as some\ncomponents may depend on other components. This task helps build an array of JavaScript files and css / scss files\nin the right order.\n\nFor this to work, each module must be declared in a separated file and a single file should not AngularJs elements to\nseveral different modules.\n\n    // Register task\n    var openVeoApi = require('@openveo/api');\n    grunt.registerMultiTask('angularjs-topology', openVeoApi.grunt.ngDpTask(grunt));\n\n    // Configure task\n    grunt.initConfig({\n      'angularjs-topology': {\n        app1: {\n          src: '/path/to/the/app1',\n          dest: '/path/to/the/app1/topology.json'\n        },\n        app2: {\n          src: '/path/to/the/app2',\n          dest: '/path/to/the/app2/topology.json'\n        }\n      }\n    });\n\n    // Ouput example\n    {\n      js: ['/path/to/js/file1.js', '/path/to/js/file2.js', [...]],\n      css: ['/path/to/css/file1.css', '/path/to/css/file2.css', [...]]\n    }",
+            "line": 369,
+            "description": "Defines a grunt task to build the list of sources (css and js) of an AngularJS application.\n\nAngularJS applications, which respect components architecture, need to be loaded in the right order as some\ncomponents may depend on other components. This task helps build an array of JavaScript files and css / scss files\nin the right order.\n\nFor this to work, each module must be declared in a separated file and a single file should not define AngularJS\nelements belonging to several different modules.\n\nAvailable options are:\n  - basePath: The base path which will be replaced by the cssPrefix or jsPrefix\n  - cssPrefix: For CSS / SCSS files, replace the basePath by this prefix\n  - jsPrefix: For JS files, replace the basePath by this prefix\n\n    // Register task\n    var openVeoApi = require('@openveo/api');\n    grunt.registerMultiTask('ngDp', openVeoApi.grunt.ngDpTask(grunt));\n\n    // Configure task\n    grunt.initConfig({\n      'ngDp': {\n        options: {\n          basePath: '/path/to/the/',\n          cssPrefix: '../../other/css/path/',\n          jsPrefix: '../../other/js/path/'\n        },\n        app1: {\n          src: '/path/to/the/app1/**\\/*.*',\n          dest: '/path/to/the/app1/topology.json'\n        },\n        app2: {\n          src: '/path/to/the/app2**\\/*.*',\n          dest: '/path/to/the/app2/topology.json'\n        }\n      }\n    });\n\n    // Ouput example (/path/to/the/app1/topology.json)\n    {\n      js: ['../..other/js/path/app1/file1.js', '../..other/js/path/app1/file2.js', [...]],\n      css: ['../..other/css/path/app1/file1.css', '../..other/css/path/app1/file2.css', [...]]\n    }",
             "static": 1
         },
         "removeTask": {
@@ -1448,6 +1458,52 @@
             "line": 7,
             "description": "Defines an express middleware to deactivate user agent cache of requests.\n\n- **Cache-Control** : *no-cache* to force caches to request the original server\n- **Cache-Control** : *no-store* to force caches not to keep any copy of the response\n- **Cache-Control** : *must-revalidate* to force caches to ask original server validation of a stale response\n- **Pragma** : *no-cache* to be backward compatible with HTTP/1.0 caches\n- **Expires** : *0* to mark all responses as staled\n\n\n    var openVeoApi = require('@openveo/api');\n    expressApp.use(openVeoApi.middlewares.disableCacheMiddleware);",
             "static": 1
+        },
+        "imageProcessorMiddleware": {
+            "name": "imageProcessorMiddleware",
+            "shortname": "imageProcessorMiddleware",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "middlewares",
+            "namespace": "",
+            "file": "lib/middlewares/imageProcessorMiddleware.js",
+            "line": 39,
+            "description": "Defines an expressJS middleware to process images.\n\n    var openVeoApi = require('@openveo/api');\n    expressApp.use('/mount-path', openVeoApi.middlewares.imageProcessorMiddleware(\n      '/path/to/the/folder/containing/images'\n      '/path/to/the/folder/containing/processed/images/cache'\n      [\n        {\n          id: 'my-thumb', // Id of the style to apply when requesting an image processing\n          width: 200, // Expected width (in px) of the image\n          quality: 50 // Expected quality from 0 to 100 (default to 90 with 100 the best)\n        }\n      ]\n    ));\n\n    // Then it's possible to apply style \"my-thumb\" to the image /mount-path/my-image.jpg using\n    // parameter \"style\": /mount-path/my-image.jpg?style=my-thumb\n\nIf path corresponds to an image with a parameter \"style\", the style is applied to the image before returning it to\nthe client. Actually only one type of manipulation can be applied to an image: generate a thumbnail.\nIf path does not correspond to an image the processor is skipped.",
+            "is_constructor": 1,
+            "static": 1,
+            "params": [
+                {
+                    "name": "imagesDirectory",
+                    "description": "The path of the directory containing the images to process",
+                    "type": "String"
+                },
+                {
+                    "name": "cacheDirectory",
+                    "description": "The path of the directory containing processed images for cache purpose",
+                    "type": "String"
+                },
+                {
+                    "name": "styles",
+                    "description": "The list of available styles to process images with for each style:\n  - [String] **id** Style id to use as the value of the \"style\" parameter when requesting an image processing\n  - [Number] **[width]** Expected width of the image (in px) (default to 10)\n  - [Number] **[quality]** Expected compression level from 0 to 100 (default to 90)",
+                    "type": "Array"
+                },
+                {
+                    "name": "headers",
+                    "description": "The name / value list of headers to send with the image when responding to the client",
+                    "type": "Object"
+                }
+            ],
+            "return": {
+                "description": "The ExpressJS middleware",
+                "type": "Function"
+            },
+            "throws": {
+                "description": "If images directory is empty",
+                "type": "TypeError"
+            }
         },
         "logRequestMiddleware": {
             "name": "logRequestMiddleware",
@@ -3515,10 +3571,9 @@
         {
             "file": "lib/grunt/ngDpTask/ComponentExpression.js",
             "line": 20,
-            "description": "Validates that the expression is an AngularJS component definition expression.\n\nAn AngularJS definition expression must have two arguments:\n  - The name of the element to define\n  - An object",
+            "description": "Validates that the expression is an AngularJS component definition expression.\n\nAn AngularJS component definition expression must have two arguments:\n  - The name of the component to define\n  - The description object of the component",
             "itemtype": "method",
             "name": "isValid",
-            "async": 1,
             "return": {
                 "description": "true if this is a valid AngularJS component definition expression, false otherwise",
                 "type": "Boolean"
@@ -3528,11 +3583,10 @@
         },
         {
             "file": "lib/grunt/ngDpTask/ComponentExpression.js",
-            "line": 38,
-            "description": "Gets AngularJS component dependencies.",
+            "line": 37,
+            "description": "Gets AngularJS component dependencies.\n\nThe following dependency expressions are supported:\n  - The attribute \"controller\" of the component definition",
             "itemtype": "method",
             "name": "getDependencies",
-            "async": 1,
             "return": {
                 "description": "The list of dependencies",
                 "type": "Array"
@@ -3543,10 +3597,9 @@
         {
             "file": "lib/grunt/ngDpTask/ConfigExpression.js",
             "line": 23,
-            "description": "Gets AngularJS config dependencies.",
+            "description": "Gets AngularJS config dependencies.\n\nOnly dependencies in strict dependency injection are supported.",
             "itemtype": "method",
             "name": "getDependencies",
-            "async": 1,
             "return": {
                 "description": "The list of dependencies",
                 "type": "Array"
@@ -3556,11 +3609,10 @@
         },
         {
             "file": "lib/grunt/ngDpTask/ConfigExpression.js",
-            "line": 43,
-            "description": "Validates that the expression is a config expression.",
+            "line": 44,
+            "description": "Validates that the expression is a config expression.\n\nAn AngularJS config expression must have one argument:\n  - Either an array when using strict dependency injection or just a function",
             "itemtype": "method",
             "name": "isValid",
-            "async": 1,
             "return": {
                 "description": "true if this is a valid config expression",
                 "type": "Boolean"
@@ -3571,10 +3623,9 @@
         {
             "file": "lib/grunt/ngDpTask/DirectiveExpression.js",
             "line": 20,
-            "description": "Gets AngularJS component dependencies.",
+            "description": "Gets AngularJS directive dependencies.\n\nThe following dependency expressions are supported:\n  - The attribute \"controller\" of the directive definition",
             "itemtype": "method",
             "name": "getDependencies",
-            "async": 1,
             "return": {
                 "description": "The list of dependencies",
                 "type": "Array"
@@ -3599,7 +3650,6 @@
             "description": "Gets the expression type.",
             "itemtype": "method",
             "name": "getElementType",
-            "async": 1,
             "return": {
                 "description": "The expression type as defined in Expression.ELEMENTS",
                 "type": "String"
@@ -3609,11 +3659,10 @@
         },
         {
             "file": "lib/grunt/ngDpTask/ElementExpression.js",
-            "line": 67,
-            "description": "Gets the name of the AngularJS element definied by this expression.",
+            "line": 66,
+            "description": "Gets the name of the AngularJS element defined by this expression.",
             "itemtype": "method",
             "name": "getName",
-            "async": 1,
             "return": {
                 "description": "The name of the AngularJS element",
                 "type": "String"
@@ -3623,11 +3672,10 @@
         },
         {
             "file": "lib/grunt/ngDpTask/ElementExpression.js",
-            "line": 78,
-            "description": "Validates that the expression is an AngularJS definition expression.\n\nAn AngularJS definition expression must have two arguments:\n  - The name of the element to define\n  - A function or an array (when including dependencies)",
+            "line": 76,
+            "description": "Validates that the expression is an AngularJS definition expression.\n\nAn AngularJS element definition expression must have two arguments:\n  - The name of the element to define\n  - A function or an array (when including dependencies)",
             "itemtype": "method",
             "name": "isValid",
-            "async": 1,
             "return": {
                 "description": "true if this is a valid AngularJS element expression, false otherwise",
                 "type": "Boolean"
@@ -3637,11 +3685,10 @@
         },
         {
             "file": "lib/grunt/ngDpTask/ElementExpression.js",
-            "line": 98,
+            "line": 95,
             "description": "Checks if the expression is an AngularJS definition.",
             "itemtype": "method",
             "name": "isDefinition",
-            "async": 1,
             "return": {
                 "description": "true",
                 "type": "Boolean"
@@ -3651,11 +3698,10 @@
         },
         {
             "file": "lib/grunt/ngDpTask/ElementExpression.js",
-            "line": 109,
-            "description": "Gets AngularJS element dependencies.",
+            "line": 105,
+            "description": "Gets AngularJS element dependencies.\n\nThe following dependency expressions are supported:\n  - Dependencies injected using AngularJS strict dependency injection syntax",
             "itemtype": "method",
             "name": "getDependencies",
-            "async": 1,
             "return": {
                 "description": "The list of dependencies",
                 "type": "Array"
@@ -3680,7 +3726,6 @@
             "description": "Validates that the expression is as expected regarding the expression type.",
             "itemtype": "method",
             "name": "isValid",
-            "async": 1,
             "return": {
                 "description": "true, sub classes may override it",
                 "type": "Boolean"
@@ -3694,7 +3739,6 @@
             "description": "Gets AngularJS $filter dependency.",
             "itemtype": "method",
             "name": "getDependency",
-            "async": 1,
             "return": {
                 "description": "The name of the injected filter",
                 "type": "String"
@@ -3704,13 +3748,12 @@
         },
         {
             "file": "lib/grunt/ngDpTask/FilterExpression.js",
-            "line": 34,
-            "description": "Validates that the expression is a $inject expression.",
+            "line": 33,
+            "description": "Validates that the expression is a valid $filter expression.\n\nAn AngularJS $filter expression must have one argument:\n  - The name of the filter to inject",
             "itemtype": "method",
             "name": "isValid",
-            "async": 1,
             "return": {
-                "description": "true if this is a valid $inject expression",
+                "description": "true if this is a valid $filter expression",
                 "type": "Boolean"
             },
             "class": "FilterExpression",
@@ -3719,10 +3762,9 @@
         {
             "file": "lib/grunt/ngDpTask/InjectExpression.js",
             "line": 23,
-            "description": "Gets AngularJS element dependencies.",
+            "description": "Gets inject expression dependencies.",
             "itemtype": "method",
             "name": "getDependencies",
-            "async": 1,
             "return": {
                 "description": "The list of dependencies",
                 "type": "Array"
@@ -3732,11 +3774,10 @@
         },
         {
             "file": "lib/grunt/ngDpTask/InjectExpression.js",
-            "line": 41,
-            "description": "Validates that the expression is a $inject expression.",
+            "line": 40,
+            "description": "Validates that the expression is a $inject expression.\n\nAn AngularJS $inject expression must have an array as the right assignement token.",
             "itemtype": "method",
             "name": "isValid",
-            "async": 1,
             "return": {
                 "description": "true if this is a valid $inject expression",
                 "type": "Boolean"
@@ -3747,10 +3788,9 @@
         {
             "file": "lib/grunt/ngDpTask/ModuleExpression.js",
             "line": 20,
-            "description": "Validates that the expression is an AngularJS module definition expression.\n\nAn AngularJS definition expression must have two arguments:\n  - The name of the element to define\n  - An array of dependencies",
+            "description": "Validates that the expression is an AngularJS module definition expression.\n\nAn AngularJS module definition expression must have two arguments:\n  - The name of the element to define\n  - An array of dependencies",
             "itemtype": "method",
             "name": "isValid",
-            "async": 1,
             "return": {
                 "description": "true if this is a valid AngularJS module definition expression, false otherwise",
                 "type": "Boolean"
@@ -3760,11 +3800,10 @@
         },
         {
             "file": "lib/grunt/ngDpTask/ModuleExpression.js",
-            "line": 38,
+            "line": 37,
             "description": "Gets AngularJS module dependencies.",
             "itemtype": "method",
             "name": "getDependencies",
-            "async": 1,
             "return": {
                 "description": "The list of dependencies",
                 "type": "Array"
@@ -3774,11 +3813,10 @@
         },
         {
             "file": "lib/grunt/ngDpTask/ModuleExpression.js",
-            "line": 59,
-            "description": "Checks if the module expression is an AngularJS definition.",
+            "line": 57,
+            "description": "Checks if the module expression is an AngularJS definition.\n\nangular.module() may be used to retrieve a previously registered module or to define a new one.",
             "itemtype": "method",
             "name": "isDefinition",
-            "async": 1,
             "return": {
                 "description": "true if this is a module definition, false otherwise",
                 "type": "Boolean"
@@ -3789,10 +3827,9 @@
         {
             "file": "lib/grunt/ngDpTask/RouteExpression.js",
             "line": 28,
-            "description": "Gets AngularJS resolve dependencies.\n\nGet dependencies for all resolve property.",
+            "description": "Gets AngularJS route expression dependencies.\n\nThe following dependency expressions are supported:\n  - The attribute \"controller\" of the route\n  - All dependencies injected in \"resolve\" properties",
             "itemtype": "method",
             "name": "getDependencies",
-            "async": 1,
             "return": {
                 "description": "The list of dependencies",
                 "type": "Array"
@@ -3802,11 +3839,10 @@
         },
         {
             "file": "lib/grunt/ngDpTask/RouteExpression.js",
-            "line": 56,
-            "description": "Gets AngularJS resolve definitions.\n\nGet all resolve property names.",
+            "line": 59,
+            "description": "Gets AngularJS route definitions.\n\nThe following definition expressions are supported:\n  - All \"resolve\" property keys",
             "itemtype": "method",
             "name": "getDefinitions",
-            "async": 1,
             "return": {
                 "description": "The list of definitions",
                 "type": "Array"
@@ -3816,13 +3852,12 @@
         },
         {
             "file": "lib/grunt/ngDpTask/RouteExpression.js",
-            "line": 79,
-            "description": "Validates that the expression is a $inject expression.",
+            "line": 82,
+            "description": "Validates that the expression is a route expression.\n\nAn AngularJS route definition expression must have two arguments:\n  - The path of the route\n  - The route description object",
             "itemtype": "method",
             "name": "isValid",
-            "async": 1,
             "return": {
-                "description": "true if this is a valid $inject expression",
+                "description": "true if this is a valid route expression",
                 "type": "Boolean"
             },
             "class": "RouteExpression",
@@ -3831,12 +3866,11 @@
         {
             "file": "lib/grunt/ngDpTask/ValueExpression.js",
             "line": 20,
-            "description": "Validates that the expression is an AngularJS value definition expression.\n\nAn AngularJS value definition expression must have two arguments:\n  - The name of the element to define\n  - Could be anything",
+            "description": "Validates that the expression is an AngularJS value definition expression.\n\nAn AngularJS value definition expression must have two arguments:\n  - The name of the value to define\n  - Could be anything",
             "itemtype": "method",
             "name": "isValid",
-            "async": 1,
             "return": {
-                "description": "true if this is a valid AngularJS expression, false otherwise",
+                "description": "true if this is a valid AngularJS value expression, false otherwise",
                 "type": "Boolean"
             },
             "class": "ValueExpression",
@@ -3845,14 +3879,14 @@
         {
             "file": "lib/grunt/ngDpTask/expressionFactory.js",
             "line": 17,
-            "description": "Gets an instance of a Expression.",
+            "description": "Gets an instance of an Expression.",
             "itemtype": "method",
             "name": "get",
             "static": 1,
             "params": [
                 {
                     "name": "name",
-                    "description": "The AngularJS element name as definy by Expression.ELEMENTS",
+                    "description": "The AngularJS element name (see Expression.ELEMENTS)",
                     "type": "String"
                 },
                 {
@@ -3866,7 +3900,7 @@
                 "type": "Expression"
             },
             "throws": {
-                "description": "If database type is unknown",
+                "description": "If expression type is unknown",
                 "type": "TypeError"
             },
             "class": "factory",
@@ -3874,8 +3908,8 @@
         },
         {
             "file": "lib/grunt/ngDpTask/ngDpTask.js",
-            "line": 20,
-            "description": "Finds out which AngularJS definition holds the content and which dependencies it uses.\n\nThe following JavaScript expressions are used to identify the definition held by the content:\n  - angular.module('moduleName', [])\n  - angular.module('moduleName').component()\n  - angular.module('moduleName').directive()\n  - angular.module('moduleName').controller()\n  - angular.module('moduleName').factory()\n  - angular.module('moduleName').service()\n  - angular.module('moduleName').constant()\n  - angular.module('moduleName').service()\n  - angular.module('moduleName').decorator()\n  - angular.module('moduleName').filter()\n  - angular.module('moduleName').config()\n  - angular.module('moduleName').run()\n\nThe following JavaScript expressions are used to identify the dependencies of the content:\n  - MyAngularJsElement.$inject = ['Dependency1', 'Dependency2'];\n  - angular.module('moduleName', ['DependencyModule'])\n\nThe following JavaScript expressions are used to identify the modules associated to the content:\n  - angular.module('moduleName')",
+            "line": 19,
+            "description": "Finds out AngularJS definitions and dependencies for the given content.\n\nThis is recursive.\n\nThe following JavaScript expressions are used to identify definitions:\n  - angular.module('moduleName', [])\n  - angular.module('moduleName').component()\n  - angular.module('moduleName').directive()\n  - angular.module('moduleName').controller()\n  - angular.module('moduleName').factory()\n  - angular.module('moduleName').service()\n  - angular.module('moduleName').constant()\n  - angular.module('moduleName').service()\n  - angular.module('moduleName').decorator()\n  - angular.module('moduleName').filter()\n  - angular.module('moduleName').config()\n  - angular.module('moduleName').run()\n\nThe following JavaScript expressions are used to identify dependencies:\n  - MyAngularJsElement.$inject = ['Dependency1', 'Dependency2'];\n  - angular.module('moduleName', ['DependencyModule'])\n\nThe following JavaScript expressions are used to identify associated modules:\n  - angular.module('moduleName')",
             "itemtype": "method",
             "name": "findDependencies",
             "params": [
@@ -3892,7 +3926,7 @@
         },
         {
             "file": "lib/grunt/ngDpTask/ngDpTask.js",
-            "line": 57,
+            "line": 58,
             "description": "Merges results from sub expressions into results for the current expression.",
             "params": [
                 {
@@ -3926,8 +3960,8 @@
         },
         {
             "file": "lib/grunt/ngDpTask/ngDpTask.js",
-            "line": 145,
-            "description": "Fetches a script from the list of scripts.",
+            "line": 146,
+            "description": "Fetches a script from a list of scripts.",
             "itemtype": "method",
             "name": "findScript",
             "params": [
@@ -3938,7 +3972,7 @@
                 },
                 {
                     "name": "property",
-                    "description": "The script property used to identify the script",
+                    "description": "The script property used to identify the script to fetch",
                     "type": "String"
                 },
                 {
@@ -3958,58 +3992,19 @@
         },
         {
             "file": "lib/grunt/ngDpTask/ngDpTask.js",
-            "line": 168,
-            "description": "Fetches a node from the tree of nodes.",
-            "itemtype": "method",
-            "name": "findNode",
-            "params": [
-                {
-                    "name": "node",
-                    "description": "The node from where to start",
-                    "type": "Object",
-                    "props": [
-                        {
-                            "name": "children",
-                            "description": "The list of node children",
-                            "type": "Array"
-                        }
-                    ]
-                },
-                {
-                    "name": "property",
-                    "description": "The node property used to identify it",
-                    "type": "String"
-                },
-                {
-                    "name": "value",
-                    "description": "The expected value of the node property",
-                    "type": "String"
-                }
-            ],
-            "return": {
-                "description": "The found node or null if not found",
-                "type": "Object|Null"
-            },
-            "access": "private",
-            "tagname": "",
-            "class": "ngDpTask",
-            "module": "grunt"
-        },
-        {
-            "file": "lib/grunt/ngDpTask/ngDpTask.js",
-            "line": 190,
-            "description": "Browses a flat list of scripts to find a script longest dependency chains.\n\nEach script may have several dependencies, each dependency can also have several dependencies.\nfindLongestDependencyChains helps find the longest dependency chain of one of the script.\nAs the script may have several longest dependency chain, a list of chains is returned.\n\nA chain is an ordered list of script paths.",
+            "line": 169,
+            "description": "Browses a flat list of scripts to find a script longest dependency chains.\n\nEach script may have several dependencies, each dependency can also have several dependencies.\nfindLongestDependencyChains helps find the longest dependency chain of one of the script.\nAs the script may have several longest dependency chain, a list of chains is returned.\n\nA chain is an ordered list of script paths.\n\nThis is recursive.",
             "itemtype": "method",
             "name": "findLongestDependencyChains",
             "params": [
                 {
                     "name": "scripts",
-                    "description": "The flat list of scripts",
+                    "description": "The flat list of scripts with for each script:\n - **dependencies** The list of dependency names of the script\n - **definitions** The list of definition names of the script\n - **path** The script path",
                     "type": "Array"
                 },
                 {
                     "name": "script",
-                    "description": "The script to analyze",
+                    "description": "The script to analyze (default to the first one of the list of scripts)",
                     "type": "Object",
                     "optional": true
                 }
@@ -4025,14 +4020,14 @@
         },
         {
             "file": "lib/grunt/ngDpTask/ngDpTask.js",
-            "line": 256,
-            "description": "Builds the dependencies tree.\n\nEach scripts have definitions and dependencies.",
+            "line": 240,
+            "description": "Builds the dependencies tree.",
             "itemtype": "method",
             "name": "buildTree",
             "params": [
                 {
                     "name": "scripts",
-                    "description": "The flat list of scripts containing AngularJS definitions and dependencies",
+                    "description": "The flat list of scripts with for each script:\n - **dependencies** The list of dependency names of the script\n - **definitions** The list of definition names of the script\n - **path** The script path",
                     "type": "Array"
                 }
             ],
@@ -4047,25 +4042,154 @@
         },
         {
             "file": "lib/grunt/ngDpTask/ngDpTask.js",
-            "line": 311,
-            "description": "Retrieves CSS and JS files from tree of scripts.",
+            "line": 309,
+            "description": "Retrieves CSS and JS files from tree of scripts in a flattened order.\n\nThis is recursive.",
             "itemtype": "method",
             "name": "getTreeResources",
             "params": [
                 {
                     "name": "node",
                     "description": "The node from where to start",
-                    "type": "Object"
+                    "type": "Object",
+                    "props": [
+                        {
+                            "name": "path",
+                            "description": "The file path",
+                            "type": "String"
+                        },
+                        {
+                            "name": "styles",
+                            "description": "The list of css / scss file paths",
+                            "type": "Array"
+                        }
+                    ]
                 }
             ],
             "return": {
-                "description": "An object with a \"css\" property containing the list of CSS files and a \"js\" property containing\nthe list of JS files",
+                "description": "An object with:\n  - **childrenCss** The list of children CSS files\n  - **childrenJs** The list of children CSS files\n  - **subChildrenCss** The list of sub children CSS files\n  - **subChildrenJs** The list of sub children JS files",
                 "type": "Object"
             },
             "access": "private",
             "tagname": "",
             "class": "ngDpTask",
             "module": "grunt"
+        },
+        {
+            "file": "lib/grunt/ngDpTask/ngDpTask.js",
+            "line": 350,
+            "description": "Retrieves CSS and JS files from tree of scripts in a flattened order.",
+            "itemtype": "method",
+            "name": "getResources",
+            "params": [
+                {
+                    "name": "tree",
+                    "description": "The tree of resources",
+                    "type": "Object"
+                }
+            ],
+            "return": {
+                "description": "An object with:\n  - **css** The list of css files in the right order\n  - **js** The list of js files in the right order\nthe list of JS files",
+                "type": "Object"
+            },
+            "access": "private",
+            "tagname": "",
+            "class": "ngDpTask",
+            "module": "grunt"
+        },
+        {
+            "file": "lib/grunt/ngDpTask/ngDpTask.js",
+            "line": 426,
+            "description": "Generates a file with the list of JS and CSS files in the right order.",
+            "params": [
+                {
+                    "name": "sourceFiles",
+                    "description": "The list of grunt source files",
+                    "type": "Array"
+                },
+                {
+                    "name": "destination",
+                    "description": "The destination file which will contain the list of JS files and CSS files",
+                    "type": "String"
+                },
+                {
+                    "name": "callback",
+                    "description": "The function to call when it's done with:\n  - **Error** If an error occurred, null otherwise",
+                    "type": "Function"
+                }
+            ],
+            "class": "ngDpTask",
+            "module": "grunt"
+        },
+        {
+            "file": "lib/middlewares/imageProcessorMiddleware.js",
+            "line": 15,
+            "description": "Generates a thumbnail from the the given image.",
+            "itemtype": "method",
+            "name": "generateThumbnail",
+            "access": "private",
+            "tagname": "",
+            "params": [
+                {
+                    "name": "imagePath",
+                    "description": "The image absolute path",
+                    "type": "String"
+                },
+                {
+                    "name": "cachePath",
+                    "description": "The image cache path",
+                    "type": "String"
+                },
+                {
+                    "name": "width",
+                    "description": "The expected image width (default to 10)",
+                    "type": "Number",
+                    "optional": true
+                },
+                {
+                    "name": "quality",
+                    "description": "Expected compression level from 0 to 100 (default to 90)",
+                    "type": "Number",
+                    "optional": true
+                }
+            ],
+            "return": {
+                "description": "callback Function to call when its done with:\n  - **Error** An error if something went wrong",
+                "type": "Function"
+            },
+            "class": "imageProcessorMiddleware",
+            "module": "middlewares"
+        },
+        {
+            "file": "lib/middlewares/imageProcessorMiddleware.js",
+            "line": 82,
+            "description": "Fetches a style by its id from the list of styles.",
+            "params": [
+                {
+                    "name": "id",
+                    "description": "The id of the style to fetch",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "The style description object",
+                "type": "Object"
+            },
+            "class": "imageProcessorMiddleware",
+            "module": "middlewares"
+        },
+        {
+            "file": "lib/middlewares/imageProcessorMiddleware.js",
+            "line": 104,
+            "description": "Sends an image to client as response.",
+            "params": [
+                {
+                    "name": "imagePath",
+                    "description": "The absolute image path",
+                    "type": "String"
+                }
+            ],
+            "class": "imageProcessorMiddleware",
+            "module": "middlewares"
         },
         {
             "file": "lib/models/ContentModel.js",
@@ -6676,7 +6800,19 @@
         },
         {
             "message": "Missing item type\nMerges results from sub expressions into results for the current expression.",
-            "line": " lib/grunt/ngDpTask/ngDpTask.js:57"
+            "line": " lib/grunt/ngDpTask/ngDpTask.js:58"
+        },
+        {
+            "message": "Missing item type\nGenerates a file with the list of JS and CSS files in the right order.",
+            "line": " lib/grunt/ngDpTask/ngDpTask.js:426"
+        },
+        {
+            "message": "Missing item type\nFetches a style by its id from the list of styles.",
+            "line": " lib/middlewares/imageProcessorMiddleware.js:82"
+        },
+        {
+            "message": "Missing item type\nSends an image to client as response.",
+            "line": " lib/middlewares/imageProcessorMiddleware.js:104"
         },
         {
             "message": "Missing item type\nAnalyzes the validate ticket response from cas server.",

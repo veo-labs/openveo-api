@@ -65,6 +65,7 @@
                                 <li><a href="../classes/fileSystem.html">fileSystem</a></li>
                                 <li><a href="../classes/FilterExpression.html">FilterExpression</a></li>
                                 <li><a href="../classes/http-errors.html">http-errors</a></li>
+                                <li><a href="../classes/imageProcessorMiddleware.html">imageProcessorMiddleware</a></li>
                                 <li><a href="../classes/InjectExpression.html">InjectExpression</a></li>
                                 <li><a href="../classes/logger.html">logger</a></li>
                                 <li><a href="../classes/logRequestMiddleware.html">logRequestMiddleware</a></li>
@@ -155,7 +156,7 @@
 <div class="intro">
     <p>An AngularJS JavaScript config expression.</p>
 <p>AngularJS config expressions uses angular.module.config():
-angular.module('AngularJsModule', ['Dependency1', function(Dependency1) {});</p>
+angular.module('AngularJsModule').config(['Dependency1', function(Dependency1) {});</p>
 
 </div>
 
@@ -283,12 +284,12 @@ angular.module('AngularJsModule', ['Dependency1', function(Dependency1) {});</p>
 
 
 
-        <span class="flag async">async</span>
 
   </div>
     <div class="description">
       <h3>Summary</h3>
         <p>Gets AngularJS config dependencies.</p>
+<p>Only dependencies in strict dependency injection are supported.</p>
 
     </div>
 
@@ -315,7 +316,7 @@ angular.module('AngularJsModule', ['Dependency1', function(Dependency1) {});</p>
   <div class="meta method-meta">
       <p>
           Defined in
-      <a href="../files/lib_grunt_ngDpTask_ConfigExpression.js.html#l43"><code>lib&#x2F;grunt&#x2F;ngDpTask&#x2F;ConfigExpression.js:43</code></a>
+      <a href="../files/lib_grunt_ngDpTask_ConfigExpression.js.html#l44"><code>lib&#x2F;grunt&#x2F;ngDpTask&#x2F;ConfigExpression.js:44</code></a>
   </p>
 
 
@@ -337,12 +338,15 @@ angular.module('AngularJsModule', ['Dependency1', function(Dependency1) {});</p>
 
 
 
-        <span class="flag async">async</span>
 
   </div>
     <div class="description">
       <h3>Summary</h3>
         <p>Validates that the expression is a config expression.</p>
+<p>An AngularJS config expression must have one argument:</p>
+<ul>
+<li>Either an array when using strict dependency injection or just a function</li>
+</ul>
 
     </div>
 

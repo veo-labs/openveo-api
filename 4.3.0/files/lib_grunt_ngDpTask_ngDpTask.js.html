@@ -65,6 +65,7 @@
                                 <li><a href="../classes/fileSystem.html">fileSystem</a></li>
                                 <li><a href="../classes/FilterExpression.html">FilterExpression</a></li>
                                 <li><a href="../classes/http-errors.html">http-errors</a></li>
+                                <li><a href="../classes/imageProcessorMiddleware.html">imageProcessorMiddleware</a></li>
                                 <li><a href="../classes/InjectExpression.html">InjectExpression</a></li>
                                 <li><a href="../classes/logger.html">logger</a></li>
                                 <li><a href="../classes/logRequestMiddleware.html">logRequestMiddleware</a></li>
@@ -152,7 +153,6 @@ var path = require(&#x27;path&#x27;);
 var fs = require(&#x27;fs&#x27;);
 var async = require(&#x27;async&#x27;);
 var esprima = require(&#x27;esprima&#x27;);
-var fsApi = process.requireApi(&#x27;lib/fileSystem.js&#x27;);
 var utilApi = process.requireApi(&#x27;lib/util.js&#x27;);
 var expressionFactory = process.requireApi(&#x27;lib/grunt/ngDpTask/expressionFactory.js&#x27;);
 var ElementExpression = process.requireApi(&#x27;lib/grunt/ngDpTask/ElementExpression.js&#x27;);
@@ -162,9 +162,11 @@ var RouteExpression = process.requireApi(&#x27;lib/grunt/ngDpTask/RouteExpressio
 var FilterExpression = process.requireApi(&#x27;lib/grunt/ngDpTask/FilterExpression.js&#x27;);
 
 /**
- * Finds out which AngularJS definition holds the content and which dependencies it uses.
+ * Finds out AngularJS definitions and dependencies for the given content.
  *
- * The following JavaScript expressions are used to identify the definition held by the content:
+ * This is recursive.
+ *
+ * The following JavaScript expressions are used to identify definitions:
  *   - angular.module(&#x27;moduleName&#x27;, [])
  *   - angular.module(&#x27;moduleName&#x27;).component()
  *   - angular.module(&#x27;moduleName&#x27;).directive()
@@ -178,11 +180,11 @@ var FilterExpression = process.requireApi(&#x27;lib/grunt/ngDpTask/FilterExpress
  *   - angular.module(&#x27;moduleName&#x27;).config()
  *   - angular.module(&#x27;moduleName&#x27;).run()
  *
- * The following JavaScript expressions are used to identify the dependencies of the content:
+ * The following JavaScript expressions are used to identify dependencies:
  *   - MyAngularJsElement.$inject = [&#x27;Dependency1&#x27;, &#x27;Dependency2&#x27;];
  *   - angular.module(&#x27;moduleName&#x27;, [&#x27;DependencyModule&#x27;])
  *
- * The following JavaScript expressions are used to identify the modules associated to the content:
+ * The following JavaScript expressions are used to identify associated modules:
  *   - angular.module(&#x27;moduleName&#x27;)
  *
  * @method findDependencies
@@ -287,11 +289,11 @@ function findDependencies(jsExpression) {
 }
 
 /**
- * Fetches a script from the list of scripts.
+ * Fetches a script from a list of scripts.
  *
  * @method findScript
  * @param {Array} scripts The list of scripts
- * @param {String} property The script property used to identify the script
+ * @param {String} property The script property used to identify the script to fetch
  * @param {String} value The expected value of the script property
  * @return {Object|Null} The found script or null if not found
  * @private
@@ -310,28 +312,6 @@ function findScript(scripts, property, value) {
 }
 
 /**
- * Fetches a node from the tree of nodes.
- *
- * @method findNode
- * @param {Object} node The node from where to start
- * @param {Array} node.children The list of node children
- * @param {String} property The node property used to identify it
- * @param {String} value The expected value of the node property
- * @return {Object|Null} The found node or null if not found
- * @private
- */
-/* function findNode(node, property, value) {
-  if (node[property] === value) return node;
-
-  for (var i = 0; i &lt; node.children.length; i++) {
-    var subNode = findNode(node.children[i], property, value);
-    if (subNode) return subNode;
-  }
-
-  return null;
-} */
-
-/**
  * Browses a flat list of scripts to find a script longest dependency chains.
  *
  * Each script may have several dependencies, each dependency can also have several dependencies.
@@ -340,9 +320,14 @@ function findScript(scripts, property, value) {
  *
  * A chain is an ordered list of script paths.
  *
+ * This is recursive.
+ *
  * @method findLongestDependencyChains
- * @param {Array} scripts The flat list of scripts
- * @param {Object} [script] The script to analyze
+ * @param {Array} scripts The flat list of scripts with for each script:
+ *  - **dependencies** The list of dependency names of the script
+ *  - **definitions** The list of definition names of the script
+ *  - **path** The script path
+ * @param {Object} [script] The script to analyze (default to the first one of the list of scripts)
  * @return {Array} The longest dependency chains
  * @private
  */
@@ -400,10 +385,11 @@ function findLongestDependencyChains(scripts, script) {
 /**
  * Builds the dependencies tree.
  *
- * Each scripts have definitions and dependencies.
- *
  * @method buildTree
- * @param {Array} scripts The flat list of scripts containing AngularJS definitions and dependencies
+ * @param {Array} scripts The flat list of scripts with for each script:
+ *  - **dependencies** The list of dependency names of the script
+ *  - **definitions** The list of definition names of the script
+ *  - **path** The script path
  * @return {Array} The list of scripts with their dependencies
  * @private
  */
@@ -414,12 +400,13 @@ function buildTree(scripts) {
   };
   var currentTreeNode = tree;
 
-  // Iterate through scripts and place them in the tree
+  // Get the longest dependency chain for each script with the highest dependency
+  // as the first element of the chain
   scripts.forEach(function(script) {
     chains = chains.concat(findLongestDependencyChains(scripts, script));
   });
 
-  // Sort chains by length
+  // Sort chains by length with longest chains first
   chains.sort(function(chain1, chain2) {
     // -1 : chain1 before chain2
     // 0 : nothing change
@@ -432,17 +419,29 @@ function buildTree(scripts) {
     else return 0;
   });
 
+  // Add each chain to the tree
   chains.forEach(function(chain) {
 
+    // Add each element of the chain as a child of its parent
     chain.forEach(function(scriptPath) {
       var currentScript = findScript(scripts, &#x27;path&#x27;, scriptPath);
+      var alreadyExists = false;
 
       if (!currentTreeNode.children)
         currentTreeNode.children = [];
 
-      // Script does not exist yet in the tree
-      // Add it
-      currentTreeNode.children.push(currentScript);
+      // Check if current script does not exist in node children
+      for (var i = 0; i &lt; currentTreeNode.children.length; i++) {
+        if (currentTreeNode.children[i].path === currentScript.path) {
+          alreadyExists = true;
+          break;
+        }
+      }
+
+      // Add script to the tree
+      if (!alreadyExists)
+        currentTreeNode.children.push(currentScript);
+
       currentTreeNode = currentScript;
     });
 
@@ -453,63 +452,107 @@ function buildTree(scripts) {
 }
 
 /**
- * Retrieves CSS and JS files from tree of scripts.
+ * Retrieves CSS and JS files from tree of scripts in a flattened order.
+ *
+ * This is recursive.
  *
  * @method getTreeResources
  * @param {Object} node The node from where to start
- * @return {Object} An object with a &quot;css&quot; property containing the list of CSS files and a &quot;js&quot; property containing
- * the list of JS files
+ * @param {String} node.path The file path
+ * @param {Array} node.styles The list of css / scss file paths
+ * @return {Object} An object with:
+ *   - **childrenCss** The list of children CSS files
+ *   - **childrenJs** The list of children CSS files
+ *   - **subChildrenCss** The list of sub children CSS files
+ *   - **subChildrenJs** The list of sub children JS files
  * @private
  */
 function getTreeResources(node) {
-  var resources = {css: [], js: []};
+  var resources = {childrenCss: [], childrenJs: [], subChildrenCss: [], subChildrenJs: []};
 
-  if (node.styles) resources.css = utilApi.joinArray(resources.css, node.styles);
-  if (node.path) resources.js = utilApi.joinArray(resources.js, [node.path]);
-
+  // Add css and js of node children then dedupe
   if (node.children) {
     node.children.forEach(function(subNode) {
       var subResources = getTreeResources(subNode);
-      resources.css = utilApi.joinArray(resources.css, subResources.css);
-      resources.js = utilApi.joinArray(resources.js, subResources.js);
+      resources.childrenJs = utilApi.joinArray(resources.childrenJs, [subNode.path]);
+      resources.childrenCss = utilApi.joinArray(resources.childrenCss, subNode.styles);
+      resources.subChildrenCss = utilApi.joinArray(resources.subChildrenCss, subResources.childrenCss);
+      resources.subChildrenJs = utilApi.joinArray(resources.subChildrenJs, subResources.childrenJs);
+      resources.subChildrenCss = utilApi.joinArray(resources.subChildrenCss, subResources.subChildrenCss);
+      resources.subChildrenJs = utilApi.joinArray(resources.subChildrenJs, subResources.subChildrenJs);
     });
+  } else {
+
+    // Add current node css and js then dedupe
+    resources.childrenCss = utilApi.joinArray(resources.childrenCss, node.styles);
+    resources.childrenJs = utilApi.joinArray(resources.childrenJs, [node.path]);
+
   }
 
   return resources;
 }
 
 /**
- * Defines a grunt task to build the topology tree of an AngularJS application.
+ * Retrieves CSS and JS files from tree of scripts in a flattened order.
+ *
+ * @method getResources
+ * @param {Object} tree The tree of resources
+ * @return {Object} An object with:
+ *   - **css** The list of css files in the right order
+ *   - **js** The list of js files in the right order
+ * the list of JS files
+ * @private
+ */
+function getResources(tree) {
+  var resources = getTreeResources(tree);
+  return {
+    css: utilApi.joinArray(resources.childrenCss, resources.subChildrenCss),
+    js: utilApi.joinArray(resources.childrenJs, resources.subChildrenJs)
+  };
+}
+
+/**
+ * Defines a grunt task to build the list of sources (css and js) of an AngularJS application.
  *
  * AngularJS applications, which respect components architecture, need to be loaded in the right order as some
  * components may depend on other components. This task helps build an array of JavaScript files and css / scss files
  * in the right order.
  *
- * For this to work, each module must be declared in a separated file and a single file should not AngularJs elements to
- * several different modules.
+ * For this to work, each module must be declared in a separated file and a single file should not define AngularJS
+ * elements belonging to several different modules.
+ *
+ * Available options are:
+ *   - basePath: The base path which will be replaced by the cssPrefix or jsPrefix
+ *   - cssPrefix: For CSS / SCSS files, replace the basePath by this prefix
+ *   - jsPrefix: For JS files, replace the basePath by this prefix
  *
  *     // Register task
  *     var openVeoApi = require(&#x27;@openveo/api&#x27;);
- *     grunt.registerMultiTask(&#x27;angularjs-topology&#x27;, openVeoApi.grunt.ngDpTask(grunt));
+ *     grunt.registerMultiTask(&#x27;ngDp&#x27;, openVeoApi.grunt.ngDpTask(grunt));
  *
  *     // Configure task
  *     grunt.initConfig({
- *       &#x27;angularjs-topology&#x27;: {
+ *       &#x27;ngDp&#x27;: {
+ *         options: {
+ *           basePath: &#x27;/path/to/the/&#x27;,
+ *           cssPrefix: &#x27;../../other/css/path/&#x27;,
+ *           jsPrefix: &#x27;../../other/js/path/&#x27;
+ *         },
  *         app1: {
- *           src: &#x27;/path/to/the/app1&#x27;,
+ *           src: &#x27;/path/to/the/app1/**\/*.*&#x27;,
  *           dest: &#x27;/path/to/the/app1/topology.json&#x27;
  *         },
  *         app2: {
- *           src: &#x27;/path/to/the/app2&#x27;,
+ *           src: &#x27;/path/to/the/app2**\/*.*&#x27;,
  *           dest: &#x27;/path/to/the/app2/topology.json&#x27;
  *         }
  *       }
  *     });
  *
- *     // Ouput example
+ *     // Ouput example (/path/to/the/app1/topology.json)
  *     {
- *       js: [&#x27;/path/to/js/file1.js&#x27;, &#x27;/path/to/js/file2.js&#x27;, [...]],
- *       css: [&#x27;/path/to/css/file1.css&#x27;, &#x27;/path/to/css/file2.css&#x27;, [...]]
+ *       js: [&#x27;../..other/js/path/app1/file1.js&#x27;, &#x27;../..other/js/path/app1/file2.js&#x27;, [...]],
+ *       css: [&#x27;../..other/css/path/app1/file1.css&#x27;, &#x27;../..other/css/path/app1/file2.css&#x27;, [...]]
  *     }
  *
  * @class ngDpTask
@@ -522,44 +565,56 @@ module.exports = function(grunt) {
     var options = this.options({
       basePath: &#x27;&#x27;,
       cssPrefix: &#x27;&#x27;,
-      jsPrefix: &#x27;&#x27;,
-      excludeCss: []
+      jsPrefix: &#x27;&#x27;
     });
 
-    var generateTopology = function(sourceFolders, destination, callback) {
+    /**
+     * Generates a file with the list of JS and CSS files in the right order.
+     *
+     * @param {Array} sourceFiles The list of grunt source files
+     * @param {String} destination The destination file which will contain the list of JS files and CSS files
+     * @param {Function} callback The function to call when it&#x27;s done with:
+     *   - **Error** If an error occurred, null otherwise
+     */
+    var generateSourcesFile = function(sourceFiles, destination, callback) {
       var readAsyncFunctions = [];
       var sources = [];
       var scripts = [];
       var styles = [];
 
-      // Fetch all files in source folders
-      sourceFolders.forEach(function(sourceFolder) {
+      sourceFiles.forEach(function(sourceFile) {
         readAsyncFunctions.push(function(callback) {
-          grunt.verbose.writeln(&#x27;read directory &#x27; + sourceFolder);
+          grunt.verbose.writeln(&#x27;read file &#x27; + sourceFile);
 
-          fsApi.readdir(sourceFolder, function(error, resources) {
-            if (resources) sources = sources.concat(resources);
+          fs.stat(sourceFile, function(error, fileStat) {
+            if (fileStat) {
+              fileStat.path = sourceFile;
+              sources = sources.concat(fileStat);
+            }
             callback(error);
           });
         });
       });
 
+      // Get stats for all source files
       async.parallel(readAsyncFunctions, function(error, results) {
         if (error) return callback(error);
         var analyzeAsyncFunctions = [];
 
-        // Classify all sources
+        // Analyze all source files and distinguish JS and CSS files
         sources.forEach(function(source) {
           if (source.isFile()) {
             var pathDescriptor = path.parse(source.path);
+
             if (pathDescriptor.ext === &#x27;.js&#x27;) {
+
+              // JavaScript files
               analyzeAsyncFunctions.push(function(callback) {
                 fs.readFile(source.path, function(error, content) {
                   grunt.verbose.writeln(&#x27;analyze &#x27; + source.path);
                   var contentString = content.toString();
 
                   // Try to find parents of the source
-                  // Dependencies and declarations only works using Strings
                   var programExpressions = esprima.parseScript(contentString);
                   var script = findDependencies(programExpressions);
                   script.path = source.path.replace(options.basePath, options.jsPrefix);
@@ -569,10 +624,12 @@ module.exports = function(grunt) {
                 });
               });
             } else if (pathDescriptor.ext === &#x27;.css&#x27; ||
-                       pathDescriptor.ext === &#x27;.scss&#x27; &amp;&amp;
-                       options.excludeCss.indexOf(source.path) === -1
+                       pathDescriptor.ext === &#x27;.scss&#x27;
             ) {
+
+              // CSS / SCSS files
               styles.push(source.path.replace(options.basePath, options.cssPrefix));
+
             }
           }
         });
@@ -583,15 +640,18 @@ module.exports = function(grunt) {
           // Associate css files with scripts
           styles.forEach(function(style) {
             for (var i = 0; i &lt; scripts.length; i++) {
-              if (path.dirname(scripts[i].path) === path.dirname(style)) {
+              var originalScriptPath = scripts[i].path.replace(options.jsPrefix, &#x27;&#x27;);
+              var originalStylePath = style.replace(options.cssPrefix, &#x27;&#x27;);
+              if (path.dirname(originalScriptPath) === path.dirname(originalStylePath)) {
                 scripts[i].styles.push(style);
                 return;
               }
             }
           });
 
-          grunt.file.write(destination, JSON.stringify(getTreeResources(buildTree(scripts))));
-          grunt.log.ok(&#x27;Ordered styles and scripts have been saved in &#x27; + destination);
+          // Create final file
+          grunt.file.write(destination, JSON.stringify(getResources(buildTree(scripts))));
+          grunt.log.oklns(&#x27;Ordered styles and scripts have been saved in &#x27; + destination);
 
           callback();
         });
@@ -601,7 +661,7 @@ module.exports = function(grunt) {
     // Iterates through src-dest pairs
     this.files.forEach(function(srcDestFile) {
       asyncFunctions.push(function(callback) {
-        generateTopology(srcDestFile.src, srcDestFile.dest, callback);
+        generateSourcesFile(srcDestFile.src, srcDestFile.dest, callback);
       });
     });
 

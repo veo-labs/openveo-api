@@ -65,6 +65,7 @@
                                 <li><a href="../classes/fileSystem.html">fileSystem</a></li>
                                 <li><a href="../classes/FilterExpression.html">FilterExpression</a></li>
                                 <li><a href="../classes/http-errors.html">http-errors</a></li>
+                                <li><a href="../classes/imageProcessorMiddleware.html">imageProcessorMiddleware</a></li>
                                 <li><a href="../classes/InjectExpression.html">InjectExpression</a></li>
                                 <li><a href="../classes/logger.html">logger</a></li>
                                 <li><a href="../classes/logRequestMiddleware.html">logRequestMiddleware</a></li>
@@ -143,7 +144,7 @@
 
 
         <div class="foundat">
-            Defined in: <a href="../files/lib_grunt_ngDpTask_ngDpTask.js.html#l337"><code>lib&#x2F;grunt&#x2F;ngDpTask&#x2F;ngDpTask.js:337</code></a>
+            Defined in: <a href="../files/lib_grunt_ngDpTask_ngDpTask.js.html#l369"><code>lib&#x2F;grunt&#x2F;ngDpTask&#x2F;ngDpTask.js:369</code></a>
         </div>
 
             Module: <a href="../modules/grunt.html">grunt</a>
@@ -154,35 +155,50 @@
 
 <h3>Summary</h3>
 <div class="intro">
-    <p>Defines a grunt task to build the topology tree of an AngularJS application.</p>
+    <p>Defines a grunt task to build the list of sources (css and js) of an AngularJS application.</p>
 <p>AngularJS applications, which respect components architecture, need to be loaded in the right order as some
 components may depend on other components. This task helps build an array of JavaScript files and css / scss files
 in the right order.</p>
-<p>For this to work, each module must be declared in a separated file and a single file should not AngularJs elements to
-several different modules.</p>
-<pre class="code prettyprint"><code>// Register task
+<p>For this to work, each module must be declared in a separated file and a single file should not define AngularJS
+elements belonging to several different modules.</p>
+<p>Available options are:</p>
+<ul>
+<li>
+<p>basePath: The base path which will be replaced by the cssPrefix or jsPrefix</p>
+</li>
+<li>
+<p>cssPrefix: For CSS / SCSS files, replace the basePath by this prefix</p>
+</li>
+<li>
+<p>jsPrefix: For JS files, replace the basePath by this prefix</p>
+<p>// Register task
 var openVeoApi = require('@openveo/api');
-grunt.registerMultiTask('angularjs-topology', openVeoApi.grunt.ngDpTask(grunt));
-
-// Configure task
+grunt.registerMultiTask('ngDp', openVeoApi.grunt.ngDpTask(grunt));</p>
+<p>// Configure task
 grunt.initConfig({
-  'angularjs-topology': {
-    app1: {
-      src: '/path/to/the/app1',
-      dest: '/path/to/the/app1/topology.json'
-    },
-    app2: {
-      src: '/path/to/the/app2',
-      dest: '/path/to/the/app2/topology.json'
-    }
-  }
-});
-
-// Ouput example
+'ngDp': {
+options: {
+basePath: '/path/to/the/',
+cssPrefix: '../../other/css/path/',
+jsPrefix: '../../other/js/path/'
+},
+app1: {
+src: '/path/to/the/app1/<em><em>/</em>.</em>',
+dest: '/path/to/the/app1/topology.json'
+},
+app2: {
+src: '/path/to/the/app2**/<em>.</em>',
+dest: '/path/to/the/app2/topology.json'
+}
+}
+});</p>
+<p>// Ouput example (/path/to/the/app1/topology.json)
 {
-  js: ['/path/to/js/file1.js', '/path/to/js/file2.js', [...]],
-  css: ['/path/to/css/file1.css', '/path/to/css/file2.css', [...]]
-}</code></pre>
+js: ['../..other/js/path/app1/file1.js', '../..other/js/path/app1/file2.js', [...]],
+css: ['../..other/css/path/app1/file1.css', '../..other/css/path/app1/file2.css', [...]]
+}</p>
+</li>
+</ul>
 
 </div>
 
@@ -215,11 +231,11 @@ grunt.initConfig({
 
                             </li>
                             <li class="index-item method private">
-                                <a href="#method_findNode">findNode</a>
+                                <a href="#method_findScript">findScript</a>
 
                             </li>
                             <li class="index-item method private">
-                                <a href="#method_findScript">findScript</a>
+                                <a href="#method_getResources">getResources</a>
 
                             </li>
                             <li class="index-item method private">
@@ -242,7 +258,7 @@ grunt.initConfig({
   <div class="meta method-meta">
       <p>
           Defined in
-      <a href="../files/lib_grunt_ngDpTask_ngDpTask.js.html#l256"><code>lib&#x2F;grunt&#x2F;ngDpTask&#x2F;ngDpTask.js:256</code></a>
+      <a href="../files/lib_grunt_ngDpTask_ngDpTask.js.html#l240"><code>lib&#x2F;grunt&#x2F;ngDpTask&#x2F;ngDpTask.js:240</code></a>
   </p>
 
 
@@ -276,7 +292,6 @@ grunt.initConfig({
     <div class="description">
       <h3>Summary</h3>
         <p>Builds the dependencies tree.</p>
-<p>Each scripts have definitions and dependencies.</p>
 
     </div>
 
@@ -290,7 +305,12 @@ grunt.initConfig({
 
 
                     <div class="param-description">
-                        <p>The flat list of scripts containing AngularJS definitions and dependencies</p>
+                        <p>The flat list of scripts with for each script:</p>
+<ul>
+<li><strong>dependencies</strong> The list of dependency names of the script</li>
+<li><strong>definitions</strong> The list of definition names of the script</li>
+<li><strong>path</strong> The script path</li>
+</ul>
 
                     </div>
 
@@ -320,7 +340,7 @@ grunt.initConfig({
   <div class="meta method-meta">
       <p>
           Defined in
-      <a href="../files/lib_grunt_ngDpTask_ngDpTask.js.html#l20"><code>lib&#x2F;grunt&#x2F;ngDpTask&#x2F;ngDpTask.js:20</code></a>
+      <a href="../files/lib_grunt_ngDpTask_ngDpTask.js.html#l19"><code>lib&#x2F;grunt&#x2F;ngDpTask&#x2F;ngDpTask.js:19</code></a>
   </p>
 
 
@@ -350,8 +370,9 @@ grunt.initConfig({
   </div>
     <div class="description">
       <h3>Summary</h3>
-        <p>Finds out which AngularJS definition holds the content and which dependencies it uses.</p>
-<p>The following JavaScript expressions are used to identify the definition held by the content:</p>
+        <p>Finds out AngularJS definitions and dependencies for the given content.</p>
+<p>This is recursive.</p>
+<p>The following JavaScript expressions are used to identify definitions:</p>
 <ul>
 <li>angular.module('moduleName', [])</li>
 <li>angular.module('moduleName').component()</li>
@@ -366,12 +387,12 @@ grunt.initConfig({
 <li>angular.module('moduleName').config()</li>
 <li>angular.module('moduleName').run()</li>
 </ul>
-<p>The following JavaScript expressions are used to identify the dependencies of the content:</p>
+<p>The following JavaScript expressions are used to identify dependencies:</p>
 <ul>
 <li>MyAngularJsElement.$inject = ['Dependency1', 'Dependency2'];</li>
 <li>angular.module('moduleName', ['DependencyModule'])</li>
 </ul>
-<p>The following JavaScript expressions are used to identify the modules associated to the content:</p>
+<p>The following JavaScript expressions are used to identify associated modules:</p>
 <ul>
 <li>angular.module('moduleName')</li>
 </ul>
@@ -405,7 +426,7 @@ grunt.initConfig({
   <div class="meta method-meta">
       <p>
           Defined in
-      <a href="../files/lib_grunt_ngDpTask_ngDpTask.js.html#l190"><code>lib&#x2F;grunt&#x2F;ngDpTask&#x2F;ngDpTask.js:190</code></a>
+      <a href="../files/lib_grunt_ngDpTask_ngDpTask.js.html#l169"><code>lib&#x2F;grunt&#x2F;ngDpTask&#x2F;ngDpTask.js:169</code></a>
   </p>
 
 
@@ -446,6 +467,7 @@ grunt.initConfig({
 findLongestDependencyChains helps find the longest dependency chain of one of the script.
 As the script may have several longest dependency chain, a list of chains is returned.</p>
 <p>A chain is an ordered list of script paths.</p>
+<p>This is recursive.</p>
 
     </div>
 
@@ -459,7 +481,12 @@ As the script may have several longest dependency chain, a list of chains is ret
 
 
                     <div class="param-description">
-                        <p>The flat list of scripts</p>
+                        <p>The flat list of scripts with for each script:</p>
+<ul>
+<li><strong>dependencies</strong> The list of dependency names of the script</li>
+<li><strong>definitions</strong> The list of definition names of the script</li>
+<li><strong>path</strong> The script path</li>
+</ul>
 
                     </div>
 
@@ -471,7 +498,7 @@ As the script may have several longest dependency chain, a list of chains is ret
 
 
                     <div class="param-description">
-                        <p>The script to analyze</p>
+                        <p>The script to analyze (default to the first one of the list of scripts)</p>
 
                     </div>
 
@@ -495,130 +522,13 @@ As the script may have several longest dependency chain, a list of chains is ret
 
 
 </div>
-<div id="method_findNode" class="method item private">
-  <h3 class="blue-method-name">findNode</h3>
-
-  <div class="meta method-meta">
-      <p>
-          Defined in
-      <a href="../files/lib_grunt_ngDpTask_ngDpTask.js.html#l168"><code>lib&#x2F;grunt&#x2F;ngDpTask&#x2F;ngDpTask.js:168</code></a>
-  </p>
-
-
-
-  </div>
-
-  <h3>Syntax</h3>
-  <div class="blue-method-syntax">
-  <h3 class="name"><code>findNode</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>node</code>
-                </li>
-                <li class="arg">
-                        <code>property</code>
-                </li>
-                <li class="arg">
-                        <code>value</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-        <span class="returns-inline">
-            <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a> | Null</span>
-        </span>
-
-
-        <span class="flag private">private</span>
-
-
-
-
-
-  </div>
-    <div class="description">
-      <h3>Summary</h3>
-        <p>Fetches a node from the tree of nodes.</p>
-
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">node</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
-
-
-                    <div class="param-description">
-                        <p>The node from where to start</p>
-
-                    </div>
-
-                        <ul class="params-list">
-                            <li class="param">
-                                    <code class="param-name">children</code>
-                                    <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array" class="crosslink external" target="_blank">Array</a></span>
-
-                                <div class="param-description">
-                                    <p>The list of node children</p>
-
-                                </div>
-
-                            </li>
-                        </ul>
-                </li>
-                <li class="param">
-                        <code class="param-name">property</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
-
-
-                    <div class="param-description">
-                        <p>The node property used to identify it</p>
-
-                    </div>
-
-                </li>
-                <li class="param">
-                        <code class="param-name">value</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
-
-
-                    <div class="param-description">
-                        <p>The expected value of the node property</p>
-
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a> | Null</span>:
-                <div class="blue-return-desc">
-                    <p>The found node or null if not found</p>
-
-                </div>
-
-
-            </div>
-        </div>
-
-
-</div>
 <div id="method_findScript" class="method item private">
   <h3 class="blue-method-name">findScript</h3>
 
   <div class="meta method-meta">
       <p>
           Defined in
-      <a href="../files/lib_grunt_ngDpTask_ngDpTask.js.html#l145"><code>lib&#x2F;grunt&#x2F;ngDpTask&#x2F;ngDpTask.js:145</code></a>
+      <a href="../files/lib_grunt_ngDpTask_ngDpTask.js.html#l146"><code>lib&#x2F;grunt&#x2F;ngDpTask&#x2F;ngDpTask.js:146</code></a>
   </p>
 
 
@@ -657,7 +567,7 @@ As the script may have several longest dependency chain, a list of chains is ret
   </div>
     <div class="description">
       <h3>Summary</h3>
-        <p>Fetches a script from the list of scripts.</p>
+        <p>Fetches a script from a list of scripts.</p>
 
     </div>
 
@@ -682,7 +592,7 @@ As the script may have several longest dependency chain, a list of chains is ret
 
 
                     <div class="param-description">
-                        <p>The script property used to identify the script</p>
+                        <p>The script property used to identify the script to fetch</p>
 
                     </div>
 
@@ -717,13 +627,95 @@ As the script may have several longest dependency chain, a list of chains is ret
 
 
 </div>
+<div id="method_getResources" class="method item private">
+  <h3 class="blue-method-name">getResources</h3>
+
+  <div class="meta method-meta">
+      <p>
+          Defined in
+      <a href="../files/lib_grunt_ngDpTask_ngDpTask.js.html#l350"><code>lib&#x2F;grunt&#x2F;ngDpTask&#x2F;ngDpTask.js:350</code></a>
+  </p>
+
+
+
+  </div>
+
+  <h3>Syntax</h3>
+  <div class="blue-method-syntax">
+  <h3 class="name"><code>getResources</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>tree</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
+        </span>
+
+
+        <span class="flag private">private</span>
+
+
+
+
+
+  </div>
+    <div class="description">
+      <h3>Summary</h3>
+        <p>Retrieves CSS and JS files from tree of scripts in a flattened order.</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">tree</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
+
+
+                    <div class="param-description">
+                        <p>The tree of resources</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>:
+                <div class="blue-return-desc">
+                    <p>An object with:</p>
+<ul>
+<li><strong>css</strong> The list of css files in the right order</li>
+<li><strong>js</strong> The list of js files in the right order
+the list of JS files</li>
+</ul>
+
+                </div>
+
+
+            </div>
+        </div>
+
+
+</div>
 <div id="method_getTreeResources" class="method item private">
   <h3 class="blue-method-name">getTreeResources</h3>
 
   <div class="meta method-meta">
       <p>
           Defined in
-      <a href="../files/lib_grunt_ngDpTask_ngDpTask.js.html#l311"><code>lib&#x2F;grunt&#x2F;ngDpTask&#x2F;ngDpTask.js:311</code></a>
+      <a href="../files/lib_grunt_ngDpTask_ngDpTask.js.html#l309"><code>lib&#x2F;grunt&#x2F;ngDpTask&#x2F;ngDpTask.js:309</code></a>
   </p>
 
 
@@ -756,7 +748,8 @@ As the script may have several longest dependency chain, a list of chains is ret
   </div>
     <div class="description">
       <h3>Summary</h3>
-        <p>Retrieves CSS and JS files from tree of scripts.</p>
+        <p>Retrieves CSS and JS files from tree of scripts in a flattened order.</p>
+<p>This is recursive.</p>
 
     </div>
 
@@ -774,6 +767,28 @@ As the script may have several longest dependency chain, a list of chains is ret
 
                     </div>
 
+                        <ul class="params-list">
+                            <li class="param">
+                                    <code class="param-name">path</code>
+                                    <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+
+                                <div class="param-description">
+                                    <p>The file path</p>
+
+                                </div>
+
+                            </li>
+                            <li class="param">
+                                    <code class="param-name">styles</code>
+                                    <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array" class="crosslink external" target="_blank">Array</a></span>
+
+                                <div class="param-description">
+                                    <p>The list of css / scss file paths</p>
+
+                                </div>
+
+                            </li>
+                        </ul>
                 </li>
             </ul>
         </div>
@@ -784,8 +799,13 @@ As the script may have several longest dependency chain, a list of chains is ret
             <div class="returns-description">
                 <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>:
                 <div class="blue-return-desc">
-                    <p>An object with a &quot;css&quot; property containing the list of CSS files and a &quot;js&quot; property containing
-the list of JS files</p>
+                    <p>An object with:</p>
+<ul>
+<li><strong>childrenCss</strong> The list of children CSS files</li>
+<li><strong>childrenJs</strong> The list of children CSS files</li>
+<li><strong>subChildrenCss</strong> The list of sub children CSS files</li>
+<li><strong>subChildrenJs</strong> The list of sub children JS files</li>
+</ul>
 
                 </div>
 

@@ -65,6 +65,7 @@
                                 <li><a href="../classes/fileSystem.html">fileSystem</a></li>
                                 <li><a href="../classes/FilterExpression.html">FilterExpression</a></li>
                                 <li><a href="../classes/http-errors.html">http-errors</a></li>
+                                <li><a href="../classes/imageProcessorMiddleware.html">imageProcessorMiddleware</a></li>
                                 <li><a href="../classes/InjectExpression.html">InjectExpression</a></li>
                                 <li><a href="../classes/logger.html">logger</a></li>
                                 <li><a href="../classes/logRequestMiddleware.html">logRequestMiddleware</a></li>
@@ -165,10 +166,9 @@ module.exports = InjectExpression;
 util.inherits(InjectExpression, Expression);
 
 /**
- * Gets AngularJS element dependencies.
+ * Gets inject expression dependencies.
  *
  * @method getDependencies
- * @async
  * @return {Array} The list of dependencies
  */
 InjectExpression.prototype.getDependencies = function() {
@@ -185,8 +185,9 @@ InjectExpression.prototype.getDependencies = function() {
 /**
  * Validates that the expression is a $inject expression.
  *
+ * An AngularJS $inject expression must have an array as the right assignement token.
+ *
  * @method isValid
- * @async
  * @return {Boolean} true if this is a valid $inject expression
  */
 InjectExpression.prototype.isValid = function() {

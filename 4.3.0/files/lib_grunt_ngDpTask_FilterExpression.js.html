@@ -65,6 +65,7 @@
                                 <li><a href="../classes/fileSystem.html">fileSystem</a></li>
                                 <li><a href="../classes/FilterExpression.html">FilterExpression</a></li>
                                 <li><a href="../classes/http-errors.html">http-errors</a></li>
+                                <li><a href="../classes/imageProcessorMiddleware.html">imageProcessorMiddleware</a></li>
                                 <li><a href="../classes/InjectExpression.html">InjectExpression</a></li>
                                 <li><a href="../classes/logger.html">logger</a></li>
                                 <li><a href="../classes/logRequestMiddleware.html">logRequestMiddleware</a></li>
@@ -150,7 +151,7 @@ var Expression = process.requireApi(&#x27;lib/grunt/ngDpTask/Expression.js&#x27;
 /**
  * An AngularJS JavaScript $filter expression.
  *
- * AngularJS route expressions uses $filter:
+ * Filters can be injected using AngularJS $filter service:
  * $filter(&#x27;filterName&#x27;);
  *
  * @class FilterExpression
@@ -168,7 +169,6 @@ util.inherits(FilterExpression, Expression);
  * Gets AngularJS $filter dependency.
  *
  * @method getDependency
- * @async
  * @return {String} The name of the injected filter
  */
 FilterExpression.prototype.getDependency = function() {
@@ -176,11 +176,13 @@ FilterExpression.prototype.getDependency = function() {
 };
 
 /**
- * Validates that the expression is a $inject expression.
+ * Validates that the expression is a valid $filter expression.
+ *
+ * An AngularJS $filter expression must have one argument:
+ *   - The name of the filter to inject
  *
  * @method isValid
- * @async
- * @return {Boolean} true if this is a valid $inject expression
+ * @return {Boolean} true if this is a valid $filter expression
  */
 FilterExpression.prototype.isValid = function() {
   return (this.expression.arguments.length === 1 &amp;&amp; this.expression.arguments[0].type === &#x27;Literal&#x27;);

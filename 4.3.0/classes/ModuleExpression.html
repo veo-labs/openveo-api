@@ -65,6 +65,7 @@
                                 <li><a href="../classes/fileSystem.html">fileSystem</a></li>
                                 <li><a href="../classes/FilterExpression.html">FilterExpression</a></li>
                                 <li><a href="../classes/http-errors.html">http-errors</a></li>
+                                <li><a href="../classes/imageProcessorMiddleware.html">imageProcessorMiddleware</a></li>
                                 <li><a href="../classes/InjectExpression.html">InjectExpression</a></li>
                                 <li><a href="../classes/logger.html">logger</a></li>
                                 <li><a href="../classes/logRequestMiddleware.html">logRequestMiddleware</a></li>
@@ -153,7 +154,7 @@
 
 <h3>Summary</h3>
 <div class="intro">
-    <p>A JavaScript module expression as angularJsApp.module().</p>
+    <p>A JavaScript module expression as angularJsApp.module('module').</p>
 
 </div>
 
@@ -263,7 +264,7 @@
   <div class="meta method-meta">
       <p>
           Defined in
-      <a href="../files/lib_grunt_ngDpTask_ModuleExpression.js.html#l38"><code>lib&#x2F;grunt&#x2F;ngDpTask&#x2F;ModuleExpression.js:38</code></a>
+      <a href="../files/lib_grunt_ngDpTask_ModuleExpression.js.html#l37"><code>lib&#x2F;grunt&#x2F;ngDpTask&#x2F;ModuleExpression.js:37</code></a>
   </p>
 
 
@@ -285,7 +286,6 @@
 
 
 
-        <span class="flag async">async</span>
 
   </div>
     <div class="description">
@@ -317,7 +317,7 @@
   <div class="meta method-meta">
       <p>
           Defined in
-      <a href="../files/lib_grunt_ngDpTask_ModuleExpression.js.html#l59"><code>lib&#x2F;grunt&#x2F;ngDpTask&#x2F;ModuleExpression.js:59</code></a>
+      <a href="../files/lib_grunt_ngDpTask_ModuleExpression.js.html#l57"><code>lib&#x2F;grunt&#x2F;ngDpTask&#x2F;ModuleExpression.js:57</code></a>
   </p>
 
 
@@ -339,12 +339,12 @@
 
 
 
-        <span class="flag async">async</span>
 
   </div>
     <div class="description">
       <h3>Summary</h3>
         <p>Checks if the module expression is an AngularJS definition.</p>
+<p>angular.module() may be used to retrieve a previously registered module or to define a new one.</p>
 
     </div>
 
@@ -393,13 +393,12 @@
 
 
 
-        <span class="flag async">async</span>
 
   </div>
     <div class="description">
       <h3>Summary</h3>
         <p>Validates that the expression is an AngularJS module definition expression.</p>
-<p>An AngularJS definition expression must have two arguments:</p>
+<p>An AngularJS module definition expression must have two arguments:</p>
 <ul>
 <li>The name of the element to define</li>
 <li>An array of dependencies</li>

@@ -65,6 +65,7 @@
                                 <li><a href="../classes/fileSystem.html">fileSystem</a></li>
                                 <li><a href="../classes/FilterExpression.html">FilterExpression</a></li>
                                 <li><a href="../classes/http-errors.html">http-errors</a></li>
+                                <li><a href="../classes/imageProcessorMiddleware.html">imageProcessorMiddleware</a></li>
                                 <li><a href="../classes/InjectExpression.html">InjectExpression</a></li>
                                 <li><a href="../classes/logger.html">logger</a></li>
                                 <li><a href="../classes/logRequestMiddleware.html">logRequestMiddleware</a></li>
@@ -164,12 +165,11 @@ util.inherits(ComponentExpression, ElementExpression);
 /**
  * Validates that the expression is an AngularJS component definition expression.
  *
- * An AngularJS definition expression must have two arguments:
- *   - The name of the element to define
- *   - An object
+ * An AngularJS component definition expression must have two arguments:
+ *   - The name of the component to define
+ *   - The description object of the component
  *
  * @method isValid
- * @async
  * @return {Boolean} true if this is a valid AngularJS component definition expression, false otherwise
  */
 ComponentExpression.prototype.isValid = function() {
@@ -182,8 +182,10 @@ ComponentExpression.prototype.isValid = function() {
 /**
  * Gets AngularJS component dependencies.
  *
+ * The following dependency expressions are supported:
+ *   - The attribute &quot;controller&quot; of the component definition
+ *
  * @method getDependencies
- * @async
  * @return {Array} The list of dependencies
  */
 ComponentExpression.prototype.getDependencies = function() {
@@ -191,13 +193,10 @@ ComponentExpression.prototype.getDependencies = function() {
 
   // AngularJS components may use the &quot;require&quot; or &quot;controller&quot; options with dependency injection
   if (this.expression.arguments[1].type === &#x27;ObjectExpression&#x27;) {
-
-    // Got options for the directive / component
     this.expression.arguments[1].properties.forEach(function(property) {
       if (property.key.name === &#x27;controller&#x27; &amp;&amp; property.value.type === &#x27;Literal&#x27;)
         dependencies.push(property.value.value);
     });
-
   }
 
   return dependencies;

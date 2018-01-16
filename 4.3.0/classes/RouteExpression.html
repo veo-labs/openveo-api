@@ -65,6 +65,7 @@
                                 <li><a href="../classes/fileSystem.html">fileSystem</a></li>
                                 <li><a href="../classes/FilterExpression.html">FilterExpression</a></li>
                                 <li><a href="../classes/http-errors.html">http-errors</a></li>
+                                <li><a href="../classes/imageProcessorMiddleware.html">imageProcessorMiddleware</a></li>
                                 <li><a href="../classes/InjectExpression.html">InjectExpression</a></li>
                                 <li><a href="../classes/logger.html">logger</a></li>
                                 <li><a href="../classes/logRequestMiddleware.html">logRequestMiddleware</a></li>
@@ -270,7 +271,7 @@ definition2: ['Dependency2', function() {}],
   <div class="meta method-meta">
       <p>
           Defined in
-      <a href="../files/lib_grunt_ngDpTask_RouteExpression.js.html#l56"><code>lib&#x2F;grunt&#x2F;ngDpTask&#x2F;RouteExpression.js:56</code></a>
+      <a href="../files/lib_grunt_ngDpTask_RouteExpression.js.html#l59"><code>lib&#x2F;grunt&#x2F;ngDpTask&#x2F;RouteExpression.js:59</code></a>
   </p>
 
 
@@ -292,13 +293,15 @@ definition2: ['Dependency2', function() {}],
 
 
 
-        <span class="flag async">async</span>
 
   </div>
     <div class="description">
       <h3>Summary</h3>
-        <p>Gets AngularJS resolve definitions.</p>
-<p>Get all resolve property names.</p>
+        <p>Gets AngularJS route definitions.</p>
+<p>The following definition expressions are supported:</p>
+<ul>
+<li>All &quot;resolve&quot; property keys</li>
+</ul>
 
     </div>
 
@@ -347,13 +350,16 @@ definition2: ['Dependency2', function() {}],
 
 
 
-        <span class="flag async">async</span>
 
   </div>
     <div class="description">
       <h3>Summary</h3>
-        <p>Gets AngularJS resolve dependencies.</p>
-<p>Get dependencies for all resolve property.</p>
+        <p>Gets AngularJS route expression dependencies.</p>
+<p>The following dependency expressions are supported:</p>
+<ul>
+<li>The attribute &quot;controller&quot; of the route</li>
+<li>All dependencies injected in &quot;resolve&quot; properties</li>
+</ul>
 
     </div>
 
@@ -380,7 +386,7 @@ definition2: ['Dependency2', function() {}],
   <div class="meta method-meta">
       <p>
           Defined in
-      <a href="../files/lib_grunt_ngDpTask_RouteExpression.js.html#l79"><code>lib&#x2F;grunt&#x2F;ngDpTask&#x2F;RouteExpression.js:79</code></a>
+      <a href="../files/lib_grunt_ngDpTask_RouteExpression.js.html#l82"><code>lib&#x2F;grunt&#x2F;ngDpTask&#x2F;RouteExpression.js:82</code></a>
   </p>
 
 
@@ -402,12 +408,16 @@ definition2: ['Dependency2', function() {}],
 
 
 
-        <span class="flag async">async</span>
 
   </div>
     <div class="description">
       <h3>Summary</h3>
-        <p>Validates that the expression is a $inject expression.</p>
+        <p>Validates that the expression is a route expression.</p>
+<p>An AngularJS route definition expression must have two arguments:</p>
+<ul>
+<li>The path of the route</li>
+<li>The route description object</li>
+</ul>
 
     </div>
 
@@ -418,7 +428,7 @@ definition2: ['Dependency2', function() {}],
             <div class="returns-description">
                 <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean" class="crosslink external" target="_blank">Boolean</a></span>:
                 <div class="blue-return-desc">
-                    <p>true if this is a valid $inject expression</p>
+                    <p>true if this is a valid route expression</p>
 
                 </div>
 

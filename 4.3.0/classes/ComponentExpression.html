@@ -65,6 +65,7 @@
                                 <li><a href="../classes/fileSystem.html">fileSystem</a></li>
                                 <li><a href="../classes/FilterExpression.html">FilterExpression</a></li>
                                 <li><a href="../classes/http-errors.html">http-errors</a></li>
+                                <li><a href="../classes/imageProcessorMiddleware.html">imageProcessorMiddleware</a></li>
                                 <li><a href="../classes/InjectExpression.html">InjectExpression</a></li>
                                 <li><a href="../classes/logger.html">logger</a></li>
                                 <li><a href="../classes/logRequestMiddleware.html">logRequestMiddleware</a></li>
@@ -259,7 +260,7 @@
   <div class="meta method-meta">
       <p>
           Defined in
-      <a href="../files/lib_grunt_ngDpTask_ComponentExpression.js.html#l38"><code>lib&#x2F;grunt&#x2F;ngDpTask&#x2F;ComponentExpression.js:38</code></a>
+      <a href="../files/lib_grunt_ngDpTask_ComponentExpression.js.html#l37"><code>lib&#x2F;grunt&#x2F;ngDpTask&#x2F;ComponentExpression.js:37</code></a>
   </p>
 
 
@@ -281,12 +282,15 @@
 
 
 
-        <span class="flag async">async</span>
 
   </div>
     <div class="description">
       <h3>Summary</h3>
         <p>Gets AngularJS component dependencies.</p>
+<p>The following dependency expressions are supported:</p>
+<ul>
+<li>The attribute &quot;controller&quot; of the component definition</li>
+</ul>
 
     </div>
 
@@ -335,16 +339,15 @@
 
 
 
-        <span class="flag async">async</span>
 
   </div>
     <div class="description">
       <h3>Summary</h3>
         <p>Validates that the expression is an AngularJS component definition expression.</p>
-<p>An AngularJS definition expression must have two arguments:</p>
+<p>An AngularJS component definition expression must have two arguments:</p>
 <ul>
-<li>The name of the element to define</li>
-<li>An object</li>
+<li>The name of the component to define</li>
+<li>The description object of the component</li>
 </ul>
 
     </div>

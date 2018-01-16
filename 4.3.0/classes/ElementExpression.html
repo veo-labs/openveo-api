@@ -65,6 +65,7 @@
                                 <li><a href="../classes/fileSystem.html">fileSystem</a></li>
                                 <li><a href="../classes/FilterExpression.html">FilterExpression</a></li>
                                 <li><a href="../classes/http-errors.html">http-errors</a></li>
+                                <li><a href="../classes/imageProcessorMiddleware.html">imageProcessorMiddleware</a></li>
                                 <li><a href="../classes/InjectExpression.html">InjectExpression</a></li>
                                 <li><a href="../classes/logger.html">logger</a></li>
                                 <li><a href="../classes/logRequestMiddleware.html">logRequestMiddleware</a></li>
@@ -296,7 +297,7 @@ AngularJS JavaScript element expressions could be:</p>
   <div class="meta method-meta">
       <p>
           Defined in
-      <a href="../files/lib_grunt_ngDpTask_ElementExpression.js.html#l109"><code>lib&#x2F;grunt&#x2F;ngDpTask&#x2F;ElementExpression.js:109</code></a>
+      <a href="../files/lib_grunt_ngDpTask_ElementExpression.js.html#l105"><code>lib&#x2F;grunt&#x2F;ngDpTask&#x2F;ElementExpression.js:105</code></a>
   </p>
 
 
@@ -318,12 +319,15 @@ AngularJS JavaScript element expressions could be:</p>
 
 
 
-        <span class="flag async">async</span>
 
   </div>
     <div class="description">
       <h3>Summary</h3>
         <p>Gets AngularJS element dependencies.</p>
+<p>The following dependency expressions are supported:</p>
+<ul>
+<li>Dependencies injected using AngularJS strict dependency injection syntax</li>
+</ul>
 
     </div>
 
@@ -372,7 +376,6 @@ AngularJS JavaScript element expressions could be:</p>
 
 
 
-        <span class="flag async">async</span>
 
   </div>
     <div class="description">
@@ -404,7 +407,7 @@ AngularJS JavaScript element expressions could be:</p>
   <div class="meta method-meta">
       <p>
           Defined in
-      <a href="../files/lib_grunt_ngDpTask_ElementExpression.js.html#l67"><code>lib&#x2F;grunt&#x2F;ngDpTask&#x2F;ElementExpression.js:67</code></a>
+      <a href="../files/lib_grunt_ngDpTask_ElementExpression.js.html#l66"><code>lib&#x2F;grunt&#x2F;ngDpTask&#x2F;ElementExpression.js:66</code></a>
   </p>
 
 
@@ -426,12 +429,11 @@ AngularJS JavaScript element expressions could be:</p>
 
 
 
-        <span class="flag async">async</span>
 
   </div>
     <div class="description">
       <h3>Summary</h3>
-        <p>Gets the name of the AngularJS element definied by this expression.</p>
+        <p>Gets the name of the AngularJS element defined by this expression.</p>
 
     </div>
 
@@ -458,7 +460,7 @@ AngularJS JavaScript element expressions could be:</p>
   <div class="meta method-meta">
       <p>
           Defined in
-      <a href="../files/lib_grunt_ngDpTask_ElementExpression.js.html#l98"><code>lib&#x2F;grunt&#x2F;ngDpTask&#x2F;ElementExpression.js:98</code></a>
+      <a href="../files/lib_grunt_ngDpTask_ElementExpression.js.html#l95"><code>lib&#x2F;grunt&#x2F;ngDpTask&#x2F;ElementExpression.js:95</code></a>
   </p>
 
 
@@ -480,7 +482,6 @@ AngularJS JavaScript element expressions could be:</p>
 
 
 
-        <span class="flag async">async</span>
 
   </div>
     <div class="description">
@@ -512,7 +513,7 @@ AngularJS JavaScript element expressions could be:</p>
   <div class="meta method-meta">
       <p>
           Defined in
-      <a href="../files/lib_grunt_ngDpTask_ElementExpression.js.html#l78"><code>lib&#x2F;grunt&#x2F;ngDpTask&#x2F;ElementExpression.js:78</code></a>
+      <a href="../files/lib_grunt_ngDpTask_ElementExpression.js.html#l76"><code>lib&#x2F;grunt&#x2F;ngDpTask&#x2F;ElementExpression.js:76</code></a>
   </p>
 
 
@@ -534,13 +535,12 @@ AngularJS JavaScript element expressions could be:</p>
 
 
 
-        <span class="flag async">async</span>
 
   </div>
     <div class="description">
       <h3>Summary</h3>
         <p>Validates that the expression is an AngularJS definition expression.</p>
-<p>An AngularJS definition expression must have two arguments:</p>
+<p>An AngularJS element definition expression must have two arguments:</p>
 <ul>
 <li>The name of the element to define</li>
 <li>A function or an array (when including dependencies)</li>

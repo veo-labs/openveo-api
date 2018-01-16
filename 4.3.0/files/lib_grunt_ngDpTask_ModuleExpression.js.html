@@ -65,6 +65,7 @@
                                 <li><a href="../classes/fileSystem.html">fileSystem</a></li>
                                 <li><a href="../classes/FilterExpression.html">FilterExpression</a></li>
                                 <li><a href="../classes/http-errors.html">http-errors</a></li>
+                                <li><a href="../classes/imageProcessorMiddleware.html">imageProcessorMiddleware</a></li>
                                 <li><a href="../classes/InjectExpression.html">InjectExpression</a></li>
                                 <li><a href="../classes/logger.html">logger</a></li>
                                 <li><a href="../classes/logRequestMiddleware.html">logRequestMiddleware</a></li>
@@ -148,7 +149,7 @@ var util = require(&#x27;util&#x27;);
 var ElementExpression = process.requireApi(&#x27;lib/grunt/ngDpTask/ElementExpression.js&#x27;);
 
 /**
- * A JavaScript module expression as angularJsApp.module().
+ * A JavaScript module expression as angularJsApp.module(&#x27;module&#x27;).
  *
  * @class ModuleExpression
  * @constructor
@@ -164,12 +165,11 @@ util.inherits(ModuleExpression, ElementExpression);
 /**
  * Validates that the expression is an AngularJS module definition expression.
  *
- * An AngularJS definition expression must have two arguments:
+ * An AngularJS module definition expression must have two arguments:
  *   - The name of the element to define
  *   - An array of dependencies
  *
  * @method isValid
- * @async
  * @return {Boolean} true if this is a valid AngularJS module definition expression, false otherwise
  */
 ModuleExpression.prototype.isValid = function() {
@@ -183,7 +183,6 @@ ModuleExpression.prototype.isValid = function() {
  * Gets AngularJS module dependencies.
  *
  * @method getDependencies
- * @async
  * @return {Array} The list of dependencies
  */
 ModuleExpression.prototype.getDependencies = function() {
@@ -203,8 +202,9 @@ ModuleExpression.prototype.getDependencies = function() {
 /**
  * Checks if the module expression is an AngularJS definition.
  *
+ * angular.module() may be used to retrieve a previously registered module or to define a new one.
+ *
  * @method isDefinition
- * @async
  * @return {Boolean} true if this is a module definition, false otherwise
  */
 ModuleExpression.prototype.isDefinition = function() {

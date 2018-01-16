@@ -65,6 +65,7 @@
                                 <li><a href="../classes/fileSystem.html">fileSystem</a></li>
                                 <li><a href="../classes/FilterExpression.html">FilterExpression</a></li>
                                 <li><a href="../classes/http-errors.html">http-errors</a></li>
+                                <li><a href="../classes/imageProcessorMiddleware.html">imageProcessorMiddleware</a></li>
                                 <li><a href="../classes/InjectExpression.html">InjectExpression</a></li>
                                 <li><a href="../classes/logger.html">logger</a></li>
                                 <li><a href="../classes/logRequestMiddleware.html">logRequestMiddleware</a></li>
@@ -151,7 +152,7 @@ var Expression = process.requireApi(&#x27;lib/grunt/ngDpTask/Expression.js&#x27;
  * An AngularJS JavaScript config expression.
  *
  * AngularJS config expressions uses angular.module.config():
- * angular.module(&#x27;AngularJsModule&#x27;, [&#x27;Dependency1&#x27;, function(Dependency1) {});
+ * angular.module(&#x27;AngularJsModule&#x27;).config([&#x27;Dependency1&#x27;, function(Dependency1) {});
  *
  * @class ConfigExpression
  * @constructor
@@ -167,8 +168,9 @@ util.inherits(ConfigExpression, Expression);
 /**
  * Gets AngularJS config dependencies.
  *
+ * Only dependencies in strict dependency injection are supported.
+ *
  * @method getDependencies
- * @async
  * @return {Array} The list of dependencies
  */
 ConfigExpression.prototype.getDependencies = function() {
@@ -187,8 +189,10 @@ ConfigExpression.prototype.getDependencies = function() {
 /**
  * Validates that the expression is a config expression.
  *
+ * An AngularJS config expression must have one argument:
+ *   - Either an array when using strict dependency injection or just a function
+ *
  * @method isValid
- * @async
  * @return {Boolean} true if this is a valid config expression
  */
 ConfigExpression.prototype.isValid = function() {

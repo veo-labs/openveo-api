@@ -65,6 +65,7 @@
                                 <li><a href="../classes/fileSystem.html">fileSystem</a></li>
                                 <li><a href="../classes/FilterExpression.html">FilterExpression</a></li>
                                 <li><a href="../classes/http-errors.html">http-errors</a></li>
+                                <li><a href="../classes/imageProcessorMiddleware.html">imageProcessorMiddleware</a></li>
                                 <li><a href="../classes/InjectExpression.html">InjectExpression</a></li>
                                 <li><a href="../classes/logger.html">logger</a></li>
                                 <li><a href="../classes/logRequestMiddleware.html">logRequestMiddleware</a></li>
@@ -201,7 +202,6 @@ Object.freeze(ElementExpression.ELEMENTS);
  * Gets the expression type.
  *
  * @method getElementType
- * @async
  * @return {String} The expression type as defined in Expression.ELEMENTS
  */
 ElementExpression.prototype.getElementType = function() {
@@ -209,10 +209,9 @@ ElementExpression.prototype.getElementType = function() {
 };
 
 /**
- * Gets the name of the AngularJS element definied by this expression.
+ * Gets the name of the AngularJS element defined by this expression.
  *
  * @method getName
- * @async
  * @return {String} The name of the AngularJS element
  */
 ElementExpression.prototype.getName = function() {
@@ -222,12 +221,11 @@ ElementExpression.prototype.getName = function() {
 /**
  * Validates that the expression is an AngularJS definition expression.
  *
- * An AngularJS definition expression must have two arguments:
+ * An AngularJS element definition expression must have two arguments:
  *   - The name of the element to define
  *   - A function or an array (when including dependencies)
  *
  * @method isValid
- * @async
  * @return {Boolean} true if this is a valid AngularJS element expression, false otherwise
  */
 ElementExpression.prototype.isValid = function() {
@@ -243,7 +241,6 @@ ElementExpression.prototype.isValid = function() {
  * Checks if the expression is an AngularJS definition.
  *
  * @method isDefinition
- * @async
  * @return {Boolean} true
  */
 ElementExpression.prototype.isDefinition = function() {
@@ -253,8 +250,10 @@ ElementExpression.prototype.isDefinition = function() {
 /**
  * Gets AngularJS element dependencies.
  *
+ * The following dependency expressions are supported:
+ *   - Dependencies injected using AngularJS strict dependency injection syntax
+ *
  * @method getDependencies
- * @async
  * @return {Array} The list of dependencies
  */
 ElementExpression.prototype.getDependencies = function() {

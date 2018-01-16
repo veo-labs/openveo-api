@@ -65,6 +65,7 @@
                                 <li><a href="../classes/fileSystem.html">fileSystem</a></li>
                                 <li><a href="../classes/FilterExpression.html">FilterExpression</a></li>
                                 <li><a href="../classes/http-errors.html">http-errors</a></li>
+                                <li><a href="../classes/imageProcessorMiddleware.html">imageProcessorMiddleware</a></li>
                                 <li><a href="../classes/InjectExpression.html">InjectExpression</a></li>
                                 <li><a href="../classes/logger.html">logger</a></li>
                                 <li><a href="../classes/logRequestMiddleware.html">logRequestMiddleware</a></li>
@@ -170,12 +171,13 @@ module.exports = RouteExpression;
 util.inherits(RouteExpression, Expression);
 
 /**
- * Gets AngularJS resolve dependencies.
+ * Gets AngularJS route expression dependencies.
  *
- * Get dependencies for all resolve property.
+ * The following dependency expressions are supported:
+ *   - The attribute &quot;controller&quot; of the route
+ *   - All dependencies injected in &quot;resolve&quot; properties
  *
  * @method getDependencies
- * @async
  * @return {Array} The list of dependencies
  */
 RouteExpression.prototype.getDependencies = function() {
@@ -191,6 +193,8 @@ RouteExpression.prototype.getDependencies = function() {
           });
         }
       });
+    } else if (property.key.name === &#x27;controller&#x27; &amp;&amp; property.value.type === &#x27;Literal&#x27;) {
+      dependencies.push(property.value.value);
     }
   });
 
@@ -198,12 +202,12 @@ RouteExpression.prototype.getDependencies = function() {
 };
 
 /**
- * Gets AngularJS resolve definitions.
+ * Gets AngularJS route definitions.
  *
- * Get all resolve property names.
+ * The following definition expressions are supported:
+ *   - All &quot;resolve&quot; property keys
  *
  * @method getDefinitions
- * @async
  * @return {Array} The list of definitions
  */
 RouteExpression.prototype.getDefinitions = function() {
@@ -221,11 +225,14 @@ RouteExpression.prototype.getDefinitions = function() {
 };
 
 /**
- * Validates that the expression is a $inject expression.
+ * Validates that the expression is a route expression.
+ *
+ * An AngularJS route definition expression must have two arguments:
+ *   - The path of the route
+ *   - The route description object
  *
  * @method isValid
- * @async
- * @return {Boolean} true if this is a valid $inject expression
+ * @return {Boolean} true if this is a valid route expression
  */
 RouteExpression.prototype.isValid = function() {
   return (this.expression.arguments.length === 2 &amp;&amp;

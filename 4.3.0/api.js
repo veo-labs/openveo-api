@@ -43,6 +43,7 @@ YUI.add("yuidoc-meta", function(Y) {
         "factory",
         "fileSystem",
         "http-errors",
+        "imageProcessorMiddleware",
         "logRequestMiddleware",
         "logger",
         "ngDpTask",

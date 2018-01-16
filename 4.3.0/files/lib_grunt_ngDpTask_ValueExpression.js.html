@@ -65,6 +65,7 @@
                                 <li><a href="../classes/fileSystem.html">fileSystem</a></li>
                                 <li><a href="../classes/FilterExpression.html">FilterExpression</a></li>
                                 <li><a href="../classes/http-errors.html">http-errors</a></li>
+                                <li><a href="../classes/imageProcessorMiddleware.html">imageProcessorMiddleware</a></li>
                                 <li><a href="../classes/InjectExpression.html">InjectExpression</a></li>
                                 <li><a href="../classes/logger.html">logger</a></li>
                                 <li><a href="../classes/logRequestMiddleware.html">logRequestMiddleware</a></li>
@@ -165,12 +166,11 @@ util.inherits(ValueExpression, ElementExpression);
  * Validates that the expression is an AngularJS value definition expression.
  *
  * An AngularJS value definition expression must have two arguments:
- *   - The name of the element to define
+ *   - The name of the value to define
  *   - Could be anything
  *
  * @method isValid
- * @async
- * @return {Boolean} true if this is a valid AngularJS expression, false otherwise
+ * @return {Boolean} true if this is a valid AngularJS value expression, false otherwise
  */
 ValueExpression.prototype.isValid = function() {
   return (this.expression.arguments[0].type === &#x27;Literal&#x27; &amp;&amp; this.expression.arguments.length === 2);
