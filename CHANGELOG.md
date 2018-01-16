@@ -1,3 +1,9 @@
+# 4.3.1 / YYYY-MM-DD
+
+## BUG FIXES
+
+- require('@openveo/api').util.validateFiles now considers M4V files as valid MP4 files
+
 # 4.3.0 / 2017-11-15
 
 ## NEW FEATURES
