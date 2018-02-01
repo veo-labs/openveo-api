@@ -215,42 +215,7 @@ describe('imageProcessorMiddleware', function() {
     });
   });
 
-  it('should generate thumb in .cache directory if no cache directory specified', function(done) {
-    var middleware = imageProcessorMiddleware(
-      imagesDirectoryPath,
-      null,
-      [
-        {
-          id: 'thumb-42',
-          width: 42,
-          quality: 100
-        }
-      ],
-      {}
-    );
-
-    response.download = function() {
-      fs.stat(
-        path.join(imagesDirectoryPath, '.cache', request.query.style, request.url),
-        function(error, stat) {
-          assert.isNull(error, 'Expected thumb to have been generated');
-          assert.isOk(stat.isFile(), 'Expected resource to be a file');
-          done();
-        }
-      );
-    };
-
-    middleware(
-      request,
-      response,
-      function() {
-        assert.isOk(false, 'Unexpected call to next function');
-        done();
-      }
-    );
-  });
-
-  it('should generate thumb in given cache directory if specified', function(done) {
+  it('should generate thumb in given cache directory', function(done) {
     var middleware = imageProcessorMiddleware(
       imagesDirectoryPath,
       imagesCachePath,
