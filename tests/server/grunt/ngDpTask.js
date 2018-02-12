@@ -202,6 +202,23 @@ describe('ngDpTask', function() {
     launchTask(filesToAdd, validate);
   });
 
+  it('should be able to handle circular dependencies', function(done) {
+    var filesToAdd = [
+      path.join(resourcesDirPath, 'circularDependencies/circularDependencies.js'),
+      path.join(resourcesDirPath, 'circularDependencies/circularDependencies.factory.js')
+    ];
+
+    function validate() {
+      var resources = require(destinationFile);
+      assert.equal(resources.js.length, filesToAdd.length, 'Wrong number of JS files');
+      assert.equal(resources.js[0], filesToAdd[1], 'Expected factory JS to be loaded before module');
+      assert.equal(resources.js[1], filesToAdd[0], 'Expected module JS to be loaded after factory');
+      done();
+    }
+
+    launchTask(filesToAdd, validate);
+  });
+
   it('should be able to order a file containing AngularJS route definitions', function(done) {
     var filesToAdd = [
       path.join(resourcesDirPath, 'routes/routes.js'),
