@@ -1,4 +1,8 @@
-# 4.4.0 / YYYY-MM-DD
+# 5.0.0 / YYYY-MM-DD
+
+## BREAKING CHANGES
+
+- require('@openveo/api').util.shallowValidateObject now throws an error when trying to validate an Object as an array&lt;string&gt;, array&lt;number&gt; or array&lt;object&gt;
 
 ## NEW FEATURES
 

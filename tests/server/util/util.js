@@ -599,14 +599,14 @@ describe('util', function() {
         assert.equal(validatedObject.arrayProperty[0], value);
       });
 
-      it('should ignore property if value is an object', function() {
-        var validatedObject = util.shallowValidateObject({
-          arrayProperty: {}
-        }, {
-          arrayProperty: {type: 'array<string>'}
+      it('should throw an error if value is an object', function() {
+        assert.throws(function() {
+          util.shallowValidateObject({
+            arrayProperty: {}
+          }, {
+            arrayProperty: {type: 'array<string>'}
+          });
         });
-
-        assert.isUndefined(validatedObject.arrayProperty);
       });
 
       it('should convert values which are not strings', function() {
@@ -671,14 +671,14 @@ describe('util', function() {
         assert.equal(validatedObject.arrayProperty[0], value);
       });
 
-      it('should ignore property if value is an object', function() {
-        var validatedObject = util.shallowValidateObject({
-          arrayProperty: {}
-        }, {
-          arrayProperty: {type: 'array<number>'}
+      it('should throw an error if value is an object', function() {
+        assert.throws(function() {
+          util.shallowValidateObject({
+            arrayProperty: {}
+          }, {
+            arrayProperty: {type: 'array<number>'}
+          });
         });
-
-        assert.isUndefined(validatedObject.arrayProperty);
       });
 
       it('should convert values which are not numbers', function() {
@@ -730,14 +730,14 @@ describe('util', function() {
         assert.equal(validatedObject.arrayProperty.length, values.length);
       });
 
-      it('should ignore property if value is an object', function() {
-        var validatedObject = util.shallowValidateObject({
-          arrayProperty: {}
-        }, {
-          arrayProperty: {type: 'array<object>'}
+      it('should throw an error if value is an object', function() {
+        assert.throws(function() {
+          util.shallowValidateObject({
+            arrayProperty: {}
+          }, {
+            arrayProperty: {type: 'array<object>'}
+          });
         });
-
-        assert.isUndefined(validatedObject.arrayProperty);
       });
 
       it('should ignore values which are not objects', function() {
