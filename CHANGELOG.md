@@ -3,11 +3,45 @@
 ## BREAKING CHANGES
 
 - require('@openveo/api').util.shallowValidateObject now throws an error when trying to validate an Object as an array&lt;string&gt;, array&lt;number&gt; or array&lt;object&gt;
+- Controller / Model / Provider / Database system has been revised into a Controller / Provider / Storage system with the following important consequences:
+  - Models have been entirely removed as the notion of Model was confusing. Consequently require('@openveo/api').models does not exist anymore. You should now directly use Provider and EntityProvider instead of Model and EntityModel. If you were using ContentModel, content access verification based on a user has been moved into ContentController, thus you should use ContentController or implement content access controls yourself.
+  - require('@openveo/api').databases.factory is now accessible on require('@openveo/api').storages.factory
+  - require('@openveo/api').databases.Database is now accessible on require('@openveo/api').storages.databases.Database, this is because a new level of abstraction has been added to databases: the Storage. Database now extends Storage.
+  - EntityController.getEntitiesAction does not return all entities anymore but paginated results.
+  - EntityController.getEntityAction can now return an HTTP error 404 if entity has not been found.
+  - EntityController.updateEntityAction and ContentController.updateEntityAction now return property **total** with value **1** if everything went fine.
+  - EntityController.addEntityAction and ContentController.addEntityAction have been renamed into EntityController.addEntitiesAction and ContentController.addEntitiesAction because it is now possible to add several entities at once.
+  - EntityController.removeEntityAction and ContentController.removeEntityAction have been renamed into EntityController.removeEntitiesAction and ContentController.removeEntitiesAction because it is now possible to remove several entities at once.
+  - EntityController.removeEntitiesAction and ContentController.removeEntitiesAction now return property **total** with the number of removed entities.
+  - ContentController.updateEntityAction can now return an HTTP error 404 if entity has not been found.
+  - Classes extending EntityController must now implement a getProvider method instead of a getModel method.
+  - EntityProvider.getOne now expects a ResourceFilter and new fields format.
+  - EntityProvider.getPaginatedFilteredEntities has been removed, use EntityProvider.get instead.
+  - EntityProvider.get does not return all entities anymore but paginated results, it expects a ResourceFilter and new fields format.
+  - EntityProvider.update has been renamed into EntityProvider.updateOne and now expects a ResourceFilter.
+  - EntityProvider.remove now expects a ResourceFilter.
+  - EntityProvider.removeProp has been renamed into EntityProvider.removeField and now expects a ResourceFilter.
+  - EntityProvider.increase has been removed, use EntityProvider.updateOne instead.
+  - Database.insert has been renamed into Database.add an now expects a ResourceFilter.
+  - Database.remove now expects a ResourceFilter.
+  - Database.removeProp has been renamed into Database.removeField and now expects a ResourceFilter.
+  - Database.update now expects a ResourceFilter.
+  - Database.get now expects a ResourceFilter and new fields format.
+  - Database.search has been removed, use Database.get instead.
+  - Database.increase has been removed, use Database.updateOne instead.
+  - HTTP error code 512(10) does not correspond anymore to a forbidden error when fetching entities but to a forbidden error when removing entities.
+  - HTTP error code 515(10) which corresponded to a forbidden error when adding entities has been removed.
 
 ## NEW FEATURES
 
 - Add require('@openveo/api').grunt.ngDpTask as a grunt task to analyze an AngularJS application and generate a file containing the list of CSS and JavaScript files respecting the order of AngularJS dependencies. Use it to make sure that your AngularJS files and their associated CSS files are loaded in the right order. Is is based on the premise that the AngularJS application is organiszed in components and sub components
 - Add require('@openveo/api').middlewares.imageProcessorMiddleware as an ExpressJS middleware to preprocess images before sending them to the client. Actually only one kind of image manipulation is available: generate a thumbnail
+- Add require('@openveo/api').controllers.HttpController which is a new level of abstraction for the EntityController as an EntityController is intimately linked to the HTTP protocol. EntityController now extends HttpController which extends Controller.
+- Add fields on require('@openveo/api').controllers.EntityController, require('@openveo/api').controllers.ContentController, require('@openveo/api').providers.EntityProvider and require('@openveo/api').storages.Storage. This lets you precise which entity fields you want to include / exclude from returned entities.
+- Add require('@openveo/api').storages.ResourceFilter to be used between controllers, providers and storage to unify the writing of query filters.
+- Add EntityProvider.getAll to fetch all entities automatically by requesting pages one by one. This should be used wisely.
+- Add Provider.executeCallback as an helper function to execute a callback or log the message if callback is not defined.
+- Add require('@openveo/api').storages.databaseErrors holding all error codes relative to databases.
 
 # 4.3.1 / 2018-01-16
 
