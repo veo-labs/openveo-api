@@ -42,6 +42,7 @@
 - Add EntityProvider.getAll to fetch all entities automatically by requesting pages one by one. This should be used wisely.
 - Add Provider.executeCallback as an helper function to execute a callback or log the message if callback is not defined.
 - Add require('@openveo/api').storages.databaseErrors holding all error codes relative to databases.
+- Add require('@openveo/api').fileSystem.rm to remove either a directory or a file. Use it instead of require('@openveo/api').fileSystem.rmdir.
 
 # 4.3.1 / 2018-01-16
 
