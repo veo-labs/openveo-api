@@ -442,4 +442,31 @@ describe('imageProcessorMiddleware', function() {
     );
   });
 
+  it('should skip image processor if style dimensions (width AND height) are missing', function(done) {
+    var middleware = imageProcessorMiddleware(
+      imagesDirectoryPath,
+      imagesCachePath,
+      [
+        {
+          id: 'thumb-42',
+          quality: 100
+        }
+      ]
+    );
+
+    response.download = function() {
+      assert.isOk(false, 'Unexpected call to download function');
+    };
+
+    middleware(
+      request,
+      response,
+      function() {
+        fs.stat(imagesCachePath, function(error, stat) {
+          assert.isNotNull(error, 'Unexpected cache directory');
+          done();
+        });
+      }
+    );
+  });
 });
