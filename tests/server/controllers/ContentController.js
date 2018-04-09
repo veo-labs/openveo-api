@@ -477,7 +477,7 @@ describe('ContentController', function() {
       var expectedInclude = ['field1', 'field2'];
 
       ProviderMock.getOne = function(filter, fields, callback) {
-        assert.deepEqual(fields.include, expectedInclude, 'Wrong include');
+        assert.deepEqual(fields.include, expectedInclude.concat(['metadata']), 'Wrong include');
         assert.isUndefined(fields.exclude, 'Unexpected exclude');
         done();
       };
@@ -1564,13 +1564,13 @@ describe('ContentController', function() {
 
   describe('removeMetatadaFromFields', function() {
 
-    it('should remove "metadata" from include fields', function() {
-      var includedFields = ['field1', 'metadata', 'field2'];
+    it('should add "metadata" into include fields', function() {
+      var includedFields = ['field1', 'field2'];
       var fields = testContentController.removeMetatadaFromFields({
         include: includedFields
       });
 
-      assert.notInclude(fields.include, 'metadata', 'Unexpected "metadata" field');
+      assert.include(fields.include, 'metadata', 'Expected "metadata" field');
     });
 
     it('should remove "metadata" from exclude fields', function() {
@@ -1580,6 +1580,13 @@ describe('ContentController', function() {
       });
 
       assert.notInclude(fields.exclude, 'metadata', 'Unexpected "metadata" field');
+    });
+
+    it('should not create include or exclude fields if not specified', function() {
+      var fields = testContentController.removeMetatadaFromFields({});
+
+      assert.notProperty(fields, 'include', 'Unexpected "include" property');
+      assert.notProperty(fields, 'exclude', 'Unexpected "exclude" property');
     });
 
   });
