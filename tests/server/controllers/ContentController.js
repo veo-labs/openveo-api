@@ -16,8 +16,9 @@ describe('ContentController', function() {
   var expectedCount = 42;
   var response;
   var request;
-  var superAdminId = 42;
-  var anonymousId = 43;
+  var superAdminId = '0';
+  var anonymousId = '1';
+  var manageContentsPermissionId = 'manage-contents';
 
   // Initiates mocks
   beforeEach(function() {
@@ -68,6 +69,14 @@ describe('ContentController', function() {
 
     TestContentController.prototype.getAnonymousId = function() {
       return anonymousId;
+    };
+
+    TestContentController.prototype.getManageContentsPermissionId = function() {
+      return manageContentsPermissionId;
+    };
+
+    TestContentController.prototype.isUserManager = function() {
+      return false;
     };
 
     util.inherits(TestContentController, ContentController);
@@ -726,6 +735,36 @@ describe('ContentController', function() {
       });
     });
 
+    it('should update entity if user is a manager', function(done) {
+      expectedEntities = [
+        {
+          id: '42',
+          metadata: {
+            user: 'Something else'
+          }
+        }
+      ];
+
+      testContentController.isUserManager = function() {
+        return true;
+      };
+
+      response.send = function(result) {
+        done();
+      };
+
+      ProviderMock.updateOne = function(filter, data, callback) {
+        callback(null, 1);
+      };
+
+      request.params.id = expectedEntities[0].id;
+      request.body = {};
+
+      testContentController.updateEntityAction(request, response, function(error) {
+        assert.ok(false, 'Unexpected error');
+      });
+    });
+
     it('should be able to update entity groups', function(done) {
       var expectedGroupIds = ['42', '43'];
       expectedEntities = [
@@ -812,6 +851,40 @@ describe('ContentController', function() {
         user: expectedOwner
       };
       request.user.id = superAdminId;
+
+      testContentController.updateEntityAction(request, response, function(error) {
+        assert.ok(false, 'Unexpected error');
+      });
+    });
+
+    it('should be able to update entity owner as a manager', function(done) {
+      var expectedOwner = 'Something else';
+      expectedEntities = [
+        {
+          id: '42',
+          metadata: {
+            user: '43'
+          }
+        }
+      ];
+
+      testContentController.isUserManager = function() {
+        return true;
+      };
+
+      response.send = function(result) {
+        done();
+      };
+
+      ProviderMock.updateOne = function(filter, data, callback) {
+        assert.deepEqual(data['metadata.user'], expectedOwner, 'Wrong owner');
+        callback(null, 1);
+      };
+
+      request.params.id = expectedEntities[0].id;
+      request.body = {
+        user: expectedOwner
+      };
 
       testContentController.updateEntityAction(request, response, function(error) {
         assert.ok(false, 'Unexpected error');
@@ -1321,6 +1394,17 @@ describe('ContentController', function() {
       assert.isEmpty(filter.operations, 'Unexpected rules');
     });
 
+    it('should return the filter as is if user is a manager', function() {
+      testContentController.isUserManager = function() {
+        return true;
+      };
+
+      var filter = testContentController.addAccessFilter(new ResourceFilter(), {
+        id: '42'
+      });
+      assert.isEmpty(filter.operations, 'Unexpected rules');
+    });
+
   });
 
   describe('isUserAdmin', function() {
@@ -1397,6 +1481,20 @@ describe('ContentController', function() {
     it('should return true if the user is the super administrator', function() {
       assert.ok(testContentController.isUserAuthorized({
         id: superAdminId
+      }, {
+        metadata: {
+          user: 'Something else'
+        }
+      }, ContentController.OPERATIONS.READ), 'Expected user to be authorized');
+    });
+
+    it('should return true if the user is a manager', function() {
+      testContentController.isUserManager = function() {
+        return true;
+      };
+
+      assert.ok(testContentController.isUserAuthorized({
+        id: '42'
       }, {
         metadata: {
           user: 'Something else'

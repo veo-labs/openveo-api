@@ -14,6 +14,10 @@
   - EntityController.removeEntityAction and ContentController.removeEntityAction have been renamed into EntityController.removeEntitiesAction and ContentController.removeEntitiesAction because it is now possible to remove several entities at once.
   - EntityController.removeEntitiesAction and ContentController.removeEntitiesAction now return property **total** with the number of removed entities.
   - ContentController.updateEntityAction can now return an HTTP error 404 if entity has not been found.
+  - ContentController sub classes need to implement the method isUserManager.
+  - ContentController.isUserAuthorized now return false if user is not specified.
+  - ContentController.isUserAuthorized now return true if user is a manager (if ContentController.isUserManager return true).
+  - ContentController.updateEntityAction authorizes managers to update the entity owner.
   - Classes extending EntityController must now implement a getProvider method instead of a getModel method.
   - EntityProvider.getOne now expects a ResourceFilter and new fields format.
   - EntityProvider.getPaginatedFilteredEntities has been removed, use EntityProvider.get instead.
@@ -43,6 +47,7 @@
 - Add Provider.executeCallback as an helper function to execute a callback or log the message if callback is not defined.
 - Add require('@openveo/api').storages.databaseErrors holding all error codes relative to databases.
 - Add require('@openveo/api').fileSystem.rm to remove either a directory or a file. Use it instead of require('@openveo/api').fileSystem.rmdir.
+- Add the notion of content entities manager. Controllers of type ContentController should now implement the method "isUserManager" to indicate if the current user must have the same privileges as the super administrator on the content entities. Managers of content entities are always authorized to perform CRUD operations on a particular type of content entities.
 
 # 4.3.1 / 2018-01-16
 
