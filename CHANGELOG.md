@@ -38,6 +38,7 @@
 
 ## NEW FEATURES
 
+- Add cropping parameter to image style definition, image can be cropped when both height & width are specified.
 - Add require('@openveo/api').grunt.ngDpTask as a grunt task to analyze an AngularJS application and generate a file containing the list of CSS and JavaScript files respecting the order of AngularJS dependencies. Use it to make sure that your AngularJS files and their associated CSS files are loaded in the right order. Is is based on the premise that the AngularJS application is organiszed in components and sub components
 - Add require('@openveo/api').middlewares.imageProcessorMiddleware as an ExpressJS middleware to preprocess images before sending them to the client. Actually only one kind of image manipulation is available: generate a thumbnail
 - Add require('@openveo/api').controllers.HttpController which is a new level of abstraction for the EntityController as an EntityController is intimately linked to the HTTP protocol. EntityController now extends HttpController which extends Controller.
