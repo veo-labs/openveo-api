@@ -2,10 +2,14 @@
 
 var util = require('util');
 var chai = require('chai');
+var spies = require('chai-spies');
 var ContentController = process.requireApi('lib/controllers/ContentController.js');
 var ResourceFilter = process.requireApi('lib/storages/ResourceFilter.js');
 var httpErrors = process.requireApi('lib/controllers/httpErrors.js');
 var assert = chai.assert;
+
+chai.should();
+chai.use(spies);
 
 describe('ContentController', function() {
   var ProviderMock;
@@ -35,12 +39,15 @@ describe('ContentController', function() {
       add: function(entities, callback) {
         callback(null, expectedCount);
       },
-      remove: function(filter, callback) {
+      remove: chai.spy(function(filter, callback) {
         callback(null, expectedCount);
-      },
+      }),
       removeField: function(field, filter, callback) {
         callback(null, expectedCount);
-      }
+      },
+      updateOne: chai.spy(function(filter, data, callback) {
+        callback(null, 1);
+      })
     };
 
     response = {
@@ -990,16 +997,13 @@ describe('ContentController', function() {
         assert.ok(false, 'Unexpected response');
       };
 
-      ProviderMock.updateOne = function(filter, data, callback) {
-        callback(null, 1);
-      };
-
       request.params.id = expectedEntities[0].id;
       request.body = {
         field1: 'New value'
       };
 
       testContentController.updateEntityAction(request, response, function(error) {
+        ProviderMock.updateOne.should.have.been.called.exactly(0);
         assert.strictEqual(error, httpErrors.UPDATE_ENTITY_FORBIDDEN, 'Wrong error');
         done();
       });
@@ -1309,19 +1313,16 @@ describe('ContentController', function() {
         assert.ok(false, 'Unexpected response');
       };
 
-      ProviderMock.remove = function(filter, callback) {
-        callback(null, 0);
-      };
-
       request.params.id = expectedId;
 
       testContentController.removeEntitiesAction(request, response, function(error) {
+        ProviderMock.remove.should.have.been.called.exactly(0);
         assert.strictEqual(error, httpErrors.REMOVE_ENTITIES_FORBIDDEN, 'Wrong error');
         done();
       });
     });
 
-    it('should send an HTTP server error if removing entities partially failed', function(done) {
+    it('should send an HTTP server error if some entities could not be removed', function(done) {
       var expectedId = '42';
       expectedEntities.push({
         id: expectedId,
