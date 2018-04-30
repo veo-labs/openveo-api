@@ -50,6 +50,10 @@
 - Add require('@openveo/api').fileSystem.rm to remove either a directory or a file. Use it instead of require('@openveo/api').fileSystem.rmdir.
 - Add the notion of content entities manager. Controllers of type ContentController should now implement the method "isUserManager" to indicate if the current user must have the same privileges as the super administrator on the content entities. Managers of content entities are always authorized to perform CRUD operations on a particular type of content entities.
 
+## BUG FIXES
+
+- require('@openveo/api').multipart.MultipartParser now removes temporary files if client aborts the request
+
 # 4.3.1 / 2018-01-16
 
 ## BUG FIXES
