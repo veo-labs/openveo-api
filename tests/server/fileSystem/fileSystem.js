@@ -8,6 +8,13 @@ var fileSystem = process.requireApi('lib/fileSystem.js');
 // fileSystem.js
 describe('fileSystem', function() {
 
+  // Create tmp directory before each test
+  beforeEach(function(done) {
+    fileSystem.mkdir(path.join(__dirname, '/tmp'), function() {
+      done();
+    });
+  });
+
   // Remove tmp directory after each test
   afterEach(function(done) {
     fileSystem.rmdir(path.join(__dirname, '/tmp'), function(error) {
@@ -124,6 +131,70 @@ describe('fileSystem', function() {
       });
     });
 
+  });
+
+  // rm method
+  describe('rm', function() {
+
+    it('should return an error in case of invalid resource path', function(done) {
+      fileSystem.rm(null, function(error) {
+        if (error)
+          done();
+        else
+          assert.ok(false, 'Expected an error');
+      });
+    });
+
+    describe('directory', function() {
+      var directoryPath = path.join(__dirname, '/tmp/rm');
+
+      // Create directory before each test
+      beforeEach(function(done) {
+        fileSystem.mkdir(directoryPath, function() {
+          done();
+        });
+      });
+
+      it('should be able to recursively remove a directory', function(done) {
+        fileSystem.rm(directoryPath, function(error) {
+          if (!error) {
+            fs.exists(directoryPath, function(exists) {
+              if (!exists)
+                done();
+              else
+                assert.ok(false, 'Expected directory to be removed');
+            });
+          } else
+            assert.ok(false, 'Remove directory failed: ' + error.message);
+        });
+      });
+    });
+
+    describe('file', function() {
+      var filePath = path.join(__dirname, '/tmp/rm.txt');
+
+      // Create file before each test
+      beforeEach(function(done) {
+        fs.writeFile(filePath, 'Something', {encoding: 'utf8'}, function() {
+          done();
+        });
+      });
+
+      it('should be able to remove a file', function(done) {
+        fileSystem.rm(filePath, function(error) {
+          if (!error) {
+            fs.exists(filePath, function(exists) {
+              if (!exists)
+                done();
+              else
+                assert.ok(false, 'Expected file to be removed');
+            });
+          } else
+            assert.ok(false, 'Remove file failed: ' + error.message);
+        });
+      });
+
+    });
   });
 
   // getJSONFileContent method

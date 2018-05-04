@@ -13,8 +13,8 @@ describe('SocketController', function() {
 
   // Mocks
   beforeEach(function() {
-    TestSocketController = function(ModelConstructor, ProviderConstructor) {
-      TestSocketController.super_.call(this, ModelConstructor, ProviderConstructor);
+    TestSocketController = function() {
+      TestSocketController.super_.call(this);
     };
 
     util.inherits(TestSocketController, SocketController);
