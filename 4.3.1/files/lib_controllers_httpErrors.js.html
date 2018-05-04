@@ -47,22 +47,31 @@
                                 <li><a href="../classes/CAS2.html">CAS2</a></li>
                                 <li><a href="../classes/CAS3.html">CAS3</a></li>
                                 <li><a href="../classes/CasStrategy.html">CasStrategy</a></li>
+                                <li><a href="../classes/ComponentExpression.html">ComponentExpression</a></li>
+                                <li><a href="../classes/ConfigExpression.html">ConfigExpression</a></li>
+                                <li><a href="../classes/ConstantExpression.html">ConstantExpression</a></li>
                                 <li><a href="../classes/ContentController.html">ContentController</a></li>
-                                <li><a href="../classes/ContentModel.html">ContentModel</a></li>
                                 <li><a href="../classes/Controller.html">Controller</a></li>
                                 <li><a href="../classes/Database.html">Database</a></li>
+                                <li><a href="../classes/DirectiveExpression.html">DirectiveExpression</a></li>
                                 <li><a href="../classes/disableCacheMiddleware.html">disableCacheMiddleware</a></li>
+                                <li><a href="../classes/ElementExpression.html">ElementExpression</a></li>
                                 <li><a href="../classes/EntityController.html">EntityController</a></li>
-                                <li><a href="../classes/EntityModel.html">EntityModel</a></li>
                                 <li><a href="../classes/EntityProvider.html">EntityProvider</a></li>
+                                <li><a href="../classes/Expression.html">Expression</a></li>
                                 <li><a href="../classes/factory.html">factory</a></li>
                                 <li><a href="../classes/fileSystem.html">fileSystem</a></li>
+                                <li><a href="../classes/FilterExpression.html">FilterExpression</a></li>
                                 <li><a href="../classes/http-errors.html">http-errors</a></li>
+                                <li><a href="../classes/HttpController.html">HttpController</a></li>
+                                <li><a href="../classes/imageProcessorMiddleware.html">imageProcessorMiddleware</a></li>
+                                <li><a href="../classes/InjectExpression.html">InjectExpression</a></li>
                                 <li><a href="../classes/logger.html">logger</a></li>
                                 <li><a href="../classes/logRequestMiddleware.html">logRequestMiddleware</a></li>
-                                <li><a href="../classes/Model.html">Model</a></li>
+                                <li><a href="../classes/ModuleExpression.html">ModuleExpression</a></li>
                                 <li><a href="../classes/MongoDatabase.html">MongoDatabase</a></li>
                                 <li><a href="../classes/MultipartParser.html">MultipartParser</a></li>
+                                <li><a href="../classes/ngDpTask.html">ngDpTask</a></li>
                                 <li><a href="../classes/NotFoundError.html">NotFoundError</a></li>
                                 <li><a href="../classes/Pilot.html">Pilot</a></li>
                                 <li><a href="../classes/Plugin.html">Plugin</a></li>
@@ -70,28 +79,31 @@
                                 <li><a href="../classes/Provider.html">Provider</a></li>
                                 <li><a href="../classes/removeTask.html">removeTask</a></li>
                                 <li><a href="../classes/renameTask.html">renameTask</a></li>
+                                <li><a href="../classes/ResourceFilter.html">ResourceFilter</a></li>
+                                <li><a href="../classes/RouteExpression.html">RouteExpression</a></li>
                                 <li><a href="../classes/SocketController.html">SocketController</a></li>
                                 <li><a href="../classes/SocketNamespace.html">SocketNamespace</a></li>
                                 <li><a href="../classes/SocketServer.html">SocketServer</a></li>
+                                <li><a href="../classes/Storage.html">Storage</a></li>
                                 <li><a href="../classes/STRATEGIES.html">STRATEGIES</a></li>
                                 <li><a href="../classes/util.html">util</a></li>
+                                <li><a href="../classes/ValueExpression.html">ValueExpression</a></li>
                             </ul>
                 
                             <ul id="api-modules" class="apis modules">
                                 <li><a href="../modules/controllers.html">controllers</a></li>
-                                <li><a href="../modules/database.html">database</a></li>
                                 <li><a href="../modules/emitters.html">emitters</a></li>
                                 <li><a href="../modules/errors.html">errors</a></li>
                                 <li><a href="../modules/fileSystem.html">fileSystem</a></li>
                                 <li><a href="../modules/grunt.html">grunt</a></li>
                                 <li><a href="../modules/logger.html">logger</a></li>
                                 <li><a href="../modules/middlewares.html">middlewares</a></li>
-                                <li><a href="../modules/models.html">models</a></li>
                                 <li><a href="../modules/multipart.html">multipart</a></li>
                                 <li><a href="../modules/passport.html">passport</a></li>
                                 <li><a href="../modules/plugin.html">plugin</a></li>
                                 <li><a href="../modules/providers.html">providers</a></li>
                                 <li><a href="../modules/socket.html">socket</a></li>
+                                <li><a href="../modules/storages.html">storages</a></li>
                                 <li><a href="../modules/util.html">util</a></li>
                             </ul>
                         </div>
@@ -177,24 +189,24 @@ var HTTP_ERRORS = {
   /**
    * A server error occurring when updating an entity.
    *
-   * @property UPDATE_ENTITY_ERROR
+   * @property UPDATE_ENTITIES_ERROR
    * @type Object
    * @final
    */
-  UPDATE_ENTITY_ERROR: {
+  UPDATE_ENTITIES_ERROR: {
     code: 0x002,
     httpCode: 500,
     module: &#x27;api&#x27;
   },
 
   /**
-   * A server error occurring when adding an entity.
+   * A server error occurring when adding entities.
    *
-   * @property ADD_ENTITY_ERROR
+   * @property ADD_ENTITIES_ERROR
    * @type Object
    * @final
    */
-  ADD_ENTITY_ERROR: {
+  ADD_ENTITIES_ERROR: {
     code: 0x003,
     httpCode: 500,
     module: &#x27;api&#x27;
@@ -203,11 +215,11 @@ var HTTP_ERRORS = {
   /**
    * A server error occurring when removing an entity.
    *
-   * @property REMOVE_ENTITY_ERROR
+   * @property REMOVE_ENTITIES_ERROR
    * @type Object
    * @final
    */
-  REMOVE_ENTITY_ERROR: {
+  REMOVE_ENTITIES_ERROR: {
     code: 0x004,
     httpCode: 500,
     module: &#x27;api&#x27;
@@ -231,14 +243,13 @@ var HTTP_ERRORS = {
   // Authentication errors
 
   /**
-   * An authentication error occurring when the connected user doesn&#x27;t have enough privileges
-   * to get the list of entities.
+   * An authentication error occurring when the connected user doesn&#x27;t have enough privileges to remove entities.
    *
-   * @property GET_ENTITIES_FORBIDDEN
+   * @property REMOVE_ENTITIES_FORBIDDEN
    * @type Object
    * @final
    */
-  GET_ENTITIES_FORBIDDEN: {
+  REMOVE_ENTITIES_FORBIDDEN: {
     code: 0x200,
     httpCode: 403,
     module: &#x27;api&#x27;
@@ -258,27 +269,14 @@ var HTTP_ERRORS = {
   },
 
   /**
-   * An authentication error occurring when the connected user doesn&#x27;t have enough privileges to update an entity.
+   * An authentication error occurring when the connected user doesn&#x27;t have enough privileges to update entities.
    *
-   * @property UPDATE_ENTITY_FORBIDDEN
+   * @property UPDATE_ENTITIES_FORBIDDEN
    * @type Object
    * @final
    */
-  UPDATE_ENTITY_FORBIDDEN: {
+  UPDATE_ENTITIES_FORBIDDEN: {
     code: 0x202,
-    httpCode: 403,
-    module: &#x27;api&#x27;
-  },
-
-  /**
-   * An authentication error occurring when the connected user doesn&#x27;t have enough privileges to add an entity.
-   *
-   * @property ADD_ENTITY_FORBIDDEN
-   * @type Object
-   * @final
-   */
-  ADD_ENTITY_FORBIDDEN: {
-    code: 0x203,
     httpCode: 403,
     module: &#x27;api&#x27;
   },
@@ -286,7 +284,7 @@ var HTTP_ERRORS = {
   // Wrong parameters errors
 
   /**
-   * A wrong parameter error occurring when a parameter is missing while getting an entity.
+   * A wrong parameters error occurring when a parameter is missing while getting an entity.
    *
    * @property GET_ENTITY_MISSING_PARAMETERS
    * @type Object
@@ -299,40 +297,92 @@ var HTTP_ERRORS = {
   },
 
   /**
-   * A wrong parameter error occurring when a parameter is missing while updating an entity.
+   * A wrong parameters error occurring when a parameter is missing while updating entities.
    *
-   * @property UPDATE_ENTITY_MISSING_PARAMETERS
+   * @property UPDATE_ENTITIES_MISSING_PARAMETERS
    * @type Object
    * @final
    */
-  UPDATE_ENTITY_MISSING_PARAMETERS: {
+  UPDATE_ENTITIES_MISSING_PARAMETERS: {
     code: 0x301,
     httpCode: 400,
     module: &#x27;api&#x27;
   },
 
   /**
-   * A wrong parameter error occurring when a parameter is missing while adding an entity.
+   * A wrong parameters error occurring when a parameter is missing while adding entities.
    *
-   * @property ADD_ENTITY_MISSING_PARAMETERS
+   * @property ADD_ENTITIES_MISSING_PARAMETERS
    * @type Object
    * @final
    */
-  ADD_ENTITY_MISSING_PARAMETERS: {
+  ADD_ENTITIES_MISSING_PARAMETERS: {
     code: 0x302,
     httpCode: 400,
     module: &#x27;api&#x27;
   },
 
   /**
-   * A wrong parameter error occurring when a parameter is missing while removing an entity.
+   * A wrong parameters error occurring when a parameter is missing while removing entities.
    *
-   * @property REMOVE_ENTITY_MISSING_PARAMETERS
+   * @property REMOVE_ENTITIES_MISSING_PARAMETERS
    * @type Object
    * @final
    */
-  REMOVE_ENTITY_MISSING_PARAMETERS: {
+  REMOVE_ENTITIES_MISSING_PARAMETERS: {
     code: 0x303,
+    httpCode: 400,
+    module: &#x27;api&#x27;
+  },
+
+  /**
+   * Getting the list of entities failed, wrong parameters.
+   *
+   * @property GET_ENTITIES_WRONG_PARAMETERS
+   * @type Object
+   * @final
+   */
+  GET_ENTITIES_WRONG_PARAMETERS: {
+    code: 0x304,
+    httpCode: 400,
+    module: &#x27;api&#x27;
+  },
+
+  /**
+   * Getting an entity failed, wrong parameters.
+   *
+   * @property GET_ENTITY_WRONG_PARAMETERS
+   * @type Object
+   * @final
+   */
+  GET_ENTITY_WRONG_PARAMETERS: {
+    code: 0x305,
+    httpCode: 400,
+    module: &#x27;api&#x27;
+  },
+
+  /**
+   * Adding entities failed, wrong parameters.
+   *
+   * @property ADD_ENTITIES_WRONG_PARAMETERS
+   * @type Object
+   * @final
+   */
+  ADD_ENTITIES_WRONG_PARAMETERS: {
+    code: 0x306,
+    httpCode: 400,
+    module: &#x27;api&#x27;
+  },
+
+  /**
+   * Updating entities failed, wrong parameters.
+   *
+   * @property UPDATE_ENTITIES_WRONG_PARAMETERS
+   * @type Object
+   * @final
+   */
+  UPDATE_ENTITIES_WRONG_PARAMETERS: {
+    code: 0x307,
     httpCode: 400,
     module: &#x27;api&#x27;
   }

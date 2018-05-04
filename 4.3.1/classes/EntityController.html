@@ -47,22 +47,31 @@
                                 <li><a href="../classes/CAS2.html">CAS2</a></li>
                                 <li><a href="../classes/CAS3.html">CAS3</a></li>
                                 <li><a href="../classes/CasStrategy.html">CasStrategy</a></li>
+                                <li><a href="../classes/ComponentExpression.html">ComponentExpression</a></li>
+                                <li><a href="../classes/ConfigExpression.html">ConfigExpression</a></li>
+                                <li><a href="../classes/ConstantExpression.html">ConstantExpression</a></li>
                                 <li><a href="../classes/ContentController.html">ContentController</a></li>
-                                <li><a href="../classes/ContentModel.html">ContentModel</a></li>
                                 <li><a href="../classes/Controller.html">Controller</a></li>
                                 <li><a href="../classes/Database.html">Database</a></li>
+                                <li><a href="../classes/DirectiveExpression.html">DirectiveExpression</a></li>
                                 <li><a href="../classes/disableCacheMiddleware.html">disableCacheMiddleware</a></li>
+                                <li><a href="../classes/ElementExpression.html">ElementExpression</a></li>
                                 <li><a href="../classes/EntityController.html">EntityController</a></li>
-                                <li><a href="../classes/EntityModel.html">EntityModel</a></li>
                                 <li><a href="../classes/EntityProvider.html">EntityProvider</a></li>
+                                <li><a href="../classes/Expression.html">Expression</a></li>
                                 <li><a href="../classes/factory.html">factory</a></li>
                                 <li><a href="../classes/fileSystem.html">fileSystem</a></li>
+                                <li><a href="../classes/FilterExpression.html">FilterExpression</a></li>
                                 <li><a href="../classes/http-errors.html">http-errors</a></li>
+                                <li><a href="../classes/HttpController.html">HttpController</a></li>
+                                <li><a href="../classes/imageProcessorMiddleware.html">imageProcessorMiddleware</a></li>
+                                <li><a href="../classes/InjectExpression.html">InjectExpression</a></li>
                                 <li><a href="../classes/logger.html">logger</a></li>
                                 <li><a href="../classes/logRequestMiddleware.html">logRequestMiddleware</a></li>
-                                <li><a href="../classes/Model.html">Model</a></li>
+                                <li><a href="../classes/ModuleExpression.html">ModuleExpression</a></li>
                                 <li><a href="../classes/MongoDatabase.html">MongoDatabase</a></li>
                                 <li><a href="../classes/MultipartParser.html">MultipartParser</a></li>
+                                <li><a href="../classes/ngDpTask.html">ngDpTask</a></li>
                                 <li><a href="../classes/NotFoundError.html">NotFoundError</a></li>
                                 <li><a href="../classes/Pilot.html">Pilot</a></li>
                                 <li><a href="../classes/Plugin.html">Plugin</a></li>
@@ -70,28 +79,31 @@
                                 <li><a href="../classes/Provider.html">Provider</a></li>
                                 <li><a href="../classes/removeTask.html">removeTask</a></li>
                                 <li><a href="../classes/renameTask.html">renameTask</a></li>
+                                <li><a href="../classes/ResourceFilter.html">ResourceFilter</a></li>
+                                <li><a href="../classes/RouteExpression.html">RouteExpression</a></li>
                                 <li><a href="../classes/SocketController.html">SocketController</a></li>
                                 <li><a href="../classes/SocketNamespace.html">SocketNamespace</a></li>
                                 <li><a href="../classes/SocketServer.html">SocketServer</a></li>
+                                <li><a href="../classes/Storage.html">Storage</a></li>
                                 <li><a href="../classes/STRATEGIES.html">STRATEGIES</a></li>
                                 <li><a href="../classes/util.html">util</a></li>
+                                <li><a href="../classes/ValueExpression.html">ValueExpression</a></li>
                             </ul>
                 
                             <ul id="api-modules" class="apis modules">
                                 <li><a href="../modules/controllers.html">controllers</a></li>
-                                <li><a href="../modules/database.html">database</a></li>
                                 <li><a href="../modules/emitters.html">emitters</a></li>
                                 <li><a href="../modules/errors.html">errors</a></li>
                                 <li><a href="../modules/fileSystem.html">fileSystem</a></li>
                                 <li><a href="../modules/grunt.html">grunt</a></li>
                                 <li><a href="../modules/logger.html">logger</a></li>
                                 <li><a href="../modules/middlewares.html">middlewares</a></li>
-                                <li><a href="../modules/models.html">models</a></li>
                                 <li><a href="../modules/multipart.html">multipart</a></li>
                                 <li><a href="../modules/passport.html">passport</a></li>
                                 <li><a href="../modules/plugin.html">plugin</a></li>
                                 <li><a href="../modules/providers.html">providers</a></li>
                                 <li><a href="../modules/socket.html">socket</a></li>
+                                <li><a href="../modules/storages.html">storages</a></li>
                                 <li><a href="../modules/util.html">util</a></li>
                             </ul>
                         </div>
@@ -130,11 +142,11 @@
 <div class="meta">
 
         <div class="extends">
-            Extends <a href="../classes/Controller.html" class="crosslink">Controller</a>
+            Extends <a href="../classes/HttpController.html" class="crosslink">HttpController</a>
         </div>
 
         <div class="foundat">
-            Defined in: <a href="../files/lib_controllers_EntityController.js.html#l11"><code>lib&#x2F;controllers&#x2F;EntityController.js:11</code></a>
+            Defined in: <a href="../files/lib_controllers_EntityController.js.html#l13"><code>lib&#x2F;controllers&#x2F;EntityController.js:13</code></a>
         </div>
 
             Module: <a href="../modules/controllers.html">controllers</a>
@@ -146,15 +158,6 @@
 <div class="intro">
     <p>Defines base controller for all controllers which need to provide HTTP route actions for all requests
 relative to entities.</p>
-<pre class="code prettyprint"><code>// Implement an EntityController : &quot;CustomEntityController&quot;
-var util = require('util');
-var openVeoApi = require('@openveo/api');
-
-function CustomEntityController(model, provider) {
-  CustomEntityController.super_.call(this, model, provider);
-}
-
-util.inherits(CustomEntityController, openVeoApi.controllers.EntityController);</code></pre>
 
 </div>
 
@@ -166,7 +169,7 @@ util.inherits(CustomEntityController, openVeoApi.controllers.EntityController);<
   <div class="meta method-meta">
       <p>
           Defined in
-      <a href="../files/lib_controllers_EntityController.js.html#l11"><code>lib&#x2F;controllers&#x2F;EntityController.js:11</code></a>
+      <a href="../files/lib_controllers_EntityController.js.html#l13"><code>lib&#x2F;controllers&#x2F;EntityController.js:13</code></a>
   </p>
 
 
@@ -214,7 +217,7 @@ util.inherits(CustomEntityController, openVeoApi.controllers.EntityController);<
 
                     <ul class="index-list methods extends">
                             <li class="index-item method">
-                                <a href="#method_addEntityAction">addEntityAction</a>
+                                <a href="#method_addEntitiesAction">addEntitiesAction</a>
 
                             </li>
                             <li class="index-item method">
@@ -226,15 +229,15 @@ util.inherits(CustomEntityController, openVeoApi.controllers.EntityController);<
 
                             </li>
                             <li class="index-item method">
-                                <a href="#method_getModel">getModel</a>
+                                <a href="#method_getProvider">getProvider</a>
 
                             </li>
                             <li class="index-item method">
-                                <a href="#method_removeEntityAction">removeEntityAction</a>
+                                <a href="#method_removeEntitiesAction">removeEntitiesAction</a>
 
                             </li>
                             <li class="index-item method">
-                                <a href="#method_updateEntityAction">updateEntityAction</a>
+                                <a href="#method_updateEntitiesAction">updateEntitiesAction</a>
 
                             </li>
                     </ul>
@@ -247,13 +250,13 @@ util.inherits(CustomEntityController, openVeoApi.controllers.EntityController);<
             <div id="methods" class="api-class-tabpanel">
                 <h2 class="off-left">Methods</h2>
 
-<div id="method_addEntityAction" class="method item">
-  <h3 class="blue-method-name">addEntityAction</h3>
+<div id="method_addEntitiesAction" class="method item">
+  <h3 class="blue-method-name">addEntitiesAction</h3>
 
   <div class="meta method-meta">
       <p>
           Defined in
-      <a href="../files/lib_controllers_EntityController.js.html#l151"><code>lib&#x2F;controllers&#x2F;EntityController.js:151</code></a>
+      <a href="../files/lib_controllers_EntityController.js.html#l213"><code>lib&#x2F;controllers&#x2F;EntityController.js:213</code></a>
   </p>
 
 
@@ -262,7 +265,7 @@ util.inherits(CustomEntityController, openVeoApi.controllers.EntityController);<
 
   <h3>Syntax</h3>
   <div class="blue-method-syntax">
-  <h3 class="name"><code>addEntityAction</code></h3>
+  <h3 class="name"><code>addEntitiesAction</code></h3>
 
         <div class="args">
             <span class="paren">(</span><ul class="args-list inline commas">
@@ -289,7 +292,7 @@ util.inherits(CustomEntityController, openVeoApi.controllers.EntityController);<
   </div>
     <div class="description">
       <h3>Summary</h3>
-        <p>Adds an entity.</p>
+        <p>Adds entities.</p>
 
     </div>
 
@@ -307,6 +310,18 @@ util.inherits(CustomEntityController, openVeoApi.controllers.EntityController);<
 
                     </div>
 
+                        <ul class="params-list">
+                            <li class="param">
+                                    <code class="param-name">body</code>
+                                    <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array" class="crosslink external" target="_blank">Array</a></span>
+
+                                <div class="param-description">
+                                    <p>The list of entities to add with for each entity the fields with their values</p>
+
+                                </div>
+
+                            </li>
+                        </ul>
                 </li>
                 <li class="param">
                         <code class="param-name">response</code>
@@ -338,9 +353,10 @@ util.inherits(CustomEntityController, openVeoApi.controllers.EntityController);<
             <h4>Example:</h4>
 
             <div class="example-content">
-<pre class="code prettyprint"><code>// Expected body example
+<pre class="code prettyprint"><code>// Response example
 {
-  &quot;entity&quot; : { ... }
+  error: null,
+  status: 'ok'
 }</code></pre>
 
             </div>
@@ -353,7 +369,7 @@ util.inherits(CustomEntityController, openVeoApi.controllers.EntityController);<
   <div class="meta method-meta">
       <p>
           Defined in
-      <a href="../files/lib_controllers_EntityController.js.html#l36"><code>lib&#x2F;controllers&#x2F;EntityController.js:36</code></a>
+      <a href="../files/lib_controllers_EntityController.js.html#l28"><code>lib&#x2F;controllers&#x2F;EntityController.js:28</code></a>
   </p>
 
 
@@ -389,7 +405,7 @@ util.inherits(CustomEntityController, openVeoApi.controllers.EntityController);<
   </div>
     <div class="description">
       <h3>Summary</h3>
-        <p>Gets the list of entities.</p>
+        <p>Gets entities.</p>
 
     </div>
 
@@ -407,6 +423,76 @@ util.inherits(CustomEntityController, openVeoApi.controllers.EntityController);<
 
                     </div>
 
+                        <ul class="params-list">
+                            <li class="param">
+                                    <code class="param-name optional">[query]</code>
+                                    <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
+                                    <span class="flag optional" title="This parameter is optional.">optional</span>
+
+                                <div class="param-description">
+                                    <p>Request query</p>
+
+                                </div>
+
+                                    <ul class="params-list">
+                                        <li class="param">
+                                                <code class="param-name optional">[include]</code>
+                                                <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array" class="crosslink external" target="_blank">Array</a></span>
+                                                <span class="flag optional" title="This parameter is optional.">optional</span>
+
+                                            <div class="param-description">
+                                                The list of fields to include from returned entities
+                                            </div>
+                                        </li>
+                                        <li class="param">
+                                                <code class="param-name optional">[exclude]</code>
+                                                <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array" class="crosslink external" target="_blank">Array</a></span>
+                                                <span class="flag optional" title="This parameter is optional.">optional</span>
+
+                                            <div class="param-description">
+                                                The list of fields to exclude from returned entities. Ignored if
+include is also specified.
+                                            </div>
+                                        </li>
+                                        <li class="param">
+                                                <code class="param-name optional">[limit]</code>
+                                                <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number" class="crosslink external" target="_blank">Number</a></span>
+                                                <span class="flag optional" title="This parameter is optional.">optional</span>
+
+                                            <div class="param-description">
+                                                A limit number of entities to retrieve per page (default to 10)
+                                            </div>
+                                        </li>
+                                        <li class="param">
+                                                <code class="param-name optional">[page]</code>
+                                                <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number" class="crosslink external" target="_blank">Number</a></span>
+                                                <span class="flag optional" title="This parameter is optional.">optional</span>
+
+                                            <div class="param-description">
+                                                The page number started at 0 for the first page (default to 0)
+                                            </div>
+                                        </li>
+                                        <li class="param">
+                                                <code class="param-name optional">[sort]</code>
+                                                <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+                                                <span class="flag optional" title="This parameter is optional.">optional</span>
+
+                                            <div class="param-description">
+                                                The entity field to sort by
+                                            </div>
+                                        </li>
+                                        <li class="param">
+                                                <code class="param-name optional">[sortOrder]</code>
+                                                <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+                                                <span class="flag optional" title="This parameter is optional.">optional</span>
+
+                                            <div class="param-description">
+                                                Either "asc" for ascendant or "desc" for descendant
+                                            </div>
+                                        </li>
+                                    </ul>
+                            </li>
+                        </ul>
                 </li>
                 <li class="param">
                         <code class="param-name">response</code>
@@ -440,7 +526,12 @@ util.inherits(CustomEntityController, openVeoApi.controllers.EntityController);<
             <div class="example-content">
 <pre class="code prettyprint"><code>// Response example
 {
-  &quot;entities&quot; : [ ... ]
+  &quot;entities&quot; : [ ... ],
+  &quot;pagination&quot; : {
+    &quot;limit&quot;: ..., // The limit number of entities by page
+    &quot;page&quot;: ..., // The actual page
+    &quot;pages&quot;: ..., // The total number of pages
+    &quot;size&quot;: ... // The total number of entities
 }</code></pre>
 
             </div>
@@ -453,7 +544,7 @@ util.inherits(CustomEntityController, openVeoApi.controllers.EntityController);<
   <div class="meta method-meta">
       <p>
           Defined in
-      <a href="../files/lib_controllers_EntityController.js.html#l67"><code>lib&#x2F;controllers&#x2F;EntityController.js:67</code></a>
+      <a href="../files/lib_controllers_EntityController.js.html#l102"><code>lib&#x2F;controllers&#x2F;EntityController.js:102</code></a>
   </p>
 
 
@@ -513,7 +604,7 @@ util.inherits(CustomEntityController, openVeoApi.controllers.EntityController);<
                                     <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
 
                                 <div class="param-description">
-                                    <p>Request's parameters</p>
+                                    <p>Request parameters</p>
 
                                 </div>
 
@@ -524,6 +615,37 @@ util.inherits(CustomEntityController, openVeoApi.controllers.EntityController);<
 
                                             <div class="param-description">
                                                 The entity id to retrieve
+                                            </div>
+                                        </li>
+                                    </ul>
+                            </li>
+                            <li class="param">
+                                    <code class="param-name">query</code>
+                                    <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
+
+                                <div class="param-description">
+                                    <p>Request query</p>
+
+                                </div>
+
+                                    <ul class="params-list">
+                                        <li class="param">
+                                                <code class="param-name optional">[include]</code>
+                                                <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array" class="crosslink external" target="_blank">Array</a></span>
+                                                <span class="flag optional" title="This parameter is optional.">optional</span>
+
+                                            <div class="param-description">
+                                                The list of fields to include from returned entity
+                                            </div>
+                                        </li>
+                                        <li class="param">
+                                                <code class="param-name optional">[exclude]</code>
+                                                <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array" class="crosslink external" target="_blank">Array</a></span>
+                                                <span class="flag optional" title="This parameter is optional.">optional</span>
+
+                                            <div class="param-description">
+                                                The list of fields to exclude from returned entity. Ignored if
+include is also specified.
                                             </div>
                                         </li>
                                     </ul>
@@ -569,13 +691,13 @@ util.inherits(CustomEntityController, openVeoApi.controllers.EntityController);<
         </div>
 
 </div>
-<div id="method_getModel" class="method item">
-  <h3 class="blue-method-name">getModel</h3>
+<div id="method_getProvider" class="method item">
+  <h3 class="blue-method-name">getProvider</h3>
 
   <div class="meta method-meta">
       <p>
           Defined in
-      <a href="../files/lib_controllers_EntityController.js.html#l225"><code>lib&#x2F;controllers&#x2F;EntityController.js:225</code></a>
+      <a href="../files/lib_controllers_EntityController.js.html#l307"><code>lib&#x2F;controllers&#x2F;EntityController.js:307</code></a>
   </p>
 
 
@@ -584,12 +706,12 @@ util.inherits(CustomEntityController, openVeoApi.controllers.EntityController);<
 
   <h3>Syntax</h3>
   <div class="blue-method-syntax">
-  <h3 class="name"><code>getModel</code></h3>
+  <h3 class="name"><code>getProvider</code></h3>
 
         <span class="paren">()</span>
 
         <span class="returns-inline">
-            <span class="type"><a href="../classes/EntityModel.html" class="crosslink">EntityModel</a></span>
+            <span class="type"><a href="../classes/EntityProvider.html" class="crosslink">EntityProvider</a></span>
         </span>
 
 
@@ -601,7 +723,7 @@ util.inherits(CustomEntityController, openVeoApi.controllers.EntityController);<
   </div>
     <div class="description">
       <h3>Summary</h3>
-        <p>Gets an instance of the entity model associated to the controller.</p>
+        <p>Gets an instance of the entity provider associated to the controller.</p>
 
     </div>
 
@@ -610,9 +732,9 @@ util.inherits(CustomEntityController, openVeoApi.controllers.EntityController);<
             <h4>Returns:</h4>
 
             <div class="returns-description">
-                <span class="type"><a href="../classes/EntityModel.html" class="crosslink">EntityModel</a></span>:
+                <span class="type"><a href="../classes/EntityProvider.html" class="crosslink">EntityProvider</a></span>:
                 <div class="blue-return-desc">
-                    <p>The entity model</p>
+                    <p>The entity provider</p>
 
                 </div>
 
@@ -622,13 +744,13 @@ util.inherits(CustomEntityController, openVeoApi.controllers.EntityController);<
 
 
 </div>
-<div id="method_removeEntityAction" class="method item">
-  <h3 class="blue-method-name">removeEntityAction</h3>
+<div id="method_removeEntitiesAction" class="method item">
+  <h3 class="blue-method-name">removeEntitiesAction</h3>
 
   <div class="meta method-meta">
       <p>
           Defined in
-      <a href="../files/lib_controllers_EntityController.js.html#l189"><code>lib&#x2F;controllers&#x2F;EntityController.js:189</code></a>
+      <a href="../files/lib_controllers_EntityController.js.html#l260"><code>lib&#x2F;controllers&#x2F;EntityController.js:260</code></a>
   </p>
 
 
@@ -637,7 +759,7 @@ util.inherits(CustomEntityController, openVeoApi.controllers.EntityController);<
 
   <h3>Syntax</h3>
   <div class="blue-method-syntax">
-  <h3 class="name"><code>removeEntityAction</code></h3>
+  <h3 class="name"><code>removeEntitiesAction</code></h3>
 
         <div class="args">
             <span class="paren">(</span><ul class="args-list inline commas">
@@ -688,7 +810,7 @@ util.inherits(CustomEntityController, openVeoApi.controllers.EntityController);<
                                     <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
 
                                 <div class="param-description">
-                                    <p>Request's parameters</p>
+                                    <p>Request parameters</p>
 
                                 </div>
 
@@ -698,118 +820,7 @@ util.inherits(CustomEntityController, openVeoApi.controllers.EntityController);<
                                                 <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
 
                                             <div class="param-description">
-                                                The comma separated list of entity ids to remove
-                                            </div>
-                                        </li>
-                                    </ul>
-                            </li>
-                        </ul>
-                </li>
-                <li class="param">
-                        <code class="param-name">response</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/API/Response" class="crosslink external" target="_blank">Response</a></span>
-
-
-                    <div class="param-description">
-                        <p>ExpressJS HTTP Response</p>
-
-                    </div>
-
-                </li>
-                <li class="param">
-                        <code class="param-name">next</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function" class="crosslink external" target="_blank">Function</a></span>
-
-
-                    <div class="param-description">
-                        <p>Function to defer execution to the next registered middleware</p>
-
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-
-
-</div>
-<div id="method_updateEntityAction" class="method item">
-  <h3 class="blue-method-name">updateEntityAction</h3>
-
-  <div class="meta method-meta">
-      <p>
-          Defined in
-      <a href="../files/lib_controllers_EntityController.js.html#l111"><code>lib&#x2F;controllers&#x2F;EntityController.js:111</code></a>
-  </p>
-
-
-
-  </div>
-
-  <h3>Syntax</h3>
-  <div class="blue-method-syntax">
-  <h3 class="name"><code>updateEntityAction</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>request</code>
-                </li>
-                <li class="arg">
-                        <code>response</code>
-                </li>
-                <li class="arg">
-                        <code>next</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-
-
-
-
-
-
-        <span class="flag async">async</span>
-
-  </div>
-    <div class="description">
-      <h3>Summary</h3>
-        <p>Updates an entity.</p>
-
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">request</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/API/Request" class="crosslink external" target="_blank">Request</a></span>
-
-
-                    <div class="param-description">
-                        <p>ExpressJS HTTP Request</p>
-
-                    </div>
-
-                        <ul class="params-list">
-                            <li class="param">
-                                    <code class="param-name">params</code>
-                                    <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
-
-                                <div class="param-description">
-                                    <p>Request's parameters</p>
-
-                                </div>
-
-                                    <ul class="params-list">
-                                        <li class="param">
-                                                <code class="param-name">id</code>
-                                                <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
-
-                                            <div class="param-description">
-                                                The entity id to update
+                                                A comma separated list of entity ids to remove
                                             </div>
                                         </li>
                                     </ul>
@@ -846,9 +857,143 @@ util.inherits(CustomEntityController, openVeoApi.controllers.EntityController);<
             <h4>Example:</h4>
 
             <div class="example-content">
-<pre class="code prettyprint"><code>// Expected body example
+<pre class="code prettyprint"><code>// Response example
 {
-  // Entity's data
+  error: null,
+  status: 'ok'
+}</code></pre>
+
+            </div>
+        </div>
+
+</div>
+<div id="method_updateEntitiesAction" class="method item">
+  <h3 class="blue-method-name">updateEntitiesAction</h3>
+
+  <div class="meta method-meta">
+      <p>
+          Defined in
+      <a href="../files/lib_controllers_EntityController.js.html#l167"><code>lib&#x2F;controllers&#x2F;EntityController.js:167</code></a>
+  </p>
+
+
+
+  </div>
+
+  <h3>Syntax</h3>
+  <div class="blue-method-syntax">
+  <h3 class="name"><code>updateEntitiesAction</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>request</code>
+                </li>
+                <li class="arg">
+                        <code>response</code>
+                </li>
+                <li class="arg">
+                        <code>next</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+        <span class="flag async">async</span>
+
+  </div>
+    <div class="description">
+      <h3>Summary</h3>
+        <p>Updates entities.</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">request</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/API/Request" class="crosslink external" target="_blank">Request</a></span>
+
+
+                    <div class="param-description">
+                        <p>ExpressJS HTTP Request</p>
+
+                    </div>
+
+                        <ul class="params-list">
+                            <li class="param">
+                                    <code class="param-name">params</code>
+                                    <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
+
+                                <div class="param-description">
+                                    <p>Request parameters</p>
+
+                                </div>
+
+                                    <ul class="params-list">
+                                        <li class="param">
+                                                <code class="param-name">id</code>
+                                                <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+
+                                            <div class="param-description">
+                                                A comma separated list of entity ids to update
+                                            </div>
+                                        </li>
+                                    </ul>
+                            </li>
+                            <li class="param">
+                                    <code class="param-name">body</code>
+                                    <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
+
+                                <div class="param-description">
+                                    <p>The fields to update with their values</p>
+
+                                </div>
+
+                            </li>
+                        </ul>
+                </li>
+                <li class="param">
+                        <code class="param-name">response</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/API/Response" class="crosslink external" target="_blank">Response</a></span>
+
+
+                    <div class="param-description">
+                        <p>ExpressJS HTTP Response</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">next</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function" class="crosslink external" target="_blank">Function</a></span>
+
+
+                    <div class="param-description">
+                        <p>Function to defer execution to the next registered middleware</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+        <div class="example">
+            <h4>Example:</h4>
+
+            <div class="example-content">
+<pre class="code prettyprint"><code>// Response example
+{
+  error: null,
+  status: 'ok'
 }</code></pre>
 
             </div>

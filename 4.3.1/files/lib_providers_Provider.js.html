@@ -47,22 +47,31 @@
                                 <li><a href="../classes/CAS2.html">CAS2</a></li>
                                 <li><a href="../classes/CAS3.html">CAS3</a></li>
                                 <li><a href="../classes/CasStrategy.html">CasStrategy</a></li>
+                                <li><a href="../classes/ComponentExpression.html">ComponentExpression</a></li>
+                                <li><a href="../classes/ConfigExpression.html">ConfigExpression</a></li>
+                                <li><a href="../classes/ConstantExpression.html">ConstantExpression</a></li>
                                 <li><a href="../classes/ContentController.html">ContentController</a></li>
-                                <li><a href="../classes/ContentModel.html">ContentModel</a></li>
                                 <li><a href="../classes/Controller.html">Controller</a></li>
                                 <li><a href="../classes/Database.html">Database</a></li>
+                                <li><a href="../classes/DirectiveExpression.html">DirectiveExpression</a></li>
                                 <li><a href="../classes/disableCacheMiddleware.html">disableCacheMiddleware</a></li>
+                                <li><a href="../classes/ElementExpression.html">ElementExpression</a></li>
                                 <li><a href="../classes/EntityController.html">EntityController</a></li>
-                                <li><a href="../classes/EntityModel.html">EntityModel</a></li>
                                 <li><a href="../classes/EntityProvider.html">EntityProvider</a></li>
+                                <li><a href="../classes/Expression.html">Expression</a></li>
                                 <li><a href="../classes/factory.html">factory</a></li>
                                 <li><a href="../classes/fileSystem.html">fileSystem</a></li>
+                                <li><a href="../classes/FilterExpression.html">FilterExpression</a></li>
                                 <li><a href="../classes/http-errors.html">http-errors</a></li>
+                                <li><a href="../classes/HttpController.html">HttpController</a></li>
+                                <li><a href="../classes/imageProcessorMiddleware.html">imageProcessorMiddleware</a></li>
+                                <li><a href="../classes/InjectExpression.html">InjectExpression</a></li>
                                 <li><a href="../classes/logger.html">logger</a></li>
                                 <li><a href="../classes/logRequestMiddleware.html">logRequestMiddleware</a></li>
-                                <li><a href="../classes/Model.html">Model</a></li>
+                                <li><a href="../classes/ModuleExpression.html">ModuleExpression</a></li>
                                 <li><a href="../classes/MongoDatabase.html">MongoDatabase</a></li>
                                 <li><a href="../classes/MultipartParser.html">MultipartParser</a></li>
+                                <li><a href="../classes/ngDpTask.html">ngDpTask</a></li>
                                 <li><a href="../classes/NotFoundError.html">NotFoundError</a></li>
                                 <li><a href="../classes/Pilot.html">Pilot</a></li>
                                 <li><a href="../classes/Plugin.html">Plugin</a></li>
@@ -70,28 +79,31 @@
                                 <li><a href="../classes/Provider.html">Provider</a></li>
                                 <li><a href="../classes/removeTask.html">removeTask</a></li>
                                 <li><a href="../classes/renameTask.html">renameTask</a></li>
+                                <li><a href="../classes/ResourceFilter.html">ResourceFilter</a></li>
+                                <li><a href="../classes/RouteExpression.html">RouteExpression</a></li>
                                 <li><a href="../classes/SocketController.html">SocketController</a></li>
                                 <li><a href="../classes/SocketNamespace.html">SocketNamespace</a></li>
                                 <li><a href="../classes/SocketServer.html">SocketServer</a></li>
+                                <li><a href="../classes/Storage.html">Storage</a></li>
                                 <li><a href="../classes/STRATEGIES.html">STRATEGIES</a></li>
                                 <li><a href="../classes/util.html">util</a></li>
+                                <li><a href="../classes/ValueExpression.html">ValueExpression</a></li>
                             </ul>
                 
                             <ul id="api-modules" class="apis modules">
                                 <li><a href="../modules/controllers.html">controllers</a></li>
-                                <li><a href="../modules/database.html">database</a></li>
                                 <li><a href="../modules/emitters.html">emitters</a></li>
                                 <li><a href="../modules/errors.html">errors</a></li>
                                 <li><a href="../modules/fileSystem.html">fileSystem</a></li>
                                 <li><a href="../modules/grunt.html">grunt</a></li>
                                 <li><a href="../modules/logger.html">logger</a></li>
                                 <li><a href="../modules/middlewares.html">middlewares</a></li>
-                                <li><a href="../modules/models.html">models</a></li>
                                 <li><a href="../modules/multipart.html">multipart</a></li>
                                 <li><a href="../modules/passport.html">passport</a></li>
                                 <li><a href="../modules/plugin.html">plugin</a></li>
                                 <li><a href="../modules/providers.html">providers</a></li>
                                 <li><a href="../modules/socket.html">socket</a></li>
+                                <li><a href="../modules/storages.html">storages</a></li>
                                 <li><a href="../modules/util.html">util</a></li>
                             </ul>
                         </div>
@@ -136,56 +148,34 @@
  * @module providers
  */
 
-var Database = process.requireApi(&#x27;lib/database/Database.js&#x27;);
+var Storage = process.requireApi(&#x27;lib/storages/Storage.js&#x27;);
 
 /**
- * Defines the base provider for all providers which need to manipulate datas
- * from a database.
+ * Defines the base provider for all providers.
  *
- *     // Implement a Provider named &quot;CustomProvider&quot;
- *     var util = require(&#x27;util&#x27;);
- *     var openVeoApi = require(&#x27;@openveo/api&#x27;);
- *
- *     function CustomProvider(database) {
- *       CustomProvider.super_.call(this, database, &#x27;customCollection&#x27;);
- *     }
- *
- *     util.inherits(CustomProvider, openVeoApi.providers.Provider);
+ * A provider manages resources from its associated storage.
  *
  * @class Provider
  * @constructor
- * @param {Database} database The database to use
- * @param {String} collection The database&#x27;s collection
- * @throws {TypeError} If database and / or collection are not as expected
+ * @param {Storage} storage The storage to use to store provider resources
+ * @throws {TypeError} If storage is not valid
  */
-function Provider(database, collection) {
+function Provider(storage) {
   Object.defineProperties(this, {
 
     /**
-     * The database to use.
+     * The provider storage.
      *
-     * @property database
-     * @type Database
+     * @property storage
+     * @type Storage
      * @final
      */
-    database: {value: database},
-
-    /**
-     * The database&#x27;s collection&#x27;s name.
-     *
-     * @property collection
-     * @type String
-     * @final
-     */
-    collection: {value: collection}
+    storage: {value: storage}
 
   });
 
-  if (!this.collection)
-    throw new TypeError(&#x27;A Provider needs a collection&#x27;);
-
-  if (!(this.database instanceof Database))
-    throw new TypeError(&#x27;Database must be of type Database&#x27;);
+  if (!(this.storage instanceof Storage))
+    throw new TypeError(&#x27;storage must be of type Storage&#x27;);
 }
 
 module.exports = Provider;

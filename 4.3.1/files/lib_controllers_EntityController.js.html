@@ -47,22 +47,31 @@
                                 <li><a href="../classes/CAS2.html">CAS2</a></li>
                                 <li><a href="../classes/CAS3.html">CAS3</a></li>
                                 <li><a href="../classes/CasStrategy.html">CasStrategy</a></li>
+                                <li><a href="../classes/ComponentExpression.html">ComponentExpression</a></li>
+                                <li><a href="../classes/ConfigExpression.html">ConfigExpression</a></li>
+                                <li><a href="../classes/ConstantExpression.html">ConstantExpression</a></li>
                                 <li><a href="../classes/ContentController.html">ContentController</a></li>
-                                <li><a href="../classes/ContentModel.html">ContentModel</a></li>
                                 <li><a href="../classes/Controller.html">Controller</a></li>
                                 <li><a href="../classes/Database.html">Database</a></li>
+                                <li><a href="../classes/DirectiveExpression.html">DirectiveExpression</a></li>
                                 <li><a href="../classes/disableCacheMiddleware.html">disableCacheMiddleware</a></li>
+                                <li><a href="../classes/ElementExpression.html">ElementExpression</a></li>
                                 <li><a href="../classes/EntityController.html">EntityController</a></li>
-                                <li><a href="../classes/EntityModel.html">EntityModel</a></li>
                                 <li><a href="../classes/EntityProvider.html">EntityProvider</a></li>
+                                <li><a href="../classes/Expression.html">Expression</a></li>
                                 <li><a href="../classes/factory.html">factory</a></li>
                                 <li><a href="../classes/fileSystem.html">fileSystem</a></li>
+                                <li><a href="../classes/FilterExpression.html">FilterExpression</a></li>
                                 <li><a href="../classes/http-errors.html">http-errors</a></li>
+                                <li><a href="../classes/HttpController.html">HttpController</a></li>
+                                <li><a href="../classes/imageProcessorMiddleware.html">imageProcessorMiddleware</a></li>
+                                <li><a href="../classes/InjectExpression.html">InjectExpression</a></li>
                                 <li><a href="../classes/logger.html">logger</a></li>
                                 <li><a href="../classes/logRequestMiddleware.html">logRequestMiddleware</a></li>
-                                <li><a href="../classes/Model.html">Model</a></li>
+                                <li><a href="../classes/ModuleExpression.html">ModuleExpression</a></li>
                                 <li><a href="../classes/MongoDatabase.html">MongoDatabase</a></li>
                                 <li><a href="../classes/MultipartParser.html">MultipartParser</a></li>
+                                <li><a href="../classes/ngDpTask.html">ngDpTask</a></li>
                                 <li><a href="../classes/NotFoundError.html">NotFoundError</a></li>
                                 <li><a href="../classes/Pilot.html">Pilot</a></li>
                                 <li><a href="../classes/Plugin.html">Plugin</a></li>
@@ -70,28 +79,31 @@
                                 <li><a href="../classes/Provider.html">Provider</a></li>
                                 <li><a href="../classes/removeTask.html">removeTask</a></li>
                                 <li><a href="../classes/renameTask.html">renameTask</a></li>
+                                <li><a href="../classes/ResourceFilter.html">ResourceFilter</a></li>
+                                <li><a href="../classes/RouteExpression.html">RouteExpression</a></li>
                                 <li><a href="../classes/SocketController.html">SocketController</a></li>
                                 <li><a href="../classes/SocketNamespace.html">SocketNamespace</a></li>
                                 <li><a href="../classes/SocketServer.html">SocketServer</a></li>
+                                <li><a href="../classes/Storage.html">Storage</a></li>
                                 <li><a href="../classes/STRATEGIES.html">STRATEGIES</a></li>
                                 <li><a href="../classes/util.html">util</a></li>
+                                <li><a href="../classes/ValueExpression.html">ValueExpression</a></li>
                             </ul>
                 
                             <ul id="api-modules" class="apis modules">
                                 <li><a href="../modules/controllers.html">controllers</a></li>
-                                <li><a href="../modules/database.html">database</a></li>
                                 <li><a href="../modules/emitters.html">emitters</a></li>
                                 <li><a href="../modules/errors.html">errors</a></li>
                                 <li><a href="../modules/fileSystem.html">fileSystem</a></li>
                                 <li><a href="../modules/grunt.html">grunt</a></li>
                                 <li><a href="../modules/logger.html">logger</a></li>
                                 <li><a href="../modules/middlewares.html">middlewares</a></li>
-                                <li><a href="../modules/models.html">models</a></li>
                                 <li><a href="../modules/multipart.html">multipart</a></li>
                                 <li><a href="../modules/passport.html">passport</a></li>
                                 <li><a href="../modules/plugin.html">plugin</a></li>
                                 <li><a href="../modules/providers.html">providers</a></li>
                                 <li><a href="../modules/socket.html">socket</a></li>
+                                <li><a href="../modules/storages.html">storages</a></li>
                                 <li><a href="../modules/util.html">util</a></li>
                             </ul>
                         </div>
@@ -137,25 +149,17 @@
  */
 
 var util = require(&#x27;util&#x27;);
-var Controller = process.requireApi(&#x27;lib/controllers/Controller.js&#x27;);
+var utilExt = process.requireApi(&#x27;lib/util.js&#x27;);
+var HttpController = process.requireApi(&#x27;lib/controllers/HttpController.js&#x27;);
+var ResourceFilter = process.requireApi(&#x27;lib/storages/ResourceFilter.js&#x27;);
 var errors = process.requireApi(&#x27;lib/controllers/httpErrors.js&#x27;);
 
 /**
  * Defines base controller for all controllers which need to provide HTTP route actions for all requests
  * relative to entities.
  *
- *     // Implement an EntityController : &quot;CustomEntityController&quot;
- *     var util = require(&#x27;util&#x27;);
- *     var openVeoApi = require(&#x27;@openveo/api&#x27;);
- *
- *     function CustomEntityController(model, provider) {
- *       CustomEntityController.super_.call(this, model, provider);
- *     }
- *
- *     util.inherits(CustomEntityController, openVeoApi.controllers.EntityController);
- *
  * @class EntityController
- * @extends Controller
+ * @extends HttpController
  * @constructor
  */
 function EntityController() {
@@ -163,37 +167,80 @@ function EntityController() {
 }
 
 module.exports = EntityController;
-util.inherits(EntityController, Controller);
+util.inherits(EntityController, HttpController);
 
 /**
- * Gets the list of entities.
+ * Gets entities.
  *
  * @example
  *
  *     // Response example
  *     {
- *       &quot;entities&quot; : [ ... ]
+ *       &quot;entities&quot; : [ ... ],
+ *       &quot;pagination&quot; : {
+ *         &quot;limit&quot;: ..., // The limit number of entities by page
+ *         &quot;page&quot;: ..., // The actual page
+ *         &quot;pages&quot;: ..., // The total number of pages
+ *         &quot;size&quot;: ... // The total number of entities
  *     }
  *
  * @method getEntitiesAction
  * @async
  * @param {Request} request ExpressJS HTTP Request
+ * @param {Object} [request.query] Request query
+ * @param {String|Array} [request.query.include] The list of fields to include from returned entities
+ * @param {String|Array} [request.query.exclude] The list of fields to exclude from returned entities. Ignored if
+ * include is also specified.
+ * @param {Number} [request.query.limit] A limit number of entities to retrieve per page (default to 10)
+ * @param {Number} [request.query.page] The page number started at 0 for the first page (default to 0)
+ * @param {String} [request.query.sort] The entity field to sort by
+ * @param {String} [request.query.sortOrder] Either &quot;asc&quot; for ascendant or &quot;desc&quot; for descendant
  * @param {Response} response ExpressJS HTTP Response
  * @param {Function} next Function to defer execution to the next registered middleware
  */
 EntityController.prototype.getEntitiesAction = function(request, response, next) {
-  var model = this.getModel(request);
+  var provider = this.getProvider();
+  var sort = {};
+  var query;
+  request.query = request.query || {};
 
-  model.get(null, function(error, entities) {
-    if (error) {
-      process.logger.error(error.message, {error: error, method: &#x27;getEntitiesAction&#x27;});
-      next(errors.GET_ENTITIES_ERROR);
-    } else {
-      response.send({
-        entities: entities
-      });
+  try {
+    query = utilExt.shallowValidateObject(request.query, {
+      include: {type: &#x27;array&lt;string&gt;&#x27;},
+      exclude: {type: &#x27;array&lt;string&gt;&#x27;},
+      limit: {type: &#x27;number&#x27;, gt: 0, default: 10},
+      page: {type: &#x27;number&#x27;, gte: 0, default: 0},
+      sort: {type: &#x27;string&#x27;},
+      sortOrder: {type: &#x27;string&#x27;, in: [&#x27;asc&#x27;, &#x27;desc&#x27;], default: &#x27;desc&#x27;}
+    });
+  } catch (error) {
+    return next(errors.GET_ENTITIES_WRONG_PARAMETERS);
+  }
+
+  // Build sort description object
+  if (query.sort &amp;&amp; query.sortOrder) sort[query.sort] = query.sortOrder;
+
+  provider.get(
+    null,
+    {
+      exclude: query.exclude,
+      include: query.include
+    },
+    query.limit,
+    query.page,
+    sort,
+    function(error, entities, pagination) {
+      if (error) {
+        process.logger.error(error.message, {error: error, method: &#x27;getEntitiesAction&#x27;});
+        next(errors.GET_ENTITIES_ERROR);
+      } else {
+        response.send({
+          entities: entities,
+          pagination: pagination
+        });
+      }
     }
-  });
+  );
 };
 
 /**
@@ -209,29 +256,50 @@ EntityController.prototype.getEntitiesAction = function(request, response, next)
  * @method getEntityAction
  * @async
  * @param {Request} request ExpressJS HTTP Request
- * @param {Object} request.params Request&#x27;s parameters
+ * @param {Object} request.params Request parameters
  * @param {String} request.params.id The entity id to retrieve
+ * @param {Object} request.query Request query
+ * @param {String|Array} [request.query.include] The list of fields to include from returned entity
+ * @param {String|Array} [request.query.exclude] The list of fields to exclude from returned entity. Ignored if
+ * include is also specified.
  * @param {Response} response ExpressJS HTTP Response
  * @param {Function} next Function to defer execution to the next registered middleware
  */
 EntityController.prototype.getEntityAction = function(request, response, next) {
   if (request.params.id) {
     var entityId = request.params.id;
-    var model = this.getModel(request);
+    var provider = this.getProvider();
+    var query;
+    request.query = request.query || {};
 
-    model.getOne(entityId, null, function(error, entity) {
-      if (error) {
-        process.logger.error(error.message, {error: error, method: &#x27;getEntityAction&#x27;, entity: entityId});
-        next(errors.GET_ENTITY_ERROR);
-      } else if (!entity) {
-        process.logger.warn(&#x27;Not found&#x27;, {method: &#x27;getEntityAction&#x27;, entity: entityId});
-        next(errors.GET_ENTITY_NOT_FOUND);
-      } else {
-        response.send({
-          entity: entity
-        });
+    try {
+      query = utilExt.shallowValidateObject(request.query, {
+        include: {type: &#x27;array&lt;string&gt;&#x27;},
+        exclude: {type: &#x27;array&lt;string&gt;&#x27;}
+      });
+    } catch (error) {
+      return next(errors.GET_ENTITY_WRONG_PARAMETERS);
+    }
+
+    provider.getOne(
+      entityId,
+      {
+        exclude: query.exclude,
+        include: query.include
+      }, function(error, entity) {
+        if (error) {
+          process.logger.error(error.message, {error: error, method: &#x27;getEntityAction&#x27;, entity: entityId});
+          next(errors.GET_ENTITY_ERROR);
+        } else if (!entity) {
+          process.logger.warn(&#x27;Not found&#x27;, {method: &#x27;getEntityAction&#x27;, entity: entityId});
+          next(errors.GET_ENTITY_NOT_FOUND);
+        } else {
+          response.send({
+            entity: entity
+          });
+        }
       }
-    });
+    );
   } else {
 
     // Missing id of the entity
@@ -241,79 +309,94 @@ EntityController.prototype.getEntityAction = function(request, response, next) {
 };
 
 /**
- * Updates an entity.
+ * Updates entities.
  *
  * @example
  *
- *     // Expected body example
+ *     // Response example
  *     {
- *       // Entity&#x27;s data
+ *       error: null,
+ *       status: &#x27;ok&#x27;
  *     }
  *
- * @method updateEntityAction
+ * @method updateEntitiesAction
  * @async
  * @param {Request} request ExpressJS HTTP Request
- * @param {Object} request.params Request&#x27;s parameters
- * @param {String} request.params.id The entity id to update
+ * @param {Object} request.params Request parameters
+ * @param {String} request.params.id A comma separated list of entity ids to update
+ * @param {Object} request.body The fields to update with their values
  * @param {Response} response ExpressJS HTTP Response
  * @param {Function} next Function to defer execution to the next registered middleware
  */
-EntityController.prototype.updateEntityAction = function(request, response, next) {
+EntityController.prototype.updateEntitiesAction = function(request, response, next) {
   if (request.params.id &amp;&amp; request.body) {
-    var entityId = request.params.id;
-    var model = this.getModel(request);
+    var entityIds = request.params.id.split(&#x27;,&#x27;);
+    var provider = this.getProvider();
 
-    model.update(entityId, request.body, function(error, updateCount) {
+    provider.update(
+      new ResourceFilter().in(&#x27;id&#x27;, entityIds),
+      request.body,
+      function(error, updateCount) {
+        if (error) {
+          process.logger.error(error.message || &#x27;Fail updating&#x27;,
+                               {method: &#x27;updateEntitiesAction&#x27;, entities: entityIds});
+          next(errors.UPDATE_ENTITIES_ERROR);
+        } else {
+          response.send({error: null, status: &#x27;ok&#x27;});
+        }
+      }
+    );
+  } else {
+
+    // Missing entity ids or the datas
+    next(errors.UPDATE_ENTITIES_MISSING_PARAMETERS);
+
+  }
+};
+
+/**
+ * Adds entities.
+ *
+ * @example
+ *
+ *     // Response example
+ *     {
+ *       error: null,
+ *       status: &#x27;ok&#x27;
+ *     }
+ *
+ * @method addEntitiesAction
+ * @async
+ * @param {Request} request ExpressJS HTTP Request
+ * @param {Array} request.body The list of entities to add with for each entity the fields with their values
+ * @param {Response} response ExpressJS HTTP Response
+ * @param {Function} next Function to defer execution to the next registered middleware
+ */
+EntityController.prototype.addEntitiesAction = function(request, response, next) {
+  if (request.body) {
+    var provider = this.getProvider(request);
+    var parsedRequest;
+
+    try {
+      parsedRequest = utilExt.shallowValidateObject(request, {
+        body: {type: &#x27;array&lt;object&gt;&#x27;, required: true}
+      });
+    } catch (error) {
+      return next(errors.ADD_ENTITIES_WRONG_PARAMETERS);
+    }
+
+    provider.add(parsedRequest.body, function(error, insertCount) {
       if (error) {
-        process.logger.error((error &amp;&amp; error.message) || &#x27;Fail updating&#x27;,
-                             {method: &#x27;updateEntityAction&#x27;, entity: entityId});
-        next(errors.UPDATE_ENTITY_ERROR);
+        process.logger.error(error.message, {error: error, method: &#x27;addEntitiesAction&#x27;});
+        next(errors.ADD_ENTITIES_ERROR);
       } else {
         response.send({error: null, status: &#x27;ok&#x27;});
       }
     });
   } else {
 
-    // Missing id of the entity or the datas
-    next(errors.UPDATE_ENTITY_MISSING_PARAMETERS);
-
-  }
-};
-
-/**
- * Adds an entity.
- *
- * @example
- *
- *     // Expected body example
- *     {
- *       &quot;entity&quot; : { ... }
- *     }
- *
- * @method addEntityAction
- * @async
- * @param {Request} request ExpressJS HTTP Request
- * @param {Response} response ExpressJS HTTP Response
- * @param {Function} next Function to defer execution to the next registered middleware
- */
-EntityController.prototype.addEntityAction = function(request, response, next) {
-  if (request.body) {
-    var model = this.getModel(request);
-
-    model.add(request.body, function(error, insertCount, entity) {
-      if (error) {
-        process.logger.error(error.message, {error: error, method: &#x27;addEntityAction&#x27;});
-        next(errors.ADD_ENTITY_ERROR);
-      } else {
-        response.send({
-          entity: entity
-        });
-      }
-    });
-  } else {
-
     // Missing body
-    next(errors.ADD_ENTITY_MISSING_PARAMETERS);
+    next(errors.ADD_ENTITIES_MISSING_PARAMETERS);
 
   }
 };
@@ -321,48 +404,59 @@ EntityController.prototype.addEntityAction = function(request, response, next) {
 /**
  * Removes entities.
  *
- * @method removeEntityAction
+ * @example
+ *
+ *     // Response example
+ *     {
+ *       error: null,
+ *       status: &#x27;ok&#x27;
+ *     }
+ *
+ * @method removeEntitiesAction
  * @async
  * @param {Request} request ExpressJS HTTP Request
- * @param {Object} request.params Request&#x27;s parameters
- * @param {String} request.params.id The comma separated list of entity ids to remove
+ * @param {Object} request.params Request parameters
+ * @param {String} request.params.id A comma separated list of entity ids to remove
  * @param {Response} response ExpressJS HTTP Response
  * @param {Function} next Function to defer execution to the next registered middleware
  */
-EntityController.prototype.removeEntityAction = function(request, response, next) {
+EntityController.prototype.removeEntitiesAction = function(request, response, next) {
   if (request.params.id) {
-    var arrayId = request.params.id.split(&#x27;,&#x27;);
-    var model = this.getModel(request);
+    var entityIds = request.params.id.split(&#x27;,&#x27;);
+    var provider = this.getProvider(request);
 
-    model.remove(arrayId, function(error, deleteCount) {
-      if (error) {
-        process.logger.error(error.message, {error: error, method: &#x27;removeEntityAction&#x27;});
-        next(errors.REMOVE_ENTITY_ERROR);
-      } else if (deleteCount != arrayId.length) {
-        process.logger.error(deleteCount + &#x27;/&#x27; + arrayId.length + &#x27; removed&#x27;,
-                             {method: &#x27;removeEntityAction&#x27;, ids: arrayId});
-        next(errors.REMOVE_ENTITY_ERROR);
-      } else {
-        response.send({error: null, status: &#x27;ok&#x27;});
+    provider.remove(
+      new ResourceFilter().in(&#x27;id&#x27;, entityIds),
+      function(error, deleteCount) {
+        if (error) {
+          process.logger.error(error.message, {error: error, method: &#x27;removeEntitiesAction&#x27;});
+          next(errors.REMOVE_ENTITIES_ERROR);
+        } else if (deleteCount != entityIds.length) {
+          process.logger.error(deleteCount + &#x27;/&#x27; + entityIds.length + &#x27; removed&#x27;,
+                               {method: &#x27;removeEntitiesAction&#x27;, entities: entityIds});
+          next(errors.REMOVE_ENTITIES_ERROR);
+        } else {
+          response.send({error: null, status: &#x27;ok&#x27;});
+        }
       }
-    });
+    );
   } else {
 
-    // Missing id of the entity
-    next(errors.REMOVE_ENTITY_MISSING_PARAMETERS);
+    // Missing entity ids
+    next(errors.REMOVE_ENTITIES_MISSING_PARAMETERS);
 
   }
 };
 
 /**
- * Gets an instance of the entity model associated to the controller.
+ * Gets an instance of the entity provider associated to the controller.
  *
- * @method getModel
- * @return {EntityModel} The entity model
- * @throws {Error} getModel not implemented for this EntityController
+ * @method getProvider
+ * @return {EntityProvider} The entity provider
+ * @throws {Error} getProvider not implemented for this EntityController
  */
-EntityController.prototype.getModel = function() {
-  throw new Error(&#x27;getModel not implemented for this EntityController&#x27;);
+EntityController.prototype.getProvider = function() {
+  throw new Error(&#x27;getProvider not implemented for this EntityController&#x27;);
 };
 
     </pre>

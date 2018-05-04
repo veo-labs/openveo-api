@@ -47,22 +47,31 @@
                                 <li><a href="../classes/CAS2.html">CAS2</a></li>
                                 <li><a href="../classes/CAS3.html">CAS3</a></li>
                                 <li><a href="../classes/CasStrategy.html">CasStrategy</a></li>
+                                <li><a href="../classes/ComponentExpression.html">ComponentExpression</a></li>
+                                <li><a href="../classes/ConfigExpression.html">ConfigExpression</a></li>
+                                <li><a href="../classes/ConstantExpression.html">ConstantExpression</a></li>
                                 <li><a href="../classes/ContentController.html">ContentController</a></li>
-                                <li><a href="../classes/ContentModel.html">ContentModel</a></li>
                                 <li><a href="../classes/Controller.html">Controller</a></li>
                                 <li><a href="../classes/Database.html">Database</a></li>
+                                <li><a href="../classes/DirectiveExpression.html">DirectiveExpression</a></li>
                                 <li><a href="../classes/disableCacheMiddleware.html">disableCacheMiddleware</a></li>
+                                <li><a href="../classes/ElementExpression.html">ElementExpression</a></li>
                                 <li><a href="../classes/EntityController.html">EntityController</a></li>
-                                <li><a href="../classes/EntityModel.html">EntityModel</a></li>
                                 <li><a href="../classes/EntityProvider.html">EntityProvider</a></li>
+                                <li><a href="../classes/Expression.html">Expression</a></li>
                                 <li><a href="../classes/factory.html">factory</a></li>
                                 <li><a href="../classes/fileSystem.html">fileSystem</a></li>
+                                <li><a href="../classes/FilterExpression.html">FilterExpression</a></li>
                                 <li><a href="../classes/http-errors.html">http-errors</a></li>
+                                <li><a href="../classes/HttpController.html">HttpController</a></li>
+                                <li><a href="../classes/imageProcessorMiddleware.html">imageProcessorMiddleware</a></li>
+                                <li><a href="../classes/InjectExpression.html">InjectExpression</a></li>
                                 <li><a href="../classes/logger.html">logger</a></li>
                                 <li><a href="../classes/logRequestMiddleware.html">logRequestMiddleware</a></li>
-                                <li><a href="../classes/Model.html">Model</a></li>
+                                <li><a href="../classes/ModuleExpression.html">ModuleExpression</a></li>
                                 <li><a href="../classes/MongoDatabase.html">MongoDatabase</a></li>
                                 <li><a href="../classes/MultipartParser.html">MultipartParser</a></li>
+                                <li><a href="../classes/ngDpTask.html">ngDpTask</a></li>
                                 <li><a href="../classes/NotFoundError.html">NotFoundError</a></li>
                                 <li><a href="../classes/Pilot.html">Pilot</a></li>
                                 <li><a href="../classes/Plugin.html">Plugin</a></li>
@@ -70,28 +79,31 @@
                                 <li><a href="../classes/Provider.html">Provider</a></li>
                                 <li><a href="../classes/removeTask.html">removeTask</a></li>
                                 <li><a href="../classes/renameTask.html">renameTask</a></li>
+                                <li><a href="../classes/ResourceFilter.html">ResourceFilter</a></li>
+                                <li><a href="../classes/RouteExpression.html">RouteExpression</a></li>
                                 <li><a href="../classes/SocketController.html">SocketController</a></li>
                                 <li><a href="../classes/SocketNamespace.html">SocketNamespace</a></li>
                                 <li><a href="../classes/SocketServer.html">SocketServer</a></li>
+                                <li><a href="../classes/Storage.html">Storage</a></li>
                                 <li><a href="../classes/STRATEGIES.html">STRATEGIES</a></li>
                                 <li><a href="../classes/util.html">util</a></li>
+                                <li><a href="../classes/ValueExpression.html">ValueExpression</a></li>
                             </ul>
                 
                             <ul id="api-modules" class="apis modules">
                                 <li><a href="../modules/controllers.html">controllers</a></li>
-                                <li><a href="../modules/database.html">database</a></li>
                                 <li><a href="../modules/emitters.html">emitters</a></li>
                                 <li><a href="../modules/errors.html">errors</a></li>
                                 <li><a href="../modules/fileSystem.html">fileSystem</a></li>
                                 <li><a href="../modules/grunt.html">grunt</a></li>
                                 <li><a href="../modules/logger.html">logger</a></li>
                                 <li><a href="../modules/middlewares.html">middlewares</a></li>
-                                <li><a href="../modules/models.html">models</a></li>
                                 <li><a href="../modules/multipart.html">multipart</a></li>
                                 <li><a href="../modules/passport.html">passport</a></li>
                                 <li><a href="../modules/plugin.html">plugin</a></li>
                                 <li><a href="../modules/providers.html">providers</a></li>
                                 <li><a href="../modules/socket.html">socket</a></li>
+                                <li><a href="../modules/storages.html">storages</a></li>
                                 <li><a href="../modules/util.html">util</a></li>
                             </ul>
                         </div>
@@ -141,17 +153,8 @@
 
 <h3>Summary</h3>
 <div class="intro">
-    <p>Defines the base provider for all providers which need to manipulate datas
-from a database.</p>
-<pre class="code prettyprint"><code>// Implement a Provider named &quot;CustomProvider&quot;
-var util = require('util');
-var openVeoApi = require('@openveo/api');
-
-function CustomProvider(database) {
-  CustomProvider.super_.call(this, database, 'customCollection');
-}
-
-util.inherits(CustomProvider, openVeoApi.providers.Provider);</code></pre>
+    <p>Defines the base provider for all providers.</p>
+<p>A provider manages resources from its associated storage.</p>
 
 </div>
 
@@ -177,10 +180,7 @@ util.inherits(CustomProvider, openVeoApi.providers.Provider);</code></pre>
         <div class="args">
             <span class="paren">(</span><ul class="args-list inline commas">
                 <li class="arg">
-                        <code>database</code>
-                </li>
-                <li class="arg">
-                        <code>collection</code>
+                        <code>storage</code>
                 </li>
             </ul><span class="paren">)</span>
         </div>
@@ -203,23 +203,12 @@ util.inherits(CustomProvider, openVeoApi.providers.Provider);</code></pre>
 
             <ul class="params-list">
                 <li class="param">
-                        <code class="param-name">database</code>
-                        <span class="type"><a href="../classes/Database.html" class="crosslink">Database</a></span>
+                        <code class="param-name">storage</code>
+                        <span class="type"><a href="../classes/Storage.html" class="crosslink">Storage</a></span>
 
 
                     <div class="param-description">
-                        <p>The database to use</p>
-
-                    </div>
-
-                </li>
-                <li class="param">
-                        <code class="param-name">collection</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
-
-
-                    <div class="param-description">
-                        <p>The database's collection</p>
+                        <p>The storage to use to store provider resources</p>
 
                     </div>
 
@@ -249,11 +238,7 @@ util.inherits(CustomProvider, openVeoApi.providers.Provider);</code></pre>
 
                     <ul class="index-list properties">
                             <li class="index-item property">
-                                <a href="#property_collection">collection</a>
-
-                            </li>
-                            <li class="index-item property">
-                                <a href="#property_database">database</a>
+                                <a href="#property_storage">storage</a>
 
                             </li>
                     </ul>
@@ -266,13 +251,13 @@ util.inherits(CustomProvider, openVeoApi.providers.Provider);</code></pre>
             <div id="properties" class="api-class-tabpanel">
                 <h2 class="off-left">Properties</h2>
 
-                    <div id="property_collection" class="property item">
+                    <div id="property_storage" class="property item">
                     
-                      <h3 class="blue-method-name">collection</h3>
+                      <h3 class="blue-method-name">storage</h3>
                       <div class="meta method-meta">
                           <p>
                               Defined in
-                          <a href="../files/lib_providers_Provider.js.html#l41"><code>lib&#x2F;providers&#x2F;Provider.js:41</code></a>
+                          <a href="../files/lib_providers_Provider.js.html#l22"><code>lib&#x2F;providers&#x2F;Provider.js:22</code></a>
                       </p>
                     
                     
@@ -280,8 +265,8 @@ util.inherits(CustomProvider, openVeoApi.providers.Provider);</code></pre>
                     
                       <h3>Syntax</h3>
                       <div class="blue-method-syntax">
-                        <h3 class="name"><code>collection</code></h3>
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+                        <h3 class="name"><code>storage</code></h3>
+                        <span class="type"><a href="../classes/Storage.html" class="crosslink">Storage</a></span>
                     
                     
                     
@@ -292,41 +277,7 @@ util.inherits(CustomProvider, openVeoApi.providers.Provider);</code></pre>
                     
                         <div class="description">
                           <h3>Summary</h3>
-                            <p>The database's collection's name.</p>
-                    
-                        </div>
-                    
-                    
-                    
-                    
-                    </div>
-                    <div id="property_database" class="property item">
-                    
-                      <h3 class="blue-method-name">database</h3>
-                      <div class="meta method-meta">
-                          <p>
-                              Defined in
-                          <a href="../files/lib_providers_Provider.js.html#l32"><code>lib&#x2F;providers&#x2F;Provider.js:32</code></a>
-                      </p>
-                    
-                    
-                      </div>
-                    
-                      <h3>Syntax</h3>
-                      <div class="blue-method-syntax">
-                        <h3 class="name"><code>database</code></h3>
-                        <span class="type"><a href="../classes/Database.html" class="crosslink">Database</a></span>
-                    
-                    
-                    
-                            <span class="flag final">final</span>
-                    
-                    
-                        </div>
-                    
-                        <div class="description">
-                          <h3>Summary</h3>
-                            <p>The database to use.</p>
+                            <p>The provider storage.</p>
                     
                         </div>
                     

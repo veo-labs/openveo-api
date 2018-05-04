@@ -47,22 +47,31 @@
                                 <li><a href="../classes/CAS2.html">CAS2</a></li>
                                 <li><a href="../classes/CAS3.html">CAS3</a></li>
                                 <li><a href="../classes/CasStrategy.html">CasStrategy</a></li>
+                                <li><a href="../classes/ComponentExpression.html">ComponentExpression</a></li>
+                                <li><a href="../classes/ConfigExpression.html">ConfigExpression</a></li>
+                                <li><a href="../classes/ConstantExpression.html">ConstantExpression</a></li>
                                 <li><a href="../classes/ContentController.html">ContentController</a></li>
-                                <li><a href="../classes/ContentModel.html">ContentModel</a></li>
                                 <li><a href="../classes/Controller.html">Controller</a></li>
                                 <li><a href="../classes/Database.html">Database</a></li>
+                                <li><a href="../classes/DirectiveExpression.html">DirectiveExpression</a></li>
                                 <li><a href="../classes/disableCacheMiddleware.html">disableCacheMiddleware</a></li>
+                                <li><a href="../classes/ElementExpression.html">ElementExpression</a></li>
                                 <li><a href="../classes/EntityController.html">EntityController</a></li>
-                                <li><a href="../classes/EntityModel.html">EntityModel</a></li>
                                 <li><a href="../classes/EntityProvider.html">EntityProvider</a></li>
+                                <li><a href="../classes/Expression.html">Expression</a></li>
                                 <li><a href="../classes/factory.html">factory</a></li>
                                 <li><a href="../classes/fileSystem.html">fileSystem</a></li>
+                                <li><a href="../classes/FilterExpression.html">FilterExpression</a></li>
                                 <li><a href="../classes/http-errors.html">http-errors</a></li>
+                                <li><a href="../classes/HttpController.html">HttpController</a></li>
+                                <li><a href="../classes/imageProcessorMiddleware.html">imageProcessorMiddleware</a></li>
+                                <li><a href="../classes/InjectExpression.html">InjectExpression</a></li>
                                 <li><a href="../classes/logger.html">logger</a></li>
                                 <li><a href="../classes/logRequestMiddleware.html">logRequestMiddleware</a></li>
-                                <li><a href="../classes/Model.html">Model</a></li>
+                                <li><a href="../classes/ModuleExpression.html">ModuleExpression</a></li>
                                 <li><a href="../classes/MongoDatabase.html">MongoDatabase</a></li>
                                 <li><a href="../classes/MultipartParser.html">MultipartParser</a></li>
+                                <li><a href="../classes/ngDpTask.html">ngDpTask</a></li>
                                 <li><a href="../classes/NotFoundError.html">NotFoundError</a></li>
                                 <li><a href="../classes/Pilot.html">Pilot</a></li>
                                 <li><a href="../classes/Plugin.html">Plugin</a></li>
@@ -70,28 +79,31 @@
                                 <li><a href="../classes/Provider.html">Provider</a></li>
                                 <li><a href="../classes/removeTask.html">removeTask</a></li>
                                 <li><a href="../classes/renameTask.html">renameTask</a></li>
+                                <li><a href="../classes/ResourceFilter.html">ResourceFilter</a></li>
+                                <li><a href="../classes/RouteExpression.html">RouteExpression</a></li>
                                 <li><a href="../classes/SocketController.html">SocketController</a></li>
                                 <li><a href="../classes/SocketNamespace.html">SocketNamespace</a></li>
                                 <li><a href="../classes/SocketServer.html">SocketServer</a></li>
+                                <li><a href="../classes/Storage.html">Storage</a></li>
                                 <li><a href="../classes/STRATEGIES.html">STRATEGIES</a></li>
                                 <li><a href="../classes/util.html">util</a></li>
+                                <li><a href="../classes/ValueExpression.html">ValueExpression</a></li>
                             </ul>
                 
                             <ul id="api-modules" class="apis modules">
                                 <li><a href="../modules/controllers.html">controllers</a></li>
-                                <li><a href="../modules/database.html">database</a></li>
                                 <li><a href="../modules/emitters.html">emitters</a></li>
                                 <li><a href="../modules/errors.html">errors</a></li>
                                 <li><a href="../modules/fileSystem.html">fileSystem</a></li>
                                 <li><a href="../modules/grunt.html">grunt</a></li>
                                 <li><a href="../modules/logger.html">logger</a></li>
                                 <li><a href="../modules/middlewares.html">middlewares</a></li>
-                                <li><a href="../modules/models.html">models</a></li>
                                 <li><a href="../modules/multipart.html">multipart</a></li>
                                 <li><a href="../modules/passport.html">passport</a></li>
                                 <li><a href="../modules/plugin.html">plugin</a></li>
                                 <li><a href="../modules/providers.html">providers</a></li>
                                 <li><a href="../modules/socket.html">socket</a></li>
+                                <li><a href="../modules/storages.html">storages</a></li>
                                 <li><a href="../modules/util.html">util</a></li>
                             </ul>
                         </div>
@@ -131,10 +143,10 @@
 
 
         <div class="foundat">
-            Defined in: <a href="../files/lib_database_factory.js.html#l7"><code>lib&#x2F;database&#x2F;factory.js:7</code></a>
+            Defined in: <a href="../files/lib_storages_factory.js.html#l7"><code>lib&#x2F;storages&#x2F;factory.js:7</code></a>
         </div>
 
-            Module: <a href="../modules/database.html">database</a>
+            Module: <a href="../modules/storages.html">storages</a>
 
         <p><span class="flag static">static</span></p>
 </div>
@@ -142,22 +154,9 @@
 
 <h3>Summary</h3>
 <div class="intro">
-    <p>Defines a factory to get an instance of a <a href="../classes/Database.html" class="crosslink">Database</a>.</p>
-<pre class="code prettyprint"><code>// Example on how to use a MongoDB database
-var openVeoApi = require('@openveo/api');
-var databaseConf = {
-  type: 'mongodb', // Database type
-  host: 'localhost', // MongoDB server host
-  port: 27017, // MongoDB port
-  database: 'DATABASE_NAME', // Replace DATABASE_NAME by the name of the OpenVeo database
-  username: 'DATABASE_USER_NAME', // Replace DATABASE_USER_NAME by the name of the database user
-  password: 'DATABASE_USER_PWD', // Replace DATABASE_USER_PWD  by the password of the database user
-  replicaSet: 'REPLICA_SET_NAME', // Replace REPLICA_SET_NAME by the name of the ReplicaSet
-  seedlist: 'IP_1:PORT_1,IP_2:PORT_2' // The comma separated list of secondary servers
-};
-
-// Create a new instance of the database
-var db = openVeoApi.database.factory.get(databaseConf);</code></pre>
+    <p>Defines a factory to get an instance of a <a href="../classes/Storage.html" class="crosslink">Storage</a>.</p>
+<pre class="code prettyprint"><code>// Create a new Storage instance
+var db = openVeoApi.storages.factory.get('mongodb', mongoDbConfiguration);</code></pre>
 
 </div>
 
@@ -182,6 +181,11 @@ var db = openVeoApi.database.factory.get(databaseConf);</code></pre>
 
                                     <span class="flag static">static</span>
                             </li>
+                            <li class="index-item method">
+                                <a href="#method_get">get</a>
+
+                                    <span class="flag static">static</span>
+                            </li>
                     </ul>
                 </div>
 
@@ -196,9 +200,10 @@ var db = openVeoApi.database.factory.get(databaseConf);</code></pre>
   <h3 class="blue-method-name">get</h3>
 
   <div class="meta method-meta">
+          <p>Provided by the <a href="../modules/errors.html">errors</a> module.</p>
       <p>
           Defined in
-      <a href="../files/lib_database_factory.js.html#l30"><code>lib&#x2F;database&#x2F;factory.js:30</code></a>
+      <a href="../files/lib_grunt_ngDpTask_expressionFactory.js.html#l17"><code>lib&#x2F;grunt&#x2F;ngDpTask&#x2F;expressionFactory.js:17</code></a>
   </p>
 
 
@@ -212,13 +217,16 @@ var db = openVeoApi.database.factory.get(databaseConf);</code></pre>
         <div class="args">
             <span class="paren">(</span><ul class="args-list inline commas">
                 <li class="arg">
-                        <code>databaseConf</code>
+                        <code>name</code>
+                </li>
+                <li class="arg">
+                        <code>expression</code>
                 </li>
             </ul><span class="paren">)</span>
         </div>
 
         <span class="returns-inline">
-            <span class="type"><a href="../classes/Database.html" class="crosslink">Database</a></span>
+            <span class="type"><a href="../classes/Expression.html" class="crosslink">Expression</a></span>
         </span>
 
 
@@ -231,7 +239,7 @@ var db = openVeoApi.database.factory.get(databaseConf);</code></pre>
   </div>
     <div class="description">
       <h3>Summary</h3>
-        <p>Gets an instance of a Database client using the given database configuration.</p>
+        <p>Gets an instance of an Expression.</p>
 
     </div>
 
@@ -240,27 +248,26 @@ var db = openVeoApi.database.factory.get(databaseConf);</code></pre>
 
             <ul class="params-list">
                 <li class="param">
-                        <code class="param-name">databaseConf</code>
+                        <code class="param-name">name</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+
+
+                    <div class="param-description">
+                        <p>The AngularJS element name (see Expression.ELEMENTS)</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">expression</code>
                         <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
 
 
                     <div class="param-description">
-                        <p>A database configuration object</p>
+                        <p>The definition expression as returned by esprima</p>
 
                     </div>
 
-                        <ul class="params-list">
-                            <li class="param">
-                                    <code class="param-name">type</code>
-                                    <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
-
-                                <div class="param-description">
-                                    <p>The database type (only 'mongodb' is supported for now)</p>
-
-                                </div>
-
-                            </li>
-                        </ul>
                 </li>
             </ul>
         </div>
@@ -269,9 +276,100 @@ var db = openVeoApi.database.factory.get(databaseConf);</code></pre>
             <h4>Returns:</h4>
 
             <div class="returns-description">
-                <span class="type"><a href="../classes/Database.html" class="crosslink">Database</a></span>:
+                <span class="type"><a href="../classes/Expression.html" class="crosslink">Expression</a></span>:
                 <div class="blue-return-desc">
-                    <p>The database</p>
+                    <p>The definition expression</p>
+
+                </div>
+
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_get" class="method item">
+  <h3 class="blue-method-name">get</h3>
+
+  <div class="meta method-meta">
+      <p>
+          Defined in
+      <a href="../files/lib_storages_factory.js.html#l17"><code>lib&#x2F;storages&#x2F;factory.js:17</code></a>
+  </p>
+
+
+
+  </div>
+
+  <h3>Syntax</h3>
+  <div class="blue-method-syntax">
+  <h3 class="name"><code>get</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>type</code>
+                </li>
+                <li class="arg">
+                        <code>configuration</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type"><a href="../classes/Storage.html" class="crosslink">Storage</a></span>
+        </span>
+
+
+
+
+        <span class="flag static">static</span>
+
+
+
+  </div>
+    <div class="description">
+      <h3>Summary</h3>
+        <p>Gets a Storage instance.</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">type</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+
+
+                    <div class="param-description">
+                        <p>The expected storage type, could be &quot;mongodb&quot;</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">configuration</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
+
+
+                    <div class="param-description">
+                        <p>A storage configuration object which depends on the storage type</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                <span class="type"><a href="../classes/Storage.html" class="crosslink">Storage</a></span>:
+                <div class="blue-return-desc">
+                    <p>The Storage instance</p>
 
                 </div>
 

@@ -47,22 +47,31 @@
                                 <li><a href="../classes/CAS2.html">CAS2</a></li>
                                 <li><a href="../classes/CAS3.html">CAS3</a></li>
                                 <li><a href="../classes/CasStrategy.html">CasStrategy</a></li>
+                                <li><a href="../classes/ComponentExpression.html">ComponentExpression</a></li>
+                                <li><a href="../classes/ConfigExpression.html">ConfigExpression</a></li>
+                                <li><a href="../classes/ConstantExpression.html">ConstantExpression</a></li>
                                 <li><a href="../classes/ContentController.html">ContentController</a></li>
-                                <li><a href="../classes/ContentModel.html">ContentModel</a></li>
                                 <li><a href="../classes/Controller.html">Controller</a></li>
                                 <li><a href="../classes/Database.html">Database</a></li>
+                                <li><a href="../classes/DirectiveExpression.html">DirectiveExpression</a></li>
                                 <li><a href="../classes/disableCacheMiddleware.html">disableCacheMiddleware</a></li>
+                                <li><a href="../classes/ElementExpression.html">ElementExpression</a></li>
                                 <li><a href="../classes/EntityController.html">EntityController</a></li>
-                                <li><a href="../classes/EntityModel.html">EntityModel</a></li>
                                 <li><a href="../classes/EntityProvider.html">EntityProvider</a></li>
+                                <li><a href="../classes/Expression.html">Expression</a></li>
                                 <li><a href="../classes/factory.html">factory</a></li>
                                 <li><a href="../classes/fileSystem.html">fileSystem</a></li>
+                                <li><a href="../classes/FilterExpression.html">FilterExpression</a></li>
                                 <li><a href="../classes/http-errors.html">http-errors</a></li>
+                                <li><a href="../classes/HttpController.html">HttpController</a></li>
+                                <li><a href="../classes/imageProcessorMiddleware.html">imageProcessorMiddleware</a></li>
+                                <li><a href="../classes/InjectExpression.html">InjectExpression</a></li>
                                 <li><a href="../classes/logger.html">logger</a></li>
                                 <li><a href="../classes/logRequestMiddleware.html">logRequestMiddleware</a></li>
-                                <li><a href="../classes/Model.html">Model</a></li>
+                                <li><a href="../classes/ModuleExpression.html">ModuleExpression</a></li>
                                 <li><a href="../classes/MongoDatabase.html">MongoDatabase</a></li>
                                 <li><a href="../classes/MultipartParser.html">MultipartParser</a></li>
+                                <li><a href="../classes/ngDpTask.html">ngDpTask</a></li>
                                 <li><a href="../classes/NotFoundError.html">NotFoundError</a></li>
                                 <li><a href="../classes/Pilot.html">Pilot</a></li>
                                 <li><a href="../classes/Plugin.html">Plugin</a></li>
@@ -70,28 +79,31 @@
                                 <li><a href="../classes/Provider.html">Provider</a></li>
                                 <li><a href="../classes/removeTask.html">removeTask</a></li>
                                 <li><a href="../classes/renameTask.html">renameTask</a></li>
+                                <li><a href="../classes/ResourceFilter.html">ResourceFilter</a></li>
+                                <li><a href="../classes/RouteExpression.html">RouteExpression</a></li>
                                 <li><a href="../classes/SocketController.html">SocketController</a></li>
                                 <li><a href="../classes/SocketNamespace.html">SocketNamespace</a></li>
                                 <li><a href="../classes/SocketServer.html">SocketServer</a></li>
+                                <li><a href="../classes/Storage.html">Storage</a></li>
                                 <li><a href="../classes/STRATEGIES.html">STRATEGIES</a></li>
                                 <li><a href="../classes/util.html">util</a></li>
+                                <li><a href="../classes/ValueExpression.html">ValueExpression</a></li>
                             </ul>
                 
                             <ul id="api-modules" class="apis modules">
                                 <li><a href="../modules/controllers.html">controllers</a></li>
-                                <li><a href="../modules/database.html">database</a></li>
                                 <li><a href="../modules/emitters.html">emitters</a></li>
                                 <li><a href="../modules/errors.html">errors</a></li>
                                 <li><a href="../modules/fileSystem.html">fileSystem</a></li>
                                 <li><a href="../modules/grunt.html">grunt</a></li>
                                 <li><a href="../modules/logger.html">logger</a></li>
                                 <li><a href="../modules/middlewares.html">middlewares</a></li>
-                                <li><a href="../modules/models.html">models</a></li>
                                 <li><a href="../modules/multipart.html">multipart</a></li>
                                 <li><a href="../modules/passport.html">passport</a></li>
                                 <li><a href="../modules/plugin.html">plugin</a></li>
                                 <li><a href="../modules/providers.html">providers</a></li>
                                 <li><a href="../modules/socket.html">socket</a></li>
+                                <li><a href="../modules/storages.html">storages</a></li>
                                 <li><a href="../modules/util.html">util</a></li>
                             </ul>
                         </div>
@@ -134,7 +146,7 @@
         </div>
 
         <div class="foundat">
-            Defined in: <a href="../files/lib_providers_EntityProvider.js.html#l10"><code>lib&#x2F;providers&#x2F;EntityProvider.js:10</code></a>
+            Defined in: <a href="../files/lib_providers_EntityProvider.js.html#l12"><code>lib&#x2F;providers&#x2F;EntityProvider.js:12</code></a>
         </div>
 
             Module: <a href="../modules/providers.html">providers</a>
@@ -144,18 +156,10 @@
 
 <h3>Summary</h3>
 <div class="intro">
-    <p>Defines base provider for all providers which need to provide
-basic CRUD (<strong>C</strong>read <strong>R</strong>ead <strong>U</strong>pdate <strong>D</strong>elete) operations on a collection.</p>
-<p>Each entity model as it's own associated Provider (extending EntityProvider).</p>
-<pre class="code prettyprint"><code>// Implement a EntityProvider : &quot;CustomEntityProvider&quot;
-var util = require('util');
-var openVeoApi = require('@openveo/api');
-
-function CustomEntityProvider(database) {
-  CustomEntityProvider.super_.call(this, database, 'customCollection');
-}
-
-util.inherits(CustomEntityProvider, openVeoApi.providers.EntityProvider);</code></pre>
+    <p>Defines a provider holding a single type of resources.</p>
+<p>An entity provider manages a single type of resources. These resources are stored into the given storage / location.
+Each entity must have an identification number held in the &quot;id&quot; property. An entity may also have a &quot;locked&quot;
+property to make it immutable.</p>
 
 </div>
 
@@ -167,7 +171,7 @@ util.inherits(CustomEntityProvider, openVeoApi.providers.EntityProvider);</code>
   <div class="meta method-meta">
       <p>
           Defined in
-      <a href="../files/lib_providers_EntityProvider.js.html#l10"><code>lib&#x2F;providers&#x2F;EntityProvider.js:10</code></a>
+      <a href="../files/lib_providers_EntityProvider.js.html#l12"><code>lib&#x2F;providers&#x2F;EntityProvider.js:12</code></a>
   </p>
 
 
@@ -181,10 +185,10 @@ util.inherits(CustomEntityProvider, openVeoApi.providers.EntityProvider);</code>
         <div class="args">
             <span class="paren">(</span><ul class="args-list inline commas">
                 <li class="arg">
-                        <code>database</code>
+                        <code>storage</code>
                 </li>
                 <li class="arg">
-                        <code>collection</code>
+                        <code>location</code>
                 </li>
             </ul><span class="paren">)</span>
         </div>
@@ -207,23 +211,23 @@ util.inherits(CustomEntityProvider, openVeoApi.providers.EntityProvider);</code>
 
             <ul class="params-list">
                 <li class="param">
-                        <code class="param-name">database</code>
-                        <span class="type"><a href="../classes/Database.html" class="crosslink">Database</a></span>
+                        <code class="param-name">storage</code>
+                        <span class="type"><a href="../classes/Storage.html" class="crosslink">Storage</a></span>
 
 
                     <div class="param-description">
-                        <p>The database to interact with</p>
+                        <p>The storage to use to store provider entities</p>
 
                     </div>
 
                 </li>
                 <li class="param">
-                        <code class="param-name">collection</code>
+                        <code class="param-name">location</code>
                         <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
 
 
                     <div class="param-description">
-                        <p>The name of the collection to work on</p>
+                        <p>The location of the entities in the storage</p>
 
                     </div>
 
@@ -265,19 +269,11 @@ util.inherits(CustomEntityProvider, openVeoApi.providers.EntityProvider);</code>
 
                             </li>
                             <li class="index-item method">
-                                <a href="#method_getPaginatedFilteredEntities">getPaginatedFilteredEntities</a>
-
-                            </li>
-                            <li class="index-item method">
-                                <a href="#method_increase">increase</a>
-
-                            </li>
-                            <li class="index-item method">
                                 <a href="#method_remove">remove</a>
 
                             </li>
                             <li class="index-item method">
-                                <a href="#method_removeProp">removeProp</a>
+                                <a href="#method_removeField">removeField</a>
 
                             </li>
                             <li class="index-item method">
@@ -291,12 +287,12 @@ util.inherits(CustomEntityProvider, openVeoApi.providers.EntityProvider);</code>
                     <h3>Properties</h3>
 
                     <ul class="index-list properties extends">
-                            <li class="index-item property inherited">
-                                <a href="#property_collection">collection</a>
+                            <li class="index-item property">
+                                <a href="#property_location">location</a>
 
                             </li>
                             <li class="index-item property inherited">
-                                <a href="#property_database">database</a>
+                                <a href="#property_storage">storage</a>
 
                             </li>
                     </ul>
@@ -314,7 +310,7 @@ util.inherits(CustomEntityProvider, openVeoApi.providers.EntityProvider);</code>
   <div class="meta method-meta">
       <p>
           Defined in
-      <a href="../files/lib_providers_EntityProvider.js.html#l102"><code>lib&#x2F;providers&#x2F;EntityProvider.js:102</code></a>
+      <a href="../files/lib_providers_EntityProvider.js.html#l97"><code>lib&#x2F;providers&#x2F;EntityProvider.js:97</code></a>
   </p>
 
 
@@ -328,7 +324,7 @@ util.inherits(CustomEntityProvider, openVeoApi.providers.EntityProvider);</code>
         <div class="args">
             <span class="paren">(</span><ul class="args-list inline commas">
                 <li class="arg">
-                        <code>data</code>
+                        <code>entities</code>
                 </li>
                 <li class="arg">
                         <code class="optional">[callback]</code>
@@ -356,12 +352,12 @@ util.inherits(CustomEntityProvider, openVeoApi.providers.EntityProvider);</code>
 
             <ul class="params-list">
                 <li class="param">
-                        <code class="param-name">data</code>
+                        <code class="param-name">entities</code>
                         <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array" class="crosslink external" target="_blank">Array</a></span>
 
 
                     <div class="param-description">
-                        <p>The list of entities' data to store into the collection</p>
+                        <p>The list of entities to store</p>
 
                     </div>
 
@@ -376,8 +372,7 @@ util.inherits(CustomEntityProvider, openVeoApi.providers.EntityProvider);</code>
                         <p>The function to call when it's done</p>
 <ul>
 <li><strong>Error</strong> The error if an error occurred, null otherwise</li>
-<li><strong>Number</strong> The total amount of documents inserted</li>
-<li><strong>Array</strong> All the documents inserted</li>
+<li><strong>Number</strong> The total amount of entities inserted</li>
 </ul>
 
                     </div>
@@ -395,7 +390,7 @@ util.inherits(CustomEntityProvider, openVeoApi.providers.EntityProvider);</code>
   <div class="meta method-meta">
       <p>
           Defined in
-      <a href="../files/lib_providers_EntityProvider.js.html#l85"><code>lib&#x2F;providers&#x2F;EntityProvider.js:85</code></a>
+      <a href="../files/lib_providers_EntityProvider.js.html#l69"><code>lib&#x2F;providers&#x2F;EntityProvider.js:69</code></a>
   </p>
 
 
@@ -409,179 +404,10 @@ util.inherits(CustomEntityProvider, openVeoApi.providers.EntityProvider);</code>
         <div class="args">
             <span class="paren">(</span><ul class="args-list inline commas">
                 <li class="arg">
-                        <code>filter</code>
-                </li>
-                <li class="arg">
-                        <code>callback</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-
-
-
-
-
-
-        <span class="flag async">async</span>
-
-  </div>
-    <div class="description">
-      <h3>Summary</h3>
-        <p>Gets all entities.</p>
-
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">filter</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
-
-
-                    <div class="param-description">
-                        <p>A MongoDB filter</p>
-
-                    </div>
-
-                </li>
-                <li class="param">
-                        <code class="param-name">callback</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function" class="crosslink external" target="_blank">Function</a></span>
-
-
-                    <div class="param-description">
-                        <p>The function to call when it's done</p>
-<ul>
-<li><strong>Error</strong> The error if an error occurred, null otherwise</li>
-<li><strong>Array</strong> The list of entities</li>
-</ul>
-
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-
-
-</div>
-<div id="method_getOne" class="method item">
-  <h3 class="blue-method-name">getOne</h3>
-
-  <div class="meta method-meta">
-      <p>
-          Defined in
-      <a href="../files/lib_providers_EntityProvider.js.html#l40"><code>lib&#x2F;providers&#x2F;EntityProvider.js:40</code></a>
-  </p>
-
-
-
-  </div>
-
-  <h3>Syntax</h3>
-  <div class="blue-method-syntax">
-  <h3 class="name"><code>getOne</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>id</code>
-                </li>
-                <li class="arg">
-                        <code>filter</code>
-                </li>
-                <li class="arg">
-                        <code>callback</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-
-
-
-
-
-
-        <span class="flag async">async</span>
-
-  </div>
-    <div class="description">
-      <h3>Summary</h3>
-        <p>Gets an entity.</p>
-
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">id</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
-
-
-                    <div class="param-description">
-                        <p>The entity id</p>
-
-                    </div>
-
-                </li>
-                <li class="param">
-                        <code class="param-name">filter</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
-
-
-                    <div class="param-description">
-                        <p>A MongoDB filter</p>
-
-                    </div>
-
-                </li>
-                <li class="param">
-                        <code class="param-name">callback</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function" class="crosslink external" target="_blank">Function</a></span>
-
-
-                    <div class="param-description">
-                        <p>The function to call when it's done</p>
-<ul>
-<li><strong>Error</strong> The error if an error occurred, null otherwise</li>
-<li><strong>Object</strong> The entity</li>
-</ul>
-
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-
-
-</div>
-<div id="method_getPaginatedFilteredEntities" class="method item">
-  <h3 class="blue-method-name">getPaginatedFilteredEntities</h3>
-
-  <div class="meta method-meta">
-      <p>
-          Defined in
-      <a href="../files/lib_providers_EntityProvider.js.html#l67"><code>lib&#x2F;providers&#x2F;EntityProvider.js:67</code></a>
-  </p>
-
-
-
-  </div>
-
-  <h3>Syntax</h3>
-  <div class="blue-method-syntax">
-  <h3 class="name"><code>getPaginatedFilteredEntities</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
                         <code class="optional">[filter]</code>
+                </li>
+                <li class="arg">
+                        <code class="optional">[fields]</code>
                 </li>
                 <li class="arg">
                         <code class="optional">[limit]</code>
@@ -609,7 +435,7 @@ util.inherits(CustomEntityProvider, openVeoApi.providers.EntityProvider);</code>
   </div>
     <div class="description">
       <h3>Summary</h3>
-        <p>Gets an ordered list of entities by page.</p>
+        <p>Fetches entities.</p>
 
     </div>
 
@@ -619,15 +445,53 @@ util.inherits(CustomEntityProvider, openVeoApi.providers.EntityProvider);</code>
             <ul class="params-list">
                 <li class="param">
                         <code class="param-name optional">[filter]</code>
+                        <span class="type"><a href="../classes/ResourceFilter.html" class="crosslink">ResourceFilter</a></span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+
+
+                    <div class="param-description">
+                        <p>Rules to filter entities</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name optional">[fields]</code>
                         <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
                         <span class="flag optional" title="This parameter is optional.">optional</span>
 
 
                     <div class="param-description">
-                        <p>MongoDB filter</p>
+                        <p>Fields to be included or excluded from the response, by default all
+fields are returned. Only &quot;exclude&quot; or &quot;include&quot; can be specified, not both</p>
 
                     </div>
 
+                        <ul class="params-list">
+                            <li class="param">
+                                    <code class="param-name optional">[include]</code>
+                                    <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array" class="crosslink external" target="_blank">Array</a></span>
+                                    <span class="flag optional" title="This parameter is optional.">optional</span>
+
+                                <div class="param-description">
+                                    <p>The list of fields to include in the response, all other fields are excluded</p>
+
+                                </div>
+
+                            </li>
+                            <li class="param">
+                                    <code class="param-name optional">[exclude]</code>
+                                    <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array" class="crosslink external" target="_blank">Array</a></span>
+                                    <span class="flag optional" title="This parameter is optional.">optional</span>
+
+                                <div class="param-description">
+                                    <p>The list of fields to exclude from response, all other fields are included. Ignored
+if include is also specified.</p>
+
+                                </div>
+
+                            </li>
+                        </ul>
                 </li>
                 <li class="param">
                         <code class="param-name optional">[limit]</code>
@@ -636,7 +500,7 @@ util.inherits(CustomEntityProvider, openVeoApi.providers.EntityProvider);</code>
 
 
                     <div class="param-description">
-                        <p>The maximum number of expected entities</p>
+                        <p>A limit number of entities to retrieve (10 by default)</p>
 
                     </div>
 
@@ -648,7 +512,7 @@ util.inherits(CustomEntityProvider, openVeoApi.providers.EntityProvider);</code>
 
 
                     <div class="param-description">
-                        <p>The expected page</p>
+                        <p>The page number started at 0 for the first page</p>
 
                     </div>
 
@@ -660,7 +524,8 @@ util.inherits(CustomEntityProvider, openVeoApi.providers.EntityProvider);</code>
 
 
                     <div class="param-description">
-                        <p>A sort object</p>
+                        <p>The list of fields to sort by with the field name as key and the sort order as
+value (e.g. {field1: 'asc', field2: 'desc'})</p>
 
                     </div>
 
@@ -674,8 +539,15 @@ util.inherits(CustomEntityProvider, openVeoApi.providers.EntityProvider);</code>
                         <p>The function to call when it's done</p>
 <ul>
 <li><strong>Error</strong> The error if an error occurred, null otherwise</li>
-<li><strong>Array</strong> The list of entities</li>
-<li><strong>Object</strong> Pagination information</li>
+<li><strong>Array</strong> The list of retrieved entities</li>
+<li><strong>Object</strong> Pagination information
+<ul>
+<li><strong>Number</strong> limit The specified limit</li>
+<li><strong>Number</strong> page The actual page</li>
+<li><strong>Number</strong> pages The total number of pages</li>
+<li><strong>Number</strong> size The total number of entities</li>
+</ul>
+</li>
 </ul>
 
                     </div>
@@ -687,13 +559,13 @@ util.inherits(CustomEntityProvider, openVeoApi.providers.EntityProvider);</code>
 
 
 </div>
-<div id="method_increase" class="method item">
-  <h3 class="blue-method-name">increase</h3>
+<div id="method_getOne" class="method item">
+  <h3 class="blue-method-name">getOne</h3>
 
   <div class="meta method-meta">
       <p>
           Defined in
-      <a href="../files/lib_providers_EntityProvider.js.html#l195"><code>lib&#x2F;providers&#x2F;EntityProvider.js:195</code></a>
+      <a href="../files/lib_providers_EntityProvider.js.html#l49"><code>lib&#x2F;providers&#x2F;EntityProvider.js:49</code></a>
   </p>
 
 
@@ -702,7 +574,7 @@ util.inherits(CustomEntityProvider, openVeoApi.providers.EntityProvider);</code>
 
   <h3>Syntax</h3>
   <div class="blue-method-syntax">
-  <h3 class="name"><code>increase</code></h3>
+  <h3 class="name"><code>getOne</code></h3>
 
         <div class="args">
             <span class="paren">(</span><ul class="args-list inline commas">
@@ -710,7 +582,7 @@ util.inherits(CustomEntityProvider, openVeoApi.providers.EntityProvider);</code>
                         <code>id</code>
                 </li>
                 <li class="arg">
-                        <code>data</code>
+                        <code class="optional">[fields]</code>
                 </li>
                 <li class="arg">
                         <code>callback</code>
@@ -729,8 +601,7 @@ util.inherits(CustomEntityProvider, openVeoApi.providers.EntityProvider);</code>
   </div>
     <div class="description">
       <h3>Summary</h3>
-        <p>Increase an entity.</p>
-<p>If the entity has the property &quot;locked&quot;, it won't be increased.</p>
+        <p>Fetches an entity by its id.</p>
 
     </div>
 
@@ -744,24 +615,48 @@ util.inherits(CustomEntityProvider, openVeoApi.providers.EntityProvider);</code>
 
 
                     <div class="param-description">
-                        <p>The id of the entity to update</p>
+                        <p>The entity id</p>
 
                     </div>
 
                 </li>
                 <li class="param">
-                        <code class="param-name">data</code>
+                        <code class="param-name optional">[fields]</code>
                         <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
 
 
                     <div class="param-description">
-                        <p>Object which key is the parameter to increase and value, amount of increase/decrease</p>
-<ul>
-<li>Ex: {views: 56, priority: -5}</li>
-</ul>
+                        <p>Fields to be included or excluded from the response, by default all
+fields are returned. Only &quot;exclude&quot; or &quot;include&quot; can be specified, not both</p>
 
                     </div>
 
+                        <ul class="params-list">
+                            <li class="param">
+                                    <code class="param-name optional">[include]</code>
+                                    <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array" class="crosslink external" target="_blank">Array</a></span>
+                                    <span class="flag optional" title="This parameter is optional.">optional</span>
+
+                                <div class="param-description">
+                                    <p>The list of fields to include in the response, all other fields are excluded</p>
+
+                                </div>
+
+                            </li>
+                            <li class="param">
+                                    <code class="param-name optional">[exclude]</code>
+                                    <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array" class="crosslink external" target="_blank">Array</a></span>
+                                    <span class="flag optional" title="This parameter is optional.">optional</span>
+
+                                <div class="param-description">
+                                    <p>The list of fields to exclude from response, all other fields are included. Ignored
+if include is also specified.</p>
+
+                                </div>
+
+                            </li>
+                        </ul>
                 </li>
                 <li class="param">
                         <code class="param-name">callback</code>
@@ -772,7 +667,7 @@ util.inherits(CustomEntityProvider, openVeoApi.providers.EntityProvider);</code>
                         <p>The function to call when it's done</p>
 <ul>
 <li><strong>Error</strong> The error if an error occurred, null otherwise</li>
-<li><strong>Number</strong> The number of updated items</li>
+<li><strong>Object</strong> The entity</li>
 </ul>
 
                     </div>
@@ -790,7 +685,7 @@ util.inherits(CustomEntityProvider, openVeoApi.providers.EntityProvider);</code>
   <div class="meta method-meta">
       <p>
           Defined in
-      <a href="../files/lib_providers_EntityProvider.js.html#l148"><code>lib&#x2F;providers&#x2F;EntityProvider.js:148</code></a>
+      <a href="../files/lib_providers_EntityProvider.js.html#l139"><code>lib&#x2F;providers&#x2F;EntityProvider.js:139</code></a>
   </p>
 
 
@@ -804,10 +699,10 @@ util.inherits(CustomEntityProvider, openVeoApi.providers.EntityProvider);</code>
         <div class="args">
             <span class="paren">(</span><ul class="args-list inline commas">
                 <li class="arg">
-                        <code>ids</code>
+                        <code class="optional">[filter]</code>
                 </li>
                 <li class="arg">
-                        <code>callback</code>
+                        <code class="optional">[callback]</code>
                 </li>
             </ul><span class="paren">)</span>
         </div>
@@ -823,8 +718,7 @@ util.inherits(CustomEntityProvider, openVeoApi.providers.EntityProvider);</code>
   </div>
     <div class="description">
       <h3>Summary</h3>
-        <p>Removes one or several entities.</p>
-<p>If the entity has the property &quot;locked&quot;, it won't be removed.</p>
+        <p>Removes entities.</p>
 
     </div>
 
@@ -833,26 +727,28 @@ util.inherits(CustomEntityProvider, openVeoApi.providers.EntityProvider);</code>
 
             <ul class="params-list">
                 <li class="param">
-                        <code class="param-name">ids</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array" class="crosslink external" target="_blank">Array</a></span>
+                        <code class="param-name optional">[filter]</code>
+                        <span class="type"><a href="../classes/ResourceFilter.html" class="crosslink">ResourceFilter</a></span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
 
 
                     <div class="param-description">
-                        <p>Id(s) of the document(s) to remove from the collection</p>
+                        <p>Rules to filter entities to remove</p>
 
                     </div>
 
                 </li>
                 <li class="param">
-                        <code class="param-name">callback</code>
+                        <code class="param-name optional">[callback]</code>
                         <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function" class="crosslink external" target="_blank">Function</a></span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
 
 
                     <div class="param-description">
                         <p>The function to call when it's done</p>
 <ul>
 <li><strong>Error</strong> The error if an error occurred, null otherwise</li>
-<li><strong>Number</strong> The number of deleted entities</li>
+<li><strong>Number</strong> The number of removed entities</li>
 </ul>
 
                     </div>
@@ -864,13 +760,13 @@ util.inherits(CustomEntityProvider, openVeoApi.providers.EntityProvider);</code>
 
 
 </div>
-<div id="method_removeProp" class="method item">
-  <h3 class="blue-method-name">removeProp</h3>
+<div id="method_removeField" class="method item">
+  <h3 class="blue-method-name">removeField</h3>
 
   <div class="meta method-meta">
       <p>
           Defined in
-      <a href="../files/lib_providers_EntityProvider.js.html#l172"><code>lib&#x2F;providers&#x2F;EntityProvider.js:172</code></a>
+      <a href="../files/lib_providers_EntityProvider.js.html#l159"><code>lib&#x2F;providers&#x2F;EntityProvider.js:159</code></a>
   </p>
 
 
@@ -879,15 +775,18 @@ util.inherits(CustomEntityProvider, openVeoApi.providers.EntityProvider);</code>
 
   <h3>Syntax</h3>
   <div class="blue-method-syntax">
-  <h3 class="name"><code>removeProp</code></h3>
+  <h3 class="name"><code>removeField</code></h3>
 
         <div class="args">
             <span class="paren">(</span><ul class="args-list inline commas">
                 <li class="arg">
-                        <code>property</code>
+                        <code>field</code>
                 </li>
                 <li class="arg">
-                        <code>callback</code>
+                        <code class="optional">[filter]</code>
+                </li>
+                <li class="arg">
+                        <code class="optional">[callback]</code>
                 </li>
             </ul><span class="paren">)</span>
         </div>
@@ -903,8 +802,7 @@ util.inherits(CustomEntityProvider, openVeoApi.providers.EntityProvider);</code>
   </div>
     <div class="description">
       <h3>Summary</h3>
-        <p>Removes a property on all documents in the collection.</p>
-<p>If the entity has the property &quot;locked&quot;, it won't be updated.</p>
+        <p>Removes a field from entities.</p>
 
     </div>
 
@@ -913,26 +811,39 @@ util.inherits(CustomEntityProvider, openVeoApi.providers.EntityProvider);</code>
 
             <ul class="params-list">
                 <li class="param">
-                        <code class="param-name">property</code>
+                        <code class="param-name">field</code>
                         <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
 
 
                     <div class="param-description">
-                        <p>The property name to remove</p>
+                        <p>The field to remove from entities</p>
 
                     </div>
 
                 </li>
                 <li class="param">
-                        <code class="param-name">callback</code>
+                        <code class="param-name optional">[filter]</code>
+                        <span class="type"><a href="../classes/ResourceFilter.html" class="crosslink">ResourceFilter</a></span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+
+
+                    <div class="param-description">
+                        <p>Rules to filter entities to update</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name optional">[callback]</code>
                         <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function" class="crosslink external" target="_blank">Function</a></span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
 
 
                     <div class="param-description">
                         <p>The function to call when it's done</p>
 <ul>
 <li><strong>Error</strong> The error if an error occurred, null otherwise</li>
-<li><strong>Number</strong> The number of modified entities</li>
+<li><strong>Number</strong> The number of updated entities</li>
 </ul>
 
                     </div>
@@ -950,7 +861,7 @@ util.inherits(CustomEntityProvider, openVeoApi.providers.EntityProvider);</code>
   <div class="meta method-meta">
       <p>
           Defined in
-      <a href="../files/lib_providers_EntityProvider.js.html#l123"><code>lib&#x2F;providers&#x2F;EntityProvider.js:123</code></a>
+      <a href="../files/lib_providers_EntityProvider.js.html#l118"><code>lib&#x2F;providers&#x2F;EntityProvider.js:118</code></a>
   </p>
 
 
@@ -964,13 +875,13 @@ util.inherits(CustomEntityProvider, openVeoApi.providers.EntityProvider);</code>
         <div class="args">
             <span class="paren">(</span><ul class="args-list inline commas">
                 <li class="arg">
-                        <code>id</code>
+                        <code class="optional">[filter]</code>
                 </li>
                 <li class="arg">
                         <code>data</code>
                 </li>
                 <li class="arg">
-                        <code>callback</code>
+                        <code class="optional">[callback]</code>
                 </li>
             </ul><span class="paren">)</span>
         </div>
@@ -986,8 +897,7 @@ util.inherits(CustomEntityProvider, openVeoApi.providers.EntityProvider);</code>
   </div>
     <div class="description">
       <h3>Summary</h3>
-        <p>Updates an entity.</p>
-<p>If the entity has the property &quot;locked&quot;, it won't be updated.</p>
+        <p>Updates entities.</p>
 
     </div>
 
@@ -996,12 +906,13 @@ util.inherits(CustomEntityProvider, openVeoApi.providers.EntityProvider);</code>
 
             <ul class="params-list">
                 <li class="param">
-                        <code class="param-name">id</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+                        <code class="param-name optional">[filter]</code>
+                        <span class="type"><a href="../classes/ResourceFilter.html" class="crosslink">ResourceFilter</a></span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
 
 
                     <div class="param-description">
-                        <p>The id of the entity to update</p>
+                        <p>Rules to filter entities to update</p>
 
                     </div>
 
@@ -1012,21 +923,22 @@ util.inherits(CustomEntityProvider, openVeoApi.providers.EntityProvider);</code>
 
 
                     <div class="param-description">
-                        <p>Entity data, its structure depends on the entity type</p>
+                        <p>The modifications to perform</p>
 
                     </div>
 
                 </li>
                 <li class="param">
-                        <code class="param-name">callback</code>
+                        <code class="param-name optional">[callback]</code>
                         <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function" class="crosslink external" target="_blank">Function</a></span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
 
 
                     <div class="param-description">
                         <p>The function to call when it's done</p>
 <ul>
 <li><strong>Error</strong> The error if an error occurred, null otherwise</li>
-<li><strong>Number</strong> The number of updated items</li>
+<li><strong>Number</strong> The number of updated entities</li>
 </ul>
 
                     </div>
@@ -1043,13 +955,13 @@ util.inherits(CustomEntityProvider, openVeoApi.providers.EntityProvider);</code>
             <div id="properties" class="api-class-tabpanel">
                 <h2 class="off-left">Properties</h2>
 
-                    <div id="property_collection" class="property item inherited">
+                    <div id="property_location" class="property item">
                     
-                      <h3 class="blue-method-name">collection</h3>
+                      <h3 class="blue-method-name">location</h3>
                       <div class="meta method-meta">
-                          <p>Inherited from
-                            <a href="../classes/Provider.html#property_collection">Provider</a>:
-                          <a href="../files/lib_providers_Provider.js.html#l41"><code>lib&#x2F;providers&#x2F;Provider.js:41</code></a>
+                          <p>
+                              Defined in
+                          <a href="../files/lib_providers_EntityProvider.js.html#l31"><code>lib&#x2F;providers&#x2F;EntityProvider.js:31</code></a>
                       </p>
                     
                     
@@ -1057,7 +969,7 @@ util.inherits(CustomEntityProvider, openVeoApi.providers.EntityProvider);</code>
                     
                       <h3>Syntax</h3>
                       <div class="blue-method-syntax">
-                        <h3 class="name"><code>collection</code></h3>
+                        <h3 class="name"><code>location</code></h3>
                         <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
                     
                     
@@ -1069,20 +981,21 @@ util.inherits(CustomEntityProvider, openVeoApi.providers.EntityProvider);</code>
                     
                         <div class="description">
                           <h3>Summary</h3>
-                            The database's collection's name.
+                            <p>The location of the entities in the storage.</p>
+                    
                         </div>
                     
                     
                     
                     
                     </div>
-                    <div id="property_database" class="property item inherited">
+                    <div id="property_storage" class="property item inherited">
                     
-                      <h3 class="blue-method-name">database</h3>
+                      <h3 class="blue-method-name">storage</h3>
                       <div class="meta method-meta">
                           <p>Inherited from
-                            <a href="../classes/Provider.html#property_database">Provider</a>:
-                          <a href="../files/lib_providers_Provider.js.html#l32"><code>lib&#x2F;providers&#x2F;Provider.js:32</code></a>
+                            <a href="../classes/Provider.html#property_storage">Provider</a>:
+                          <a href="../files/lib_providers_Provider.js.html#l22"><code>lib&#x2F;providers&#x2F;Provider.js:22</code></a>
                       </p>
                     
                     
@@ -1090,8 +1003,8 @@ util.inherits(CustomEntityProvider, openVeoApi.providers.EntityProvider);</code>
                     
                       <h3>Syntax</h3>
                       <div class="blue-method-syntax">
-                        <h3 class="name"><code>database</code></h3>
-                        <span class="type"><a href="../classes/Database.html" class="crosslink">Database</a></span>
+                        <h3 class="name"><code>storage</code></h3>
+                        <span class="type"><a href="../classes/Storage.html" class="crosslink">Storage</a></span>
                     
                     
                     
@@ -1102,7 +1015,7 @@ util.inherits(CustomEntityProvider, openVeoApi.providers.EntityProvider);</code>
                     
                         <div class="description">
                           <h3>Summary</h3>
-                            The database to use.
+                            The provider storage.
                         </div>
                     
                     

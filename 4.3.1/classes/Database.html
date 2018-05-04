@@ -47,22 +47,31 @@
                                 <li><a href="../classes/CAS2.html">CAS2</a></li>
                                 <li><a href="../classes/CAS3.html">CAS3</a></li>
                                 <li><a href="../classes/CasStrategy.html">CasStrategy</a></li>
+                                <li><a href="../classes/ComponentExpression.html">ComponentExpression</a></li>
+                                <li><a href="../classes/ConfigExpression.html">ConfigExpression</a></li>
+                                <li><a href="../classes/ConstantExpression.html">ConstantExpression</a></li>
                                 <li><a href="../classes/ContentController.html">ContentController</a></li>
-                                <li><a href="../classes/ContentModel.html">ContentModel</a></li>
                                 <li><a href="../classes/Controller.html">Controller</a></li>
                                 <li><a href="../classes/Database.html">Database</a></li>
+                                <li><a href="../classes/DirectiveExpression.html">DirectiveExpression</a></li>
                                 <li><a href="../classes/disableCacheMiddleware.html">disableCacheMiddleware</a></li>
+                                <li><a href="../classes/ElementExpression.html">ElementExpression</a></li>
                                 <li><a href="../classes/EntityController.html">EntityController</a></li>
-                                <li><a href="../classes/EntityModel.html">EntityModel</a></li>
                                 <li><a href="../classes/EntityProvider.html">EntityProvider</a></li>
+                                <li><a href="../classes/Expression.html">Expression</a></li>
                                 <li><a href="../classes/factory.html">factory</a></li>
                                 <li><a href="../classes/fileSystem.html">fileSystem</a></li>
+                                <li><a href="../classes/FilterExpression.html">FilterExpression</a></li>
                                 <li><a href="../classes/http-errors.html">http-errors</a></li>
+                                <li><a href="../classes/HttpController.html">HttpController</a></li>
+                                <li><a href="../classes/imageProcessorMiddleware.html">imageProcessorMiddleware</a></li>
+                                <li><a href="../classes/InjectExpression.html">InjectExpression</a></li>
                                 <li><a href="../classes/logger.html">logger</a></li>
                                 <li><a href="../classes/logRequestMiddleware.html">logRequestMiddleware</a></li>
-                                <li><a href="../classes/Model.html">Model</a></li>
+                                <li><a href="../classes/ModuleExpression.html">ModuleExpression</a></li>
                                 <li><a href="../classes/MongoDatabase.html">MongoDatabase</a></li>
                                 <li><a href="../classes/MultipartParser.html">MultipartParser</a></li>
+                                <li><a href="../classes/ngDpTask.html">ngDpTask</a></li>
                                 <li><a href="../classes/NotFoundError.html">NotFoundError</a></li>
                                 <li><a href="../classes/Pilot.html">Pilot</a></li>
                                 <li><a href="../classes/Plugin.html">Plugin</a></li>
@@ -70,28 +79,31 @@
                                 <li><a href="../classes/Provider.html">Provider</a></li>
                                 <li><a href="../classes/removeTask.html">removeTask</a></li>
                                 <li><a href="../classes/renameTask.html">renameTask</a></li>
+                                <li><a href="../classes/ResourceFilter.html">ResourceFilter</a></li>
+                                <li><a href="../classes/RouteExpression.html">RouteExpression</a></li>
                                 <li><a href="../classes/SocketController.html">SocketController</a></li>
                                 <li><a href="../classes/SocketNamespace.html">SocketNamespace</a></li>
                                 <li><a href="../classes/SocketServer.html">SocketServer</a></li>
+                                <li><a href="../classes/Storage.html">Storage</a></li>
                                 <li><a href="../classes/STRATEGIES.html">STRATEGIES</a></li>
                                 <li><a href="../classes/util.html">util</a></li>
+                                <li><a href="../classes/ValueExpression.html">ValueExpression</a></li>
                             </ul>
                 
                             <ul id="api-modules" class="apis modules">
                                 <li><a href="../modules/controllers.html">controllers</a></li>
-                                <li><a href="../modules/database.html">database</a></li>
                                 <li><a href="../modules/emitters.html">emitters</a></li>
                                 <li><a href="../modules/errors.html">errors</a></li>
                                 <li><a href="../modules/fileSystem.html">fileSystem</a></li>
                                 <li><a href="../modules/grunt.html">grunt</a></li>
                                 <li><a href="../modules/logger.html">logger</a></li>
                                 <li><a href="../modules/middlewares.html">middlewares</a></li>
-                                <li><a href="../modules/models.html">models</a></li>
                                 <li><a href="../modules/multipart.html">multipart</a></li>
                                 <li><a href="../modules/passport.html">passport</a></li>
                                 <li><a href="../modules/plugin.html">plugin</a></li>
                                 <li><a href="../modules/providers.html">providers</a></li>
                                 <li><a href="../modules/socket.html">socket</a></li>
+                                <li><a href="../modules/storages.html">storages</a></li>
                                 <li><a href="../modules/util.html">util</a></li>
                             </ul>
                         </div>
@@ -129,12 +141,15 @@
 <h1>Database</h1>
 <div class="meta">
 
-
-        <div class="foundat">
-            Defined in: <a href="../files/lib_database_Database.js.html#l7"><code>lib&#x2F;database&#x2F;Database.js:7</code></a>
+        <div class="extends">
+            Extends <a href="../classes/Storage.html" class="crosslink">Storage</a>
         </div>
 
-            Module: <a href="../modules/database.html">database</a>
+        <div class="foundat">
+            Defined in: <a href="../files/lib_storages_databases_Database.js.html#l10"><code>lib&#x2F;storages&#x2F;databases&#x2F;Database.js:10</code></a>
+        </div>
+
+            Module: <a href="../modules/storages.html">storages</a>
 
 </div>
 
@@ -142,7 +157,7 @@
 <h3>Summary</h3>
 <div class="intro">
     <p>Defines base database for all databases.</p>
-<p>Use Factory to get an instance of a MongoDB Database.</p>
+<p>This should not be used directly, use one of its subclasses instead.</p>
 
 </div>
 
@@ -154,7 +169,7 @@
   <div class="meta method-meta">
       <p>
           Defined in
-      <a href="../files/lib_database_Database.js.html#l7"><code>lib&#x2F;database&#x2F;Database.js:7</code></a>
+      <a href="../files/lib_storages_databases_Database.js.html#l10"><code>lib&#x2F;storages&#x2F;databases&#x2F;Database.js:10</code></a>
   </p>
 
 
@@ -168,7 +183,7 @@
         <div class="args">
             <span class="paren">(</span><ul class="args-list inline commas">
                 <li class="arg">
-                        <code>databaseConf</code>
+                        <code>configuration</code>
                 </li>
             </ul><span class="paren">)</span>
         </div>
@@ -191,7 +206,7 @@
 
             <ul class="params-list">
                 <li class="param">
-                        <code class="param-name">databaseConf</code>
+                        <code class="param-name">configuration</code>
                         <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
 
 
@@ -286,7 +301,11 @@
                 <div class="index-section methods">
                     <h3>Methods</h3>
 
-                    <ul class="index-list methods">
+                    <ul class="index-list methods extends">
+                            <li class="index-item method inherited">
+                                <a href="#method_add">add</a>
+
+                            </li>
                             <li class="index-item method">
                                 <a href="#method_close">close</a>
 
@@ -299,7 +318,7 @@
                                 <a href="#method_createIndexes">createIndexes</a>
 
                             </li>
-                            <li class="index-item method">
+                            <li class="index-item method inherited">
                                 <a href="#method_get">get</a>
 
                             </li>
@@ -307,19 +326,15 @@
                                 <a href="#method_getIndexes">getIndexes</a>
 
                             </li>
+                            <li class="index-item method inherited">
+                                <a href="#method_getOne">getOne</a>
+
+                            </li>
                             <li class="index-item method">
                                 <a href="#method_getStore">getStore</a>
 
                             </li>
-                            <li class="index-item method">
-                                <a href="#method_increase">increase</a>
-
-                            </li>
-                            <li class="index-item method">
-                                <a href="#method_insert">insert</a>
-
-                            </li>
-                            <li class="index-item method">
+                            <li class="index-item method inherited">
                                 <a href="#method_remove">remove</a>
 
                             </li>
@@ -327,19 +342,15 @@
                                 <a href="#method_removeCollection">removeCollection</a>
 
                             </li>
-                            <li class="index-item method">
-                                <a href="#method_removeProp">removeProp</a>
+                            <li class="index-item method inherited">
+                                <a href="#method_removeField">removeField</a>
 
                             </li>
                             <li class="index-item method">
                                 <a href="#method_renameCollection">renameCollection</a>
 
                             </li>
-                            <li class="index-item method">
-                                <a href="#method_search">search</a>
-
-                            </li>
-                            <li class="index-item method">
+                            <li class="index-item method inherited">
                                 <a href="#method_update">update</a>
 
                             </li>
@@ -349,7 +360,11 @@
                 <div class="index-section properties">
                     <h3>Properties</h3>
 
-                    <ul class="index-list properties">
+                    <ul class="index-list properties extends">
+                            <li class="index-item property inherited">
+                                <a href="#property_configuration">configuration</a>
+
+                            </li>
                             <li class="index-item property">
                                 <a href="#property_host">host</a>
 
@@ -367,10 +382,6 @@
 
                             </li>
                             <li class="index-item property">
-                                <a href="#property_type">type</a>
-
-                            </li>
-                            <li class="index-item property">
                                 <a href="#property_username">username</a>
 
                             </li>
@@ -383,13 +394,106 @@
             <div id="methods" class="api-class-tabpanel">
                 <h2 class="off-left">Methods</h2>
 
+<div id="method_add" class="method item inherited">
+  <h3 class="blue-method-name">add</h3>
+
+  <div class="meta method-meta">
+      <p>Inherited from
+        <a href="../classes/Storage.html#method_add">Storage</a>:
+      <a href="../files/lib_storages_Storage.js.html#l42"><code>lib&#x2F;storages&#x2F;Storage.js:42</code></a>
+  </p>
+
+
+
+  </div>
+
+  <h3>Syntax</h3>
+  <div class="blue-method-syntax">
+  <h3 class="name"><code>add</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>location</code>
+                </li>
+                <li class="arg">
+                        <code>resources</code>
+                </li>
+                <li class="arg">
+                        <code class="optional">[callback]</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+        <span class="flag async">async</span>
+
+  </div>
+    <div class="description">
+      <h3>Summary</h3>
+        Adds resources to the storage.
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">location</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+
+
+                    <div class="param-description">
+                        <p>The storage location where the resource will be added</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">resources</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array" class="crosslink external" target="_blank">Array</a></span>
+
+
+                    <div class="param-description">
+                        <p>The list of resources to store</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name optional">[callback]</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function" class="crosslink external" target="_blank">Function</a></span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+
+
+                    <div class="param-description">
+                        <p>The function to call when it's done</p>
+<ul>
+<li><strong>Error</strong> The error if an error occurred, null otherwise</li>
+<li><strong>Number</strong> The total amount of resources inserted</li>
+</ul>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
 <div id="method_close" class="method item">
   <h3 class="blue-method-name">close</h3>
 
   <div class="meta method-meta">
       <p>
           Defined in
-      <a href="../files/lib_database_Database.js.html#l100"><code>lib&#x2F;database&#x2F;Database.js:100</code></a>
+      <a href="../files/lib_storages_databases_Database.js.html#l94"><code>lib&#x2F;storages&#x2F;databases&#x2F;Database.js:94</code></a>
   </p>
 
 
@@ -453,7 +557,7 @@
   <div class="meta method-meta">
       <p>
           Defined in
-      <a href="../files/lib_database_Database.js.html#l88"><code>lib&#x2F;database&#x2F;Database.js:88</code></a>
+      <a href="../files/lib_storages_databases_Database.js.html#l82"><code>lib&#x2F;storages&#x2F;databases&#x2F;Database.js:82</code></a>
   </p>
 
 
@@ -517,7 +621,7 @@
   <div class="meta method-meta">
       <p>
           Defined in
-      <a href="../files/lib_database_Database.js.html#l226"><code>lib&#x2F;database&#x2F;Database.js:226</code></a>
+      <a href="../files/lib_storages_databases_Database.js.html#l120"><code>lib&#x2F;storages&#x2F;databases&#x2F;Database.js:120</code></a>
   </p>
 
 
@@ -604,13 +708,13 @@
 
 
 </div>
-<div id="method_get" class="method item">
+<div id="method_get" class="method item inherited">
   <h3 class="blue-method-name">get</h3>
 
   <div class="meta method-meta">
-      <p>
-          Defined in
-      <a href="../files/lib_database_Database.js.html#l175"><code>lib&#x2F;database&#x2F;Database.js:175</code></a>
+      <p>Inherited from
+        <a href="../classes/Storage.html#method_get">Storage</a>:
+      <a href="../files/lib_storages_Storage.js.html#l57"><code>lib&#x2F;storages&#x2F;Storage.js:57</code></a>
   </p>
 
 
@@ -624,16 +728,22 @@
         <div class="args">
             <span class="paren">(</span><ul class="args-list inline commas">
                 <li class="arg">
-                        <code>collection</code>
+                        <code>location</code>
                 </li>
                 <li class="arg">
-                        <code class="optional">[criteria]</code>
+                        <code class="optional">[filter]</code>
                 </li>
                 <li class="arg">
-                        <code class="optional">[projection]</code>
+                        <code class="optional">[fields]</code>
                 </li>
                 <li class="arg">
                         <code class="optional">[limit]</code>
+                </li>
+                <li class="arg">
+                        <code class="optional">[page]</code>
+                </li>
+                <li class="arg">
+                        <code class="optional">[sort]</code>
                 </li>
                 <li class="arg">
                         <code>callback</code>
@@ -652,8 +762,7 @@
   </div>
     <div class="description">
       <h3>Summary</h3>
-        <p>Gets a list of documents.</p>
-
+        Fetches resources from the storage.
     </div>
 
         <div class="params">
@@ -661,39 +770,65 @@
 
             <ul class="params-list">
                 <li class="param">
-                        <code class="param-name">collection</code>
+                        <code class="param-name">location</code>
                         <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
 
 
                     <div class="param-description">
-                        <p>The collection to work on</p>
+                        <p>The storage location where to search for resources</p>
 
                     </div>
 
                 </li>
                 <li class="param">
-                        <code class="param-name optional">[criteria]</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
+                        <code class="param-name optional">[filter]</code>
+                        <span class="type"><a href="../classes/ResourceFilter.html" class="crosslink">ResourceFilter</a></span>
                         <span class="flag optional" title="This parameter is optional.">optional</span>
 
 
                     <div class="param-description">
-                        <p>MongoDB criterias</p>
+                        <p>Rules to filter resources</p>
 
                     </div>
 
                 </li>
                 <li class="param">
-                        <code class="param-name optional">[projection]</code>
+                        <code class="param-name optional">[fields]</code>
                         <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
                         <span class="flag optional" title="This parameter is optional.">optional</span>
 
 
                     <div class="param-description">
-                        <p>MongoDB projection</p>
+                        <p>Expected resource fields to be included or excluded from the response, by default all
+fields are returned. Only &quot;exclude&quot; or &quot;include&quot; can be specified, not both</p>
 
                     </div>
 
+                        <ul class="params-list">
+                            <li class="param">
+                                    <code class="param-name optional">[include]</code>
+                                    <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array" class="crosslink external" target="_blank">Array</a></span>
+                                    <span class="flag optional" title="This parameter is optional.">optional</span>
+
+                                <div class="param-description">
+                                    <p>The list of fields to include in the response, all other fields are excluded.</p>
+
+                                </div>
+
+                            </li>
+                            <li class="param">
+                                    <code class="param-name optional">[exclude]</code>
+                                    <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array" class="crosslink external" target="_blank">Array</a></span>
+                                    <span class="flag optional" title="This parameter is optional.">optional</span>
+
+                                <div class="param-description">
+                                    <p>The list of fields to exclude from response, all other fields are included. Ignored
+if include is also specified.</p>
+
+                                </div>
+
+                            </li>
+                        </ul>
                 </li>
                 <li class="param">
                         <code class="param-name optional">[limit]</code>
@@ -702,7 +837,32 @@
 
 
                     <div class="param-description">
-                        <p>A limit number of items to retrieve (all by default)</p>
+                        <p>A limit number of resources to retrieve (10 by default)</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name optional">[page]</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number" class="crosslink external" target="_blank">Number</a></span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+
+
+                    <div class="param-description">
+                        <p>The page number started at 0 for the first page</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name optional">[sort]</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+
+
+                    <div class="param-description">
+                        <p>The list of fields to sort by with the field name as key and the sort order as
+value (e.g. {field1: 'asc', field2: 'desc'})</p>
 
                     </div>
 
@@ -716,7 +876,15 @@
                         <p>The function to call when it's done</p>
 <ul>
 <li><strong>Error</strong> The error if an error occurred, null otherwise</li>
-<li><strong>Array</strong> The retrieved documents</li>
+<li><strong>Array</strong> The list of retrieved resources</li>
+<li><strong>Object</strong> Pagination information
+<ul>
+<li><strong>Number</strong> limit The specified limit</li>
+<li><strong>Number</strong> page The actual page</li>
+<li><strong>Number</strong> pages The total number of pages</li>
+<li><strong>Number</strong> size The total number of resources</li>
+</ul>
+</li>
 </ul>
 
                     </div>
@@ -734,7 +902,7 @@
   <div class="meta method-meta">
       <p>
           Defined in
-      <a href="../files/lib_database_Database.js.html#l212"><code>lib&#x2F;database&#x2F;Database.js:212</code></a>
+      <a href="../files/lib_storages_databases_Database.js.html#l106"><code>lib&#x2F;storages&#x2F;databases&#x2F;Database.js:106</code></a>
   </p>
 
 
@@ -807,13 +975,147 @@
 
 
 </div>
+<div id="method_getOne" class="method item inherited">
+  <h3 class="blue-method-name">getOne</h3>
+
+  <div class="meta method-meta">
+      <p>Inherited from
+        <a href="../classes/Storage.html#method_getOne">Storage</a>:
+      <a href="../files/lib_storages_Storage.js.html#l86"><code>lib&#x2F;storages&#x2F;Storage.js:86</code></a>
+  </p>
+
+
+
+  </div>
+
+  <h3>Syntax</h3>
+  <div class="blue-method-syntax">
+  <h3 class="name"><code>getOne</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>location</code>
+                </li>
+                <li class="arg">
+                        <code class="optional">[filter]</code>
+                </li>
+                <li class="arg">
+                        <code class="optional">[fields]</code>
+                </li>
+                <li class="arg">
+                        <code>callback</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+        <span class="flag async">async</span>
+
+  </div>
+    <div class="description">
+      <h3>Summary</h3>
+        Fetches a single resource from the storage.
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">location</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+
+
+                    <div class="param-description">
+                        <p>The storage location where to search for the resource</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name optional">[filter]</code>
+                        <span class="type"><a href="../classes/ResourceFilter.html" class="crosslink">ResourceFilter</a></span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+
+
+                    <div class="param-description">
+                        <p>Rules to filter resources</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name optional">[fields]</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+
+
+                    <div class="param-description">
+                        <p>Expected resource fields to be included or excluded from the response, by default all
+fields are returned. Only &quot;exclude&quot; or &quot;include&quot; can be specified, not both</p>
+
+                    </div>
+
+                        <ul class="params-list">
+                            <li class="param">
+                                    <code class="param-name optional">[include]</code>
+                                    <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array" class="crosslink external" target="_blank">Array</a></span>
+                                    <span class="flag optional" title="This parameter is optional.">optional</span>
+
+                                <div class="param-description">
+                                    <p>The list of fields to include in the response, all other fields are excluded</p>
+
+                                </div>
+
+                            </li>
+                            <li class="param">
+                                    <code class="param-name optional">[exclude]</code>
+                                    <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array" class="crosslink external" target="_blank">Array</a></span>
+                                    <span class="flag optional" title="This parameter is optional.">optional</span>
+
+                                <div class="param-description">
+                                    <p>The list of fields to exclude from response, all other fields are included. Ignored
+if include is also specified.</p>
+
+                                </div>
+
+                            </li>
+                        </ul>
+                </li>
+                <li class="param">
+                        <code class="param-name">callback</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function" class="crosslink external" target="_blank">Function</a></span>
+
+
+                    <div class="param-description">
+                        <p>The function to call when it's done</p>
+<ul>
+<li><strong>Error</strong> The error if an error occurred, null otherwise</li>
+<li><strong>Object</strong> The resource</li>
+</ul>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
 <div id="method_getStore" class="method item">
   <h3 class="blue-method-name">getStore</h3>
 
   <div class="meta method-meta">
       <p>
           Defined in
-      <a href="../files/lib_database_Database.js.html#l241"><code>lib&#x2F;database&#x2F;Database.js:241</code></a>
+      <a href="../files/lib_storages_databases_Database.js.html#l135"><code>lib&#x2F;storages&#x2F;databases&#x2F;Database.js:135</code></a>
   </p>
 
 
@@ -883,214 +1185,13 @@
 
 
 </div>
-<div id="method_increase" class="method item">
-  <h3 class="blue-method-name">increase</h3>
-
-  <div class="meta method-meta">
-      <p>
-          Defined in
-      <a href="../files/lib_database_Database.js.html#l252"><code>lib&#x2F;database&#x2F;Database.js:252</code></a>
-  </p>
-
-
-
-  </div>
-
-  <h3>Syntax</h3>
-  <div class="blue-method-syntax">
-  <h3 class="name"><code>increase</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>collection</code>
-                </li>
-                <li class="arg">
-                        <code>filter</code>
-                </li>
-                <li class="arg">
-                        <code>data</code>
-                </li>
-                <li class="arg">
-                        <code>callback</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-
-
-
-
-
-
-        <span class="flag async">async</span>
-
-  </div>
-    <div class="description">
-      <h3>Summary</h3>
-        <p>increase values in several documents from collection.</p>
-
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">collection</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
-
-
-                    <div class="param-description">
-                        <p>The collection to work on</p>
-
-                    </div>
-
-                </li>
-                <li class="param">
-                        <code class="param-name">filter</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
-
-
-                    <div class="param-description">
-                        <p>Filters formatted like MongoDB filters</p>
-
-                    </div>
-
-                </li>
-                <li class="param">
-                        <code class="param-name">data</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
-
-
-                    <div class="param-description">
-                        <p>Document data</p>
-
-                    </div>
-
-                </li>
-                <li class="param">
-                        <code class="param-name">callback</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function" class="crosslink external" target="_blank">Function</a></span>
-
-
-                    <div class="param-description">
-                        <p>The function to call when it's done</p>
-<ul>
-<li><strong>Error</strong> The error if an error occurred, null otherwise</li>
-<li><strong>Number</strong> The number of increased documents</li>
-</ul>
-
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-
-
-</div>
-<div id="method_insert" class="method item">
-  <h3 class="blue-method-name">insert</h3>
-
-  <div class="meta method-meta">
-      <p>
-          Defined in
-      <a href="../files/lib_database_Database.js.html#l112"><code>lib&#x2F;database&#x2F;Database.js:112</code></a>
-  </p>
-
-
-
-  </div>
-
-  <h3>Syntax</h3>
-  <div class="blue-method-syntax">
-  <h3 class="name"><code>insert</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>collection</code>
-                </li>
-                <li class="arg">
-                        <code>data</code>
-                </li>
-                <li class="arg">
-                        <code>callback</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-
-
-
-
-
-
-        <span class="flag async">async</span>
-
-  </div>
-    <div class="description">
-      <h3>Summary</h3>
-        <p>Inserts several documents into a collection.</p>
-
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">collection</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
-
-
-                    <div class="param-description">
-                        <p>The collection to work on</p>
-
-                    </div>
-
-                </li>
-                <li class="param">
-                        <code class="param-name">data</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array" class="crosslink external" target="_blank">Array</a></span>
-
-
-                    <div class="param-description">
-                        <p>Document(s) to insert into the collection</p>
-
-                    </div>
-
-                </li>
-                <li class="param">
-                        <code class="param-name">callback</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function" class="crosslink external" target="_blank">Function</a></span>
-
-
-                    <div class="param-description">
-                        <p>The function to call when it's done</p>
-<ul>
-<li><strong>Error</strong> The error if an error occurred, null otherwise</li>
-<li><strong>Number</strong> The total amount of documents inserted</li>
-<li><strong>Array</strong> All the documents inserted</li>
-</ul>
-
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-
-
-</div>
-<div id="method_remove" class="method item">
+<div id="method_remove" class="method item inherited">
   <h3 class="blue-method-name">remove</h3>
 
   <div class="meta method-meta">
-      <p>
-          Defined in
-      <a href="../files/lib_database_Database.js.html#l128"><code>lib&#x2F;database&#x2F;Database.js:128</code></a>
+      <p>Inherited from
+        <a href="../classes/Storage.html#method_remove">Storage</a>:
+      <a href="../files/lib_storages_Storage.js.html#l122"><code>lib&#x2F;storages&#x2F;Storage.js:122</code></a>
   </p>
 
 
@@ -1104,13 +1205,13 @@
         <div class="args">
             <span class="paren">(</span><ul class="args-list inline commas">
                 <li class="arg">
-                        <code>collection</code>
+                        <code>location</code>
                 </li>
                 <li class="arg">
                         <code>filter</code>
                 </li>
                 <li class="arg">
-                        <code>callback</code>
+                        <code class="optional">[callback]</code>
                 </li>
             </ul><span class="paren">)</span>
         </div>
@@ -1126,8 +1227,7 @@
   </div>
     <div class="description">
       <h3>Summary</h3>
-        <p>Removes several documents from a collection.</p>
-
+        Removes resources from the storage.
     </div>
 
         <div class="params">
@@ -1135,37 +1235,38 @@
 
             <ul class="params-list">
                 <li class="param">
-                        <code class="param-name">collection</code>
+                        <code class="param-name">location</code>
                         <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
 
 
                     <div class="param-description">
-                        <p>The collection to work on</p>
+                        <p>The storage location where to find the resources to remove</p>
 
                     </div>
 
                 </li>
                 <li class="param">
                         <code class="param-name">filter</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
+                        <span class="type"><a href="../classes/ResourceFilter.html" class="crosslink">ResourceFilter</a></span>
 
 
                     <div class="param-description">
-                        <p>Filters formatted like MongoDB filters</p>
+                        <p>Rules to filter resources to remove</p>
 
                     </div>
 
                 </li>
                 <li class="param">
-                        <code class="param-name">callback</code>
+                        <code class="param-name optional">[callback]</code>
                         <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function" class="crosslink external" target="_blank">Function</a></span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
 
 
                     <div class="param-description">
                         <p>The function to call when it's done</p>
 <ul>
 <li><strong>Error</strong> The error if an error occurred, null otherwise</li>
-<li><strong>Number</strong> The number of deleted documents</li>
+<li><strong>Number</strong> The number of removed resources</li>
 </ul>
 
                     </div>
@@ -1183,7 +1284,7 @@
   <div class="meta method-meta">
       <p>
           Defined in
-      <a href="../files/lib_database_Database.js.html#l282"><code>lib&#x2F;database&#x2F;Database.js:282</code></a>
+      <a href="../files/lib_storages_databases_Database.js.html#l160"><code>lib&#x2F;storages&#x2F;databases&#x2F;Database.js:160</code></a>
   </p>
 
 
@@ -1255,13 +1356,13 @@
 
 
 </div>
-<div id="method_removeProp" class="method item">
-  <h3 class="blue-method-name">removeProp</h3>
+<div id="method_removeField" class="method item inherited">
+  <h3 class="blue-method-name">removeField</h3>
 
   <div class="meta method-meta">
-      <p>
-          Defined in
-      <a href="../files/lib_database_Database.js.html#l143"><code>lib&#x2F;database&#x2F;Database.js:143</code></a>
+      <p>Inherited from
+        <a href="../classes/Storage.html#method_removeField">Storage</a>:
+      <a href="../files/lib_storages_Storage.js.html#l137"><code>lib&#x2F;storages&#x2F;Storage.js:137</code></a>
   </p>
 
 
@@ -1270,21 +1371,21 @@
 
   <h3>Syntax</h3>
   <div class="blue-method-syntax">
-  <h3 class="name"><code>removeProp</code></h3>
+  <h3 class="name"><code>removeField</code></h3>
 
         <div class="args">
             <span class="paren">(</span><ul class="args-list inline commas">
                 <li class="arg">
-                        <code>collection</code>
+                        <code>location</code>
                 </li>
                 <li class="arg">
-                        <code>property</code>
+                        <code>field</code>
                 </li>
                 <li class="arg">
-                        <code>filter</code>
+                        <code class="optional">[filter]</code>
                 </li>
                 <li class="arg">
-                        <code>callback</code>
+                        <code class="optional">[callback]</code>
                 </li>
             </ul><span class="paren">)</span>
         </div>
@@ -1300,8 +1401,7 @@
   </div>
     <div class="description">
       <h3>Summary</h3>
-        <p>Removes a property on all documents in the collection.</p>
-
+        Removes a field from resources of a storage location.
     </div>
 
         <div class="params">
@@ -1309,48 +1409,50 @@
 
             <ul class="params-list">
                 <li class="param">
-                        <code class="param-name">collection</code>
+                        <code class="param-name">location</code>
                         <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
 
 
                     <div class="param-description">
-                        <p>The collection to work on</p>
+                        <p>The storage location where to find the resources</p>
 
                     </div>
 
                 </li>
                 <li class="param">
-                        <code class="param-name">property</code>
+                        <code class="param-name">field</code>
                         <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
 
 
                     <div class="param-description">
-                        <p>The property name to remove</p>
+                        <p>The field to remove from resources</p>
 
                     </div>
 
                 </li>
                 <li class="param">
-                        <code class="param-name">filter</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
+                        <code class="param-name optional">[filter]</code>
+                        <span class="type"><a href="../classes/ResourceFilter.html" class="crosslink">ResourceFilter</a></span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
 
 
                     <div class="param-description">
-                        <p>Filters formatted like MongoDB filters</p>
+                        <p>Rules to filter resources to update</p>
 
                     </div>
 
                 </li>
                 <li class="param">
-                        <code class="param-name">callback</code>
+                        <code class="param-name optional">[callback]</code>
                         <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function" class="crosslink external" target="_blank">Function</a></span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
 
 
                     <div class="param-description">
                         <p>The function to call when it's done</p>
 <ul>
 <li><strong>Error</strong> The error if an error occurred, null otherwise</li>
-<li><strong>Number</strong> The number of updated documents</li>
+<li><strong>Number</strong> The number of updated resources</li>
 </ul>
 
                     </div>
@@ -1368,7 +1470,7 @@
   <div class="meta method-meta">
       <p>
           Defined in
-      <a href="../files/lib_database_Database.js.html#l268"><code>lib&#x2F;database&#x2F;Database.js:268</code></a>
+      <a href="../files/lib_storages_databases_Database.js.html#l146"><code>lib&#x2F;storages&#x2F;databases&#x2F;Database.js:146</code></a>
   </p>
 
 
@@ -1454,168 +1556,13 @@
 
 
 </div>
-<div id="method_search" class="method item">
-  <h3 class="blue-method-name">search</h3>
-
-  <div class="meta method-meta">
-      <p>
-          Defined in
-      <a href="../files/lib_database_Database.js.html#l192"><code>lib&#x2F;database&#x2F;Database.js:192</code></a>
-  </p>
-
-
-
-  </div>
-
-  <h3>Syntax</h3>
-  <div class="blue-method-syntax">
-  <h3 class="name"><code>search</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>collection</code>
-                </li>
-                <li class="arg">
-                        <code class="optional">[criteria]</code>
-                </li>
-                <li class="arg">
-                        <code class="optional">[projection]</code>
-                </li>
-                <li class="arg">
-                        <code class="optional">[limit]</code>
-                </li>
-                <li class="arg">
-                        <code class="optional">[page]</code>
-                </li>
-                <li class="arg">
-                        <code class="optional">[sort]</code>
-                </li>
-                <li class="arg">
-                        <code>callback</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-
-
-
-
-
-
-        <span class="flag async">async</span>
-
-  </div>
-    <div class="description">
-      <h3>Summary</h3>
-        <p>Gets an ordered list of documents by page.</p>
-
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">collection</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
-
-
-                    <div class="param-description">
-                        <p>The collection to work on</p>
-
-                    </div>
-
-                </li>
-                <li class="param">
-                        <code class="param-name optional">[criteria]</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
-                        <span class="flag optional" title="This parameter is optional.">optional</span>
-
-
-                    <div class="param-description">
-                        <p>MongoDB criterias</p>
-
-                    </div>
-
-                </li>
-                <li class="param">
-                        <code class="param-name optional">[projection]</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
-                        <span class="flag optional" title="This parameter is optional.">optional</span>
-
-
-                    <div class="param-description">
-                        <p>MongoDB projection</p>
-
-                    </div>
-
-                </li>
-                <li class="param">
-                        <code class="param-name optional">[limit]</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number" class="crosslink external" target="_blank">Number</a></span>
-                        <span class="flag optional" title="This parameter is optional.">optional</span>
-
-
-                    <div class="param-description">
-                        <p>The maximum number of expected documents</p>
-
-                    </div>
-
-                </li>
-                <li class="param">
-                        <code class="param-name optional">[page]</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number" class="crosslink external" target="_blank">Number</a></span>
-                        <span class="flag optional" title="This parameter is optional.">optional</span>
-
-
-                    <div class="param-description">
-                        <p>The expected page</p>
-
-                    </div>
-
-                </li>
-                <li class="param">
-                        <code class="param-name optional">[sort]</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
-                        <span class="flag optional" title="This parameter is optional.">optional</span>
-
-
-                    <div class="param-description">
-                        <p>A sort object</p>
-
-                    </div>
-
-                </li>
-                <li class="param">
-                        <code class="param-name">callback</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function" class="crosslink external" target="_blank">Function</a></span>
-
-
-                    <div class="param-description">
-                        <p>The function to call when it's done</p>
-<ul>
-<li><strong>Error</strong> The error if an error occurred, null otherwise</li>
-<li><strong>Array</strong> The list of documents</li>
-<li><strong>Object</strong> Pagination information</li>
-</ul>
-
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-
-
-</div>
-<div id="method_update" class="method item">
+<div id="method_update" class="method item inherited">
   <h3 class="blue-method-name">update</h3>
 
   <div class="meta method-meta">
-      <p>
-          Defined in
-      <a href="../files/lib_database_Database.js.html#l159"><code>lib&#x2F;database&#x2F;Database.js:159</code></a>
+      <p>Inherited from
+        <a href="../classes/Storage.html#method_update">Storage</a>:
+      <a href="../files/lib_storages_Storage.js.html#l106"><code>lib&#x2F;storages&#x2F;Storage.js:106</code></a>
   </p>
 
 
@@ -1629,7 +1576,7 @@
         <div class="args">
             <span class="paren">(</span><ul class="args-list inline commas">
                 <li class="arg">
-                        <code>collection</code>
+                        <code>location</code>
                 </li>
                 <li class="arg">
                         <code>filter</code>
@@ -1638,7 +1585,7 @@
                         <code>data</code>
                 </li>
                 <li class="arg">
-                        <code>callback</code>
+                        <code class="optional">[callback]</code>
                 </li>
             </ul><span class="paren">)</span>
         </div>
@@ -1654,8 +1601,7 @@
   </div>
     <div class="description">
       <h3>Summary</h3>
-        <p>Updates several documents from collection.</p>
-
+        Updates resources in the storage.
     </div>
 
         <div class="params">
@@ -1663,23 +1609,23 @@
 
             <ul class="params-list">
                 <li class="param">
-                        <code class="param-name">collection</code>
+                        <code class="param-name">location</code>
                         <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
 
 
                     <div class="param-description">
-                        <p>The collection to work on</p>
+                        <p>The storage location where to find the resources to update</p>
 
                     </div>
 
                 </li>
                 <li class="param">
                         <code class="param-name">filter</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
+                        <span class="type"><a href="../classes/ResourceFilter.html" class="crosslink">ResourceFilter</a></span>
 
 
                     <div class="param-description">
-                        <p>Filters formatted like MongoDB filters</p>
+                        <p>Rules to filter resources to update</p>
 
                     </div>
 
@@ -1690,21 +1636,22 @@
 
 
                     <div class="param-description">
-                        <p>Document data</p>
+                        <p>The modifications to perform</p>
 
                     </div>
 
                 </li>
                 <li class="param">
-                        <code class="param-name">callback</code>
+                        <code class="param-name optional">[callback]</code>
                         <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function" class="crosslink external" target="_blank">Function</a></span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
 
 
                     <div class="param-description">
                         <p>The function to call when it's done</p>
 <ul>
 <li><strong>Error</strong> The error if an error occurred, null otherwise</li>
-<li><strong>Number</strong> The number of updated documents</li>
+<li><strong>Number</strong> The number of updated resources</li>
 </ul>
 
                     </div>
@@ -1721,13 +1668,46 @@
             <div id="properties" class="api-class-tabpanel">
                 <h2 class="off-left">Properties</h2>
 
+                    <div id="property_configuration" class="property item inherited">
+                    
+                      <h3 class="blue-method-name">configuration</h3>
+                      <div class="meta method-meta">
+                          <p>Inherited from
+                            <a href="../classes/Storage.html#property_configuration">Storage</a>:
+                          <a href="../files/lib_storages_Storage.js.html#l25"><code>lib&#x2F;storages&#x2F;Storage.js:25</code></a>
+                      </p>
+                    
+                    
+                      </div>
+                    
+                      <h3>Syntax</h3>
+                      <div class="blue-method-syntax">
+                        <h3 class="name"><code>configuration</code></h3>
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
+                    
+                    
+                    
+                            <span class="flag final">final</span>
+                    
+                    
+                        </div>
+                    
+                        <div class="description">
+                          <h3>Summary</h3>
+                            The storage configuration.
+                        </div>
+                    
+                    
+                    
+                    
+                    </div>
                     <div id="property_host" class="property item">
                     
                       <h3 class="blue-method-name">host</h3>
                       <div class="meta method-meta">
                           <p>
                               Defined in
-                          <a href="../files/lib_database_Database.js.html#l38"><code>lib&#x2F;database&#x2F;Database.js:38</code></a>
+                          <a href="../files/lib_storages_databases_Database.js.html#l31"><code>lib&#x2F;storages&#x2F;databases&#x2F;Database.js:31</code></a>
                       </p>
                     
                     
@@ -1747,7 +1727,7 @@
                     
                         <div class="description">
                           <h3>Summary</h3>
-                            <p>Database's host.</p>
+                            <p>Database host.</p>
                     
                         </div>
                     
@@ -1761,7 +1741,7 @@
                       <div class="meta method-meta">
                           <p>
                               Defined in
-                          <a href="../files/lib_database_Database.js.html#l56"><code>lib&#x2F;database&#x2F;Database.js:56</code></a>
+                          <a href="../files/lib_storages_databases_Database.js.html#l49"><code>lib&#x2F;storages&#x2F;databases&#x2F;Database.js:49</code></a>
                       </p>
                     
                     
@@ -1781,7 +1761,7 @@
                     
                         <div class="description">
                           <h3>Summary</h3>
-                            <p>Database's name.</p>
+                            <p>Database name.</p>
                     
                         </div>
                     
@@ -1795,7 +1775,7 @@
                       <div class="meta method-meta">
                           <p>
                               Defined in
-                          <a href="../files/lib_database_Database.js.html#l74"><code>lib&#x2F;database&#x2F;Database.js:74</code></a>
+                          <a href="../files/lib_storages_databases_Database.js.html#l67"><code>lib&#x2F;storages&#x2F;databases&#x2F;Database.js:67</code></a>
                       </p>
                     
                     
@@ -1815,7 +1795,7 @@
                     
                         <div class="description">
                           <h3>Summary</h3>
-                            <p>Database's user password.</p>
+                            <p>Database user password.</p>
                     
                         </div>
                     
@@ -1829,7 +1809,7 @@
                       <div class="meta method-meta">
                           <p>
                               Defined in
-                          <a href="../files/lib_database_Database.js.html#l47"><code>lib&#x2F;database&#x2F;Database.js:47</code></a>
+                          <a href="../files/lib_storages_databases_Database.js.html#l40"><code>lib&#x2F;storages&#x2F;databases&#x2F;Database.js:40</code></a>
                       </p>
                     
                     
@@ -1849,41 +1829,7 @@
                     
                         <div class="description">
                           <h3>Summary</h3>
-                            <p>Database's port.</p>
-                    
-                        </div>
-                    
-                    
-                    
-                    
-                    </div>
-                    <div id="property_type" class="property item">
-                    
-                      <h3 class="blue-method-name">type</h3>
-                      <div class="meta method-meta">
-                          <p>
-                              Defined in
-                          <a href="../files/lib_database_Database.js.html#l29"><code>lib&#x2F;database&#x2F;Database.js:29</code></a>
-                      </p>
-                    
-                    
-                      </div>
-                    
-                      <h3>Syntax</h3>
-                      <div class="blue-method-syntax">
-                        <h3 class="name"><code>type</code></h3>
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
-                    
-                    
-                    
-                            <span class="flag final">final</span>
-                    
-                    
-                        </div>
-                    
-                        <div class="description">
-                          <h3>Summary</h3>
-                            <p>Database's type.</p>
+                            <p>Database port.</p>
                     
                         </div>
                     
@@ -1897,7 +1843,7 @@
                       <div class="meta method-meta">
                           <p>
                               Defined in
-                          <a href="../files/lib_database_Database.js.html#l65"><code>lib&#x2F;database&#x2F;Database.js:65</code></a>
+                          <a href="../files/lib_storages_databases_Database.js.html#l58"><code>lib&#x2F;storages&#x2F;databases&#x2F;Database.js:58</code></a>
                       </p>
                     
                     
@@ -1917,7 +1863,7 @@
                     
                         <div class="description">
                           <h3>Summary</h3>
-                            <p>Database's user name.</p>
+                            <p>Database user name.</p>
                     
                         </div>
                     

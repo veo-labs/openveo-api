@@ -47,22 +47,31 @@
                                 <li><a href="../classes/CAS2.html">CAS2</a></li>
                                 <li><a href="../classes/CAS3.html">CAS3</a></li>
                                 <li><a href="../classes/CasStrategy.html">CasStrategy</a></li>
+                                <li><a href="../classes/ComponentExpression.html">ComponentExpression</a></li>
+                                <li><a href="../classes/ConfigExpression.html">ConfigExpression</a></li>
+                                <li><a href="../classes/ConstantExpression.html">ConstantExpression</a></li>
                                 <li><a href="../classes/ContentController.html">ContentController</a></li>
-                                <li><a href="../classes/ContentModel.html">ContentModel</a></li>
                                 <li><a href="../classes/Controller.html">Controller</a></li>
                                 <li><a href="../classes/Database.html">Database</a></li>
+                                <li><a href="../classes/DirectiveExpression.html">DirectiveExpression</a></li>
                                 <li><a href="../classes/disableCacheMiddleware.html">disableCacheMiddleware</a></li>
+                                <li><a href="../classes/ElementExpression.html">ElementExpression</a></li>
                                 <li><a href="../classes/EntityController.html">EntityController</a></li>
-                                <li><a href="../classes/EntityModel.html">EntityModel</a></li>
                                 <li><a href="../classes/EntityProvider.html">EntityProvider</a></li>
+                                <li><a href="../classes/Expression.html">Expression</a></li>
                                 <li><a href="../classes/factory.html">factory</a></li>
                                 <li><a href="../classes/fileSystem.html">fileSystem</a></li>
+                                <li><a href="../classes/FilterExpression.html">FilterExpression</a></li>
                                 <li><a href="../classes/http-errors.html">http-errors</a></li>
+                                <li><a href="../classes/HttpController.html">HttpController</a></li>
+                                <li><a href="../classes/imageProcessorMiddleware.html">imageProcessorMiddleware</a></li>
+                                <li><a href="../classes/InjectExpression.html">InjectExpression</a></li>
                                 <li><a href="../classes/logger.html">logger</a></li>
                                 <li><a href="../classes/logRequestMiddleware.html">logRequestMiddleware</a></li>
-                                <li><a href="../classes/Model.html">Model</a></li>
+                                <li><a href="../classes/ModuleExpression.html">ModuleExpression</a></li>
                                 <li><a href="../classes/MongoDatabase.html">MongoDatabase</a></li>
                                 <li><a href="../classes/MultipartParser.html">MultipartParser</a></li>
+                                <li><a href="../classes/ngDpTask.html">ngDpTask</a></li>
                                 <li><a href="../classes/NotFoundError.html">NotFoundError</a></li>
                                 <li><a href="../classes/Pilot.html">Pilot</a></li>
                                 <li><a href="../classes/Plugin.html">Plugin</a></li>
@@ -70,28 +79,31 @@
                                 <li><a href="../classes/Provider.html">Provider</a></li>
                                 <li><a href="../classes/removeTask.html">removeTask</a></li>
                                 <li><a href="../classes/renameTask.html">renameTask</a></li>
+                                <li><a href="../classes/ResourceFilter.html">ResourceFilter</a></li>
+                                <li><a href="../classes/RouteExpression.html">RouteExpression</a></li>
                                 <li><a href="../classes/SocketController.html">SocketController</a></li>
                                 <li><a href="../classes/SocketNamespace.html">SocketNamespace</a></li>
                                 <li><a href="../classes/SocketServer.html">SocketServer</a></li>
+                                <li><a href="../classes/Storage.html">Storage</a></li>
                                 <li><a href="../classes/STRATEGIES.html">STRATEGIES</a></li>
                                 <li><a href="../classes/util.html">util</a></li>
+                                <li><a href="../classes/ValueExpression.html">ValueExpression</a></li>
                             </ul>
                 
                             <ul id="api-modules" class="apis modules">
                                 <li><a href="../modules/controllers.html">controllers</a></li>
-                                <li><a href="../modules/database.html">database</a></li>
                                 <li><a href="../modules/emitters.html">emitters</a></li>
                                 <li><a href="../modules/errors.html">errors</a></li>
                                 <li><a href="../modules/fileSystem.html">fileSystem</a></li>
                                 <li><a href="../modules/grunt.html">grunt</a></li>
                                 <li><a href="../modules/logger.html">logger</a></li>
                                 <li><a href="../modules/middlewares.html">middlewares</a></li>
-                                <li><a href="../modules/models.html">models</a></li>
                                 <li><a href="../modules/multipart.html">multipart</a></li>
                                 <li><a href="../modules/passport.html">passport</a></li>
                                 <li><a href="../modules/plugin.html">plugin</a></li>
                                 <li><a href="../modules/providers.html">providers</a></li>
                                 <li><a href="../modules/socket.html">socket</a></li>
+                                <li><a href="../modules/storages.html">storages</a></li>
                                 <li><a href="../modules/util.html">util</a></li>
                             </ul>
                         </div>
@@ -137,98 +149,93 @@
  */
 
 var util = require(&#x27;util&#x27;);
+var shortid = require(&#x27;shortid&#x27;);
 var Provider = process.requireApi(&#x27;lib/providers/Provider.js&#x27;);
+var ResourceFilter = process.requireApi(&#x27;lib/storages/ResourceFilter.js&#x27;);
 
 /**
- * Defines base provider for all providers which need to provide
- * basic CRUD (**C**read **R**ead **U**pdate **D**elete) operations on a collection.
+ * Defines a provider holding a single type of resources.
  *
- * Each entity model as it&#x27;s own associated Provider (extending EntityProvider).
- *
- *     // Implement a EntityProvider : &quot;CustomEntityProvider&quot;
- *     var util = require(&#x27;util&#x27;);
- *     var openVeoApi = require(&#x27;@openveo/api&#x27;);
- *
- *     function CustomEntityProvider(database) {
- *       CustomEntityProvider.super_.call(this, database, &#x27;customCollection&#x27;);
- *     }
- *
- *     util.inherits(CustomEntityProvider, openVeoApi.providers.EntityProvider);
+ * An entity provider manages a single type of resources. These resources are stored into the given storage / location.
+ * Each entity must have an identification number held in the &quot;id&quot; property. An entity may also have a &quot;locked&quot;
+ * property to make it immutable.
  *
  * @class EntityProvider
  * @extends Provider
  * @constructor
- * @param {Database} database The database to interact with
- * @param {String} collection The name of the collection to work on
- * @throws {Error} If database and / or collection are not as expected
+ * @param {Storage} storage The storage to use to store provider entities
+ * @param {String} location The location of the entities in the storage
+ * @throws {TypeError} If storage and / or location is not valid
  */
-function EntityProvider(database, collection) {
-  EntityProvider.super_.call(this, database, collection);
+function EntityProvider(storage, location) {
+  EntityProvider.super_.call(this, storage);
+
+  Object.defineProperties(this, {
+
+    /**
+     * The location of the entities in the storage.
+     *
+     * @property location
+     * @type String
+     * @final
+     */
+    location: {value: location}
+
+  });
+
+  if (Object.prototype.toString.call(this.location) !== &#x27;[object String]&#x27;)
+    throw new TypeError(&#x27;location must be a string&#x27;);
 }
 
 module.exports = EntityProvider;
 util.inherits(EntityProvider, Provider);
 
 /**
- * Gets an entity.
+ * Fetches an entity by its id.
  *
  * @method getOne
  * @async
  * @param {String} id The entity id
- * @param {Object} filter A MongoDB filter
+ * @param {Object} [fields] Fields to be included or excluded from the response, by default all
+ * fields are returned. Only &quot;exclude&quot; or &quot;include&quot; can be specified, not both
+ * @param {Array} [fields.include] The list of fields to include in the response, all other fields are excluded
+ * @param {Array} [fields.exclude] The list of fields to exclude from response, all other fields are included. Ignored
+ * if include is also specified.
  * @param {Function} callback The function to call when it&#x27;s done
  *   - **Error** The error if an error occurred, null otherwise
  *   - **Object** The entity
  */
-EntityProvider.prototype.getOne = function(id, filter, callback) {
-  if (!filter) filter = {};
-  filter.id = id;
-
-  this.database.get(this.collection, filter,
-    {
-      _id: 0
-    },
-  1, function(error, entities) {
-    if (entities &amp;&amp; entities.length)
-      callback(error, entities[0]);
-    else
-      callback(error);
-  });
+EntityProvider.prototype.getOne = function(id, fields, callback) {
+  var filter = new ResourceFilter().equal(&#x27;id&#x27;, id);
+  this.storage.getOne(this.location, filter, fields, callback);
 };
 
 /**
- * Gets an ordered list of entities by page.
- *
- * @method getPaginatedFilteredEntities
- * @async
- * @param {Object} [filter] MongoDB filter
- * @param {Number} [limit] The maximum number of expected entities
- * @param {Number} [page] The expected page
- * @param {Object} [sort] A sort object
- * @param {Function} callback The function to call when it&#x27;s done
- *   - **Error** The error if an error occurred, null otherwise
- *   - **Array** The list of entities
- *   - **Object** Pagination information
- */
-EntityProvider.prototype.getPaginatedFilteredEntities = function(filter, count, page, sort, callback) {
-  this.database.search(this.collection, filter, null, count, page, sort, callback);
-};
-
-/**
- * Gets all entities.
+ * Fetches entities.
  *
  * @method get
  * @async
- * @param {Object} filter A MongoDB filter
+ * @param {ResourceFilter} [filter] Rules to filter entities
+ * @param {Object} [fields] Fields to be included or excluded from the response, by default all
+ * fields are returned. Only &quot;exclude&quot; or &quot;include&quot; can be specified, not both
+ * @param {Array} [fields.include] The list of fields to include in the response, all other fields are excluded
+ * @param {Array} [fields.exclude] The list of fields to exclude from response, all other fields are included. Ignored
+ * if include is also specified.
+ * @param {Number} [limit] A limit number of entities to retrieve (10 by default)
+ * @param {Number} [page] The page number started at 0 for the first page
+ * @param {Object} [sort] The list of fields to sort by with the field name as key and the sort order as
+ * value (e.g. {field1: &#x27;asc&#x27;, field2: &#x27;desc&#x27;})
  * @param {Function} callback The function to call when it&#x27;s done
  *   - **Error** The error if an error occurred, null otherwise
- *   - **Array** The list of entities
+ *   - **Array** The list of retrieved entities
+ *   - **Object** Pagination information
+ *     - **Number** limit The specified limit
+ *     - **Number** page The actual page
+ *     - **Number** pages The total number of pages
+ *     - **Number** size The total number of entities
  */
-EntityProvider.prototype.get = function(filter, callback) {
-  this.database.get(this.collection, filter, {
-    _id: 0
-  },
-  -1, callback);
+EntityProvider.prototype.get = function(filter, fields, limit, page, sort, callback) {
+  this.storage.get(this.location, filter, fields, limit, page, sort, callback);
 };
 
 /**
@@ -236,116 +243,81 @@ EntityProvider.prototype.get = function(filter, callback) {
  *
  * @method add
  * @async
- * @param {Array} data The list of entities&#x27; data to store into the collection
+ * @param {Array} entities The list of entities to store
  * @param {Function} [callback] The function to call when it&#x27;s done
  *   - **Error** The error if an error occurred, null otherwise
- *   - **Number** The total amount of documents inserted
- *   - **Array** All the documents inserted
+ *   - **Number** The total amount of entities inserted
  */
-EntityProvider.prototype.add = function(data, callback) {
-  var datas = Array.isArray(data) ? data : [data];
+EntityProvider.prototype.add = function(entities, callback) {
+  entities.forEach(function(entity) {
+    entity.id = entity.id || shortid.generate();
+  });
 
-  this.database.insert(this.collection, datas, callback || function(error) {
+  this.storage.add(this.location, entities, callback || function(error) {
     if (error)
-      process.logger.error(&#x27;Error while inserting entities with message : &#x27; +
-                           error.message, datas);
+      process.logger.error(&#x27;Error while inserting entities with message: &#x27; + error.message);
   });
 };
 
 /**
- * Updates an entity.
- *
- * If the entity has the property &quot;locked&quot;, it won&#x27;t be updated.
+ * Updates entities.
  *
  * @method update
  * @async
- * @param {String} id The id of the entity to update
- * @param {Object} data Entity data, its structure depends on the entity type
- * @param {Function} callback The function to call when it&#x27;s done
+ * @param {ResourceFilter} [filter] Rules to filter entities to update
+ * @param {Object} data The modifications to perform
+ * @param {Function} [callback] The function to call when it&#x27;s done
  *   - **Error** The error if an error occurred, null otherwise
- *   - **Number** The number of updated items
+ *   - **Number** The number of updated entities
  */
-EntityProvider.prototype.update = function(id, data, callback) {
-  var filter = {};
-  filter[&#x27;locked&#x27;] = {$ne: true};
-  filter[&#x27;id&#x27;] = id;
+EntityProvider.prototype.update = function(filter, data, callback) {
+  if (!filter) filter = new ResourceFilter();
 
-  this.database.update(this.collection, filter, data, callback || function(error) {
+  filter.notEqual(&#x27;locked&#x27;, true);
+  this.storage.update(this.location, filter, data, callback || function(error) {
     if (error)
-      process.logger.error(&#x27;Error while updating entities message : &#x27; +
-                           error.message, data);
+      process.logger.error(&#x27;Error while updating entities with message: &#x27; + error.message, filter);
   });
 };
 
 /**
- * Removes one or several entities.
- *
- * If the entity has the property &quot;locked&quot;, it won&#x27;t be removed.
+ * Removes entities.
  *
  * @method remove
  * @async
- * @param {String|Array} ids Id(s) of the document(s) to remove from the collection
- * @param {Function} callback The function to call when it&#x27;s done
+ * @param {ResourceFilter} [filter] Rules to filter entities to remove
+ * @param {Function} [callback] The function to call when it&#x27;s done
  *   - **Error** The error if an error occurred, null otherwise
- *   - **Number** The number of deleted entities
+ *   - **Number** The number of removed entities
  */
-EntityProvider.prototype.remove = function(ids, callback) {
-  var filter = {};
-  filter[&#x27;locked&#x27;] = {$ne: true};
-  filter[&#x27;id&#x27;] = {$in: null};
-  filter[&#x27;id&#x27;][&#x27;$in&#x27;] = (Array.isArray(ids)) ? ids : [ids];
+EntityProvider.prototype.remove = function(filter, callback) {
+  if (!filter) filter = new ResourceFilter();
 
-  this.database.remove(this.collection, filter, callback || function(error) {
+  filter.notEqual(&#x27;locked&#x27;, true);
+  this.storage.remove(this.location, filter, callback || function(error) {
     if (error)
-      process.logger.error(&#x27;Error while removing entities with message : &#x27; + error.message, ids);
+      process.logger.error(&#x27;Error while removing entities with message: &#x27; + error.message, filter);
   });
 };
 
 /**
- * Removes a property on all documents in the collection.
+ * Removes a field from entities.
  *
- * If the entity has the property &quot;locked&quot;, it won&#x27;t be updated.
- *
- * @method removeProp
+ * @method removeField
  * @async
- * @param {String} property The property name to remove
- * @param {Function} callback The function to call when it&#x27;s done
+ * @param {String} field The field to remove from entities
+ * @param {ResourceFilter} [filter] Rules to filter entities to update
+ * @param {Function} [callback] The function to call when it&#x27;s done
  *   - **Error** The error if an error occurred, null otherwise
- *   - **Number** The number of modified entities
+ *   - **Number** The number of updated entities
  */
-EntityProvider.prototype.removeProp = function(property, callback) {
-  var filter = {};
-  filter[&#x27;locked&#x27;] = {$ne: true};
+EntityProvider.prototype.removeField = function(field, filter, callback) {
+  if (!filter) filter = new ResourceFilter();
 
-  this.database.removeProp(this.collection, property, filter, callback || function(error) {
+  filter.notEqual(&#x27;locked&#x27;, true);
+  this.storage.removeField(this.location, field, filter, callback || function(error) {
     if (error)
-      process.logger.error(&#x27;Error while removing property from entities(s) with message : &#x27; +
-                           error.message, property);
-  });
-};
-
-/**
- * Increase an entity.
- *
- * If the entity has the property &quot;locked&quot;, it won&#x27;t be increased.
- *
- * @method increase
- * @async
- * @param {String} id The id of the entity to update
- * @param {Object} data Object which key is the parameter to increase and value, amount of increase/decrease
- *   - Ex: {views: 56, priority: -5}
- * @param {Function} callback The function to call when it&#x27;s done
- *   - **Error** The error if an error occurred, null otherwise
- *   - **Number** The number of updated items
- */
-EntityProvider.prototype.increase = function(id, data, callback) {
-  var filter = {};
-  filter[&#x27;locked&#x27;] = {$ne: true};
-  filter[&#x27;id&#x27;] = id;
-  this.database.increase(this.collection, filter, data, callback || function(error) {
-    if (error)
-      process.logger.error(&#x27;Error while increasing entities message : &#x27; +
-                           error.message, data);
+      process.logger.error(&#x27;Error while removing field from entities with message: &#x27; + error.message, field);
   });
 };
 

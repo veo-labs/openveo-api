@@ -47,22 +47,31 @@
                                 <li><a href="../classes/CAS2.html">CAS2</a></li>
                                 <li><a href="../classes/CAS3.html">CAS3</a></li>
                                 <li><a href="../classes/CasStrategy.html">CasStrategy</a></li>
+                                <li><a href="../classes/ComponentExpression.html">ComponentExpression</a></li>
+                                <li><a href="../classes/ConfigExpression.html">ConfigExpression</a></li>
+                                <li><a href="../classes/ConstantExpression.html">ConstantExpression</a></li>
                                 <li><a href="../classes/ContentController.html">ContentController</a></li>
-                                <li><a href="../classes/ContentModel.html">ContentModel</a></li>
                                 <li><a href="../classes/Controller.html">Controller</a></li>
                                 <li><a href="../classes/Database.html">Database</a></li>
+                                <li><a href="../classes/DirectiveExpression.html">DirectiveExpression</a></li>
                                 <li><a href="../classes/disableCacheMiddleware.html">disableCacheMiddleware</a></li>
+                                <li><a href="../classes/ElementExpression.html">ElementExpression</a></li>
                                 <li><a href="../classes/EntityController.html">EntityController</a></li>
-                                <li><a href="../classes/EntityModel.html">EntityModel</a></li>
                                 <li><a href="../classes/EntityProvider.html">EntityProvider</a></li>
+                                <li><a href="../classes/Expression.html">Expression</a></li>
                                 <li><a href="../classes/factory.html">factory</a></li>
                                 <li><a href="../classes/fileSystem.html">fileSystem</a></li>
+                                <li><a href="../classes/FilterExpression.html">FilterExpression</a></li>
                                 <li><a href="../classes/http-errors.html">http-errors</a></li>
+                                <li><a href="../classes/HttpController.html">HttpController</a></li>
+                                <li><a href="../classes/imageProcessorMiddleware.html">imageProcessorMiddleware</a></li>
+                                <li><a href="../classes/InjectExpression.html">InjectExpression</a></li>
                                 <li><a href="../classes/logger.html">logger</a></li>
                                 <li><a href="../classes/logRequestMiddleware.html">logRequestMiddleware</a></li>
-                                <li><a href="../classes/Model.html">Model</a></li>
+                                <li><a href="../classes/ModuleExpression.html">ModuleExpression</a></li>
                                 <li><a href="../classes/MongoDatabase.html">MongoDatabase</a></li>
                                 <li><a href="../classes/MultipartParser.html">MultipartParser</a></li>
+                                <li><a href="../classes/ngDpTask.html">ngDpTask</a></li>
                                 <li><a href="../classes/NotFoundError.html">NotFoundError</a></li>
                                 <li><a href="../classes/Pilot.html">Pilot</a></li>
                                 <li><a href="../classes/Plugin.html">Plugin</a></li>
@@ -70,28 +79,31 @@
                                 <li><a href="../classes/Provider.html">Provider</a></li>
                                 <li><a href="../classes/removeTask.html">removeTask</a></li>
                                 <li><a href="../classes/renameTask.html">renameTask</a></li>
+                                <li><a href="../classes/ResourceFilter.html">ResourceFilter</a></li>
+                                <li><a href="../classes/RouteExpression.html">RouteExpression</a></li>
                                 <li><a href="../classes/SocketController.html">SocketController</a></li>
                                 <li><a href="../classes/SocketNamespace.html">SocketNamespace</a></li>
                                 <li><a href="../classes/SocketServer.html">SocketServer</a></li>
+                                <li><a href="../classes/Storage.html">Storage</a></li>
                                 <li><a href="../classes/STRATEGIES.html">STRATEGIES</a></li>
                                 <li><a href="../classes/util.html">util</a></li>
+                                <li><a href="../classes/ValueExpression.html">ValueExpression</a></li>
                             </ul>
                 
                             <ul id="api-modules" class="apis modules">
                                 <li><a href="../modules/controllers.html">controllers</a></li>
-                                <li><a href="../modules/database.html">database</a></li>
                                 <li><a href="../modules/emitters.html">emitters</a></li>
                                 <li><a href="../modules/errors.html">errors</a></li>
                                 <li><a href="../modules/fileSystem.html">fileSystem</a></li>
                                 <li><a href="../modules/grunt.html">grunt</a></li>
                                 <li><a href="../modules/logger.html">logger</a></li>
                                 <li><a href="../modules/middlewares.html">middlewares</a></li>
-                                <li><a href="../modules/models.html">models</a></li>
                                 <li><a href="../modules/multipart.html">multipart</a></li>
                                 <li><a href="../modules/passport.html">passport</a></li>
                                 <li><a href="../modules/plugin.html">plugin</a></li>
                                 <li><a href="../modules/providers.html">providers</a></li>
                                 <li><a href="../modules/socket.html">socket</a></li>
+                                <li><a href="../modules/storages.html">storages</a></li>
                                 <li><a href="../modules/util.html">util</a></li>
                             </ul>
                         </div>
@@ -165,15 +177,15 @@
 
                     <ul class="index-list properties">
                             <li class="index-item property">
-                                <a href="#property_ADD_ENTITY_ERROR">ADD_ENTITY_ERROR</a>
+                                <a href="#property_ADD_ENTITIES_ERROR">ADD_ENTITIES_ERROR</a>
 
                             </li>
                             <li class="index-item property">
-                                <a href="#property_ADD_ENTITY_FORBIDDEN">ADD_ENTITY_FORBIDDEN</a>
+                                <a href="#property_ADD_ENTITIES_MISSING_PARAMETERS">ADD_ENTITIES_MISSING_PARAMETERS</a>
 
                             </li>
                             <li class="index-item property">
-                                <a href="#property_ADD_ENTITY_MISSING_PARAMETERS">ADD_ENTITY_MISSING_PARAMETERS</a>
+                                <a href="#property_ADD_ENTITIES_WRONG_PARAMETERS">ADD_ENTITIES_WRONG_PARAMETERS</a>
 
                             </li>
                             <li class="index-item property">
@@ -181,7 +193,7 @@
 
                             </li>
                             <li class="index-item property">
-                                <a href="#property_GET_ENTITIES_FORBIDDEN">GET_ENTITIES_FORBIDDEN</a>
+                                <a href="#property_GET_ENTITIES_WRONG_PARAMETERS">GET_ENTITIES_WRONG_PARAMETERS</a>
 
                             </li>
                             <li class="index-item property">
@@ -201,23 +213,35 @@
 
                             </li>
                             <li class="index-item property">
-                                <a href="#property_REMOVE_ENTITY_ERROR">REMOVE_ENTITY_ERROR</a>
+                                <a href="#property_GET_ENTITY_WRONG_PARAMETERS">GET_ENTITY_WRONG_PARAMETERS</a>
 
                             </li>
                             <li class="index-item property">
-                                <a href="#property_REMOVE_ENTITY_MISSING_PARAMETERS">REMOVE_ENTITY_MISSING_PARAMETERS</a>
+                                <a href="#property_REMOVE_ENTITIES_ERROR">REMOVE_ENTITIES_ERROR</a>
 
                             </li>
                             <li class="index-item property">
-                                <a href="#property_UPDATE_ENTITY_ERROR">UPDATE_ENTITY_ERROR</a>
+                                <a href="#property_REMOVE_ENTITIES_FORBIDDEN">REMOVE_ENTITIES_FORBIDDEN</a>
 
                             </li>
                             <li class="index-item property">
-                                <a href="#property_UPDATE_ENTITY_FORBIDDEN">UPDATE_ENTITY_FORBIDDEN</a>
+                                <a href="#property_REMOVE_ENTITIES_MISSING_PARAMETERS">REMOVE_ENTITIES_MISSING_PARAMETERS</a>
 
                             </li>
                             <li class="index-item property">
-                                <a href="#property_UPDATE_ENTITY_MISSING_PARAMETERS">UPDATE_ENTITY_MISSING_PARAMETERS</a>
+                                <a href="#property_UPDATE_ENTITIES_ERROR">UPDATE_ENTITIES_ERROR</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_UPDATE_ENTITIES_FORBIDDEN">UPDATE_ENTITIES_FORBIDDEN</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_UPDATE_ENTITIES_MISSING_PARAMETERS">UPDATE_ENTITIES_MISSING_PARAMETERS</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_UPDATE_ENTITIES_WRONG_PARAMETERS">UPDATE_ENTITIES_WRONG_PARAMETERS</a>
 
                             </li>
                     </ul>
@@ -230,9 +254,9 @@
             <div id="properties" class="api-class-tabpanel">
                 <h2 class="off-left">Properties</h2>
 
-                    <div id="property_ADD_ENTITY_ERROR" class="property item">
+                    <div id="property_ADD_ENTITIES_ERROR" class="property item">
                     
-                      <h3 class="blue-method-name">ADD_ENTITY_ERROR</h3>
+                      <h3 class="blue-method-name">ADD_ENTITIES_ERROR</h3>
                       <div class="meta method-meta">
                           <p>
                               Defined in
@@ -244,7 +268,7 @@
                     
                       <h3>Syntax</h3>
                       <div class="blue-method-syntax">
-                        <h3 class="name"><code>ADD_ENTITY_ERROR</code></h3>
+                        <h3 class="name"><code>ADD_ENTITIES_ERROR</code></h3>
                         <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
                     
                     
@@ -256,7 +280,7 @@
                     
                         <div class="description">
                           <h3>Summary</h3>
-                            <p>A server error occurring when adding an entity.</p>
+                            <p>A server error occurring when adding entities.</p>
                     
                         </div>
                     
@@ -264,13 +288,13 @@
                     
                     
                     </div>
-                    <div id="property_ADD_ENTITY_FORBIDDEN" class="property item">
+                    <div id="property_ADD_ENTITIES_MISSING_PARAMETERS" class="property item">
                     
-                      <h3 class="blue-method-name">ADD_ENTITY_FORBIDDEN</h3>
+                      <h3 class="blue-method-name">ADD_ENTITIES_MISSING_PARAMETERS</h3>
                       <div class="meta method-meta">
                           <p>
                               Defined in
-                          <a href="../files/lib_controllers_httpErrors.js.html#l141"><code>lib&#x2F;controllers&#x2F;httpErrors.js:141</code></a>
+                          <a href="../files/lib_controllers_httpErrors.js.html#l168"><code>lib&#x2F;controllers&#x2F;httpErrors.js:168</code></a>
                       </p>
                     
                     
@@ -278,7 +302,7 @@
                     
                       <h3>Syntax</h3>
                       <div class="blue-method-syntax">
-                        <h3 class="name"><code>ADD_ENTITY_FORBIDDEN</code></h3>
+                        <h3 class="name"><code>ADD_ENTITIES_MISSING_PARAMETERS</code></h3>
                         <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
                     
                     
@@ -290,7 +314,7 @@
                     
                         <div class="description">
                           <h3>Summary</h3>
-                            <p>An authentication error occurring when the connected user doesn't have enough privileges to add an entity.</p>
+                            <p>A wrong parameters error occurring when a parameter is missing while adding entities.</p>
                     
                         </div>
                     
@@ -298,13 +322,13 @@
                     
                     
                     </div>
-                    <div id="property_ADD_ENTITY_MISSING_PARAMETERS" class="property item">
+                    <div id="property_ADD_ENTITIES_WRONG_PARAMETERS" class="property item">
                     
-                      <h3 class="blue-method-name">ADD_ENTITY_MISSING_PARAMETERS</h3>
+                      <h3 class="blue-method-name">ADD_ENTITIES_WRONG_PARAMETERS</h3>
                       <div class="meta method-meta">
                           <p>
                               Defined in
-                          <a href="../files/lib_controllers_httpErrors.js.html#l182"><code>lib&#x2F;controllers&#x2F;httpErrors.js:182</code></a>
+                          <a href="../files/lib_controllers_httpErrors.js.html#l220"><code>lib&#x2F;controllers&#x2F;httpErrors.js:220</code></a>
                       </p>
                     
                     
@@ -312,7 +336,7 @@
                     
                       <h3>Syntax</h3>
                       <div class="blue-method-syntax">
-                        <h3 class="name"><code>ADD_ENTITY_MISSING_PARAMETERS</code></h3>
+                        <h3 class="name"><code>ADD_ENTITIES_WRONG_PARAMETERS</code></h3>
                         <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
                     
                     
@@ -324,7 +348,7 @@
                     
                         <div class="description">
                           <h3>Summary</h3>
-                            <p>A wrong parameter error occurring when a parameter is missing while adding an entity.</p>
+                            <p>Adding entities failed, wrong parameters.</p>
                     
                         </div>
                     
@@ -366,13 +390,13 @@
                     
                     
                     </div>
-                    <div id="property_GET_ENTITIES_FORBIDDEN" class="property item">
+                    <div id="property_GET_ENTITIES_WRONG_PARAMETERS" class="property item">
                     
-                      <h3 class="blue-method-name">GET_ENTITIES_FORBIDDEN</h3>
+                      <h3 class="blue-method-name">GET_ENTITIES_WRONG_PARAMETERS</h3>
                       <div class="meta method-meta">
                           <p>
                               Defined in
-                          <a href="../files/lib_controllers_httpErrors.js.html#l101"><code>lib&#x2F;controllers&#x2F;httpErrors.js:101</code></a>
+                          <a href="../files/lib_controllers_httpErrors.js.html#l194"><code>lib&#x2F;controllers&#x2F;httpErrors.js:194</code></a>
                       </p>
                     
                     
@@ -380,7 +404,7 @@
                     
                       <h3>Syntax</h3>
                       <div class="blue-method-syntax">
-                        <h3 class="name"><code>GET_ENTITIES_FORBIDDEN</code></h3>
+                        <h3 class="name"><code>GET_ENTITIES_WRONG_PARAMETERS</code></h3>
                         <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
                     
                     
@@ -392,8 +416,7 @@
                     
                         <div class="description">
                           <h3>Summary</h3>
-                            <p>An authentication error occurring when the connected user doesn't have enough privileges
-                    to get the list of entities.</p>
+                            <p>Getting the list of entities failed, wrong parameters.</p>
                     
                         </div>
                     
@@ -441,7 +464,7 @@
                       <div class="meta method-meta">
                           <p>
                               Defined in
-                          <a href="../files/lib_controllers_httpErrors.js.html#l115"><code>lib&#x2F;controllers&#x2F;httpErrors.js:115</code></a>
+                          <a href="../files/lib_controllers_httpErrors.js.html#l114"><code>lib&#x2F;controllers&#x2F;httpErrors.js:114</code></a>
                       </p>
                     
                     
@@ -475,7 +498,7 @@
                       <div class="meta method-meta">
                           <p>
                               Defined in
-                          <a href="../files/lib_controllers_httpErrors.js.html#l156"><code>lib&#x2F;controllers&#x2F;httpErrors.js:156</code></a>
+                          <a href="../files/lib_controllers_httpErrors.js.html#l142"><code>lib&#x2F;controllers&#x2F;httpErrors.js:142</code></a>
                       </p>
                     
                     
@@ -495,7 +518,7 @@
                     
                         <div class="description">
                           <h3>Summary</h3>
-                            <p>A wrong parameter error occurring when a parameter is missing while getting an entity.</p>
+                            <p>A wrong parameters error occurring when a parameter is missing while getting an entity.</p>
                     
                         </div>
                     
@@ -537,9 +560,43 @@
                     
                     
                     </div>
-                    <div id="property_REMOVE_ENTITY_ERROR" class="property item">
+                    <div id="property_GET_ENTITY_WRONG_PARAMETERS" class="property item">
                     
-                      <h3 class="blue-method-name">REMOVE_ENTITY_ERROR</h3>
+                      <h3 class="blue-method-name">GET_ENTITY_WRONG_PARAMETERS</h3>
+                      <div class="meta method-meta">
+                          <p>
+                              Defined in
+                          <a href="../files/lib_controllers_httpErrors.js.html#l207"><code>lib&#x2F;controllers&#x2F;httpErrors.js:207</code></a>
+                      </p>
+                    
+                    
+                      </div>
+                    
+                      <h3>Syntax</h3>
+                      <div class="blue-method-syntax">
+                        <h3 class="name"><code>GET_ENTITY_WRONG_PARAMETERS</code></h3>
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
+                    
+                    
+                    
+                            <span class="flag final">final</span>
+                    
+                    
+                        </div>
+                    
+                        <div class="description">
+                          <h3>Summary</h3>
+                            <p>Getting an entity failed, wrong parameters.</p>
+                    
+                        </div>
+                    
+                    
+                    
+                    
+                    </div>
+                    <div id="property_REMOVE_ENTITIES_ERROR" class="property item">
+                    
+                      <h3 class="blue-method-name">REMOVE_ENTITIES_ERROR</h3>
                       <div class="meta method-meta">
                           <p>
                               Defined in
@@ -551,7 +608,7 @@
                     
                       <h3>Syntax</h3>
                       <div class="blue-method-syntax">
-                        <h3 class="name"><code>REMOVE_ENTITY_ERROR</code></h3>
+                        <h3 class="name"><code>REMOVE_ENTITIES_ERROR</code></h3>
                         <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
                     
                     
@@ -571,13 +628,13 @@
                     
                     
                     </div>
-                    <div id="property_REMOVE_ENTITY_MISSING_PARAMETERS" class="property item">
+                    <div id="property_REMOVE_ENTITIES_FORBIDDEN" class="property item">
                     
-                      <h3 class="blue-method-name">REMOVE_ENTITY_MISSING_PARAMETERS</h3>
+                      <h3 class="blue-method-name">REMOVE_ENTITIES_FORBIDDEN</h3>
                       <div class="meta method-meta">
                           <p>
                               Defined in
-                          <a href="../files/lib_controllers_httpErrors.js.html#l195"><code>lib&#x2F;controllers&#x2F;httpErrors.js:195</code></a>
+                          <a href="../files/lib_controllers_httpErrors.js.html#l101"><code>lib&#x2F;controllers&#x2F;httpErrors.js:101</code></a>
                       </p>
                     
                     
@@ -585,7 +642,7 @@
                     
                       <h3>Syntax</h3>
                       <div class="blue-method-syntax">
-                        <h3 class="name"><code>REMOVE_ENTITY_MISSING_PARAMETERS</code></h3>
+                        <h3 class="name"><code>REMOVE_ENTITIES_FORBIDDEN</code></h3>
                         <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
                     
                     
@@ -597,7 +654,7 @@
                     
                         <div class="description">
                           <h3>Summary</h3>
-                            <p>A wrong parameter error occurring when a parameter is missing while removing an entity.</p>
+                            <p>An authentication error occurring when the connected user doesn't have enough privileges to remove entities.</p>
                     
                         </div>
                     
@@ -605,9 +662,43 @@
                     
                     
                     </div>
-                    <div id="property_UPDATE_ENTITY_ERROR" class="property item">
+                    <div id="property_REMOVE_ENTITIES_MISSING_PARAMETERS" class="property item">
                     
-                      <h3 class="blue-method-name">UPDATE_ENTITY_ERROR</h3>
+                      <h3 class="blue-method-name">REMOVE_ENTITIES_MISSING_PARAMETERS</h3>
+                      <div class="meta method-meta">
+                          <p>
+                              Defined in
+                          <a href="../files/lib_controllers_httpErrors.js.html#l181"><code>lib&#x2F;controllers&#x2F;httpErrors.js:181</code></a>
+                      </p>
+                    
+                    
+                      </div>
+                    
+                      <h3>Syntax</h3>
+                      <div class="blue-method-syntax">
+                        <h3 class="name"><code>REMOVE_ENTITIES_MISSING_PARAMETERS</code></h3>
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
+                    
+                    
+                    
+                            <span class="flag final">final</span>
+                    
+                    
+                        </div>
+                    
+                        <div class="description">
+                          <h3>Summary</h3>
+                            <p>A wrong parameters error occurring when a parameter is missing while removing entities.</p>
+                    
+                        </div>
+                    
+                    
+                    
+                    
+                    </div>
+                    <div id="property_UPDATE_ENTITIES_ERROR" class="property item">
+                    
+                      <h3 class="blue-method-name">UPDATE_ENTITIES_ERROR</h3>
                       <div class="meta method-meta">
                           <p>
                               Defined in
@@ -619,7 +710,7 @@
                     
                       <h3>Syntax</h3>
                       <div class="blue-method-syntax">
-                        <h3 class="name"><code>UPDATE_ENTITY_ERROR</code></h3>
+                        <h3 class="name"><code>UPDATE_ENTITIES_ERROR</code></h3>
                         <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
                     
                     
@@ -639,13 +730,13 @@
                     
                     
                     </div>
-                    <div id="property_UPDATE_ENTITY_FORBIDDEN" class="property item">
+                    <div id="property_UPDATE_ENTITIES_FORBIDDEN" class="property item">
                     
-                      <h3 class="blue-method-name">UPDATE_ENTITY_FORBIDDEN</h3>
+                      <h3 class="blue-method-name">UPDATE_ENTITIES_FORBIDDEN</h3>
                       <div class="meta method-meta">
                           <p>
                               Defined in
-                          <a href="../files/lib_controllers_httpErrors.js.html#l128"><code>lib&#x2F;controllers&#x2F;httpErrors.js:128</code></a>
+                          <a href="../files/lib_controllers_httpErrors.js.html#l127"><code>lib&#x2F;controllers&#x2F;httpErrors.js:127</code></a>
                       </p>
                     
                     
@@ -653,7 +744,7 @@
                     
                       <h3>Syntax</h3>
                       <div class="blue-method-syntax">
-                        <h3 class="name"><code>UPDATE_ENTITY_FORBIDDEN</code></h3>
+                        <h3 class="name"><code>UPDATE_ENTITIES_FORBIDDEN</code></h3>
                         <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
                     
                     
@@ -665,7 +756,7 @@
                     
                         <div class="description">
                           <h3>Summary</h3>
-                            <p>An authentication error occurring when the connected user doesn't have enough privileges to update an entity.</p>
+                            <p>An authentication error occurring when the connected user doesn't have enough privileges to update entities.</p>
                     
                         </div>
                     
@@ -673,13 +764,13 @@
                     
                     
                     </div>
-                    <div id="property_UPDATE_ENTITY_MISSING_PARAMETERS" class="property item">
+                    <div id="property_UPDATE_ENTITIES_MISSING_PARAMETERS" class="property item">
                     
-                      <h3 class="blue-method-name">UPDATE_ENTITY_MISSING_PARAMETERS</h3>
+                      <h3 class="blue-method-name">UPDATE_ENTITIES_MISSING_PARAMETERS</h3>
                       <div class="meta method-meta">
                           <p>
                               Defined in
-                          <a href="../files/lib_controllers_httpErrors.js.html#l169"><code>lib&#x2F;controllers&#x2F;httpErrors.js:169</code></a>
+                          <a href="../files/lib_controllers_httpErrors.js.html#l155"><code>lib&#x2F;controllers&#x2F;httpErrors.js:155</code></a>
                       </p>
                     
                     
@@ -687,7 +778,7 @@
                     
                       <h3>Syntax</h3>
                       <div class="blue-method-syntax">
-                        <h3 class="name"><code>UPDATE_ENTITY_MISSING_PARAMETERS</code></h3>
+                        <h3 class="name"><code>UPDATE_ENTITIES_MISSING_PARAMETERS</code></h3>
                         <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
                     
                     
@@ -699,7 +790,41 @@
                     
                         <div class="description">
                           <h3>Summary</h3>
-                            <p>A wrong parameter error occurring when a parameter is missing while updating an entity.</p>
+                            <p>A wrong parameters error occurring when a parameter is missing while updating entities.</p>
+                    
+                        </div>
+                    
+                    
+                    
+                    
+                    </div>
+                    <div id="property_UPDATE_ENTITIES_WRONG_PARAMETERS" class="property item">
+                    
+                      <h3 class="blue-method-name">UPDATE_ENTITIES_WRONG_PARAMETERS</h3>
+                      <div class="meta method-meta">
+                          <p>
+                              Defined in
+                          <a href="../files/lib_controllers_httpErrors.js.html#l233"><code>lib&#x2F;controllers&#x2F;httpErrors.js:233</code></a>
+                      </p>
+                    
+                    
+                      </div>
+                    
+                      <h3>Syntax</h3>
+                      <div class="blue-method-syntax">
+                        <h3 class="name"><code>UPDATE_ENTITIES_WRONG_PARAMETERS</code></h3>
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
+                    
+                    
+                    
+                            <span class="flag final">final</span>
+                    
+                    
+                        </div>
+                    
+                        <div class="description">
+                          <h3>Summary</h3>
+                            <p>Updating entities failed, wrong parameters.</p>
                     
                         </div>
                     
