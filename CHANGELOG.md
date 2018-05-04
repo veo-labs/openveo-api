@@ -1,3 +1,9 @@
+# 5.1.0 / YYYY-MM-DD
+
+## NEW FEATURES
+
+- Add NPM package-lock.json file
+
 # 5.0.0 / 2018-05-03
 
 ## BREAKING CHANGES
