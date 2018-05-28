@@ -844,6 +844,16 @@ describe('util', function() {
         assert.equal(validatedObject.dateProperty, date.getTime());
       });
 
+      it('should ignore an invalid date', function() {
+        var validatedObject = util.shallowValidateObject({
+          dateProperty: {}
+        }, {
+          dateProperty: {type: 'date'}
+        });
+
+        assert.isUndefined(validatedObject.dateProperty, 'Unexpected date');
+      });
+
     });
 
     // boolean type

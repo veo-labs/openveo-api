@@ -4,6 +4,10 @@
 
 - Drop support for NodeJS &lt; 8.9.4 and NPM &lt; 5.6.0
 
+## BUG FIXES
+
+- require('@openveo/api').util.shallowValidateObject now throws an error when trying to validate an Object (other than a Date) as a Date
+
 # 5.1.0 / 2018-05-04
 
 ## NEW FEATURES
