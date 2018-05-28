@@ -767,6 +767,17 @@ describe('util', function() {
         assert.equal(validatedObject.dateProperty, date.getTime());
       });
 
+      it('should be able to validate a timestamp', function() {
+        var date = new Date();
+        var validatedObject = util.shallowValidateObject({
+          dateProperty: date.getTime()
+        }, {
+          dateProperty: {type: 'date'}
+        });
+
+        assert.strictEqual(validatedObject.dateProperty, date.getTime());
+      });
+
       it('should be able to validate a timestamp as a string', function() {
         var date = new Date();
         var validatedObject = util.shallowValidateObject({
