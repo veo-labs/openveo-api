@@ -1,0 +1,1357 @@
+<!DOCTYPE html>
+<html lang="en" class="yui-overrride">
+<head>
+    <meta charset="utf-8">
+    <title>util - OpenVeo server API for plugins</title>
+    <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
+    <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
+    <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700' rel='stylesheet' type='text/css'>
+    <link rel="shortcut icon" type="image/png" href="../assets/favicon.png">
+    <script src="http://yui.yahooapis.com/combo?3.9.1/build/yui/yui-min.js"></script>
+    <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
+</head>
+<body class="yui3-skin-sam">
+
+<div id="doc">
+    <div id="hd" class="yui3-g header">
+        <div class="yui3-u-3-4">
+            <h1 class="blue-main-title">OpenVeo server API for plugins</h1>
+        </div>
+        <div class="yui3-u-1-4 version project-version">
+            API Docs for: 5.1.1
+        </div>
+    </div>
+    <div id="bd" class="yui3-g">
+
+        <div class="yui3-u-1-4">
+            <div id="docs-sidebar" class="sidebar apidocs">
+                <div id="api-list">
+                    <h2 class="off-left">APIs</h2>
+                    <div id="api-tabview" class="tabview">
+                        <ul class="tabs">
+                            <li><a href="#api-classes">Classes</a></li>
+                            <li><a href="#api-modules">Modules</a></li>
+                        </ul>
+                
+                        <div id="api-tabview-filter">
+                            <input type="search" id="api-filter" placeholder="Type to filter APIs">
+                        </div>
+                
+                        <div id="api-tabview-panel">
+                            <ul id="api-classes" class="apis classes">
+                                <li><a href="../classes/AccessError.html">AccessError</a></li>
+                                <li><a href="../classes/AdvancedEmitter.html">AdvancedEmitter</a></li>
+                                <li><a href="../classes/AdvancedEvent.html">AdvancedEvent</a></li>
+                                <li><a href="../classes/CAS.html">CAS</a></li>
+                                <li><a href="../classes/CAS1.html">CAS1</a></li>
+                                <li><a href="../classes/CAS2.html">CAS2</a></li>
+                                <li><a href="../classes/CAS3.html">CAS3</a></li>
+                                <li><a href="../classes/CasStrategy.html">CasStrategy</a></li>
+                                <li><a href="../classes/ComponentExpression.html">ComponentExpression</a></li>
+                                <li><a href="../classes/ConfigExpression.html">ConfigExpression</a></li>
+                                <li><a href="../classes/ConstantExpression.html">ConstantExpression</a></li>
+                                <li><a href="../classes/ContentController.html">ContentController</a></li>
+                                <li><a href="../classes/Controller.html">Controller</a></li>
+                                <li><a href="../classes/Database.html">Database</a></li>
+                                <li><a href="../classes/database-errors.html">database-errors</a></li>
+                                <li><a href="../classes/DirectiveExpression.html">DirectiveExpression</a></li>
+                                <li><a href="../classes/disableCacheMiddleware.html">disableCacheMiddleware</a></li>
+                                <li><a href="../classes/ElementExpression.html">ElementExpression</a></li>
+                                <li><a href="../classes/EntityController.html">EntityController</a></li>
+                                <li><a href="../classes/EntityProvider.html">EntityProvider</a></li>
+                                <li><a href="../classes/Expression.html">Expression</a></li>
+                                <li><a href="../classes/factory.html">factory</a></li>
+                                <li><a href="../classes/fileSystem.html">fileSystem</a></li>
+                                <li><a href="../classes/FilterExpression.html">FilterExpression</a></li>
+                                <li><a href="../classes/http-errors.html">http-errors</a></li>
+                                <li><a href="../classes/HttpController.html">HttpController</a></li>
+                                <li><a href="../classes/imageProcessorMiddleware.html">imageProcessorMiddleware</a></li>
+                                <li><a href="../classes/InjectExpression.html">InjectExpression</a></li>
+                                <li><a href="../classes/logger.html">logger</a></li>
+                                <li><a href="../classes/logRequestMiddleware.html">logRequestMiddleware</a></li>
+                                <li><a href="../classes/ModuleExpression.html">ModuleExpression</a></li>
+                                <li><a href="../classes/MongoDatabase.html">MongoDatabase</a></li>
+                                <li><a href="../classes/MultipartParser.html">MultipartParser</a></li>
+                                <li><a href="../classes/ngDpTask.html">ngDpTask</a></li>
+                                <li><a href="../classes/NotFoundError.html">NotFoundError</a></li>
+                                <li><a href="../classes/Pilot.html">Pilot</a></li>
+                                <li><a href="../classes/Plugin.html">Plugin</a></li>
+                                <li><a href="../classes/PluginApi.html">PluginApi</a></li>
+                                <li><a href="../classes/Provider.html">Provider</a></li>
+                                <li><a href="../classes/removeTask.html">removeTask</a></li>
+                                <li><a href="../classes/renameTask.html">renameTask</a></li>
+                                <li><a href="../classes/ResourceFilter.html">ResourceFilter</a></li>
+                                <li><a href="../classes/RouteExpression.html">RouteExpression</a></li>
+                                <li><a href="../classes/SocketController.html">SocketController</a></li>
+                                <li><a href="../classes/SocketNamespace.html">SocketNamespace</a></li>
+                                <li><a href="../classes/SocketServer.html">SocketServer</a></li>
+                                <li><a href="../classes/Storage.html">Storage</a></li>
+                                <li><a href="../classes/StorageError.html">StorageError</a></li>
+                                <li><a href="../classes/STRATEGIES.html">STRATEGIES</a></li>
+                                <li><a href="../classes/util.html">util</a></li>
+                                <li><a href="../classes/ValueExpression.html">ValueExpression</a></li>
+                            </ul>
+                
+                            <ul id="api-modules" class="apis modules">
+                                <li><a href="../modules/controllers.html">controllers</a></li>
+                                <li><a href="../modules/emitters.html">emitters</a></li>
+                                <li><a href="../modules/errors.html">errors</a></li>
+                                <li><a href="../modules/fileSystem.html">fileSystem</a></li>
+                                <li><a href="../modules/grunt.html">grunt</a></li>
+                                <li><a href="../modules/logger.html">logger</a></li>
+                                <li><a href="../modules/middlewares.html">middlewares</a></li>
+                                <li><a href="../modules/multipart.html">multipart</a></li>
+                                <li><a href="../modules/passport.html">passport</a></li>
+                                <li><a href="../modules/plugin.html">plugin</a></li>
+                                <li><a href="../modules/providers.html">providers</a></li>
+                                <li><a href="../modules/socket.html">socket</a></li>
+                                <li><a href="../modules/storages.html">storages</a></li>
+                                <li><a href="../modules/util.html">util</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="yui3-u-3-4">
+                <div id="api-options">
+                    Show:
+                    <label for="api-show-inherited">
+                        <input type="checkbox" id="api-show-inherited" checked>
+                        Inherited
+                    </label>
+            
+                    <label for="api-show-protected">
+                        <input type="checkbox" id="api-show-protected">
+                        Protected
+                    </label>
+            
+                    <label for="api-show-private">
+                        <input type="checkbox" id="api-show-private">
+                        Private
+                    </label>
+                    <label for="api-show-deprecated">
+                        <input type="checkbox" id="api-show-deprecated">
+                        Deprecated
+                    </label>
+            
+                </div>
+            
+            <div class="apidocs">
+                <div id="docs-main">
+                    <div class="content">
+<h1>util</h1>
+<div class="meta">
+
+
+        <div class="foundat">
+            Defined in: <a href="../files/lib_util.js.html#l8"><code>lib&#x2F;util.js:8</code></a>
+        </div>
+
+            Module: <a href="../modules/util.html">util</a>
+
+</div>
+
+
+<h3>Summary</h3>
+<div class="intro">
+    <p>Provides functions for common JavaScript operations.</p>
+<pre class="code prettyprint"><code>// Load module &quot;util&quot;
+var util = require('@openveo/api').util;</code></pre>
+
+</div>
+
+
+<div id="classdocs" class="tabview">
+    <ul class="api-class-tabs">
+        <li class="api-class-tab index"><a href="#index">Index</a></li>
+
+            <li class="api-class-tab methods"><a href="#methods">Methods</a></li>
+    </ul>
+
+    <div>
+        <div id="index" class="api-class-tabpanel index">
+            <h2 class="off-left">Item Index</h2>
+
+                <div class="index-section methods">
+                    <h3>Methods</h3>
+
+                    <ul class="index-list methods">
+                            <li class="index-item method">
+                                <a href="#method_areSameArrays">areSameArrays</a>
+
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_evaluateDeepObjectProperties">evaluateDeepObjectProperties</a>
+
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_getPropertyFromArray">getPropertyFromArray</a>
+
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_intersectArray">intersectArray</a>
+
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_isContained">isContained</a>
+
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_isEmailValid">isEmailValid</a>
+
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_joinArray">joinArray</a>
+
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_merge">merge</a>
+
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_shallowValidateObject">shallowValidateObject</a>
+
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_validateFiles">validateFiles</a>
+
+                                    <span class="flag static">static</span>
+                            </li>
+                    </ul>
+                </div>
+
+
+
+        </div>
+
+            <div id="methods" class="api-class-tabpanel">
+                <h2 class="off-left">Methods</h2>
+
+<div id="method_areSameArrays" class="method item">
+  <h3 class="blue-method-name">areSameArrays</h3>
+
+  <div class="meta method-meta">
+      <p>
+          Defined in
+      <a href="../files/lib_util.js.html#l92"><code>lib&#x2F;util.js:92</code></a>
+  </p>
+
+
+
+  </div>
+
+  <h3>Syntax</h3>
+  <div class="blue-method-syntax">
+  <h3 class="name"><code>areSameArrays</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code class="optional">[array1]</code>
+                </li>
+                <li class="arg">
+                        <code class="optional">[array2]</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean" class="crosslink external" target="_blank">Boolean</a></span>
+        </span>
+
+
+
+
+        <span class="flag static">static</span>
+
+
+
+  </div>
+    <div class="description">
+      <h3>Summary</h3>
+        <p>Compares two arrays.</p>
+<p>Shallow validates that two arrays contains the same elements, no more no less.</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name optional">[array1]</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array" class="crosslink external" target="_blank">Array</a></span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+
+
+                    <div class="param-description">
+                        <p>An array</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name optional">[array2]</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array" class="crosslink external" target="_blank">Array</a></span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+
+
+                    <div class="param-description">
+                        <p>An array</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean" class="crosslink external" target="_blank">Boolean</a></span>:
+                <div class="blue-return-desc">
+                    <p>true if arrays are the same, false otherwise</p>
+
+                </div>
+
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_evaluateDeepObjectProperties" class="method item">
+  <h3 class="blue-method-name">evaluateDeepObjectProperties</h3>
+
+  <div class="meta method-meta">
+      <p>
+          Defined in
+      <a href="../files/lib_util.js.html#l552"><code>lib&#x2F;util.js:552</code></a>
+  </p>
+
+
+
+  </div>
+
+  <h3>Syntax</h3>
+  <div class="blue-method-syntax">
+  <h3 class="name"><code>evaluateDeepObjectProperties</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>propertyPath</code>
+                </li>
+                <li class="arg">
+                        <code>objectToAnalyze</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type">Mixed</span>
+        </span>
+
+
+
+
+        <span class="flag static">static</span>
+
+
+
+  </div>
+    <div class="description">
+      <h3>Summary</h3>
+        <p>Evaluates a path of properties on an object.</p>
+<p>It does not use the JavaScript eval function.</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">propertyPath</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+
+
+                    <div class="param-description">
+                        <p>The path of the property to retreive from the object</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">objectToAnalyze</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
+
+
+                    <div class="param-description">
+                        <p>The object containing the requested property</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                <span class="type">Mixed</span>:
+                <div class="blue-return-desc">
+                    <p>The value of the property</p>
+
+                </div>
+
+
+            </div>
+        </div>
+
+        <div class="example">
+            <h4>Example:</h4>
+
+            <div class="example-content">
+<pre class="code prettyprint"><code>// Get util
+var util = require('@openveo/api').util;
+
+// Get property 'my.deep.property' of the object
+var value = util.evaluateDeepObjectProperties('my.deep.property', {
+  my {
+    deep {
+      property: 'My deep property value'
+    }
+  }
+});
+
+// &quot;My deep property value&quot;
+console.log(value);</code></pre>
+
+            </div>
+        </div>
+
+</div>
+<div id="method_getPropertyFromArray" class="method item">
+  <h3 class="blue-method-name">getPropertyFromArray</h3>
+
+  <div class="meta method-meta">
+      <p>
+          Defined in
+      <a href="../files/lib_util.js.html#l510"><code>lib&#x2F;util.js:510</code></a>
+  </p>
+
+
+
+  </div>
+
+  <h3>Syntax</h3>
+  <div class="blue-method-syntax">
+  <h3 class="name"><code>getPropertyFromArray</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>property</code>
+                </li>
+                <li class="arg">
+                        <code>list</code>
+                </li>
+                <li class="arg">
+                        <code class="optional">[recursiveProperty]</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array" class="crosslink external" target="_blank">Array</a></span>
+        </span>
+
+
+
+
+        <span class="flag static">static</span>
+
+
+
+  </div>
+    <div class="description">
+      <h3>Summary</h3>
+        <p>Gets a specific property from an Array of Objects.</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">property</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+
+
+                    <div class="param-description">
+                        <p>The name of the property to fetch</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">list</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array" class="crosslink external" target="_blank">Array</a></span>
+
+
+                    <div class="param-description">
+                        <p>The list of objects to look into</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name optional">[recursiveProperty]</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+
+
+                    <div class="param-description">
+                        <p>The name of the recursive property to look into</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array" class="crosslink external" target="_blank">Array</a></span>:
+                <div class="blue-return-desc">
+                    <p>The list of values for the given property</p>
+
+                </div>
+
+
+            </div>
+        </div>
+
+        <div class="example">
+            <h4>Example:</h4>
+
+            <div class="example-content">
+<pre class="code prettyprint"><code>// Get util
+var util = require('@openveo/api').util;
+
+// Get property 'id' of each objects of the array
+var params = util.getPropertyFromArray('id', [
+  {id: 0},
+  {id: 1},
+  {id: 2, items: [{id: 3}]}
+], 'items');
+
+// [0, 1, 2, 3]
+console.log(params);</code></pre>
+
+            </div>
+        </div>
+
+</div>
+<div id="method_intersectArray" class="method item">
+  <h3 class="blue-method-name">intersectArray</h3>
+
+  <div class="meta method-meta">
+      <p>
+          Defined in
+      <a href="../files/lib_util.js.html#l77"><code>lib&#x2F;util.js:77</code></a>
+  </p>
+
+
+
+  </div>
+
+  <h3>Syntax</h3>
+  <div class="blue-method-syntax">
+  <h3 class="name"><code>intersectArray</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code class="optional">[array1]</code>
+                </li>
+                <li class="arg">
+                        <code class="optional">[array2]</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array" class="crosslink external" target="_blank">Array</a></span>
+        </span>
+
+
+
+
+        <span class="flag static">static</span>
+
+
+
+  </div>
+    <div class="description">
+      <h3>Summary</h3>
+        <p>Makes intersection of two arrays.</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name optional">[array1]</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array" class="crosslink external" target="_blank">Array</a></span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+
+
+                    <div class="param-description">
+                        <p>An array</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name optional">[array2]</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array" class="crosslink external" target="_blank">Array</a></span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+
+
+                    <div class="param-description">
+                        <p>An array</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array" class="crosslink external" target="_blank">Array</a></span>:
+                <div class="blue-return-desc">
+                    <p>The intersection of the two arrays</p>
+
+                </div>
+
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_isContained" class="method item">
+  <h3 class="blue-method-name">isContained</h3>
+
+  <div class="meta method-meta">
+      <p>
+          Defined in
+      <a href="../files/lib_util.js.html#l124"><code>lib&#x2F;util.js:124</code></a>
+  </p>
+
+
+
+  </div>
+
+  <h3>Syntax</h3>
+  <div class="blue-method-syntax">
+  <h3 class="name"><code>isContained</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>expectedValue</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean" class="crosslink external" target="_blank">Boolean</a></span>
+        </span>
+
+
+
+
+        <span class="flag static">static</span>
+
+
+
+  </div>
+    <div class="description">
+      <h3>Summary</h3>
+        <p>Checks if a value is isContained into another comparing primitive types.</p>
+<p>All values in expectedValue must be found in value to pass the test.</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">expectedValue</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number" class="crosslink external" target="_blank">Number</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array" class="crosslink external" target="_blank">Array</a></span>
+
+
+                    <div class="param-description">
+                        <p>The value expecting to be found in &quot;value&quot;</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean" class="crosslink external" target="_blank">Boolean</a></span>:
+                <div class="blue-return-desc">
+                    <p>true if the expected value has been found in value</p>
+
+                </div>
+
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_isEmailValid" class="method item">
+  <h3 class="blue-method-name">isEmailValid</h3>
+
+  <div class="meta method-meta">
+      <p>
+          Defined in
+      <a href="../files/lib_util.js.html#l110"><code>lib&#x2F;util.js:110</code></a>
+  </p>
+
+
+
+  </div>
+
+  <h3>Syntax</h3>
+  <div class="blue-method-syntax">
+  <h3 class="name"><code>isEmailValid</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>email</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean" class="crosslink external" target="_blank">Boolean</a></span>
+        </span>
+
+
+
+
+        <span class="flag static">static</span>
+
+
+
+  </div>
+    <div class="description">
+      <h3>Summary</h3>
+        <p>Checks if an email address is valid or not.</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">email</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+
+
+                    <div class="param-description">
+                        <p>The email address</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean" class="crosslink external" target="_blank">Boolean</a></span>:
+                <div class="blue-return-desc">
+                    <p>true if the email is valid, false otherwise</p>
+
+                </div>
+
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_joinArray" class="method item">
+  <h3 class="blue-method-name">joinArray</h3>
+
+  <div class="meta method-meta">
+      <p>
+          Defined in
+      <a href="../files/lib_util.js.html#l62"><code>lib&#x2F;util.js:62</code></a>
+  </p>
+
+
+
+  </div>
+
+  <h3>Syntax</h3>
+  <div class="blue-method-syntax">
+  <h3 class="name"><code>joinArray</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code class="optional">[array1]</code>
+                </li>
+                <li class="arg">
+                        <code class="optional">[array2]</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array" class="crosslink external" target="_blank">Array</a></span>
+        </span>
+
+
+
+
+        <span class="flag static">static</span>
+
+
+
+  </div>
+    <div class="description">
+      <h3>Summary</h3>
+        <p>Makes union of two arrays.</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name optional">[array1]</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array" class="crosslink external" target="_blank">Array</a></span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+
+
+                    <div class="param-description">
+                        <p>An array</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name optional">[array2]</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array" class="crosslink external" target="_blank">Array</a></span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+
+
+                    <div class="param-description">
+                        <p>An array</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array" class="crosslink external" target="_blank">Array</a></span>:
+                <div class="blue-return-desc">
+                    <p>The union of the two arrays</p>
+
+                </div>
+
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_merge" class="method item">
+  <h3 class="blue-method-name">merge</h3>
+
+  <div class="meta method-meta">
+      <p>
+          Defined in
+      <a href="../files/lib_util.js.html#l19"><code>lib&#x2F;util.js:19</code></a>
+  </p>
+
+
+
+  </div>
+
+  <h3>Syntax</h3>
+  <div class="blue-method-syntax">
+  <h3 class="name"><code>merge</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>object1</code>
+                </li>
+                <li class="arg">
+                        <code>object2</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
+        </span>
+
+
+
+
+        <span class="flag static">static</span>
+
+
+
+  </div>
+    <div class="description">
+      <h3>Summary</h3>
+        <p>Merges, recursively, all properties of object2 in object1.</p>
+<p>This will not create copies of objects.</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">object1</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
+
+
+                    <div class="param-description">
+                        <p>The JavaScript final object</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">object2</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
+
+
+                    <div class="param-description">
+                        <p>A second JavaScript object to merge into
+the first one</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>:
+                <div class="blue-return-desc">
+                    <p>object1</p>
+
+                </div>
+
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_shallowValidateObject" class="method item">
+  <h3 class="blue-method-name">shallowValidateObject</h3>
+
+  <div class="meta method-meta">
+      <p>
+          Defined in
+      <a href="../files/lib_util.js.html#l157"><code>lib&#x2F;util.js:157</code></a>
+  </p>
+
+
+
+  </div>
+
+  <h3>Syntax</h3>
+  <div class="blue-method-syntax">
+  <h3 class="name"><code>shallowValidateObject</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>objectToAnalyze</code>
+                </li>
+                <li class="arg">
+                        <code>validationDescription</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
+        </span>
+
+
+
+
+        <span class="flag static">static</span>
+
+
+
+  </div>
+    <div class="description">
+      <h3>Summary</h3>
+        <p>Validates first level object properties using the given validation description object.</p>
+<p>It helps validating that an object, coming from a request query string parameters correspond to the expected
+type, if it has to be required, if it must be contained into a list of values etc.</p>
+<p>Available features by types :</p>
+<ul>
+<li><strong>string</strong>
+<ul>
+<li><strong>default</strong> Specify a default value</li>
+<li><strong>required</strong> Boolean to indicate if the value is required (if default is specified, value will always be set)</li>
+<li><strong>in</strong> Specify an array of strings to validate that the value is inside this array</li>
+</ul>
+</li>
+<li><strong>number</strong>
+<ul>
+<li><strong>default</strong> Specify a default value</li>
+<li><strong>required</strong> Boolean to indicate if the value is required (if default is specified, value will always be set)</li>
+<li><strong>in</strong> Specify an array of numbers to validate that the value is inside this array</li>
+<li><strong>gt</strong> Specify a number to validate that the value is greater than this number</li>
+<li><strong>lt</strong> Specify a number to validate that the value is lesser than this number</li>
+<li><strong>gte</strong> Specify a number to validate that the value is greater or equal to this number</li>
+<li><strong>lte</strong> Specify a number to validate that the value is lesser or equal to this number</li>
+</ul>
+</li>
+<li><strong>array&lt;string&gt;</strong>
+<ul>
+<li><strong>required</strong> Boolean to indicate if the value is required (an empty array is not an error)</li>
+<li><strong>in</strong> Specify an array of values to validate that each value of the array is inside this array</li>
+</ul>
+</li>
+<li><strong>array&lt;number&gt;</strong>
+<ul>
+<li><strong>required</strong> Boolean to indicate if the value is required (an empty array is not an error)</li>
+<li><strong>in</strong> Specify an array of values to validate that each value of the array is inside this array</li>
+</ul>
+</li>
+<li><strong>array&lt;object&gt;</strong>
+<ul>
+<li><strong>required</strong> Boolean to indicate if the value is required (an empty array is not an error)</li>
+</ul>
+</li>
+<li><strong>date</strong>
+<ul>
+<li><strong>required</strong> Boolean to indicate if the value is required</li>
+<li><strong>gt</strong> Specify a date to validate that the value is greater than this date</li>
+<li><strong>lt</strong> Specify a date to validate that the value is lesser than this date</li>
+<li><strong>gte</strong> Specify a date to validate that the value is greater or equal to this date</li>
+<li><strong>lte</strong> Specify a date to validate that the value is lesser or equal to this date</li>
+</ul>
+</li>
+<li><strong>object</strong>
+<ul>
+<li><strong>default</strong> Specify a default value</li>
+<li><strong>required</strong> Boolean to indicate if the value is required (if default is specified, value will always be set)</li>
+</ul>
+</li>
+<li><strong>boolean</strong>
+<ul>
+<li><strong>default</strong> Specify a default value</li>
+<li><strong>required</strong> Boolean to indicate if the value is required (if default is specified, value will always be set)</li>
+</ul>
+</li>
+<li><strong>file</strong>
+<ul>
+<li><strong>required</strong> Boolean to indicate if the value is required</li>
+<li><strong>in</strong> Specify an array of types to validate that the file's type is inside this array</li>
+</ul>
+</li>
+</ul>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">objectToAnalyze</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
+
+
+                    <div class="param-description">
+                        <p>The object to analyze</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">validationDescription</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
+
+
+                    <div class="param-description">
+                        <p>The validation description object</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>:
+                <div class="blue-return-desc">
+                    <p>A new object with the list of properties as expected</p>
+
+                </div>
+
+
+            </div>
+        </div>
+
+        <div class="example">
+            <h4>Example:</h4>
+
+            <div class="example-content">
+<pre class="code prettyprint"><code>// Get util
+var util = require('@openveo/api').util;
+var fileSystem = require('@openveo/api').fileSystem;
+
+// Validate parameters
+var params = util.shallowValidateObject({
+  myStringProperty: 'my value',
+  myNumberProperty: 25,
+  myArrayStringProperty: ['value1', 'value2'],
+  myArrayNumberProperty: [10, 5],
+  myArrayObjectProperty: [{}, {}],
+  myDateProperty: '02/25/2016',
+  myObjectProperty: {firstKey: 'firstValue'},
+  myBooleanProperty: true,
+  myFileProperty: 88 13 70 17 // At least the first 300 bytes of the file
+}, {
+  myStringProperty: {type: 'string', required: true, default: 'default', in: ['my value', 'value']},
+  myNumberProperty: {type: 'number', required: true, default: 0, in: [0, 5, 10], gte: 0, lte: 5},
+  myArrayStringProperty: {type: 'array&lt;string&gt;', required: true, in: ['value1', 'value2']},
+  myArrayNumberProperty: {type: 'array&lt;number&gt;', required: true, in: [42, 43]},
+  myArrayObjectProperty: {type: 'array&lt;object&gt;', required: true},
+  myDateProperty: {type: 'date', required: true, gte: '02/20/2016', lte: '03/30/2016'},
+  myObjectProperty: {type: 'object', required: true},
+  myBooleanProperty: {type: 'boolean', required: true},
+  myFileProperty: {type: 'file', required: true, in: [
+    fileSystem.FILE_TYPES.JPG,
+    fileSystem.FILE_TYPES.PNG,
+    fileSystem.FILE_TYPES.GIF,
+    fileSystem.FILE_TYPES.MP4,
+    fileSystem.FILE_TYPES.TAR
+  ]}
+});
+
+console.log(params);</code></pre>
+
+            </div>
+        </div>
+
+</div>
+<div id="method_validateFiles" class="method item">
+  <h3 class="blue-method-name">validateFiles</h3>
+
+  <div class="meta method-meta">
+      <p>
+          Defined in
+      <a href="../files/lib_util.js.html#l427"><code>lib&#x2F;util.js:427</code></a>
+  </p>
+
+
+
+  </div>
+
+  <h3>Syntax</h3>
+  <div class="blue-method-syntax">
+  <h3 class="name"><code>validateFiles</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>filesToAnalyze</code>
+                </li>
+                <li class="arg">
+                        <code>validationDescription</code>
+                </li>
+                <li class="arg">
+                        <code>callback</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+        <span class="flag static">static</span>
+
+
+        <span class="flag async">async</span>
+
+  </div>
+    <div class="description">
+      <h3>Summary</h3>
+        <p>Validates that files are in the expected type.</p>
+<p>Available features for validation object:</p>
+<ul>
+<li><strong>in</strong> Specify an array of types to validate that the file type is inside this array</li>
+</ul>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">filesToAnalyze</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
+
+
+                    <div class="param-description">
+                        <p>Files to validate with keys as files identifiers and values as
+files absolute paths</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">validationDescription</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
+
+
+                    <div class="param-description">
+                        <p>The validation description object with keys as files identifiers
+and values as validation objects</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">callback</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function" class="crosslink external" target="_blank">Function</a></span>
+
+
+                    <div class="param-description">
+                        <p>The function to call when done</p>
+<ul>
+<li><strong>Error</strong> The error if an error occurred, null otherwise</li>
+<li><strong>Object</strong> Files with keys as the files identifiers and values as Objects containing validation
+information: isValid and type (from util.FILE_TYPES)</li>
+</ul>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+        <div class="example">
+            <h4>Example:</h4>
+
+            <div class="example-content">
+<pre class="code prettyprint"><code>// Get util
+var util = require('@openveo/api').util;
+var fileSystem = require('@openveo/api').fileSystem;
+
+// Validate parameters
+var params = util.validateFiles({
+  myFirstFile: '/tmp/myFirstFile.mp4',
+  mySecondFile: '/tmp/mySecondFile.tar'
+}, {
+  myFirstFile: {in: [fileSystem.FILE_TYPES.MP4]},
+  mySecondFile: {in: [fileSystem.FILE_TYPES.TAR]}
+}, function(error, files) {
+  if (error) {
+    console.log('An error occurred during validation with message: ' + error.message);
+  }
+
+  console.log('Is file valid ? ' + files.myFirstFile.isValid);
+  console.log('File type: ' + files.myFirstFile.type);
+});
+
+console.log(params);</code></pre>
+
+            </div>
+        </div>
+
+</div>
+            </div>
+
+
+
+    </div>
+</div>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../assets/vendor/prettify/prettify-min.js"></script>
+<script>prettyPrint();</script>
+<script src="../assets/js/yui-prettify.js"></script>
+<script src="../assets/../api.js"></script>
+<script src="../assets/js/api-filter.js"></script>
+<script src="../assets/js/api-list.js"></script>
+<script src="../assets/js/api-search.js"></script>
+<script src="../assets/js/apidocs.js"></script>
+</body>
+</html>

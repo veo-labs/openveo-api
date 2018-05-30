@@ -1,0 +1,854 @@
+<!DOCTYPE html>
+<html lang="en" class="yui-overrride">
+<head>
+    <meta charset="utf-8">
+    <title>ngDpTask - OpenVeo server API for plugins</title>
+    <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
+    <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
+    <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700' rel='stylesheet' type='text/css'>
+    <link rel="shortcut icon" type="image/png" href="../assets/favicon.png">
+    <script src="http://yui.yahooapis.com/combo?3.9.1/build/yui/yui-min.js"></script>
+    <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
+</head>
+<body class="yui3-skin-sam">
+
+<div id="doc">
+    <div id="hd" class="yui3-g header">
+        <div class="yui3-u-3-4">
+            <h1 class="blue-main-title">OpenVeo server API for plugins</h1>
+        </div>
+        <div class="yui3-u-1-4 version project-version">
+            API Docs for: 5.1.1
+        </div>
+    </div>
+    <div id="bd" class="yui3-g">
+
+        <div class="yui3-u-1-4">
+            <div id="docs-sidebar" class="sidebar apidocs">
+                <div id="api-list">
+                    <h2 class="off-left">APIs</h2>
+                    <div id="api-tabview" class="tabview">
+                        <ul class="tabs">
+                            <li><a href="#api-classes">Classes</a></li>
+                            <li><a href="#api-modules">Modules</a></li>
+                        </ul>
+                
+                        <div id="api-tabview-filter">
+                            <input type="search" id="api-filter" placeholder="Type to filter APIs">
+                        </div>
+                
+                        <div id="api-tabview-panel">
+                            <ul id="api-classes" class="apis classes">
+                                <li><a href="../classes/AccessError.html">AccessError</a></li>
+                                <li><a href="../classes/AdvancedEmitter.html">AdvancedEmitter</a></li>
+                                <li><a href="../classes/AdvancedEvent.html">AdvancedEvent</a></li>
+                                <li><a href="../classes/CAS.html">CAS</a></li>
+                                <li><a href="../classes/CAS1.html">CAS1</a></li>
+                                <li><a href="../classes/CAS2.html">CAS2</a></li>
+                                <li><a href="../classes/CAS3.html">CAS3</a></li>
+                                <li><a href="../classes/CasStrategy.html">CasStrategy</a></li>
+                                <li><a href="../classes/ComponentExpression.html">ComponentExpression</a></li>
+                                <li><a href="../classes/ConfigExpression.html">ConfigExpression</a></li>
+                                <li><a href="../classes/ConstantExpression.html">ConstantExpression</a></li>
+                                <li><a href="../classes/ContentController.html">ContentController</a></li>
+                                <li><a href="../classes/Controller.html">Controller</a></li>
+                                <li><a href="../classes/Database.html">Database</a></li>
+                                <li><a href="../classes/database-errors.html">database-errors</a></li>
+                                <li><a href="../classes/DirectiveExpression.html">DirectiveExpression</a></li>
+                                <li><a href="../classes/disableCacheMiddleware.html">disableCacheMiddleware</a></li>
+                                <li><a href="../classes/ElementExpression.html">ElementExpression</a></li>
+                                <li><a href="../classes/EntityController.html">EntityController</a></li>
+                                <li><a href="../classes/EntityProvider.html">EntityProvider</a></li>
+                                <li><a href="../classes/Expression.html">Expression</a></li>
+                                <li><a href="../classes/factory.html">factory</a></li>
+                                <li><a href="../classes/fileSystem.html">fileSystem</a></li>
+                                <li><a href="../classes/FilterExpression.html">FilterExpression</a></li>
+                                <li><a href="../classes/http-errors.html">http-errors</a></li>
+                                <li><a href="../classes/HttpController.html">HttpController</a></li>
+                                <li><a href="../classes/imageProcessorMiddleware.html">imageProcessorMiddleware</a></li>
+                                <li><a href="../classes/InjectExpression.html">InjectExpression</a></li>
+                                <li><a href="../classes/logger.html">logger</a></li>
+                                <li><a href="../classes/logRequestMiddleware.html">logRequestMiddleware</a></li>
+                                <li><a href="../classes/ModuleExpression.html">ModuleExpression</a></li>
+                                <li><a href="../classes/MongoDatabase.html">MongoDatabase</a></li>
+                                <li><a href="../classes/MultipartParser.html">MultipartParser</a></li>
+                                <li><a href="../classes/ngDpTask.html">ngDpTask</a></li>
+                                <li><a href="../classes/NotFoundError.html">NotFoundError</a></li>
+                                <li><a href="../classes/Pilot.html">Pilot</a></li>
+                                <li><a href="../classes/Plugin.html">Plugin</a></li>
+                                <li><a href="../classes/PluginApi.html">PluginApi</a></li>
+                                <li><a href="../classes/Provider.html">Provider</a></li>
+                                <li><a href="../classes/removeTask.html">removeTask</a></li>
+                                <li><a href="../classes/renameTask.html">renameTask</a></li>
+                                <li><a href="../classes/ResourceFilter.html">ResourceFilter</a></li>
+                                <li><a href="../classes/RouteExpression.html">RouteExpression</a></li>
+                                <li><a href="../classes/SocketController.html">SocketController</a></li>
+                                <li><a href="../classes/SocketNamespace.html">SocketNamespace</a></li>
+                                <li><a href="../classes/SocketServer.html">SocketServer</a></li>
+                                <li><a href="../classes/Storage.html">Storage</a></li>
+                                <li><a href="../classes/StorageError.html">StorageError</a></li>
+                                <li><a href="../classes/STRATEGIES.html">STRATEGIES</a></li>
+                                <li><a href="../classes/util.html">util</a></li>
+                                <li><a href="../classes/ValueExpression.html">ValueExpression</a></li>
+                            </ul>
+                
+                            <ul id="api-modules" class="apis modules">
+                                <li><a href="../modules/controllers.html">controllers</a></li>
+                                <li><a href="../modules/emitters.html">emitters</a></li>
+                                <li><a href="../modules/errors.html">errors</a></li>
+                                <li><a href="../modules/fileSystem.html">fileSystem</a></li>
+                                <li><a href="../modules/grunt.html">grunt</a></li>
+                                <li><a href="../modules/logger.html">logger</a></li>
+                                <li><a href="../modules/middlewares.html">middlewares</a></li>
+                                <li><a href="../modules/multipart.html">multipart</a></li>
+                                <li><a href="../modules/passport.html">passport</a></li>
+                                <li><a href="../modules/plugin.html">plugin</a></li>
+                                <li><a href="../modules/providers.html">providers</a></li>
+                                <li><a href="../modules/socket.html">socket</a></li>
+                                <li><a href="../modules/storages.html">storages</a></li>
+                                <li><a href="../modules/util.html">util</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="yui3-u-3-4">
+                <div id="api-options">
+                    Show:
+                    <label for="api-show-inherited">
+                        <input type="checkbox" id="api-show-inherited" checked>
+                        Inherited
+                    </label>
+            
+                    <label for="api-show-protected">
+                        <input type="checkbox" id="api-show-protected">
+                        Protected
+                    </label>
+            
+                    <label for="api-show-private">
+                        <input type="checkbox" id="api-show-private">
+                        Private
+                    </label>
+                    <label for="api-show-deprecated">
+                        <input type="checkbox" id="api-show-deprecated">
+                        Deprecated
+                    </label>
+            
+                </div>
+            
+            <div class="apidocs">
+                <div id="docs-main">
+                    <div class="content">
+<h1>ngDpTask</h1>
+<div class="meta">
+
+
+        <div class="foundat">
+            Defined in: <a href="../files/lib_grunt_ngDpTask_ngDpTask.js.html#l373"><code>lib&#x2F;grunt&#x2F;ngDpTask&#x2F;ngDpTask.js:373</code></a>
+        </div>
+
+            Module: <a href="../modules/grunt.html">grunt</a>
+
+        <p><span class="flag static">static</span></p>
+</div>
+
+
+<h3>Summary</h3>
+<div class="intro">
+    <p>Defines a grunt task to build the list of sources (css and js) of an AngularJS application.</p>
+<pre class="code prettyprint"><code>// Register task
+var openVeoApi = require('@openveo/api');
+grunt.registerMultiTask('ngDp', openVeoApi.grunt.ngDpTask(grunt));
+
+// Configure task
+grunt.initConfig({
+  'ngDp': {
+    options: {
+      basePath: '/path/to/the/',
+      cssPrefix: '../../other/css/path/',
+      jsPrefix: '../../other/js/path/'
+    },
+    app1: {
+      src: '/path/to/the/app1/**\/*.*',
+      dest: '/path/to/the/app1/topology.json'
+    },
+    app2: {
+      src: '/path/to/the/app2**\/*.*',
+      dest: '/path/to/the/app2/topology.json'
+    }
+  }
+});
+
+// Ouput example (/path/to/the/app1/topology.json)
+{
+  js: ['../..other/js/path/app1/file1.js', '../..other/js/path/app1/file2.js', [...]],
+  css: ['../..other/css/path/app1/file1.css', '../..other/css/path/app1/file2.css', [...]]
+}
+</code></pre>
+<p>AngularJS applications, which respect components architecture, need to be loaded in the right order as some
+components may depend on other components. This task helps build an array of JavaScript files and css / scss files
+in the right order.</p>
+<p>For this to work, each module must be declared in a separated file and a single file should not define AngularJS
+elements belonging to several different modules.</p>
+<p>Available options are:</p>
+<ul>
+<li>basePath: The base path which will be replaced by the cssPrefix or jsPrefix</li>
+<li>cssPrefix: For CSS / SCSS files, replace the basePath by this prefix</li>
+<li>jsPrefix: For JS files, replace the basePath by this prefix</li>
+</ul>
+
+</div>
+
+
+<div id="classdocs" class="tabview">
+    <ul class="api-class-tabs">
+        <li class="api-class-tab index"><a href="#index">Index</a></li>
+
+            <li class="api-class-tab methods"><a href="#methods">Methods</a></li>
+    </ul>
+
+    <div>
+        <div id="index" class="api-class-tabpanel index">
+            <h2 class="off-left">Item Index</h2>
+
+                <div class="index-section methods">
+                    <h3>Methods</h3>
+
+                    <ul class="index-list methods">
+                            <li class="index-item method private">
+                                <a href="#method_buildTree">buildTree</a>
+
+                            </li>
+                            <li class="index-item method private">
+                                <a href="#method_findDependencies">findDependencies</a>
+
+                            </li>
+                            <li class="index-item method private">
+                                <a href="#method_findLongestDependencyChains">findLongestDependencyChains</a>
+
+                            </li>
+                            <li class="index-item method private">
+                                <a href="#method_findScript">findScript</a>
+
+                            </li>
+                            <li class="index-item method private">
+                                <a href="#method_getResources">getResources</a>
+
+                            </li>
+                            <li class="index-item method private">
+                                <a href="#method_getTreeResources">getTreeResources</a>
+
+                            </li>
+                    </ul>
+                </div>
+
+
+
+        </div>
+
+            <div id="methods" class="api-class-tabpanel">
+                <h2 class="off-left">Methods</h2>
+
+<div id="method_buildTree" class="method item private">
+  <h3 class="blue-method-name">buildTree</h3>
+
+  <div class="meta method-meta">
+      <p>
+          Defined in
+      <a href="../files/lib_grunt_ngDpTask_ngDpTask.js.html#l244"><code>lib&#x2F;grunt&#x2F;ngDpTask&#x2F;ngDpTask.js:244</code></a>
+  </p>
+
+
+
+  </div>
+
+  <h3>Syntax</h3>
+  <div class="blue-method-syntax">
+  <h3 class="name"><code>buildTree</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>scripts</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array" class="crosslink external" target="_blank">Array</a></span>
+        </span>
+
+
+        <span class="flag private">private</span>
+
+
+
+
+
+  </div>
+    <div class="description">
+      <h3>Summary</h3>
+        <p>Builds the dependencies tree.</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">scripts</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array" class="crosslink external" target="_blank">Array</a></span>
+
+
+                    <div class="param-description">
+                        <p>The flat list of scripts with for each script:</p>
+<ul>
+<li><strong>dependencies</strong> The list of dependency names of the script</li>
+<li><strong>definitions</strong> The list of definition names of the script</li>
+<li><strong>path</strong> The script path</li>
+</ul>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array" class="crosslink external" target="_blank">Array</a></span>:
+                <div class="blue-return-desc">
+                    <p>The list of scripts with their dependencies</p>
+
+                </div>
+
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_findDependencies" class="method item private">
+  <h3 class="blue-method-name">findDependencies</h3>
+
+  <div class="meta method-meta">
+      <p>
+          Defined in
+      <a href="../files/lib_grunt_ngDpTask_ngDpTask.js.html#l19"><code>lib&#x2F;grunt&#x2F;ngDpTask&#x2F;ngDpTask.js:19</code></a>
+  </p>
+
+
+
+  </div>
+
+  <h3>Syntax</h3>
+  <div class="blue-method-syntax">
+  <h3 class="name"><code>findDependencies</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>expression</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+        <span class="flag private">private</span>
+
+
+
+
+
+  </div>
+    <div class="description">
+      <h3>Summary</h3>
+        <p>Finds out AngularJS definitions and dependencies for the given content.</p>
+<p>This is recursive.</p>
+<p>The following JavaScript expressions are used to identify definitions:</p>
+<ul>
+<li>angular.module('moduleName', [])</li>
+<li>angular.module('moduleName').component()</li>
+<li>angular.module('moduleName').directive()</li>
+<li>angular.module('moduleName').controller()</li>
+<li>angular.module('moduleName').factory()</li>
+<li>angular.module('moduleName').service()</li>
+<li>angular.module('moduleName').constant()</li>
+<li>angular.module('moduleName').service()</li>
+<li>angular.module('moduleName').decorator()</li>
+<li>angular.module('moduleName').filter()</li>
+<li>angular.module('moduleName').config()</li>
+<li>angular.module('moduleName').run()</li>
+</ul>
+<p>The following JavaScript expressions are used to identify dependencies:</p>
+<ul>
+<li>MyAngularJsElement.$inject = ['Dependency1', 'Dependency2'];</li>
+<li>angular.module('moduleName', ['DependencyModule'])</li>
+</ul>
+<p>The following JavaScript expressions are used to identify associated modules:</p>
+<ul>
+<li>angular.module('moduleName')</li>
+</ul>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">expression</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
+
+
+                    <div class="param-description">
+                        <p>The JavaScript expression to analyze</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_findLongestDependencyChains" class="method item private">
+  <h3 class="blue-method-name">findLongestDependencyChains</h3>
+
+  <div class="meta method-meta">
+      <p>
+          Defined in
+      <a href="../files/lib_grunt_ngDpTask_ngDpTask.js.html#l169"><code>lib&#x2F;grunt&#x2F;ngDpTask&#x2F;ngDpTask.js:169</code></a>
+  </p>
+
+
+
+  </div>
+
+  <h3>Syntax</h3>
+  <div class="blue-method-syntax">
+  <h3 class="name"><code>findLongestDependencyChains</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>scripts</code>
+                </li>
+                <li class="arg">
+                        <code class="optional">[script]</code>
+                </li>
+                <li class="arg">
+                        <code class="optional">[modulesToIgnore]</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array" class="crosslink external" target="_blank">Array</a></span>
+        </span>
+
+
+        <span class="flag private">private</span>
+
+
+
+
+
+  </div>
+    <div class="description">
+      <h3>Summary</h3>
+        <p>Browses a flat list of scripts to find a script longest dependency chains.</p>
+<p>Each script may have several dependencies, each dependency can also have several dependencies.
+findLongestDependencyChains helps find the longest dependency chain of one of the script.
+As the script may have several longest dependency chain, a list of chains is returned.</p>
+<p>A chain is an ordered list of script paths.</p>
+<p>This is recursive.</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">scripts</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array" class="crosslink external" target="_blank">Array</a></span>
+
+
+                    <div class="param-description">
+                        <p>The flat list of scripts with for each script:</p>
+<ul>
+<li><strong>dependencies</strong> The list of dependency names of the script</li>
+<li><strong>definitions</strong> The list of definition names of the script</li>
+<li><strong>path</strong> The script path</li>
+</ul>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name optional">[script]</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+
+
+                    <div class="param-description">
+                        <p>The script to analyze (default to the first one of the list of scripts)</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name optional">[modulesToIgnore]</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array" class="crosslink external" target="_blank">Array</a></span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+
+
+                    <div class="param-description">
+                        <p>The list of module names to ignore to avoid circular dependencies</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array" class="crosslink external" target="_blank">Array</a></span>:
+                <div class="blue-return-desc">
+                    <p>The longest dependency chains</p>
+
+                </div>
+
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_findScript" class="method item private">
+  <h3 class="blue-method-name">findScript</h3>
+
+  <div class="meta method-meta">
+      <p>
+          Defined in
+      <a href="../files/lib_grunt_ngDpTask_ngDpTask.js.html#l146"><code>lib&#x2F;grunt&#x2F;ngDpTask&#x2F;ngDpTask.js:146</code></a>
+  </p>
+
+
+
+  </div>
+
+  <h3>Syntax</h3>
+  <div class="blue-method-syntax">
+  <h3 class="name"><code>findScript</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>scripts</code>
+                </li>
+                <li class="arg">
+                        <code>property</code>
+                </li>
+                <li class="arg">
+                        <code>value</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a> | Null</span>
+        </span>
+
+
+        <span class="flag private">private</span>
+
+
+
+
+
+  </div>
+    <div class="description">
+      <h3>Summary</h3>
+        <p>Fetches a script from a list of scripts.</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">scripts</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array" class="crosslink external" target="_blank">Array</a></span>
+
+
+                    <div class="param-description">
+                        <p>The list of scripts</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">property</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+
+
+                    <div class="param-description">
+                        <p>The script property used to identify the script to fetch</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">value</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+
+
+                    <div class="param-description">
+                        <p>The expected value of the script property</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a> | Null</span>:
+                <div class="blue-return-desc">
+                    <p>The found script or null if not found</p>
+
+                </div>
+
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_getResources" class="method item private">
+  <h3 class="blue-method-name">getResources</h3>
+
+  <div class="meta method-meta">
+      <p>
+          Defined in
+      <a href="../files/lib_grunt_ngDpTask_ngDpTask.js.html#l354"><code>lib&#x2F;grunt&#x2F;ngDpTask&#x2F;ngDpTask.js:354</code></a>
+  </p>
+
+
+
+  </div>
+
+  <h3>Syntax</h3>
+  <div class="blue-method-syntax">
+  <h3 class="name"><code>getResources</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>tree</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
+        </span>
+
+
+        <span class="flag private">private</span>
+
+
+
+
+
+  </div>
+    <div class="description">
+      <h3>Summary</h3>
+        <p>Retrieves CSS and JS files from tree of scripts in a flattened order.</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">tree</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
+
+
+                    <div class="param-description">
+                        <p>The tree of resources</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>:
+                <div class="blue-return-desc">
+                    <p>An object with:</p>
+<ul>
+<li><strong>css</strong> The list of css files in the right order</li>
+<li><strong>js</strong> The list of js files in the right order
+the list of JS files</li>
+</ul>
+
+                </div>
+
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_getTreeResources" class="method item private">
+  <h3 class="blue-method-name">getTreeResources</h3>
+
+  <div class="meta method-meta">
+      <p>
+          Defined in
+      <a href="../files/lib_grunt_ngDpTask_ngDpTask.js.html#l313"><code>lib&#x2F;grunt&#x2F;ngDpTask&#x2F;ngDpTask.js:313</code></a>
+  </p>
+
+
+
+  </div>
+
+  <h3>Syntax</h3>
+  <div class="blue-method-syntax">
+  <h3 class="name"><code>getTreeResources</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>node</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
+        </span>
+
+
+        <span class="flag private">private</span>
+
+
+
+
+
+  </div>
+    <div class="description">
+      <h3>Summary</h3>
+        <p>Retrieves CSS and JS files from tree of scripts in a flattened order.</p>
+<p>This is recursive.</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">node</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
+
+
+                    <div class="param-description">
+                        <p>The node from where to start</p>
+
+                    </div>
+
+                        <ul class="params-list">
+                            <li class="param">
+                                    <code class="param-name">path</code>
+                                    <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+
+                                <div class="param-description">
+                                    <p>The file path</p>
+
+                                </div>
+
+                            </li>
+                            <li class="param">
+                                    <code class="param-name">styles</code>
+                                    <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array" class="crosslink external" target="_blank">Array</a></span>
+
+                                <div class="param-description">
+                                    <p>The list of css / scss file paths</p>
+
+                                </div>
+
+                            </li>
+                        </ul>
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>:
+                <div class="blue-return-desc">
+                    <p>An object with:</p>
+<ul>
+<li><strong>childrenCss</strong> The list of children CSS files</li>
+<li><strong>childrenJs</strong> The list of children CSS files</li>
+<li><strong>subChildrenCss</strong> The list of sub children CSS files</li>
+<li><strong>subChildrenJs</strong> The list of sub children JS files</li>
+</ul>
+
+                </div>
+
+
+            </div>
+        </div>
+
+
+</div>
+            </div>
+
+
+
+    </div>
+</div>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../assets/vendor/prettify/prettify-min.js"></script>
+<script>prettyPrint();</script>
+<script src="../assets/js/yui-prettify.js"></script>
+<script src="../assets/../api.js"></script>
+<script src="../assets/js/api-filter.js"></script>
+<script src="../assets/js/api-list.js"></script>
+<script src="../assets/js/api-search.js"></script>
+<script src="../assets/js/apidocs.js"></script>
+</body>
+</html>
