@@ -1,3 +1,9 @@
+# 5.1.1 / YYYY-MM-DD
+
+## BUG FIXES
+
+- Fix missing *esprima* module when installing
+
 # 5.1.0 / 2018-05-04
 
 ## NEW FEATURES
