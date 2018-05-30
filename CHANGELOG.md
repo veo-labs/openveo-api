@@ -8,6 +8,12 @@
 
 - require('@openveo/api').util.shallowValidateObject now throws an error when trying to validate an Object (other than a Date) as a Date
 
+# 5.1.1 / 2018-05-30
+
+## BUG FIXES
+
+- Fix missing *esprima* module when installing
+
 # 5.1.0 / 2018-05-04
 
 ## NEW FEATURES
