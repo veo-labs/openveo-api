@@ -19,7 +19,8 @@ module.exports = {
       'tests/server/util/*.js',
       'tests/server/plugin/*.js',
       'tests/server/middlewares/*.js',
-      'tests/server/storages/*.js'
+      'tests/server/storages/*.js',
+      'tests/server/multipart/*.js'
     ]
   }
 
