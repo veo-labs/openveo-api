@@ -5,6 +5,10 @@
 - Drop support for NodeJS &lt; 8.9.4 and NPM &lt; 5.6.0
 - multipart.MultipartParser.getFileDestination has been removed, use multipart.MultipartParser.getField
 
+## NEW FEATURES
+
+- multipart.MultipartParser can now specify the uniqueness of file names with the property "unique". Set "unique" property of a field to true will generate a unique file name for all files corresponding to the field
+
 ## BUG FIXES
 
 - require('@openveo/api').util.shallowValidateObject now throws an error when trying to validate an Object (other than a Date) as a Date
