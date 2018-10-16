@@ -1,0 +1,856 @@
+<!DOCTYPE html>
+<html lang="en" class="yui-overrride">
+<head>
+    <meta charset="utf-8">
+    <title>lib/controllers/ContentController.js - OpenVeo server API for plugins</title>
+    <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
+    <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
+    <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700' rel='stylesheet' type='text/css'>
+    <link rel="shortcut icon" type="image/png" href="../assets/favicon.png">
+    <script src="http://yui.yahooapis.com/combo?3.9.1/build/yui/yui-min.js"></script>
+    <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
+</head>
+<body class="yui3-skin-sam">
+
+<div id="doc">
+    <div id="hd" class="yui3-g header">
+        <div class="yui3-u-3-4">
+            <h1 class="blue-main-title">OpenVeo server API for plugins</h1>
+        </div>
+        <div class="yui3-u-1-4 version project-version">
+            API Docs for: 6.0.0
+        </div>
+    </div>
+    <div id="bd" class="yui3-g">
+
+        <div class="yui3-u-1-4">
+            <div id="docs-sidebar" class="sidebar apidocs">
+                <div id="api-list">
+                    <h2 class="off-left">APIs</h2>
+                    <div id="api-tabview" class="tabview">
+                        <ul class="tabs">
+                            <li><a href="#api-classes">Classes</a></li>
+                            <li><a href="#api-modules">Modules</a></li>
+                        </ul>
+                
+                        <div id="api-tabview-filter">
+                            <input type="search" id="api-filter" placeholder="Type to filter APIs">
+                        </div>
+                
+                        <div id="api-tabview-panel">
+                            <ul id="api-classes" class="apis classes">
+                                <li><a href="../classes/AccessError.html">AccessError</a></li>
+                                <li><a href="../classes/AdvancedEmitter.html">AdvancedEmitter</a></li>
+                                <li><a href="../classes/AdvancedEvent.html">AdvancedEvent</a></li>
+                                <li><a href="../classes/CAS.html">CAS</a></li>
+                                <li><a href="../classes/CAS1.html">CAS1</a></li>
+                                <li><a href="../classes/CAS2.html">CAS2</a></li>
+                                <li><a href="../classes/CAS3.html">CAS3</a></li>
+                                <li><a href="../classes/CasStrategy.html">CasStrategy</a></li>
+                                <li><a href="../classes/ComponentExpression.html">ComponentExpression</a></li>
+                                <li><a href="../classes/ConfigExpression.html">ConfigExpression</a></li>
+                                <li><a href="../classes/ConstantExpression.html">ConstantExpression</a></li>
+                                <li><a href="../classes/ContentController.html">ContentController</a></li>
+                                <li><a href="../classes/Controller.html">Controller</a></li>
+                                <li><a href="../classes/Database.html">Database</a></li>
+                                <li><a href="../classes/database-errors.html">database-errors</a></li>
+                                <li><a href="../classes/DirectiveExpression.html">DirectiveExpression</a></li>
+                                <li><a href="../classes/disableCacheMiddleware.html">disableCacheMiddleware</a></li>
+                                <li><a href="../classes/ElementExpression.html">ElementExpression</a></li>
+                                <li><a href="../classes/EntityController.html">EntityController</a></li>
+                                <li><a href="../classes/EntityProvider.html">EntityProvider</a></li>
+                                <li><a href="../classes/Expression.html">Expression</a></li>
+                                <li><a href="../classes/factory.html">factory</a></li>
+                                <li><a href="../classes/fileSystem.html">fileSystem</a></li>
+                                <li><a href="../classes/FilterExpression.html">FilterExpression</a></li>
+                                <li><a href="../classes/http-errors.html">http-errors</a></li>
+                                <li><a href="../classes/HttpController.html">HttpController</a></li>
+                                <li><a href="../classes/imageProcessorMiddleware.html">imageProcessorMiddleware</a></li>
+                                <li><a href="../classes/InjectExpression.html">InjectExpression</a></li>
+                                <li><a href="../classes/logger.html">logger</a></li>
+                                <li><a href="../classes/logRequestMiddleware.html">logRequestMiddleware</a></li>
+                                <li><a href="../classes/ModuleExpression.html">ModuleExpression</a></li>
+                                <li><a href="../classes/MongoDatabase.html">MongoDatabase</a></li>
+                                <li><a href="../classes/MultipartParser.html">MultipartParser</a></li>
+                                <li><a href="../classes/ngDpTask.html">ngDpTask</a></li>
+                                <li><a href="../classes/NotFoundError.html">NotFoundError</a></li>
+                                <li><a href="../classes/Pilot.html">Pilot</a></li>
+                                <li><a href="../classes/Plugin.html">Plugin</a></li>
+                                <li><a href="../classes/PluginApi.html">PluginApi</a></li>
+                                <li><a href="../classes/Provider.html">Provider</a></li>
+                                <li><a href="../classes/removeTask.html">removeTask</a></li>
+                                <li><a href="../classes/renameTask.html">renameTask</a></li>
+                                <li><a href="../classes/ResourceFilter.html">ResourceFilter</a></li>
+                                <li><a href="../classes/RouteExpression.html">RouteExpression</a></li>
+                                <li><a href="../classes/SocketController.html">SocketController</a></li>
+                                <li><a href="../classes/SocketNamespace.html">SocketNamespace</a></li>
+                                <li><a href="../classes/SocketServer.html">SocketServer</a></li>
+                                <li><a href="../classes/Storage.html">Storage</a></li>
+                                <li><a href="../classes/StorageError.html">StorageError</a></li>
+                                <li><a href="../classes/STRATEGIES.html">STRATEGIES</a></li>
+                                <li><a href="../classes/util.html">util</a></li>
+                                <li><a href="../classes/ValueExpression.html">ValueExpression</a></li>
+                            </ul>
+                
+                            <ul id="api-modules" class="apis modules">
+                                <li><a href="../modules/controllers.html">controllers</a></li>
+                                <li><a href="../modules/emitters.html">emitters</a></li>
+                                <li><a href="../modules/errors.html">errors</a></li>
+                                <li><a href="../modules/fileSystem.html">fileSystem</a></li>
+                                <li><a href="../modules/grunt.html">grunt</a></li>
+                                <li><a href="../modules/logger.html">logger</a></li>
+                                <li><a href="../modules/middlewares.html">middlewares</a></li>
+                                <li><a href="../modules/multipart.html">multipart</a></li>
+                                <li><a href="../modules/passport.html">passport</a></li>
+                                <li><a href="../modules/plugin.html">plugin</a></li>
+                                <li><a href="../modules/providers.html">providers</a></li>
+                                <li><a href="../modules/socket.html">socket</a></li>
+                                <li><a href="../modules/storages.html">storages</a></li>
+                                <li><a href="../modules/util.html">util</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="yui3-u-3-4">
+                <div id="api-options">
+                    Show:
+                    <label for="api-show-inherited">
+                        <input type="checkbox" id="api-show-inherited" checked>
+                        Inherited
+                    </label>
+            
+                    <label for="api-show-protected">
+                        <input type="checkbox" id="api-show-protected">
+                        Protected
+                    </label>
+            
+                    <label for="api-show-private">
+                        <input type="checkbox" id="api-show-private">
+                        Private
+                    </label>
+                    <label for="api-show-deprecated">
+                        <input type="checkbox" id="api-show-deprecated">
+                        Deprecated
+                    </label>
+            
+                </div>
+            
+            <div class="apidocs">
+                <div id="docs-main">
+                    <div class="content">
+<h1 class="file-heading">File: lib/controllers/ContentController.js</h1>
+
+<div class="file">
+    <pre class="code prettyprint linenums">
+&#x27;use strict&#x27;;
+
+/**
+ * @module controllers
+ */
+
+var util = require(&#x27;util&#x27;);
+var utilExt = process.requireApi(&#x27;lib/util.js&#x27;);
+var errors = process.requireApi(&#x27;lib/controllers/httpErrors.js&#x27;);
+var EntityController = process.requireApi(&#x27;lib/controllers/EntityController.js&#x27;);
+var ResourceFilter = process.requireApi(&#x27;lib/storages/ResourceFilter.js&#x27;);
+
+/**
+ * Defines base controller for all controllers which need to provide HTTP route actions for all requests
+ * relative to content entities.
+ *
+ * A content entity is an entity owned by a user, consequently user must be authenticated to use ContentController
+ * actions. Content entities which belong to the anonymous user can be manipulated by all. Content entities which
+ * belong to a particular user can be manipulated by this particular user, the super administrator, the entity manager,
+ * and, if entity is inside a group, by all users which have enough privileges on this group.
+ *
+ * The authenticated user must have the following properties:
+ * - **String** id The user id
+ * - **Array** permissions An array of permissions in the following format: OPERATION-group-GROUP_ID, where OPERATION
+ * is one of ContentController.OPERATIONS and GROUP_ID the id of a group (e.g.
+ * [&#x27;get-group-Jekrn20Rl&#x27;, &#x27;update-group-Jekrn20Rl&#x27;, &#x27;delete-group-YldO3Jie3&#x27;])
+ *
+ * A content entity has a &quot;metadata&quot; property with:
+ * - **String** user The id of the content entity owner
+ * - **Array** groups The list of groups associated to the content entity
+ *
+ * @class ContentController
+ * @extends EntityController
+ * @constructor
+ */
+function ContentController() {
+  ContentController.super_.call(this);
+}
+
+module.exports = ContentController;
+util.inherits(ContentController, EntityController);
+
+// Operations on content entities
+
+/**
+ * The list of operations used to manage privileges of a user.
+ *
+ * @property OPERATIONS
+ * @type Object
+ * @final
+ * @static
+ */
+ContentController.OPERATIONS = {
+  READ: &#x27;get&#x27;,
+  UPDATE: &#x27;update&#x27;,
+  DELETE: &#x27;delete&#x27;
+};
+Object.freeze(ContentController.OPERATIONS);
+
+/**
+ * Gets user permissions by groups.
+ *
+ * @example
+ *
+ *     // Example of user permissions
+ *     [&#x27;get-group-Jekrn20Rl&#x27;, &#x27;update-group-Jekrn20Rl&#x27;, &#x27;delete-group-YldO3Jie3&#x27;]
+ *
+ *     // Example of returned groups
+ *     {
+ *       &#x27;Jekrn20Rl&#x27;: [&#x27;get&#x27;, &#x27;update&#x27;], // User only has get / update permissions on group &#x27;Jekrn20Rl&#x27;
+ *       &#x27;YldO3Jie3&#x27;: [&#x27;delete&#x27;], // User only has delete permission on group &#x27;YldO3Jie3&#x27;
+ *       ...
+ *     }
+ *
+ * @method getUserGroups
+ * @private
+ * @param {Object} user The user to extract groups from
+ * @return {Object} Groups organized by ids
+ */
+function getUserGroups(user) {
+  var groups = {};
+
+  if (user &amp;&amp; user.permissions) {
+    user.permissions.forEach(function(permission) {
+      var reg = new RegExp(&#x27;^(get|update|delete)-group-(.+)$&#x27;);
+      var permissionChunks = reg.exec(permission);
+      if (permissionChunks) {
+        var operation = permissionChunks[1];
+        var groupId = permissionChunks[2];
+
+        if (!groups[groupId])
+          groups[groupId] = [];
+
+        groups[groupId].push(operation);
+      }
+    });
+  }
+
+  return groups;
+}
+
+/**
+ * Gets the list of groups of a user, with authorization on a certain operation.
+ *
+ * All user groups with authorization on the operation are returned.
+ *
+ * @method getUserAuthorizedGroups
+ * @private
+ * @param {Object} user The user
+ * @param {String} operation The operation (get, update or delete)
+ * @return {Array} The list of user groups which have authorization on the given operation
+ */
+function getUserAuthorizedGroups(user, operation) {
+  var userGroups = getUserGroups(user);
+  var groups = [];
+
+  for (var groupId in userGroups) {
+    if (userGroups[groupId].indexOf(operation) &gt;= 0)
+      groups.push(groupId);
+  }
+
+  return groups;
+}
+
+/**
+ * Gets entities.
+ *
+ * If user does not have enough privilege to read a particular entity, the entity is not listed in the response.
+ *
+ * @example
+ *
+ *     // Response example
+ *     {
+ *       &quot;entities&quot; : [ ... ],
+ *       &quot;pagination&quot; : {
+ *         &quot;limit&quot;: ..., // The limit number of entities by page
+ *         &quot;page&quot;: ..., // The actual page
+ *         &quot;pages&quot;: ..., // The total number of pages
+ *         &quot;size&quot;: ... // The total number of entities
+ *     }
+ *
+ * @method getEntitiesAction
+ * @async
+ * @param {Request} request ExpressJS HTTP Request
+ * @param {Object} request.query Request query
+ * @param {String|Array} [request.query.include] The list of fields to include from returned entities
+ * @param {String|Array} [request.query.exclude] The list of fields to exclude from returned entities. Ignored if
+ * include is also specified.
+ * @param {Number} [request.query.limit] A limit number of entities to retrieve per page (default to 10)
+ * @param {Number} [request.query.page] The page number started at 0 for the first page (default to 0)
+ * @param {String} [request.query.sortBy] The entity field to sort by
+ * @param {String} [request.query.sortOrder] Either &quot;asc&quot; for ascendant or &quot;desc&quot; for descendant
+ * @param {Response} response ExpressJS HTTP Response
+ * @param {Function} next Function to defer execution to the next registered middleware
+ */
+ContentController.prototype.getEntitiesAction = function(request, response, next) {
+  var provider = this.getProvider();
+  var sort = {};
+  var query;
+  request.query = request.query || {};
+
+  try {
+    query = utilExt.shallowValidateObject(request.query, {
+      include: {type: &#x27;array&lt;string&gt;&#x27;},
+      exclude: {type: &#x27;array&lt;string&gt;&#x27;},
+      limit: {type: &#x27;number&#x27;, gt: 0, default: 10},
+      page: {type: &#x27;number&#x27;, gte: 0, default: 0},
+      sortBy: {type: &#x27;string&#x27;},
+      sortOrder: {type: &#x27;string&#x27;, in: [&#x27;asc&#x27;, &#x27;desc&#x27;], default: &#x27;desc&#x27;}
+    });
+  } catch (error) {
+    return next(errors.GET_ENTITIES_WRONG_PARAMETERS);
+  }
+
+  // Build sort description object
+  if (query.sortBy &amp;&amp; query.sortOrder) sort[query.sortBy] = query.sortOrder;
+
+  provider.get(
+    this.addAccessFilter(null, request.user),
+    {
+      exclude: query.exclude,
+      include: query.include
+    },
+    query.limit,
+    query.page,
+    sort,
+    function(error, entities, pagination) {
+      if (error) {
+        process.logger.error(error.message, {error: error, method: &#x27;getEntitiesAction&#x27;});
+        next(errors.GET_ENTITIES_ERROR);
+      } else {
+        response.send({
+          entities: entities,
+          pagination: pagination
+        });
+      }
+    }
+  );
+};
+
+/**
+ * Gets a specific entity.
+ *
+ * User must have permission to read the entity.
+ *
+ * @example
+ *
+ *     // Response example
+ *     {
+ *       &quot;entity&quot; : { ... }
+ *     }
+ *
+ * @method getEntityAction
+ * @async
+ * @param {Request} request ExpressJS HTTP Request
+ * @param {Object} request.params Request parameters
+ * @param {String} request.params.id The entity id to retrieve
+ * @param {Object} request.query Request query
+ * @param {String|Array} [request.query.include] The list of fields to include from returned entity
+ * @param {String|Array} [request.query.exclude] The list of fields to exclude from returned entity. Ignored if
+ * include is also specified.
+ * @param {Response} response ExpressJS HTTP Response
+ * @param {Function} next Function to defer execution to the next registered middleware
+ */
+ContentController.prototype.getEntityAction = function(request, response, next) {
+  if (request.params.id) {
+    var entityId = request.params.id;
+    var provider = this.getProvider();
+    var self = this;
+    var fields;
+    request.query = request.query || {};
+
+    try {
+      fields = utilExt.shallowValidateObject(request.query, {
+        include: {type: &#x27;array&lt;string&gt;&#x27;},
+        exclude: {type: &#x27;array&lt;string&gt;&#x27;}
+      });
+    } catch (error) {
+      return next(errors.GET_ENTITY_WRONG_PARAMETERS);
+    }
+
+    // Make sure &quot;metadata&quot; field is not excluded
+    fields = this.removeMetatadaFromFields(fields);
+
+    provider.getOne(
+      new ResourceFilter().equal(&#x27;id&#x27;, entityId),
+      fields,
+      function(error, entity) {
+        if (error) {
+          process.logger.error(error.message, {error: error, method: &#x27;getEntityAction&#x27;, entity: entityId});
+          next(errors.GET_ENTITY_ERROR);
+        } else if (!entity) {
+          process.logger.warn(&#x27;Not found&#x27;, {method: &#x27;getEntityAction&#x27;, entity: entityId});
+          next(errors.GET_ENTITY_NOT_FOUND);
+        } else if (!self.isUserAuthorized(request.user, entity, ContentController.OPERATIONS.READ)) {
+          process.logger.error(
+            &#x27;User &quot;&#x27; + request.user.id + &#x27;&quot; doesn\&#x27;t have access to entity &quot;&#x27; + entityId + &#x27;&quot;&#x27;,
+            {method: &#x27;getEntityAction&#x27;}
+          );
+          next(errors.GET_ENTITY_FORBIDDEN);
+        } else {
+          response.send({
+            entity: entity
+          });
+        }
+      }
+    );
+  } else {
+
+    // Missing id of the entity
+    next(errors.GET_ENTITY_MISSING_PARAMETERS);
+
+  }
+};
+
+/**
+ * Updates an entity.
+ *
+ * User must have permission to update the entity. If user doesn&#x27;t have permission to update the entity an
+ * HTTP forbidden error will be sent as response.
+ *
+ * @example
+ *
+ *     // Response example
+ *     {
+ *       &quot;total&quot;: 1
+ *     }
+ *
+ * @method updateEntityAction
+ * @async
+ * @param {Request} request ExpressJS HTTP Request
+ * @param {Object} request.params Request parameters
+ * @param {String} request.params.id The id of the entity to update
+ * @param {Object} request.body The fields to update with their values
+ * @param {Array} [request.body.groups] The list of groups the content entity belongs to
+ * @param {String} [request.body.user] The id of the entity owner. Only the owner can modify the entity owner.
+ * @param {Response} response ExpressJS HTTP Response
+ * @param {Function} next Function to defer execution to the next registered middleware
+ */
+ContentController.prototype.updateEntityAction = function(request, response, next) {
+  if (request.params.id &amp;&amp; request.body) {
+    var self = this;
+    var entityId = request.params.id;
+    var provider = this.getProvider();
+    var data = request.body;
+    var metadatas;
+
+    try {
+      metadatas = utilExt.shallowValidateObject(request.body, {
+        groups: {type: &#x27;array&lt;string&gt;&#x27;},
+        user: {type: &#x27;string&#x27;}
+      });
+    } catch (error) {
+      return next(errors.UPDATE_ENTITY_WRONG_PARAMETERS);
+    }
+
+    if (metadatas.groups) {
+      data[&#x27;metadata.groups&#x27;] = data.groups.filter(function(group) {
+        return group ? true : false;
+      });
+    }
+
+    if (metadatas.user) data[&#x27;metadata.user&#x27;] = data.user;
+
+    // Get information on the entity which is about to be updated to validate that the user has enough permissions
+    // to update it
+    provider.getOne(
+      new ResourceFilter().equal(&#x27;id&#x27;, entityId),
+      {
+        include: [&#x27;id&#x27;, &#x27;metadata&#x27;]
+      },
+      function(error, entity) {
+        if (error) return next(errors.UPDATE_ENTITY_GET_ONE_ERROR);
+        if (!entity) return next(errors.UPDATE_ENTITY_NOT_FOUND_ERROR);
+
+        // Make sure user is authorized to modify all the entities
+        if (self.isUserAuthorized(request.user, entity, ContentController.OPERATIONS.UPDATE)) {
+
+          // User has permission to update this entity
+
+          // User is authorized to update the entity but he must be owner to update the owner
+          if (!self.isUserOwner(entity, request.user) &amp;&amp;
+              !self.isUserAdmin(request.user) &amp;&amp;
+              !self.isUserManager(request.user)) {
+            delete data[&#x27;user&#x27;];
+          }
+
+          provider.updateOne(new ResourceFilter().equal(&#x27;id&#x27;, entity.id), data, function(error, total) {
+            if (error) {
+              process.logger.error(error.message || &#x27;Fail updating&#x27;,
+                                   {method: &#x27;updateEntityAction&#x27;, entity: entityId});
+              next(errors.UPDATE_ENTITY_ERROR);
+            } else if (!total) {
+              process.logger.error(&#x27;The entity could not be updated&#x27;,
+                                   {method: &#x27;updateEntityAction&#x27;, entity: entityId});
+              next(errors.UPDATE_ENTITY_ERROR);
+            } else {
+              response.send({total: total});
+            }
+          });
+        } else {
+          process.logger.error(&#x27;The entity could not be updated&#x27;, {method: &#x27;updateEntityAction&#x27;, entity: entityId});
+          next(errors.UPDATE_ENTITY_FORBIDDEN);
+        }
+
+      }
+    );
+
+  } else {
+
+    // Missing entity id or the datas
+    next(errors.UPDATE_ENTITY_MISSING_PARAMETERS);
+
+  }
+};
+
+/**
+ * Adds entities.
+ *
+ * Information about the user (which becomes the owner) is automatically added to the entities.
+ *
+ * @example
+ *
+ *     // Response example
+ *     {
+ *       &quot;entities&quot;: [ ... ],
+ *       &quot;total&quot;: 42
+ *     }
+ *
+ * @method addEntitiesAction
+ * @async
+ * @param {Request} request ExpressJS HTTP Request
+ * @param {Array} request.body The list of entities to add with for each entity the fields with their values
+ * @param {Array} [request.body.groups] The list of groups the content entities belong to
+ * @param {Response} response ExpressJS HTTP Response
+ * @param {Function} next Function to defer execution to the next registered middleware
+ */
+ContentController.prototype.addEntitiesAction = function(request, response, next) {
+  if (request.body) {
+    var provider = this.getProvider();
+    var parsedRequest;
+    var datas;
+
+    try {
+      parsedRequest = utilExt.shallowValidateObject(request, {
+        body: {type: &#x27;array&lt;object&gt;&#x27;, required: true}
+      });
+    } catch (error) {
+      return next(errors.ADD_ENTITIES_WRONG_PARAMETERS);
+    }
+
+    // Set common content entities information
+    datas = parsedRequest.body;
+    datas.forEach(function(data) {
+      data.metadata = {
+        user: request.user &amp;&amp; request.user.id,
+        groups: data.groups || []
+      };
+    });
+
+    provider.add(datas, function(error, total, entities) {
+      if (error) {
+        process.logger.error(error.message, {error: error, method: &#x27;addEntitiesAction&#x27;});
+        next(errors.ADD_ENTITIES_ERROR);
+      } else
+        response.send({entities: entities, total: total});
+    });
+  } else {
+
+    // Missing body
+    next(errors.ADD_ENTITIES_MISSING_PARAMETERS);
+
+  }
+};
+
+/**
+ * Removes entities.
+ *
+ * User must have permission to remove the entities. If user doesn&#x27;t have permission to remove a particular entity an
+ * HTTP forbidden error will be sent as response and there won&#x27;t be any guarantee on the number of removed entities.
+ *
+ * @example
+ *
+ *     // Response example
+ *     {
+ *       &quot;total&quot;: 42
+ *     }
+ *
+ * @method removeEntitiesAction
+ * @async
+ * @param {Request} request ExpressJS HTTP Request
+ * @param {Object} request.params Request parameters
+ * @param {String} request.params.id A comma separated list of entity ids to remove
+ * @param {Response} response ExpressJS HTTP Response
+ * @param {Function} next Function to defer execution to the next registered middleware
+ */
+ContentController.prototype.removeEntitiesAction = function(request, response, next) {
+  if (request.params.id) {
+    var self = this;
+    var entityIds = request.params.id.split(&#x27;,&#x27;);
+    var entityIdsToRemove = [];
+    var provider = this.getProvider();
+
+    // Get information on entities which are about to be removed to validate that the user has enough permissions
+    // to do it
+    provider.get(
+      new ResourceFilter().in(&#x27;id&#x27;, entityIds),
+      {
+        include: [&#x27;id&#x27;, &#x27;metadata&#x27;]
+      },
+      entityIds.length,
+      null,
+      null,
+      function(error, entities, pagination) {
+
+        // Make sure user is authorized to modify all the entities
+        entities.forEach(function(entity) {
+          if (self.isUserAuthorized(request.user, entity, ContentController.OPERATIONS.DELETE))
+            entityIdsToRemove.push(entity.id);
+        });
+
+        if (entityIdsToRemove.length !== entityIds.length) {
+          process.logger.error(
+            &#x27;Some entities can\&#x27;t be removed : abort&#x27;,
+            {method: &#x27;removeEntitiesAction&#x27;, entities: entityIds, removedEntities: entityIdsToRemove}
+          );
+          return next(errors.REMOVE_ENTITIES_FORBIDDEN);
+        }
+
+        provider.remove(new ResourceFilter().in(&#x27;id&#x27;, entityIdsToRemove), function(error, total) {
+          if (error) {
+            process.logger.error(error.message, {error: error, method: &#x27;removeEntitiesAction&#x27;});
+            next(errors.REMOVE_ENTITIES_ERROR);
+          } else if (total != entityIdsToRemove.length) {
+            process.logger.error(total + &#x27;/&#x27; + entityIds.length + &#x27; removed&#x27;,
+                                 {method: &#x27;removeEntitiesAction&#x27;, entities: entityIdsToRemove});
+            next(errors.REMOVE_ENTITIES_ERROR);
+          } else {
+            response.send({total: total});
+          }
+        });
+
+      }
+    );
+
+  } else {
+
+    // Missing entity ids
+    next(errors.REMOVE_ENTITIES_MISSING_PARAMETERS);
+
+  }
+};
+
+/**
+ * Adds access rules to the given filter reference.
+ *
+ * Access rules make sure that content entities belong to the user (owner or in the same group).
+ * If no filter is specified, a new filter is created.
+ *
+ * @method addAccessFilter
+ * @param {ResourceFilter} [filter] The filter to add the access rules to
+ * @param {Object} user The user information
+ * @param {String} user.id The user id
+ * @param {Array} user.permissions The user permissions
+ * @return {ResourceFilter} The modified filter or a new one if no filter specified
+ */
+ContentController.prototype.addAccessFilter = function(filter, user) {
+  if (user &amp;&amp; !this.isUserAdmin(user) &amp;&amp; !this.isUserManager(user)) {
+    var userGroups = getUserAuthorizedGroups(user, ContentController.OPERATIONS.READ);
+
+    if (!filter) filter = new ResourceFilter();
+
+    filter.or([
+      new ResourceFilter().in(&#x27;metadata.user&#x27;, [user.id, this.getAnonymousId()])
+    ]);
+
+    if (userGroups.length) {
+      filter.or([
+        new ResourceFilter().in(&#x27;metadata.groups&#x27;, userGroups)
+      ]);
+    }
+  }
+
+  return filter;
+};
+
+/**
+ * Tests if user is the administrator.
+ *
+ * @method isUserAdmin
+ * @param {Object} user The user to test
+ * @param {String} user.id The user&#x27;s id
+ * @return {Boolean} true if the user is the administrator, false otherwise
+ */
+ContentController.prototype.isUserAdmin = function(user) {
+  return user &amp;&amp; user.id === this.getSuperAdminId();
+};
+
+/**
+ * Tests if user is the anonymous user.
+ *
+ * @method isUserAnonymous
+ * @param {Object} user The user to test
+ * @param {String} user.id The user&#x27;s id
+ * @return {Boolean} true if the user is the anonymous, false otherwise
+ */
+ContentController.prototype.isUserAnonymous = function(user) {
+  return user &amp;&amp; user.id === this.getAnonymousId();
+};
+
+/**
+ * Tests if user is the owner of a content entity.
+ *
+ * @method isUserOwner
+ * @param {Object} entity The entity to test
+ * @param {Object} entity.metadata Entity information about associated user and groups
+ * @param {String} entity.metadata.user The id of the user the entity belongs to
+ * @param {Object} user The user to test
+ * @param {String} user.id The user&#x27;s id
+ * @return {Boolean} true if the user is the owner, false otherwise
+ */
+ContentController.prototype.isUserOwner = function(entity, user) {
+  return user &amp;&amp; entity.metadata &amp;&amp; entity.metadata.user === user.id;
+};
+
+/**
+ * Validates that a user is authorized to manipulate a content entity.
+ *
+ * User is authorized to manipulate the entity if one of the following conditions is met:
+ *  - The entity belongs to the anonymous user
+ *  - User is the super administrator
+ *  - User is the owner of the entity
+ *  - User has permission to manage contents
+ *  - Entity has associated groups and user has permission to perform the operation on one of these groups
+ *
+ * @method isUserAuthorized
+ * @param {Object} user The user
+ * @param {String} user.id The user&#x27;s id
+ * @param {Array} user.permissions The user&#x27;s permissions
+ * @param {Object} entity The entity to manipulate
+ * @param {Object} entity.metadata Entity information about associated user and groups
+ * @param {String} entity.metadata.user The id of the user the entity belongs to
+ * @param {Array} entity.metadata.groups The list of group ids the entity is part of
+ * @param {String} operation The operation to perform on the entity
+ * @return {Boolean} true if the user can manipulate the entity, false otherwise
+ */
+ContentController.prototype.isUserAuthorized = function(user, entity, operation) {
+  if (this.isUserAdmin(user) ||
+      this.isUserManager(user) ||
+      this.isUserOwner(entity, user) ||
+      (entity.metadata &amp;&amp; this.isUserAnonymous({id: entity.metadata.user}))
+  ) {
+    return true;
+  }
+  if (entity.metadata &amp;&amp; entity.metadata.groups) {
+    var userGroups = getUserAuthorizedGroups(user, operation);
+    return utilExt.intersectArray(entity.metadata.groups, userGroups).length;
+  }
+
+  return false;
+};
+
+/**
+ * Removes &quot;metadata&quot; field from query fields.
+ *
+ * The &quot;metadata&quot; property of a content entity is used by ContentControllers to validate that a user
+ * has enough privileges to perform an action. &quot;metadata&quot; property contains the id of the user the content property
+ * belongs to and the list of groups the entity is part of.
+ * Consequently &quot;metadata&quot; property has to be fetched by the provider when getting an entity, however we authorize the
+ * user the exclude / include fields from provider response. removeMetadataFromFields makes sure &quot;metadata&quot; property
+ * is not excluded from returned fields.
+ *
+ * @method removeMetatadaFromFields
+ * @param {Object} fields The include and exclude fields
+ * @param {Array} [fields.include] The list of fields to include which may contain a &quot;metadata&quot; property
+ * @param {Array} [fields.exclude] The list of fields to exclude may contain a &quot;metadata&quot; property
+ * @return {Object} The same fields object with new include and exclude arrays
+ */
+ContentController.prototype.removeMetatadaFromFields = function(fields) {
+  if (fields.exclude) {
+    fields.exclude = fields.exclude.filter(function(text) {
+      return text.indexOf(&#x27;metadata&#x27;) &lt; 0;
+    });
+  }
+
+  if (fields.include) fields.include.push(&#x27;metadata&#x27;);
+
+  return fields;
+};
+
+/**
+ * Gets the id of the super administrator.
+ *
+ * It must be overriden by the sub class.
+ *
+ * @method getSuperAdminId
+ * @return {String} The id of the super admin
+ * @throw {Error} getSuperAdminId is not implemented
+ */
+ContentController.prototype.getSuperAdminId = function() {
+  throw new Error(&#x27;getSuperAdminId is not implemented for this ContentController&#x27;);
+};
+
+/**
+ * Gets the id of the anonymous user.
+ *
+ * It must be overriden by the sub class.
+ *
+ * @method getAnonymousId
+ * @return {String} The id of the anonymous user
+ * @throw {Error} getAnonymousId is not implemented
+ */
+ContentController.prototype.getAnonymousId = function() {
+  throw new Error(&#x27;getAnonymousId is not implemented for this ContentController&#x27;);
+};
+
+/**
+ * Tests if user is a contents manager.
+ *
+ * A contents manager can perform CRUD operations on content entities.
+ * It must be overriden by the sub class.
+ *
+ * @method isUserManager
+ * @param {Object} user The user to test
+ * @param {Array} user.permissions The user&#x27;s permissions
+ * @return {Boolean} true if the user has permission to manage contents, false otherwise
+ * @throw {Error} isUserManager is not implemented
+ */
+ContentController.prototype.isUserManager = function(user) {
+  throw new Error(&#x27;isUserManager is not implemented for this ContentController&#x27;);
+};
+
+    </pre>
+</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../assets/vendor/prettify/prettify-min.js"></script>
+<script>prettyPrint();</script>
+<script src="../assets/js/yui-prettify.js"></script>
+<script src="../assets/../api.js"></script>
+<script src="../assets/js/api-filter.js"></script>
+<script src="../assets/js/api-list.js"></script>
+<script src="../assets/js/api-search.js"></script>
+<script src="../assets/js/apidocs.js"></script>
+</body>
+</html>
