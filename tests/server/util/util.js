@@ -1109,7 +1109,7 @@ describe('util', function() {
   // getPropertyFromArray method
   describe('getPropertyFromArray', function() {
 
-    it('should be able to get values of a property from an Array of objects', function() {
+    it('should be able to get values of a property from an Array of Objects', function() {
       var expectedValues = [42, 43];
       var expectedProperty = 'id';
       var list = [];
@@ -1122,7 +1122,7 @@ describe('util', function() {
       assert.sameMembers(values, expectedValues);
     });
 
-    it('should be able to get values of a property from an Array of objects recursively', function() {
+    it('should be able to get values of a property from an Array of Objects and its sub Array(s)', function() {
       var expectedValues = [42, 43];
       var expectedProperty = 'id';
       var expectedRecursiveProperty = 'subItems';
@@ -1139,6 +1139,60 @@ describe('util', function() {
       assert.sameMembers(values, expectedValues);
     });
 
+    it('should be able to get values of a property from sub Array(s) starting at a given value', function() {
+      var expectedValues = [42, 43, 44];
+      var expectedProperty = 'id';
+      var expectedRecursiveProperty = 'subItems';
+      var list = [
+        {
+          [expectedProperty]: expectedValues[0],
+          [expectedRecursiveProperty]: [
+            {
+              [expectedProperty]: expectedValues[1],
+              [expectedRecursiveProperty]: [
+                {
+                  [expectedProperty]: expectedValues[2]
+                }
+              ]
+            }
+          ]
+        }
+      ];
+
+      var values = util.getPropertyFromArray(expectedProperty, list, expectedRecursiveProperty, expectedValues[0]);
+      assert.deepEqual(values, expectedValues.slice(1), 'Expected the list of values minus one');
+
+      values = util.getPropertyFromArray(expectedProperty, list, expectedRecursiveProperty, expectedValues[1]);
+      assert.deepEqual(values, expectedValues.slice(2), 'Expected the list of values minus two');
+    });
+
+    it('should ignore sibling categories in case of starting value', function() {
+      var expectedValues = [42, 43, 44, 45];
+      var expectedProperty = 'id';
+      var expectedRecursiveProperty = 'subItems';
+      var list = [
+        {
+          [expectedProperty]: expectedValues[0],
+          [expectedRecursiveProperty]: [
+            {
+              [expectedProperty]: expectedValues[1],
+              [expectedRecursiveProperty]: [
+                {
+                  [expectedProperty]: expectedValues[2]
+                }
+              ]
+            },
+            {
+              [expectedProperty]: expectedValues[3]
+            }
+          ]
+        }
+      ];
+
+      var values = util.getPropertyFromArray(expectedProperty, list, expectedRecursiveProperty, expectedValues[0]);
+      assert.deepEqual(values, expectedValues.slice(1), 'Expected the list of values minus the last one');
+    });
+
     it('should return an empty Array if property is not specified', function() {
       var list = [{}, {}];
       var expectedRecursiveProperty = 'subItems';
@@ -1150,6 +1204,32 @@ describe('util', function() {
       var expectedProperty = 'id';
       var expectedRecursiveProperty = 'subItems';
       var values = util.getPropertyFromArray(expectedProperty, null, expectedRecursiveProperty);
+      assert.isEmpty(values);
+    });
+
+    it('should return an empty Array if startValue is not found', function() {
+      var expectedValues = [42];
+      var expectedProperty = 'id';
+      var expectedRecursiveProperty = 'subItems';
+      var list = [
+        {
+          [expectedProperty]: expectedValues[0]
+        }
+      ];
+      var values = util.getPropertyFromArray(expectedProperty, list, expectedRecursiveProperty, 'Wrong value');
+      assert.isEmpty(values);
+    });
+
+    it('should return an empty Array if startValue corresponds to an Object without a sub Array', function() {
+      var expectedValues = [42];
+      var expectedProperty = 'id';
+      var expectedRecursiveProperty = 'subItems';
+      var list = [
+        {
+          [expectedProperty]: expectedValues[0]
+        }
+      ];
+      var values = util.getPropertyFromArray(expectedProperty, list, expectedRecursiveProperty, expectedValues[0]);
       assert.isEmpty(values);
     });
 

@@ -1,3 +1,9 @@
+# 6.1.0 / YYYY-MM-DD
+
+## NEW FEATURES
+
+- require('@openveo/api').util.getPropertyFromArray can now start collecting values at a specified value
+
 # 6.0.0 / 2018-10-16
 
 ## BREAKING CHANGES
