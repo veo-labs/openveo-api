@@ -388,6 +388,12 @@ describe('MongoDatabase', function() {
           value: ['43'],
           type: 'notIn',
           mongoOperator: '$nin'
+        },
+        {
+          field: 'field',
+          value: /42/i,
+          type: 'regex',
+          mongoOperator: '$regex'
         }
       ];
 

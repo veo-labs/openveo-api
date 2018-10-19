@@ -203,6 +203,30 @@ describe('ResourceFilter', function() {
 
   });
 
+  describe(ResourceFilter.OPERATORS.REGEX, function() {
+
+    it('should add a "' + ResourceFilter.OPERATORS.REGEX + '" operation', function() {
+      var expectedValue = /42/i;
+      var expectedField = 'field';
+      filter[ResourceFilter.OPERATORS.REGEX](expectedField, expectedValue);
+
+      assert.equal(filter.operations[0].type, ResourceFilter.OPERATORS.REGEX, 'Wrong operation type');
+      assert.equal(filter.operations[0].field, expectedField, 'Wrong operation field');
+      assert.equal(filter.operations[0].value, expectedValue, 'Wrong operation value');
+    });
+
+    it('should throw a TypeError if value is not a RegExp', function() {
+      var wrongValues = [[], 42, true, {}, 'String'];
+
+      wrongValues.forEach(function(wrongValue) {
+        assert.throws(function() {
+          filter[ResourceFilter.OPERATORS.REGEX]('field', wrongValue);
+        });
+      });
+    });
+
+  });
+
   describe('hasOperation', function() {
 
     it('should return true if an operation type is already present in the list of operations', function() {
@@ -223,6 +247,9 @@ describe('ResourceFilter', function() {
 
       filter[ResourceFilter.OPERATORS.SEARCH]('query search');
       assert.ok(filter.hasOperation(ResourceFilter.OPERATORS.SEARCH));
+
+      filter[ResourceFilter.OPERATORS.REGEX]('field', /42/i);
+      assert.ok(filter.hasOperation(ResourceFilter.OPERATORS.REGEX));
     });
 
     it('should return false if an operation type is not present in the list of operations', function() {
@@ -239,6 +266,7 @@ describe('ResourceFilter', function() {
       });
 
       assert.notOk(filter.hasOperation(ResourceFilter.OPERATORS.SEARCH));
+      assert.notOk(filter.hasOperation('field', ResourceFilter.OPERATORS.REGEX));
     });
 
   });
@@ -261,6 +289,12 @@ describe('ResourceFilter', function() {
         var operation = filter.getComparisonOperation(inOperator, 'field');
         assert.strictEqual(operation.value, expectedValue, 'Wrong value for operator ' + inOperator);
       });
+
+      var expectedValue = /42/i;
+      filter = new ResourceFilter();
+      filter[ResourceFilter.OPERATORS.REGEX]('field', expectedValue);
+      var operation = filter.getComparisonOperation(ResourceFilter.OPERATORS.REGEX, 'field');
+      assert.strictEqual(operation.value, expectedValue, 'Wrong value for operator ' + ResourceFilter.OPERATORS.REGEX);
     });
 
     it('should be able to get the comparison operator from filters contained in a logical operation', function() {
