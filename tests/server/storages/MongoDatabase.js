@@ -280,49 +280,49 @@ describe('MongoDatabase', function() {
         {
           field: 'field1',
           value: 'value1',
-          type: 'equal',
+          type: ResourceFilter.OPERATORS.EQUAL,
           mongoOperator: '$eq'
         },
         {
           field: 'field2',
           value: 'value2',
-          type: 'notEqual',
+          type: ResourceFilter.OPERATORS.NOT_EQUAL,
           mongoOperator: '$ne'
         },
         {
           field: 'field3',
           value: 'value3',
-          type: 'greaterThan',
+          type: ResourceFilter.OPERATORS.GREATER_THAN,
           mongoOperator: '$gt'
         },
         {
           field: 'field4',
           value: 'value4',
-          type: 'greaterThanEqual',
+          type: ResourceFilter.OPERATORS.GREATER_THAN_EQUAL,
           mongoOperator: '$gte'
         },
         {
           field: 'field5',
           value: 'value5',
-          type: 'lesserThan',
+          type: ResourceFilter.OPERATORS.LESSER_THAN,
           mongoOperator: '$lt'
         },
         {
           field: 'field6',
           value: 'value6',
-          type: 'lesserThanEqual',
+          type: ResourceFilter.OPERATORS.LESSER_THAN_EQUAL,
           mongoOperator: '$lte'
         },
         {
           field: 'field7',
           value: ['value7'],
-          type: 'in',
+          type: ResourceFilter.OPERATORS.IN,
           mongoOperator: '$in'
         },
         {
           field: 'field8',
           value: ['value8'],
-          type: 'notIn',
+          type: ResourceFilter.OPERATORS.NOT_IN,
           mongoOperator: '$nin'
         }
       ];
@@ -344,55 +344,55 @@ describe('MongoDatabase', function() {
         {
           field: 'field',
           value: '42',
-          type: 'equal',
+          type: ResourceFilter.OPERATORS.EQUAL,
           mongoOperator: '$eq'
         },
         {
           field: 'field',
           value: '43',
-          type: 'notEqual',
+          type: ResourceFilter.OPERATORS.NOT_EQUAL,
           mongoOperator: '$ne'
         },
         {
           field: 'field',
           value: '41',
-          type: 'greaterThan',
+          type: ResourceFilter.OPERATORS.GREATER_THAN,
           mongoOperator: '$gt'
         },
         {
           field: 'field',
           value: '42',
-          type: 'greaterThanEqual',
+          type: ResourceFilter.OPERATORS.GREATER_THAN_EQUAL,
           mongoOperator: '$gte'
         },
         {
           field: 'field',
           value: '43',
-          type: 'lesserThan',
+          type: ResourceFilter.OPERATORS.LESSER_THAN,
           mongoOperator: '$lt'
         },
         {
           field: 'field',
           value: '42',
-          type: 'lesserThanEqual',
+          type: ResourceFilter.OPERATORS.LESSER_THAN_EQUAL,
           mongoOperator: '$lte'
         },
         {
           field: 'field',
           value: ['42'],
-          type: 'in',
+          type: ResourceFilter.OPERATORS.IN,
           mongoOperator: '$in'
         },
         {
           field: 'field',
           value: ['43'],
-          type: 'notIn',
+          type: ResourceFilter.OPERATORS.NOT_IN,
           mongoOperator: '$nin'
         },
         {
           field: 'field',
           value: /42/i,
-          type: 'regex',
+          type: ResourceFilter.OPERATORS.REGEX,
           mongoOperator: '$regex'
         }
       ];
@@ -426,7 +426,7 @@ describe('MongoDatabase', function() {
             new ResourceFilter().equal('field1', 'value1'),
             new ResourceFilter().equal('field2', 'value2')
           ],
-          type: 'or',
+          type: ResourceFilter.OPERATORS.OR,
           mongoOperator: '$or'
         },
         {
@@ -434,7 +434,7 @@ describe('MongoDatabase', function() {
             new ResourceFilter().equal('field3', 'value3'),
             new ResourceFilter().equal('field4', 'value4')
           ],
-          type: 'nor',
+          type: ResourceFilter.OPERATORS.NOR,
           mongoOperator: '$nor'
         },
         {
@@ -442,7 +442,7 @@ describe('MongoDatabase', function() {
             new ResourceFilter().equal('field5', 'value5'),
             new ResourceFilter().equal('field6', 'value6')
           ],
-          type: 'and',
+          type: ResourceFilter.OPERATORS.AND,
           mongoOperator: '$and'
         }
       ];
