@@ -220,6 +220,9 @@ describe('ResourceFilter', function() {
         filter[logicalOperator]([new ResourceFilter()]);
         assert.ok(filter.hasOperation(logicalOperator));
       });
+
+      filter[ResourceFilter.OPERATORS.SEARCH]('query search');
+      assert.ok(filter.hasOperation(ResourceFilter.OPERATORS.SEARCH));
     });
 
     it('should return false if an operation type is not present in the list of operations', function() {
@@ -234,6 +237,8 @@ describe('ResourceFilter', function() {
       logicalOperators.forEach(function(logicalOperator) {
         assert.notOk(filter.hasOperation(logicalOperator));
       });
+
+      assert.notOk(filter.hasOperation(ResourceFilter.OPERATORS.SEARCH));
     });
 
   });
