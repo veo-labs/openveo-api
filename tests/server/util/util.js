@@ -1279,4 +1279,26 @@ describe('util', function() {
 
   });
 
+  // escapeTextForRegExp method
+  describe('escapeTextForRegExp', function() {
+
+    it('should be able to escape all characters specific to JavaScript regular expressions', function() {
+      var regExpCharacters = ['*', '[', ']', '{', '}', '(', ')', '.', '?', '/', '+', '\\', '^', '$', '|'];
+
+      regExpCharacters.forEach(function(regExpCharacter) {
+        assert.equal(util.escapeTextForRegExp(regExpCharacter), '\\' + regExpCharacter);
+      });
+    });
+
+    it('should throw a TypeError if text is not a String', function() {
+      var invalidValues = [null, undefined, [], {}, true];
+
+      invalidValues.forEach(function(invalidValue) {
+        assert.throws(function() {
+          util.escapeTextForRegExp(invalidValue);
+        }, TypeError, null, 'Expected exception when parameter is of type ' + typeof invalidValue);
+      });
+    });
+  });
+
 });

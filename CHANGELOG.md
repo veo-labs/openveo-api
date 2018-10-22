@@ -4,6 +4,7 @@
 
 - require('@openveo/api').util.getPropertyFromArray can now start collecting values at a specified value
 - require('@openveo/api').storages.ResourceFilter now supports regular expressions
+- require('@openveo/api').util.escapeTextForRegExp has been added to help escape a text that will be used in a JavaScript regular expression
 
 # 6.0.0 / 2018-10-16
 
