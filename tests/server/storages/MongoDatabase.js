@@ -139,14 +139,14 @@ describe('MongoDatabase', function() {
       MongoClientMock.connect = function(url, callback) {
         assert.ok(
           url.indexOf(
-          'mongodb://' +
-          configuration.username + ':' +
-          configuration.password + '@' +
-          configuration.host + ':' +
-          configuration.port +
-          ',' + configuration.seedlist +
-          '/' + configuration.database +
-          '?replicaSet=' + configuration.replicaSet
+            'mongodb://' +
+            configuration.username + ':' +
+            configuration.password + '@' +
+            configuration.host + ':' +
+            configuration.port +
+            ',' + configuration.seedlist +
+            '/' + configuration.database +
+            '?replicaSet=' + configuration.replicaSet
           ) === 0,
           'Wrong MongoDB url'
         );

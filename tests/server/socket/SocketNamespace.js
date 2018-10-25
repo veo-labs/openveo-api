@@ -93,7 +93,7 @@ describe('SocketNamespace', function() {
       namespace.on.should.have.been.called.exactly(1);
     });
 
-    it('should not be able to add a message\s handler if message id is not a string', function() {
+    it('should not be able to add a message handler if message id is not a string', function() {
       var values = [undefined, null, 0, {}, function() {}];
 
       values.forEach(function(value) {
@@ -102,7 +102,7 @@ describe('SocketNamespace', function() {
       });
     });
 
-    it('should not be able to add a message\s handler if handler is not a function', function() {
+    it('should not be able to add a message handler if handler is not a function', function() {
       var values = [undefined, null, 0, {}, 'string'];
 
       values.forEach(function(value) {
