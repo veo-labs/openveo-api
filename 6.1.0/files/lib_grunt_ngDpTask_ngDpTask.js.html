@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="en" class="yui-overrride">
+<head>
+    <meta charset="utf-8">
+    <title>lib/grunt/ngDpTask/ngDpTask.js - OpenVeo server API for plugins</title>
+    <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
+    <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
+    <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700' rel='stylesheet' type='text/css'>
+    <link rel="shortcut icon" type="image/png" href="../assets/favicon.png">
+    <script src="http://yui.yahooapis.com/combo?3.9.1/build/yui/yui-min.js"></script>
+    <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
+</head>
+<body class="yui3-skin-sam">
+
+<div id="doc">
+    <div id="hd" class="yui3-g header">
+        <div class="yui3-u-3-4">
+            <h1 class="blue-main-title">OpenVeo server API for plugins</h1>
+        </div>
+        <div class="yui3-u-1-4 version project-version">
+            API Docs for: 6.1.0
+        </div>
+    </div>
+    <div id="bd" class="yui3-g">
+
+        <div class="yui3-u-1-4">
+            <div id="docs-sidebar" class="sidebar apidocs">
+                <div id="api-list">
+                    <h2 class="off-left">APIs</h2>
+                    <div id="api-tabview" class="tabview">
+                        <ul class="tabs">
+                            <li><a href="#api-classes">Classes</a></li>
+                            <li><a href="#api-modules">Modules</a></li>
+                        </ul>
+                
+                        <div id="api-tabview-filter">
+                            <input type="search" id="api-filter" placeholder="Type to filter APIs">
+                        </div>
+                
+                        <div id="api-tabview-panel">
+                            <ul id="api-classes" class="apis classes">
+                                <li><a href="../classes/AccessError.html">AccessError</a></li>
+                                <li><a href="../classes/AdvancedEmitter.html">AdvancedEmitter</a></li>
+                                <li><a href="../classes/AdvancedEvent.html">AdvancedEvent</a></li>
+                                <li><a href="../classes/CAS.html">CAS</a></li>
+                                <li><a href="../classes/CAS1.html">CAS1</a></li>
+                                <li><a href="../classes/CAS2.html">CAS2</a></li>
+                                <li><a href="../classes/CAS3.html">CAS3</a></li>
+                                <li><a href="../classes/CasStrategy.html">CasStrategy</a></li>
+                                <li><a href="../classes/ComponentExpression.html">ComponentExpression</a></li>
+                                <li><a href="../classes/ConfigExpression.html">ConfigExpression</a></li>
+                                <li><a href="../classes/ConstantExpression.html">ConstantExpression</a></li>
+                                <li><a href="../classes/ContentController.html">ContentController</a></li>
+                                <li><a href="../classes/Controller.html">Controller</a></li>
+                                <li><a href="../classes/Database.html">Database</a></li>
+                                <li><a href="../classes/database-errors.html">database-errors</a></li>
+                                <li><a href="../classes/DirectiveExpression.html">DirectiveExpression</a></li>
+                                <li><a href="../classes/disableCacheMiddleware.html">disableCacheMiddleware</a></li>
+                                <li><a href="../classes/ElementExpression.html">ElementExpression</a></li>
+                                <li><a href="../classes/EntityController.html">EntityController</a></li>
+                                <li><a href="../classes/EntityProvider.html">EntityProvider</a></li>
+                                <li><a href="../classes/Expression.html">Expression</a></li>
+                                <li><a href="../classes/factory.html">factory</a></li>
+                                <li><a href="../classes/fileSystem.html">fileSystem</a></li>
+                                <li><a href="../classes/FilterExpression.html">FilterExpression</a></li>
+                                <li><a href="../classes/http-errors.html">http-errors</a></li>
+                                <li><a href="../classes/HttpController.html">HttpController</a></li>
+                                <li><a href="../classes/imageProcessorMiddleware.html">imageProcessorMiddleware</a></li>
+                                <li><a href="../classes/InjectExpression.html">InjectExpression</a></li>
+                                <li><a href="../classes/logger.html">logger</a></li>
+                                <li><a href="../classes/logRequestMiddleware.html">logRequestMiddleware</a></li>
+                                <li><a href="../classes/ModuleExpression.html">ModuleExpression</a></li>
+                                <li><a href="../classes/MongoDatabase.html">MongoDatabase</a></li>
+                                <li><a href="../classes/MultipartParser.html">MultipartParser</a></li>
+                                <li><a href="../classes/ngDpTask.html">ngDpTask</a></li>
+                                <li><a href="../classes/NotFoundError.html">NotFoundError</a></li>
+                                <li><a href="../classes/Pilot.html">Pilot</a></li>
+                                <li><a href="../classes/Plugin.html">Plugin</a></li>
+                                <li><a href="../classes/PluginApi.html">PluginApi</a></li>
+                                <li><a href="../classes/Provider.html">Provider</a></li>
+                                <li><a href="../classes/removeTask.html">removeTask</a></li>
+                                <li><a href="../classes/renameTask.html">renameTask</a></li>
+                                <li><a href="../classes/ResourceFilter.html">ResourceFilter</a></li>
+                                <li><a href="../classes/RouteExpression.html">RouteExpression</a></li>
+                                <li><a href="../classes/SocketController.html">SocketController</a></li>
+                                <li><a href="../classes/SocketNamespace.html">SocketNamespace</a></li>
+                                <li><a href="../classes/SocketServer.html">SocketServer</a></li>
+                                <li><a href="../classes/Storage.html">Storage</a></li>
+                                <li><a href="../classes/StorageError.html">StorageError</a></li>
+                                <li><a href="../classes/STRATEGIES.html">STRATEGIES</a></li>
+                                <li><a href="../classes/util.html">util</a></li>
+                                <li><a href="../classes/ValueExpression.html">ValueExpression</a></li>
+                            </ul>
+                
+                            <ul id="api-modules" class="apis modules">
+                                <li><a href="../modules/controllers.html">controllers</a></li>
+                                <li><a href="../modules/emitters.html">emitters</a></li>
+                                <li><a href="../modules/errors.html">errors</a></li>
+                                <li><a href="../modules/fileSystem.html">fileSystem</a></li>
+                                <li><a href="../modules/grunt.html">grunt</a></li>
+                                <li><a href="../modules/logger.html">logger</a></li>
+                                <li><a href="../modules/middlewares.html">middlewares</a></li>
+                                <li><a href="../modules/multipart.html">multipart</a></li>
+                                <li><a href="../modules/passport.html">passport</a></li>
+                                <li><a href="../modules/plugin.html">plugin</a></li>
+                                <li><a href="../modules/providers.html">providers</a></li>
+                                <li><a href="../modules/socket.html">socket</a></li>
+                                <li><a href="../modules/storages.html">storages</a></li>
+                                <li><a href="../modules/util.html">util</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="yui3-u-3-4">
+                <div id="api-options">
+                    Show:
+                    <label for="api-show-inherited">
+                        <input type="checkbox" id="api-show-inherited" checked>
+                        Inherited
+                    </label>
+            
+                    <label for="api-show-protected">
+                        <input type="checkbox" id="api-show-protected">
+                        Protected
+                    </label>
+            
+                    <label for="api-show-private">
+                        <input type="checkbox" id="api-show-private">
+                        Private
+                    </label>
+                    <label for="api-show-deprecated">
+                        <input type="checkbox" id="api-show-deprecated">
+                        Deprecated
+                    </label>
+            
+                </div>
+            
+            <div class="apidocs">
+                <div id="docs-main">
+                    <div class="content">
+<h1 class="file-heading">File: lib/grunt/ngDpTask/ngDpTask.js</h1>
+
+<div class="file">
+    <pre class="code prettyprint linenums">
+&#x27;use strict&#x27;;
+
+/**
+ * @module grunt
+ */
+
+var path = require(&#x27;path&#x27;);
+var fs = require(&#x27;fs&#x27;);
+var async = require(&#x27;async&#x27;);
+var esprima = require(&#x27;esprima&#x27;);
+var utilApi = process.requireApi(&#x27;lib/util.js&#x27;);
+var expressionFactory = process.requireApi(&#x27;lib/grunt/ngDpTask/expressionFactory.js&#x27;);
+var ElementExpression = process.requireApi(&#x27;lib/grunt/ngDpTask/ElementExpression.js&#x27;);
+var InjectExpression = process.requireApi(&#x27;lib/grunt/ngDpTask/InjectExpression.js&#x27;);
+var ConfigExpression = process.requireApi(&#x27;lib/grunt/ngDpTask/ConfigExpression.js&#x27;);
+var RouteExpression = process.requireApi(&#x27;lib/grunt/ngDpTask/RouteExpression.js&#x27;);
+var FilterExpression = process.requireApi(&#x27;lib/grunt/ngDpTask/FilterExpression.js&#x27;);
+
+/**
+ * Finds out AngularJS definitions and dependencies for the given content.
+ *
+ * This is recursive.
+ *
+ * The following JavaScript expressions are used to identify definitions:
+ *   - angular.module(&#x27;moduleName&#x27;, [])
+ *   - angular.module(&#x27;moduleName&#x27;).component()
+ *   - angular.module(&#x27;moduleName&#x27;).directive()
+ *   - angular.module(&#x27;moduleName&#x27;).controller()
+ *   - angular.module(&#x27;moduleName&#x27;).factory()
+ *   - angular.module(&#x27;moduleName&#x27;).service()
+ *   - angular.module(&#x27;moduleName&#x27;).constant()
+ *   - angular.module(&#x27;moduleName&#x27;).service()
+ *   - angular.module(&#x27;moduleName&#x27;).decorator()
+ *   - angular.module(&#x27;moduleName&#x27;).filter()
+ *   - angular.module(&#x27;moduleName&#x27;).config()
+ *   - angular.module(&#x27;moduleName&#x27;).run()
+ *
+ * The following JavaScript expressions are used to identify dependencies:
+ *   - MyAngularJsElement.$inject = [&#x27;Dependency1&#x27;, &#x27;Dependency2&#x27;];
+ *   - angular.module(&#x27;moduleName&#x27;, [&#x27;DependencyModule&#x27;])
+ *
+ * The following JavaScript expressions are used to identify associated modules:
+ *   - angular.module(&#x27;moduleName&#x27;)
+ *
+ * @method findDependencies
+ * @param {Object} expression The JavaScript expression to analyze
+ * @private
+ */
+function findDependencies(jsExpression) {
+  var expression;
+  var results = {
+    definitions: [],
+    dependencies: [],
+    module: null
+  };
+  if (!jsExpression) return results;
+
+  /**
+   * Merges results from sub expressions into results for the current expression.
+   *
+   * @param {Object} newResults Sub expressions results
+   * @param {Array} [newResults.definitions] The list of definitions in sub expression
+   * @param {Array} [newResults.dependencies] The list of dependencies in sub expression
+   * @param {String} [newResults.module] The name of the module the definitions belong to
+   */
+  function mergeResults(newResults) {
+    if (newResults.definitions)
+      results.definitions = utilApi.joinArray(results.definitions, newResults.definitions);
+
+    if (newResults.dependencies)
+      results.dependencies = utilApi.joinArray(results.dependencies, newResults.dependencies);
+
+    if (newResults.module)
+      results.module = newResults.module;
+  }
+
+  if (jsExpression.type === &#x27;CallExpression&#x27; &amp;&amp; jsExpression.callee.type === &#x27;MemberExpression&#x27;) {
+    if (Object.values(ElementExpression.ELEMENTS).indexOf(jsExpression.callee.property.name) &gt; -1) {
+      expression = expressionFactory.getElementExpression(jsExpression.callee.property.name, jsExpression);
+      if (expression.isValid()) {
+        var newResults = {
+          definitions: expression.isDefinition() ? [expression.getName()] : [],
+          dependencies: expression.getDependencies()
+        };
+
+        if (!expression.isDefinition() &amp;&amp; expression.getElementType() === ElementExpression.ELEMENTS.MODULE)
+          newResults.module = expression.getName();
+
+        mergeResults(newResults);
+      }
+    } else if (jsExpression.callee.property.name === &#x27;config&#x27; || jsExpression.callee.property.name === &#x27;run&#x27;) {
+      expression = new ConfigExpression(jsExpression);
+
+      if (expression.isValid()) {
+        mergeResults({
+          dependencies: expression.getDependencies()
+        });
+      }
+    } else if (jsExpression.callee.property.name === &#x27;when&#x27;) {
+      expression = new RouteExpression(jsExpression);
+
+      if (expression.isValid()) {
+        mergeResults({
+          definitions: expression.getDefinitions(),
+          dependencies: expression.getDependencies()
+        });
+      }
+    }
+  }
+
+  if (jsExpression.type === &#x27;AssignmentExpression&#x27; &amp;&amp;
+      jsExpression.left.property &amp;&amp;
+      jsExpression.left.property.name === &#x27;$inject&#x27;
+  ) {
+    expression = new InjectExpression(jsExpression);
+
+    if (expression.isValid()) {
+      mergeResults({
+        dependencies: expression.getDependencies()
+      });
+    }
+  }
+
+  if (jsExpression.type === &#x27;CallExpression&#x27; &amp;&amp; jsExpression.callee.name === &#x27;$filter&#x27;) {
+    expression = new FilterExpression(jsExpression);
+
+    if (expression.isValid()) {
+      mergeResults({
+        dependencies: [expression.getDependency()]
+      });
+    }
+  }
+
+  if (Object.prototype.toString.call(jsExpression) === &#x27;[object Object]&#x27;) {
+    for (var property in jsExpression)
+      mergeResults(findDependencies(jsExpression[property]));
+  } else if (Object.prototype.toString.call(jsExpression) === &#x27;[object Array]&#x27;) {
+    jsExpression.forEach(function(value) {
+      mergeResults(findDependencies(value));
+    });
+  }
+
+  return results;
+}
+
+/**
+ * Fetches a script from a list of scripts.
+ *
+ * @method findScript
+ * @param {Array} scripts The list of scripts
+ * @param {String} property The script property used to identify the script to fetch
+ * @param {String} value The expected value of the script property
+ * @return {Object|Null} The found script or null if not found
+ * @private
+ */
+function findScript(scripts, property, value) {
+  for (var i = 0; i &lt; scripts.length; i++) {
+    if ((Object.prototype.toString.call(scripts[i][property]) === &#x27;[object Array]&#x27; &amp;&amp;
+        scripts[i][property].indexOf(value) &gt; -1) ||
+        (scripts[i][property] === value)
+    ) {
+      return scripts[i];
+    }
+  }
+
+  return null;
+}
+
+/**
+ * Browses a flat list of scripts to find a script longest dependency chains.
+ *
+ * Each script may have several dependencies, each dependency can also have several dependencies.
+ * findLongestDependencyChains helps find the longest dependency chain of one of the script.
+ * As the script may have several longest dependency chain, a list of chains is returned.
+ *
+ * A chain is an ordered list of script paths.
+ *
+ * This is recursive.
+ *
+ * @method findLongestDependencyChains
+ * @param {Array} scripts The flat list of scripts with for each script:
+ *  - **dependencies** The list of dependency names of the script
+ *  - **definitions** The list of definition names of the script
+ *  - **path** The script path
+ * @param {Object} [script] The script to analyze (default to the first one of the list of scripts)
+ * @param {Array} [modulesToIgnore] The list of module names to ignore to avoid circular dependencies
+ * @return {Array} The longest dependency chains
+ * @private
+ */
+function findLongestDependencyChains(scripts, script, modulesToIgnore) {
+  var chains = [];
+
+  if (!script) script = scripts[0];
+
+  // Avoid circular dependencies
+  if (modulesToIgnore &amp;&amp; script.module &amp;&amp; modulesToIgnore.indexOf(script.module) !== -1) return chains;
+
+  // Get script dependencies
+  if (script.dependencies &amp;&amp; script.dependencies.length) {
+    var longestChainLength;
+
+    // Find dependency chains of the script
+    script.dependencies.forEach(function(dependency) {
+      var definitionScript = findScript(scripts, &#x27;definitions&#x27;, dependency);
+
+      if (definitionScript)
+        chains = chains.concat(findLongestDependencyChains(scripts, definitionScript, script.definitions));
+    });
+
+    if (chains.length &gt; 0) {
+
+      // Keep the longest chain(s)
+      chains.sort(function(chain1, chain2) {
+        // -1 : chain1 before chain2
+        // 0 : nothing change
+        // 1 : chain1 after chain2
+
+        if (chain1.length &gt; chain2.length)
+          return -1;
+        else if (chain1.length &lt; chain2.length)
+          return 1;
+        else return 0;
+      });
+
+      longestChainLength = chains[0].length;
+
+      chains = chains.filter(function(chain) {
+        if (chain.length === longestChainLength) {
+          chain.push(script.path);
+          return true;
+        }
+
+        return false;
+      });
+
+      return chains;
+    }
+  }
+
+  chains.push([script.path]);
+  return chains;
+}
+
+/**
+ * Builds the dependencies tree.
+ *
+ * @method buildTree
+ * @param {Array} scripts The flat list of scripts with for each script:
+ *  - **dependencies** The list of dependency names of the script
+ *  - **definitions** The list of definition names of the script
+ *  - **path** The script path
+ * @return {Array} The list of scripts with their dependencies
+ * @private
+ */
+function buildTree(scripts) {
+  var chains = [];
+  var tree = {
+    children: []
+  };
+  var currentTreeNode = tree;
+
+  // Get the longest dependency chain for each script with the highest dependency
+  // as the first element of the chain
+  scripts.forEach(function(script) {
+    chains = chains.concat(findLongestDependencyChains(scripts, script));
+  });
+
+  // Sort chains by length with longest chains first
+  chains.sort(function(chain1, chain2) {
+    // -1 : chain1 before chain2
+    // 0 : nothing change
+    // 1 : chain1 after chain2
+
+    if (chain1.length &gt; chain2.length)
+      return -1;
+    else if (chain1.length &lt; chain2.length)
+      return 1;
+    else return 0;
+  });
+
+  // Add each chain to the tree
+  chains.forEach(function(chain) {
+
+    // Add each element of the chain as a child of its parent
+    chain.forEach(function(scriptPath) {
+      var currentScript = findScript(scripts, &#x27;path&#x27;, scriptPath);
+      var alreadyExists = false;
+
+      if (!currentTreeNode.children)
+        currentTreeNode.children = [];
+
+      // Check if current script does not exist in node children
+      for (var i = 0; i &lt; currentTreeNode.children.length; i++) {
+        if (currentTreeNode.children[i].path === currentScript.path) {
+          alreadyExists = true;
+          break;
+        }
+      }
+
+      // Add script to the tree
+      if (!alreadyExists)
+        currentTreeNode.children.push(currentScript);
+
+      currentTreeNode = currentScript;
+    });
+
+    currentTreeNode = tree;
+  });
+
+  return tree;
+}
+
+/**
+ * Retrieves CSS and JS files from tree of scripts in a flattened order.
+ *
+ * This is recursive.
+ *
+ * @method getTreeResources
+ * @param {Object} node The node from where to start
+ * @param {String} node.path The file path
+ * @param {Array} node.styles The list of css / scss file paths
+ * @return {Object} An object with:
+ *   - **childrenCss** The list of children CSS files
+ *   - **childrenJs** The list of children CSS files
+ *   - **subChildrenCss** The list of sub children CSS files
+ *   - **subChildrenJs** The list of sub children JS files
+ * @private
+ */
+function getTreeResources(node) {
+  var resources = {childrenCss: [], childrenJs: [], subChildrenCss: [], subChildrenJs: []};
+
+  // Add css and js of node children then dedupe
+  if (node.children) {
+    node.children.forEach(function(subNode) {
+      var subResources = getTreeResources(subNode);
+      resources.childrenJs = utilApi.joinArray(resources.childrenJs, [subNode.path]);
+      resources.childrenCss = utilApi.joinArray(resources.childrenCss, subNode.styles);
+      resources.subChildrenCss = utilApi.joinArray(resources.subChildrenCss, subResources.childrenCss);
+      resources.subChildrenJs = utilApi.joinArray(resources.subChildrenJs, subResources.childrenJs);
+      resources.subChildrenCss = utilApi.joinArray(resources.subChildrenCss, subResources.subChildrenCss);
+      resources.subChildrenJs = utilApi.joinArray(resources.subChildrenJs, subResources.subChildrenJs);
+    });
+  } else {
+
+    // Add current node css and js then dedupe
+    resources.childrenCss = utilApi.joinArray(resources.childrenCss, node.styles);
+    resources.childrenJs = utilApi.joinArray(resources.childrenJs, [node.path]);
+
+  }
+
+  return resources;
+}
+
+/**
+ * Retrieves CSS and JS files from tree of scripts in a flattened order.
+ *
+ * @method getResources
+ * @param {Object} tree The tree of resources
+ * @return {Object} An object with:
+ *   - **css** The list of css files in the right order
+ *   - **js** The list of js files in the right order
+ * the list of JS files
+ * @private
+ */
+function getResources(tree) {
+  var resources = getTreeResources(tree);
+  return {
+    css: utilApi.joinArray(resources.childrenCss, resources.subChildrenCss),
+    js: utilApi.joinArray(resources.childrenJs, resources.subChildrenJs)
+  };
+}
+
+/**
+ * Defines a grunt task to build the list of sources (css and js) of an AngularJS application.
+ *
+ *     // Register task
+ *     var openVeoApi = require(&#x27;@openveo/api&#x27;);
+ *     grunt.registerMultiTask(&#x27;ngDp&#x27;, openVeoApi.grunt.ngDpTask(grunt));
+ *
+ *     // Configure task
+ *     grunt.initConfig({
+ *       &#x27;ngDp&#x27;: {
+ *         options: {
+ *           basePath: &#x27;/path/to/the/&#x27;,
+ *           cssPrefix: &#x27;../../other/css/path/&#x27;,
+ *           jsPrefix: &#x27;../../other/js/path/&#x27;
+ *         },
+ *         app1: {
+ *           src: &#x27;/path/to/the/app1/**\/*.*&#x27;,
+ *           dest: &#x27;/path/to/the/app1/topology.json&#x27;
+ *         },
+ *         app2: {
+ *           src: &#x27;/path/to/the/app2**\/*.*&#x27;,
+ *           dest: &#x27;/path/to/the/app2/topology.json&#x27;
+ *         }
+ *       }
+ *     });
+ *
+ *     // Ouput example (/path/to/the/app1/topology.json)
+ *     {
+ *       js: [&#x27;../..other/js/path/app1/file1.js&#x27;, &#x27;../..other/js/path/app1/file2.js&#x27;, [...]],
+ *       css: [&#x27;../..other/css/path/app1/file1.css&#x27;, &#x27;../..other/css/path/app1/file2.css&#x27;, [...]]
+ *     }
+ *
+ * AngularJS applications, which respect components architecture, need to be loaded in the right order as some
+ * components may depend on other components. This task helps build an array of JavaScript files and css / scss files
+ * in the right order.
+ *
+ * For this to work, each module must be declared in a separated file and a single file should not define AngularJS
+ * elements belonging to several different modules.
+ *
+ * Available options are:
+ *   - basePath: The base path which will be replaced by the cssPrefix or jsPrefix
+ *   - cssPrefix: For CSS / SCSS files, replace the basePath by this prefix
+ *   - jsPrefix: For JS files, replace the basePath by this prefix
+ *
+ * @class ngDpTask
+ * @static
+ */
+module.exports = function(grunt) {
+  return function() {
+    var done = this.async();
+    var asyncFunctions = [];
+    var options = this.options({
+      basePath: &#x27;&#x27;,
+      cssPrefix: &#x27;&#x27;,
+      jsPrefix: &#x27;&#x27;
+    });
+
+    /**
+     * Generates a file with the list of JS and CSS files in the right order.
+     *
+     * @param {Array} sourceFiles The list of grunt source files
+     * @param {String} destination The destination file which will contain the list of JS files and CSS files
+     * @param {Function} callback The function to call when it&#x27;s done with:
+     *   - **Error** If an error occurred, null otherwise
+     */
+    var generateSourcesFile = function(sourceFiles, destination, callback) {
+      var readAsyncFunctions = [];
+      var sources = [];
+      var scripts = [];
+      var styles = [];
+
+      sourceFiles.forEach(function(sourceFile) {
+        readAsyncFunctions.push(function(callback) {
+          grunt.verbose.writeln(&#x27;read file &#x27; + sourceFile);
+
+          fs.stat(sourceFile, function(error, fileStat) {
+            if (fileStat) {
+              fileStat.path = sourceFile;
+              sources = sources.concat(fileStat);
+            }
+            callback(error);
+          });
+        });
+      });
+
+      // Get stats for all source files
+      async.parallel(readAsyncFunctions, function(error, results) {
+        if (error) return callback(error);
+        var analyzeAsyncFunctions = [];
+
+        // Analyze all source files and distinguish JS and CSS files
+        sources.forEach(function(source) {
+          if (source.isFile()) {
+            var pathDescriptor = path.parse(source.path);
+
+            if (pathDescriptor.ext === &#x27;.js&#x27;) {
+
+              // JavaScript files
+              analyzeAsyncFunctions.push(function(callback) {
+                fs.readFile(source.path, function(error, content) {
+                  grunt.verbose.writeln(&#x27;analyze &#x27; + source.path);
+                  var contentString = content.toString();
+
+                  // Try to find parents of the source
+                  var programExpressions = esprima.parseScript(contentString);
+                  var script = findDependencies(programExpressions);
+                  script.path = source.path.replace(options.basePath, options.jsPrefix);
+                  script.styles = [];
+                  scripts.push(script);
+                  callback(error);
+                });
+              });
+            } else if (pathDescriptor.ext === &#x27;.css&#x27; ||
+                       pathDescriptor.ext === &#x27;.scss&#x27;
+            ) {
+
+              // CSS / SCSS files
+              styles.push(source.path.replace(options.basePath, options.cssPrefix));
+
+            }
+          }
+        });
+
+        async.parallel(analyzeAsyncFunctions, function(error) {
+          if (error) return callback(error);
+
+          // Associate css files with scripts
+          styles.forEach(function(style) {
+            for (var i = 0; i &lt; scripts.length; i++) {
+              var originalScriptPath = scripts[i].path.replace(options.jsPrefix, &#x27;&#x27;);
+              var originalStylePath = style.replace(options.cssPrefix, &#x27;&#x27;);
+              if (path.dirname(originalScriptPath) === path.dirname(originalStylePath)) {
+                scripts[i].styles.push(style);
+                return;
+              }
+            }
+          });
+
+          // Create final file
+          grunt.file.write(destination, JSON.stringify(getResources(buildTree(scripts))));
+          grunt.log.oklns(&#x27;Ordered styles and scripts have been saved in &#x27; + destination);
+
+          callback();
+        });
+      });
+    };
+
+    // Iterates through src-dest pairs
+    this.files.forEach(function(srcDestFile) {
+      asyncFunctions.push(function(callback) {
+        generateSourcesFile(srcDestFile.src, srcDestFile.dest, callback);
+      });
+    });
+
+    async.series(asyncFunctions, function(error) {
+      if (error)
+        grunt.fail.fatal(error);
+
+      done();
+    });
+  };
+};
+
+    </pre>
+</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../assets/vendor/prettify/prettify-min.js"></script>
+<script>prettyPrint();</script>
+<script src="../assets/js/yui-prettify.js"></script>
+<script src="../assets/../api.js"></script>
+<script src="../assets/js/api-filter.js"></script>
+<script src="../assets/js/api-list.js"></script>
+<script src="../assets/js/api-search.js"></script>
+<script src="../assets/js/apidocs.js"></script>
+</body>
+</html>

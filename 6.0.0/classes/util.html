@@ -183,6 +183,11 @@ var util = require('@openveo/api').util;</code></pre>
                                     <span class="flag static">static</span>
                             </li>
                             <li class="index-item method">
+                                <a href="#method_escapeTextForRegExp">escapeTextForRegExp</a>
+
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item method">
                                 <a href="#method_evaluateDeepObjectProperties">evaluateDeepObjectProperties</a>
 
                                     <span class="flag static">static</span>
@@ -331,13 +336,107 @@ var util = require('@openveo/api').util;</code></pre>
 
 
 </div>
+<div id="method_escapeTextForRegExp" class="method item">
+  <h3 class="blue-method-name">escapeTextForRegExp</h3>
+
+  <div class="meta method-meta">
+      <p>
+          Defined in
+      <a href="../files/lib_util.js.html#l609"><code>lib&#x2F;util.js:609</code></a>
+  </p>
+
+
+
+  </div>
+
+  <h3>Syntax</h3>
+  <div class="blue-method-syntax">
+  <h3 class="name"><code>escapeTextForRegExp</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>text</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+        </span>
+
+
+
+
+        <span class="flag static">static</span>
+
+
+
+  </div>
+    <div class="description">
+      <h3>Summary</h3>
+        <p>Escapes a text that will be used in a regular expression.</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">text</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+
+
+                    <div class="param-description">
+                        <p>The text to escape</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>:
+                <div class="blue-return-desc">
+                    <p>The escaped text</p>
+
+                </div>
+
+
+            </div>
+        </div>
+
+        <div class="example">
+            <h4>Example:</h4>
+
+            <div class="example-content">
+<pre class="code prettyprint"><code>// Get util
+var util = require('@openveo/api').util;
+
+var escapedText = util.escapeTextForRegExp(
+  'Text with characters interpreted by JavaScript regular expressions: [](){}?*+.^$/\\|'
+);
+
+// &quot;Text with characters interpreted by JavaScript regular expressions:
+ // \\[\\]\\(\\)\\{\\}\\?\\*\\+\\.\\^\\$\/\\\|&quot;
+console.log(escapedText);</code></pre>
+
+            </div>
+        </div>
+
+</div>
 <div id="method_evaluateDeepObjectProperties" class="method item">
   <h3 class="blue-method-name">evaluateDeepObjectProperties</h3>
 
   <div class="meta method-meta">
       <p>
           Defined in
-      <a href="../files/lib_util.js.html#l537"><code>lib&#x2F;util.js:537</code></a>
+      <a href="../files/lib_util.js.html#l567"><code>lib&#x2F;util.js:567</code></a>
   </p>
 
 
@@ -472,6 +571,12 @@ console.log(value);</code></pre>
                 <li class="arg">
                         <code class="optional">[recursiveProperty]</code>
                 </li>
+                <li class="arg">
+                        <code class="optional">[startValue]</code>
+                </li>
+                <li class="arg">
+                        <code class="optional">[shouldGetNextItems]</code>
+                </li>
             </ul><span class="paren">)</span>
         </div>
 
@@ -489,7 +594,7 @@ console.log(value);</code></pre>
   </div>
     <div class="description">
       <h3>Summary</h3>
-        <p>Gets a specific property from an Array of Objects.</p>
+        <p>Gets values of a specific property from a structured Array and its sub Array(s).</p>
 
     </div>
 
@@ -531,6 +636,31 @@ console.log(value);</code></pre>
                     </div>
 
                 </li>
+                <li class="param">
+                        <code class="param-name optional">[startValue]</code>
+                        <span class="type">Mixed</span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+
+
+                    <div class="param-description">
+                        <p>The value of the searched property to start collecting values from</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name optional">[shouldGetNextItems]</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean" class="crosslink external" target="_blank">Boolean</a></span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+
+
+                    <div class="param-description">
+                        <p>For internal use, it indicates if the values must be collected or not, for the
+given list. If true all values of the Array and sub Array(s) will be collected</p>
+
+                    </div>
+
+                </li>
             </ul>
         </div>
 
@@ -540,7 +670,7 @@ console.log(value);</code></pre>
             <div class="returns-description">
                 <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array" class="crosslink external" target="_blank">Array</a></span>:
                 <div class="blue-return-desc">
-                    <p>The list of values for the given property</p>
+                    <p>The list of values for the given property in the Array and its sub Array(s)</p>
 
                 </div>
 
@@ -555,7 +685,7 @@ console.log(value);</code></pre>
 <pre class="code prettyprint"><code>// Get util
 var util = require('@openveo/api').util;
 
-// Get property 'id' of each objects of the array
+// Get values of property &quot;id&quot; for each Array and sub Array(s) items
 var params = util.getPropertyFromArray('id', [
   {id: 0},
   {id: 1},
@@ -563,6 +693,21 @@ var params = util.getPropertyFromArray('id', [
 ], 'items');
 
 // [0, 1, 2, 3]
+console.log(params);</code></pre>
+<pre class="code prettyprint"><code>// Get util
+var util = require('@openveo/api').util;
+
+// Get values of property &quot;id&quot; for each Array and sub Array(s) items starting at the item where &quot;id&quot; equal 2
+var params = util.getPropertyFromArray('id', [
+  {id: 0},
+  {id: 1},
+  {id: 2, items: [
+      {id: 3, items: [{id: 4}]}
+    ]
+  }
+], 'items', 2);
+
+// [3, 4]
 console.log(params);</code></pre>
 
             </div>

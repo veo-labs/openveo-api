@@ -164,6 +164,7 @@
  *     .in(&#x27;field5&#x27;, [42])
  *     .lesserThan(&#x27;field6&#x27;, 42)
  *     .lesserThanEqual(&#x27;field7&#x27;, 42)
+ *     .regex(&#x27;field8&#x27;, /^Something/i)
  *     .search(&#x27;query&#x27;)
  *     .or([
  *       new ResourceFilter().equal(&#x27;field8&#x27;, 42),
@@ -221,6 +222,7 @@ ResourceFilter.OPERATORS = {
   GREATER_THAN_EQUAL: &#x27;greaterThanEqual&#x27;,
   LESSER_THAN: &#x27;lesserThan&#x27;,
   LESSER_THAN_EQUAL: &#x27;lesserThanEqual&#x27;,
+  REGEX: &#x27;regex&#x27;,
   SEARCH: &#x27;search&#x27;
 };
 Object.freeze(ResourceFilter.OPERATORS);
@@ -453,6 +455,25 @@ ResourceFilter.prototype.notIn = function(field, value) {
     if (!isValidType(value[i], [&#x27;String&#x27;, &#x27;Boolean&#x27;, &#x27;Date&#x27;, &#x27;Number&#x27;])) throw new TypeError(&#x27;Invalid value&#x27;);
 
   return addComparisonOperation.call(this, field, value, ResourceFilter.OPERATORS.NOT_IN, [&#x27;Array&#x27;]);
+};
+
+/**
+ * Adds a &quot;regular expression&quot; operation to the filter.
+ *
+ * @method regex
+ * @param {String} field The name of the field
+ * @param {RegExp} value The regular expression to compare the field to
+ * @return {ResourceFilter} The actual filter
+ * @throws {TypeError} An error if field and / or value is not valid
+ */
+ResourceFilter.prototype.regex = function(field, value) {
+  return addComparisonOperation.call(
+    this,
+    field,
+    value,
+    ResourceFilter.OPERATORS.REGEX,
+    [&#x27;RegExp&#x27;]
+  );
 };
 
 /**

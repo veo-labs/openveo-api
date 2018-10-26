@@ -639,14 +639,14 @@ module.exports.validateFiles = function(filesToAnalyze, validationDescription, c
 };
 
 /**
- * Gets a specific property from an Array of Objects.
+ * Gets values of a specific property from a structured Array and its sub Array(s).
  *
  * @example
  *
  *     // Get util
  *     var util = require(&#x27;@openveo/api&#x27;).util;
  *
- *     // Get property &#x27;id&#x27; of each objects of the array
+ *     // Get values of property &quot;id&quot; for each Array and sub Array(s) items
  *     var params = util.getPropertyFromArray(&#x27;id&#x27;, [
  *       {id: 0},
  *       {id: 1},
@@ -656,14 +656,35 @@ module.exports.validateFiles = function(filesToAnalyze, validationDescription, c
  *     // [0, 1, 2, 3]
  *     console.log(params);
  *
+ * @example
+ *
+ *     // Get util
+ *     var util = require(&#x27;@openveo/api&#x27;).util;
+ *
+ *     // Get values of property &quot;id&quot; for each Array and sub Array(s) items starting at the item where &quot;id&quot; equal 2
+ *     var params = util.getPropertyFromArray(&#x27;id&#x27;, [
+ *       {id: 0},
+ *       {id: 1},
+ *       {id: 2, items: [
+ *           {id: 3, items: [{id: 4}]}
+ *         ]
+ *       }
+ *     ], &#x27;items&#x27;, 2);
+ *
+ *     // [3, 4]
+ *     console.log(params);
+ *
  * @method getPropertyFromArray
  * @static
  * @param {String} property The name of the property to fetch
  * @param {Array} list The list of objects to look into
  * @param {String} [recursiveProperty] The name of the recursive property to look into
- * @return {Array} The list of values for the given property
+ * @param {Mixed} [startValue] The value of the searched property to start collecting values from
+ * @param {Boolean} [shouldGetNextItems] For internal use, it indicates if the values must be collected or not, for the
+ * given list. If true all values of the Array and sub Array(s) will be collected
+ * @return {Array} The list of values for the given property in the Array and its sub Array(s)
  */
-module.exports.getPropertyFromArray = function(property, list, recursiveProperty) {
+module.exports.getPropertyFromArray = function(property, list, recursiveProperty, startValue, shouldGetNextItems) {
   var self = this;
   var values = [];
 
@@ -671,10 +692,19 @@ module.exports.getPropertyFromArray = function(property, list, recursiveProperty
     return values;
 
   list.forEach(function(item) {
-    values.push(item[property]);
+    var shouldGetSubItems = shouldGetNextItems;
 
-    if (recursiveProperty &amp;&amp; item[recursiveProperty])
-      values = values.concat(self.getPropertyFromArray(property, item[recursiveProperty], recursiveProperty));
+    if (!startValue || shouldGetNextItems)
+      values.push(item[property]);
+
+    if (recursiveProperty &amp;&amp; item[recursiveProperty] &amp;&amp; item[property] === startValue)
+      shouldGetSubItems = true;
+
+    if (recursiveProperty &amp;&amp; item[recursiveProperty]) {
+      values = values.concat(
+        self.getPropertyFromArray(property, item[recursiveProperty], recursiveProperty, startValue, shouldGetSubItems)
+      );
+    }
   });
 
   return values;
@@ -720,6 +750,31 @@ module.exports.evaluateDeepObjectProperties = function(propertyPath, objectToAna
   }
 
   return value;
+};
+
+/**
+ * Escapes a text that will be used in a regular expression.
+ *
+ * @example
+ *
+ *     // Get util
+ *     var util = require(&#x27;@openveo/api&#x27;).util;
+ *
+ *     var escapedText = util.escapeTextForRegExp(
+ *       &#x27;Text with characters interpreted by JavaScript regular expressions: [](){}?*+.^$/\\|&#x27;
+ *     );
+ *
+ *     // &quot;Text with characters interpreted by JavaScript regular expressions:
+*      // \\[\\]\\(\\)\\{\\}\\?\\*\\+\\.\\^\\$\/\\\|&quot;
+ *     console.log(escapedText);
+ *
+ * @method escapeTextForRegExp
+ * @static
+ * @param {String} text The text to escape
+ * @return {String} The escaped text
+ */
+module.exports.escapeTextForRegExp = function(text) {
+  return text.replace(/(\*|\[|\]|\{|\}|\(|\)|\.|\?|\/|\+|\\|\^|\$|\|)/g, &#x27;\\$1&#x27;);
 };
 
     </pre>

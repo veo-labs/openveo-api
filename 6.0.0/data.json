@@ -1902,7 +1902,7 @@
             "namespace": "",
             "file": "lib/storages/ResourceFilter.js",
             "line": 7,
-            "description": "Defines a storage filter.\n\nA filter is a uniform way of filtering results common to all storages.\nA filter can contain only one \"or\" operation, one \"nor\" operation and one \"and\" operation.\n\n    var filter = new ResourceFilter()\n    .equal('field1', 42)\n    .notEqual('field2', 42)\n    .greaterThan('field3', 42)\n    .greaterThanEqual('field4', 42)\n    .in('field5', [42])\n    .lesserThan('field6', 42)\n    .lesserThanEqual('field7', 42)\n    .search('query')\n    .or([\n      new ResourceFilter().equal('field8', 42),\n      new ResourceFilter().notIn('field9', [42])\n    ])\n    .nor([\n      new ResourceFilter().equal('field10', 42),\n      new ResourceFilter().notIn('field11', [42])\n    )],\n    .and([\n      new ResourceFilter().equal('field12', 42),\n      new ResourceFilter().notIn('field13', [42])\n    )];",
+            "description": "Defines a storage filter.\n\nA filter is a uniform way of filtering results common to all storages.\nA filter can contain only one \"or\" operation, one \"nor\" operation and one \"and\" operation.\n\n    var filter = new ResourceFilter()\n    .equal('field1', 42)\n    .notEqual('field2', 42)\n    .greaterThan('field3', 42)\n    .greaterThanEqual('field4', 42)\n    .in('field5', [42])\n    .lesserThan('field6', 42)\n    .lesserThanEqual('field7', 42)\n    .regex('field8', /^Something/i)\n    .search('query')\n    .or([\n      new ResourceFilter().equal('field8', 42),\n      new ResourceFilter().notIn('field9', [42])\n    ])\n    .nor([\n      new ResourceFilter().equal('field10', 42),\n      new ResourceFilter().notIn('field11', [42])\n    )],\n    .and([\n      new ResourceFilter().equal('field12', 42),\n      new ResourceFilter().notIn('field13', [42])\n    )];",
             "is_constructor": 1
         },
         "Storage": {
@@ -5410,7 +5410,7 @@
         },
         {
             "file": "lib/storages/databases/mongodb/MongoDatabase.js",
-            "line": 160,
+            "line": 164,
             "description": "Builds MongoDb fields projection.",
             "itemtype": "method",
             "name": "buildFields",
@@ -5436,7 +5436,7 @@
         },
         {
             "file": "lib/storages/databases/mongodb/MongoDatabase.js",
-            "line": 182,
+            "line": 186,
             "description": "Builds MongoDB sort object.\n\nConcretely it just replaces \"asc\" by 1 and \"desc\" by -1.",
             "itemtype": "method",
             "name": "buildSort",
@@ -5458,7 +5458,7 @@
         },
         {
             "file": "lib/storages/databases/mongodb/MongoDatabase.js",
-            "line": 202,
+            "line": 206,
             "description": "Establishes connection to the database.",
             "itemtype": "method",
             "name": "connect",
@@ -5475,7 +5475,7 @@
         },
         {
             "file": "lib/storages/databases/mongodb/MongoDatabase.js",
-            "line": 237,
+            "line": 241,
             "description": "Closes connection to the database.",
             "itemtype": "method",
             "name": "close",
@@ -5492,7 +5492,7 @@
         },
         {
             "file": "lib/storages/databases/mongodb/MongoDatabase.js",
-            "line": 249,
+            "line": 253,
             "description": "Inserts several documents into a collection.",
             "itemtype": "method",
             "name": "add",
@@ -5519,7 +5519,7 @@
         },
         {
             "file": "lib/storages/databases/mongodb/MongoDatabase.js",
-            "line": 275,
+            "line": 279,
             "description": "Removes several documents from a collection.",
             "itemtype": "method",
             "name": "remove",
@@ -5547,7 +5547,7 @@
         },
         {
             "file": "lib/storages/databases/mongodb/MongoDatabase.js",
-            "line": 302,
+            "line": 306,
             "description": "Removes a property from documents of a collection.",
             "itemtype": "method",
             "name": "removeField",
@@ -5580,7 +5580,7 @@
         },
         {
             "file": "lib/storages/databases/mongodb/MongoDatabase.js",
-            "line": 335,
+            "line": 339,
             "description": "Updates a document from collection.",
             "itemtype": "method",
             "name": "updateOne",
@@ -5613,7 +5613,7 @@
         },
         {
             "file": "lib/storages/databases/mongodb/MongoDatabase.js",
-            "line": 363,
+            "line": 367,
             "description": "Fetches documents from the collection.",
             "itemtype": "method",
             "name": "get",
@@ -5678,7 +5678,7 @@
         },
         {
             "file": "lib/storages/databases/mongodb/MongoDatabase.js",
-            "line": 419,
+            "line": 423,
             "description": "Fetches a single document from the storage.",
             "itemtype": "method",
             "name": "getOne",
@@ -5726,7 +5726,7 @@
         },
         {
             "file": "lib/storages/databases/mongodb/MongoDatabase.js",
-            "line": 446,
+            "line": 450,
             "description": "Gets the list of indexes for a collection.",
             "itemtype": "method",
             "name": "getIndexes",
@@ -5748,7 +5748,7 @@
         },
         {
             "file": "lib/storages/databases/mongodb/MongoDatabase.js",
-            "line": 465,
+            "line": 469,
             "description": "Creates indexes for a collection.",
             "itemtype": "method",
             "name": "createIndexes",
@@ -5775,7 +5775,7 @@
         },
         {
             "file": "lib/storages/databases/mongodb/MongoDatabase.js",
-            "line": 485,
+            "line": 489,
             "description": "Gets an express-session store for this database.",
             "itemtype": "method",
             "name": "getStore",
@@ -5795,7 +5795,7 @@
         },
         {
             "file": "lib/storages/databases/mongodb/MongoDatabase.js",
-            "line": 496,
+            "line": 500,
             "description": "Renames a collection.",
             "itemtype": "method",
             "name": "renameCollection",
@@ -5822,7 +5822,7 @@
         },
         {
             "file": "lib/storages/databases/mongodb/MongoDatabase.js",
-            "line": 527,
+            "line": 531,
             "description": "Removes a collection from the database.",
             "itemtype": "method",
             "name": "removeCollection",
@@ -6084,7 +6084,7 @@
         },
         {
             "file": "lib/storages/ResourceFilter.js",
-            "line": 41,
+            "line": 42,
             "description": "The list of operations.",
             "itemtype": "property",
             "name": "operations",
@@ -6095,7 +6095,7 @@
         },
         {
             "file": "lib/storages/ResourceFilter.js",
-            "line": 58,
+            "line": 59,
             "description": "The available operators.",
             "itemtype": "property",
             "name": "OPERATORS",
@@ -6107,7 +6107,7 @@
         },
         {
             "file": "lib/storages/ResourceFilter.js",
-            "line": 82,
+            "line": 84,
             "description": "Validates the type of a value.",
             "itemtype": "method",
             "name": "isValidType",
@@ -6134,7 +6134,7 @@
         },
         {
             "file": "lib/storages/ResourceFilter.js",
-            "line": 100,
+            "line": 102,
             "description": "Adds a comparison operation to the filter.",
             "itemtype": "method",
             "name": "addComparisonOperation",
@@ -6175,7 +6175,7 @@
         },
         {
             "file": "lib/storages/ResourceFilter.js",
-            "line": 124,
+            "line": 126,
             "description": "Adds a logical operation to the filter.\n\nOnly one logical operation can be added in a filter.",
             "itemtype": "method",
             "name": "addLogicalOperation",
@@ -6201,7 +6201,7 @@
         },
         {
             "file": "lib/storages/ResourceFilter.js",
-            "line": 162,
+            "line": 164,
             "description": "Adds an equal operation to the filter.",
             "itemtype": "method",
             "name": "equal",
@@ -6230,7 +6230,7 @@
         },
         {
             "file": "lib/storages/ResourceFilter.js",
-            "line": 181,
+            "line": 183,
             "description": "Adds a \"not equal\" operation to the filter.",
             "itemtype": "method",
             "name": "equal",
@@ -6259,7 +6259,7 @@
         },
         {
             "file": "lib/storages/ResourceFilter.js",
-            "line": 200,
+            "line": 202,
             "description": "Adds a \"greater than\" operation to the filter.",
             "itemtype": "method",
             "name": "greaterThan",
@@ -6288,7 +6288,7 @@
         },
         {
             "file": "lib/storages/ResourceFilter.js",
-            "line": 219,
+            "line": 221,
             "description": "Adds a \"greater than or equal\" operation to the filter.",
             "itemtype": "method",
             "name": "greaterThanEqual",
@@ -6317,7 +6317,7 @@
         },
         {
             "file": "lib/storages/ResourceFilter.js",
-            "line": 238,
+            "line": 240,
             "description": "Adds a \"lesser than\" operation to the filter.",
             "itemtype": "method",
             "name": "lesserThan",
@@ -6346,7 +6346,7 @@
         },
         {
             "file": "lib/storages/ResourceFilter.js",
-            "line": 257,
+            "line": 259,
             "description": "Adds a \"lesser than equal\" operation to the filter.",
             "itemtype": "method",
             "name": "lesserThanEqual",
@@ -6375,7 +6375,7 @@
         },
         {
             "file": "lib/storages/ResourceFilter.js",
-            "line": 276,
+            "line": 278,
             "description": "Adds an \"in\" operation to the filter.",
             "itemtype": "method",
             "name": "in",
@@ -6404,7 +6404,7 @@
         },
         {
             "file": "lib/storages/ResourceFilter.js",
-            "line": 294,
+            "line": 296,
             "description": "Adds a \"not in\" operation to the filter.",
             "itemtype": "method",
             "name": "in",
@@ -6433,7 +6433,36 @@
         },
         {
             "file": "lib/storages/ResourceFilter.js",
-            "line": 312,
+            "line": 314,
+            "description": "Adds a \"regular expression\" operation to the filter.",
+            "itemtype": "method",
+            "name": "regex",
+            "params": [
+                {
+                    "name": "field",
+                    "description": "The name of the field",
+                    "type": "String"
+                },
+                {
+                    "name": "value",
+                    "description": "The regular expression to compare the field to",
+                    "type": "RegExp"
+                }
+            ],
+            "return": {
+                "description": "The actual filter",
+                "type": "ResourceFilter"
+            },
+            "throws": {
+                "description": "An error if field and / or value is not valid",
+                "type": "TypeError"
+            },
+            "class": "ResourceFilter",
+            "module": "storages"
+        },
+        {
+            "file": "lib/storages/ResourceFilter.js",
+            "line": 333,
             "description": "Adds a \"or\" operation to the filter.",
             "itemtype": "method",
             "name": "or",
@@ -6457,7 +6486,7 @@
         },
         {
             "file": "lib/storages/ResourceFilter.js",
-            "line": 324,
+            "line": 345,
             "description": "Adds a \"nor\" operation to the filter.",
             "itemtype": "method",
             "name": "nor",
@@ -6481,7 +6510,7 @@
         },
         {
             "file": "lib/storages/ResourceFilter.js",
-            "line": 336,
+            "line": 357,
             "description": "Adds an \"and\" operation to the filter.",
             "itemtype": "method",
             "name": "and",
@@ -6505,7 +6534,7 @@
         },
         {
             "file": "lib/storages/ResourceFilter.js",
-            "line": 348,
+            "line": 369,
             "description": "Adds a \"search\" operation to the filter.",
             "itemtype": "method",
             "name": "search",
@@ -6529,7 +6558,7 @@
         },
         {
             "file": "lib/storages/ResourceFilter.js",
-            "line": 367,
+            "line": 388,
             "description": "Tests if an operation has already been specified.",
             "itemtype": "method",
             "name": "hasOperation",
@@ -6549,7 +6578,7 @@
         },
         {
             "file": "lib/storages/ResourceFilter.js",
-            "line": 381,
+            "line": 402,
             "description": "Gets an operation from filter or sub filters.",
             "itemtype": "method",
             "name": "getComparisonOperation",
@@ -7529,9 +7558,10 @@
         {
             "file": "lib/util.js",
             "line": 495,
-            "description": "Gets a specific property from an Array of Objects.",
+            "description": "Gets values of a specific property from a structured Array and its sub Array(s).",
             "example": [
-                "\n\n    // Get util\n    var util = require('@openveo/api').util;\n\n    // Get property 'id' of each objects of the array\n    var params = util.getPropertyFromArray('id', [\n      {id: 0},\n      {id: 1},\n      {id: 2, items: [{id: 3}]}\n    ], 'items');\n\n    // [0, 1, 2, 3]\n    console.log(params);"
+                "\n\n    // Get util\n    var util = require('@openveo/api').util;\n\n    // Get values of property \"id\" for each Array and sub Array(s) items\n    var params = util.getPropertyFromArray('id', [\n      {id: 0},\n      {id: 1},\n      {id: 2, items: [{id: 3}]}\n    ], 'items');\n\n    // [0, 1, 2, 3]\n    console.log(params);",
+                "\n\n    // Get util\n    var util = require('@openveo/api').util;\n\n    // Get values of property \"id\" for each Array and sub Array(s) items starting at the item where \"id\" equal 2\n    var params = util.getPropertyFromArray('id', [\n      {id: 0},\n      {id: 1},\n      {id: 2, items: [\n          {id: 3, items: [{id: 4}]}\n        ]\n      }\n    ], 'items', 2);\n\n    // [3, 4]\n    console.log(params);"
             ],
             "itemtype": "method",
             "name": "getPropertyFromArray",
@@ -7552,10 +7582,22 @@
                     "description": "The name of the recursive property to look into",
                     "type": "String",
                     "optional": true
+                },
+                {
+                    "name": "startValue",
+                    "description": "The value of the searched property to start collecting values from",
+                    "type": "Mixed",
+                    "optional": true
+                },
+                {
+                    "name": "shouldGetNextItems",
+                    "description": "For internal use, it indicates if the values must be collected or not, for the\ngiven list. If true all values of the Array and sub Array(s) will be collected",
+                    "type": "Boolean",
+                    "optional": true
                 }
             ],
             "return": {
-                "description": "The list of values for the given property",
+                "description": "The list of values for the given property in the Array and its sub Array(s)",
                 "type": "Array"
             },
             "class": "util",
@@ -7563,7 +7605,7 @@
         },
         {
             "file": "lib/util.js",
-            "line": 537,
+            "line": 567,
             "description": "Evaluates a path of properties on an object.\n\nIt does not use the JavaScript eval function.",
             "example": [
                 "\n\n    // Get util\n    var util = require('@openveo/api').util;\n\n    // Get property 'my.deep.property' of the object\n    var value = util.evaluateDeepObjectProperties('my.deep.property', {\n      my {\n        deep {\n          property: 'My deep property value'\n        }\n      }\n    });\n\n    // \"My deep property value\"\n    console.log(value);"
@@ -7586,6 +7628,30 @@
             "return": {
                 "description": "The value of the property",
                 "type": "Mixed"
+            },
+            "class": "util",
+            "module": "util"
+        },
+        {
+            "file": "lib/util.js",
+            "line": 609,
+            "description": "Escapes a text that will be used in a regular expression.",
+            "example": [
+                "\n\n    // Get util\n    var util = require('@openveo/api').util;\n\n    var escapedText = util.escapeTextForRegExp(\n      'Text with characters interpreted by JavaScript regular expressions: [](){}?*+.^$/\\\\|'\n    );\n\n    // \"Text with characters interpreted by JavaScript regular expressions:\n     // \\\\[\\\\]\\\\(\\\\)\\\\{\\\\}\\\\?\\\\*\\\\+\\\\.\\\\^\\\\$\\/\\\\\\|\"\n    console.log(escapedText);"
+            ],
+            "itemtype": "method",
+            "name": "escapeTextForRegExp",
+            "static": 1,
+            "params": [
+                {
+                    "name": "text",
+                    "description": "The text to escape",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "The escaped text",
+                "type": "String"
             },
             "class": "util",
             "module": "util"

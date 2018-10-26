@@ -166,6 +166,7 @@ A filter can contain only one &quot;or&quot; operation, one &quot;nor&quot; oper
 .in('field5', [42])
 .lesserThan('field6', 42)
 .lesserThanEqual('field7', 42)
+.regex('field8', /^Something/i)
 .search('query')
 .or([
   new ResourceFilter().equal('field8', 42),
@@ -303,6 +304,10 @@ A filter can contain only one &quot;or&quot; operation, one &quot;nor&quot; oper
 
                             </li>
                             <li class="index-item method">
+                                <a href="#method_regex">regex</a>
+
+                            </li>
+                            <li class="index-item method">
                                 <a href="#method_search">search</a>
 
                             </li>
@@ -337,7 +342,7 @@ A filter can contain only one &quot;or&quot; operation, one &quot;nor&quot; oper
   <div class="meta method-meta">
       <p>
           Defined in
-      <a href="../files/lib_storages_ResourceFilter.js.html#l100"><code>lib&#x2F;storages&#x2F;ResourceFilter.js:100</code></a>
+      <a href="../files/lib_storages_ResourceFilter.js.html#l102"><code>lib&#x2F;storages&#x2F;ResourceFilter.js:102</code></a>
   </p>
 
 
@@ -456,7 +461,7 @@ A filter can contain only one &quot;or&quot; operation, one &quot;nor&quot; oper
   <div class="meta method-meta">
       <p>
           Defined in
-      <a href="../files/lib_storages_ResourceFilter.js.html#l124"><code>lib&#x2F;storages&#x2F;ResourceFilter.js:124</code></a>
+      <a href="../files/lib_storages_ResourceFilter.js.html#l126"><code>lib&#x2F;storages&#x2F;ResourceFilter.js:126</code></a>
   </p>
 
 
@@ -534,7 +539,7 @@ A filter can contain only one &quot;or&quot; operation, one &quot;nor&quot; oper
   <div class="meta method-meta">
       <p>
           Defined in
-      <a href="../files/lib_storages_ResourceFilter.js.html#l336"><code>lib&#x2F;storages&#x2F;ResourceFilter.js:336</code></a>
+      <a href="../files/lib_storages_ResourceFilter.js.html#l357"><code>lib&#x2F;storages&#x2F;ResourceFilter.js:357</code></a>
   </p>
 
 
@@ -610,7 +615,7 @@ A filter can contain only one &quot;or&quot; operation, one &quot;nor&quot; oper
   <div class="meta method-meta">
       <p>
           Defined in
-      <a href="../files/lib_storages_ResourceFilter.js.html#l162"><code>lib&#x2F;storages&#x2F;ResourceFilter.js:162</code></a>
+      <a href="../files/lib_storages_ResourceFilter.js.html#l164"><code>lib&#x2F;storages&#x2F;ResourceFilter.js:164</code></a>
   </p>
 
 
@@ -700,7 +705,7 @@ A filter can contain only one &quot;or&quot; operation, one &quot;nor&quot; oper
   <div class="meta method-meta">
       <p>
           Defined in
-      <a href="../files/lib_storages_ResourceFilter.js.html#l181"><code>lib&#x2F;storages&#x2F;ResourceFilter.js:181</code></a>
+      <a href="../files/lib_storages_ResourceFilter.js.html#l183"><code>lib&#x2F;storages&#x2F;ResourceFilter.js:183</code></a>
   </p>
 
 
@@ -790,7 +795,7 @@ A filter can contain only one &quot;or&quot; operation, one &quot;nor&quot; oper
   <div class="meta method-meta">
       <p>
           Defined in
-      <a href="../files/lib_storages_ResourceFilter.js.html#l381"><code>lib&#x2F;storages&#x2F;ResourceFilter.js:381</code></a>
+      <a href="../files/lib_storages_ResourceFilter.js.html#l402"><code>lib&#x2F;storages&#x2F;ResourceFilter.js:402</code></a>
   </p>
 
 
@@ -883,7 +888,7 @@ A filter can contain only one &quot;or&quot; operation, one &quot;nor&quot; oper
   <div class="meta method-meta">
       <p>
           Defined in
-      <a href="../files/lib_storages_ResourceFilter.js.html#l200"><code>lib&#x2F;storages&#x2F;ResourceFilter.js:200</code></a>
+      <a href="../files/lib_storages_ResourceFilter.js.html#l202"><code>lib&#x2F;storages&#x2F;ResourceFilter.js:202</code></a>
   </p>
 
 
@@ -973,7 +978,7 @@ A filter can contain only one &quot;or&quot; operation, one &quot;nor&quot; oper
   <div class="meta method-meta">
       <p>
           Defined in
-      <a href="../files/lib_storages_ResourceFilter.js.html#l219"><code>lib&#x2F;storages&#x2F;ResourceFilter.js:219</code></a>
+      <a href="../files/lib_storages_ResourceFilter.js.html#l221"><code>lib&#x2F;storages&#x2F;ResourceFilter.js:221</code></a>
   </p>
 
 
@@ -1063,7 +1068,7 @@ A filter can contain only one &quot;or&quot; operation, one &quot;nor&quot; oper
   <div class="meta method-meta">
       <p>
           Defined in
-      <a href="../files/lib_storages_ResourceFilter.js.html#l367"><code>lib&#x2F;storages&#x2F;ResourceFilter.js:367</code></a>
+      <a href="../files/lib_storages_ResourceFilter.js.html#l388"><code>lib&#x2F;storages&#x2F;ResourceFilter.js:388</code></a>
   </p>
 
 
@@ -1139,7 +1144,7 @@ A filter can contain only one &quot;or&quot; operation, one &quot;nor&quot; oper
   <div class="meta method-meta">
       <p>
           Defined in
-      <a href="../files/lib_storages_ResourceFilter.js.html#l276"><code>lib&#x2F;storages&#x2F;ResourceFilter.js:276</code></a>
+      <a href="../files/lib_storages_ResourceFilter.js.html#l278"><code>lib&#x2F;storages&#x2F;ResourceFilter.js:278</code></a>
   </p>
 
 
@@ -1229,7 +1234,7 @@ A filter can contain only one &quot;or&quot; operation, one &quot;nor&quot; oper
   <div class="meta method-meta">
       <p>
           Defined in
-      <a href="../files/lib_storages_ResourceFilter.js.html#l294"><code>lib&#x2F;storages&#x2F;ResourceFilter.js:294</code></a>
+      <a href="../files/lib_storages_ResourceFilter.js.html#l296"><code>lib&#x2F;storages&#x2F;ResourceFilter.js:296</code></a>
   </p>
 
 
@@ -1319,7 +1324,7 @@ A filter can contain only one &quot;or&quot; operation, one &quot;nor&quot; oper
   <div class="meta method-meta">
       <p>
           Defined in
-      <a href="../files/lib_storages_ResourceFilter.js.html#l82"><code>lib&#x2F;storages&#x2F;ResourceFilter.js:82</code></a>
+      <a href="../files/lib_storages_ResourceFilter.js.html#l84"><code>lib&#x2F;storages&#x2F;ResourceFilter.js:84</code></a>
   </p>
 
 
@@ -1410,7 +1415,7 @@ A filter can contain only one &quot;or&quot; operation, one &quot;nor&quot; oper
   <div class="meta method-meta">
       <p>
           Defined in
-      <a href="../files/lib_storages_ResourceFilter.js.html#l238"><code>lib&#x2F;storages&#x2F;ResourceFilter.js:238</code></a>
+      <a href="../files/lib_storages_ResourceFilter.js.html#l240"><code>lib&#x2F;storages&#x2F;ResourceFilter.js:240</code></a>
   </p>
 
 
@@ -1500,7 +1505,7 @@ A filter can contain only one &quot;or&quot; operation, one &quot;nor&quot; oper
   <div class="meta method-meta">
       <p>
           Defined in
-      <a href="../files/lib_storages_ResourceFilter.js.html#l257"><code>lib&#x2F;storages&#x2F;ResourceFilter.js:257</code></a>
+      <a href="../files/lib_storages_ResourceFilter.js.html#l259"><code>lib&#x2F;storages&#x2F;ResourceFilter.js:259</code></a>
   </p>
 
 
@@ -1590,7 +1595,7 @@ A filter can contain only one &quot;or&quot; operation, one &quot;nor&quot; oper
   <div class="meta method-meta">
       <p>
           Defined in
-      <a href="../files/lib_storages_ResourceFilter.js.html#l324"><code>lib&#x2F;storages&#x2F;ResourceFilter.js:324</code></a>
+      <a href="../files/lib_storages_ResourceFilter.js.html#l345"><code>lib&#x2F;storages&#x2F;ResourceFilter.js:345</code></a>
   </p>
 
 
@@ -1666,7 +1671,7 @@ A filter can contain only one &quot;or&quot; operation, one &quot;nor&quot; oper
   <div class="meta method-meta">
       <p>
           Defined in
-      <a href="../files/lib_storages_ResourceFilter.js.html#l312"><code>lib&#x2F;storages&#x2F;ResourceFilter.js:312</code></a>
+      <a href="../files/lib_storages_ResourceFilter.js.html#l333"><code>lib&#x2F;storages&#x2F;ResourceFilter.js:333</code></a>
   </p>
 
 
@@ -1736,13 +1741,103 @@ A filter can contain only one &quot;or&quot; operation, one &quot;nor&quot; oper
 
 
 </div>
+<div id="method_regex" class="method item">
+  <h3 class="blue-method-name">regex</h3>
+
+  <div class="meta method-meta">
+      <p>
+          Defined in
+      <a href="../files/lib_storages_ResourceFilter.js.html#l314"><code>lib&#x2F;storages&#x2F;ResourceFilter.js:314</code></a>
+  </p>
+
+
+
+  </div>
+
+  <h3>Syntax</h3>
+  <div class="blue-method-syntax">
+  <h3 class="name"><code>regex</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>field</code>
+                </li>
+                <li class="arg">
+                        <code>value</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type"><a href="../classes/ResourceFilter.html" class="crosslink">ResourceFilter</a></span>
+        </span>
+
+
+
+
+
+
+
+  </div>
+    <div class="description">
+      <h3>Summary</h3>
+        <p>Adds a &quot;regular expression&quot; operation to the filter.</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">field</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+
+
+                    <div class="param-description">
+                        <p>The name of the field</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">value</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp" class="crosslink external" target="_blank">RegExp</a></span>
+
+
+                    <div class="param-description">
+                        <p>The regular expression to compare the field to</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                <span class="type"><a href="../classes/ResourceFilter.html" class="crosslink">ResourceFilter</a></span>:
+                <div class="blue-return-desc">
+                    <p>The actual filter</p>
+
+                </div>
+
+
+            </div>
+        </div>
+
+
+</div>
 <div id="method_search" class="method item">
   <h3 class="blue-method-name">search</h3>
 
   <div class="meta method-meta">
       <p>
           Defined in
-      <a href="../files/lib_storages_ResourceFilter.js.html#l348"><code>lib&#x2F;storages&#x2F;ResourceFilter.js:348</code></a>
+      <a href="../files/lib_storages_ResourceFilter.js.html#l369"><code>lib&#x2F;storages&#x2F;ResourceFilter.js:369</code></a>
   </p>
 
 
@@ -1823,7 +1918,7 @@ A filter can contain only one &quot;or&quot; operation, one &quot;nor&quot; oper
                       <div class="meta method-meta">
                           <p>
                               Defined in
-                          <a href="../files/lib_storages_ResourceFilter.js.html#l41"><code>lib&#x2F;storages&#x2F;ResourceFilter.js:41</code></a>
+                          <a href="../files/lib_storages_ResourceFilter.js.html#l42"><code>lib&#x2F;storages&#x2F;ResourceFilter.js:42</code></a>
                       </p>
                     
                     
@@ -1857,7 +1952,7 @@ A filter can contain only one &quot;or&quot; operation, one &quot;nor&quot; oper
                       <div class="meta method-meta">
                           <p>
                               Defined in
-                          <a href="../files/lib_storages_ResourceFilter.js.html#l58"><code>lib&#x2F;storages&#x2F;ResourceFilter.js:58</code></a>
+                          <a href="../files/lib_storages_ResourceFilter.js.html#l59"><code>lib&#x2F;storages&#x2F;ResourceFilter.js:59</code></a>
                       </p>
                     
                     
