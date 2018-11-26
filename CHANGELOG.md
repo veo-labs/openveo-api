@@ -1,3 +1,10 @@
+# 6.2.0 / YYYY-MM-DD
+
+## NEW FEATURES
+
+- Add require('@openveo/api').imageProcessor to help manipulate images
+- Add require('@openveo/api').imageProcessor.generateThumbnail to be able to generate a thumbnail of an image with the possibility to crop it and set its quality
+
 # 6.1.0 / 2018-10-26
 
 ## NEW FEATURES

@@ -11,6 +11,7 @@ process.requireApi = function(filePath) {
 module.exports.fileSystem = process.requireApi('lib/fileSystem.js');
 module.exports.util = process.requireApi('lib/util.js');
 module.exports.logger = process.requireApi('lib/logger.js');
+module.exports.imageProcessor = process.requireApi('lib/imageProcessor.js');
 module.exports.storages = process.requireApi('lib/storages/index.js');
 module.exports.plugin = process.requireApi('lib/plugin/index.js');
 module.exports.middlewares = process.requireApi('lib/middlewares/index.js');
