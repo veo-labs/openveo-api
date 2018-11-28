@@ -20,7 +20,8 @@ module.exports = {
       'tests/server/plugin/*.js',
       'tests/server/middlewares/*.js',
       'tests/server/storages/*.js',
-      'tests/server/multipart/*.js'
+      'tests/server/multipart/*.js',
+      'tests/server/processor/*.js'
     ]
   }
 

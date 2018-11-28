@@ -4,6 +4,9 @@
 
 - Add require('@openveo/api').imageProcessor to help manipulate images
 - Add require('@openveo/api').imageProcessor.generateThumbnail to be able to generate a thumbnail of an image with the possibility to crop it and set its quality
+- Add require('@openveo/api').imageProcessor.append to create an image using several input images appended in lines (horizontally or vertically)
+- Add require('@openveo/api').imageProcessor.generateSprite to create a sprite image (as a grid of images) using several input images
+- Add require('@openveo/api').imageProcessor.generateSprites to create sprite images using several input images. Depending on the number of input images and the size of the sprite grid, it might create several sprite images
 
 # 6.1.0 / 2018-10-26
 
