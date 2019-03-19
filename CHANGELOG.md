@@ -7,6 +7,7 @@
 - Add require('@openveo/api').imageProcessor.append to create an image using several input images appended in lines (horizontally or vertically)
 - Add require('@openveo/api').imageProcessor.generateSprite to create a sprite image (as a grid of images) using several input images
 - Add require('@openveo/api').imageProcessor.generateSprites to create sprite images using several input images. Depending on the number of input images and the size of the sprite grid, it might create several sprite images
+- Add require('@openveo/api').grunt.copyTask as a grunt task to copy directories or files
 
 # 6.1.0 / 2018-10-26
 
