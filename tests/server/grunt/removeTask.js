@@ -11,7 +11,7 @@ describe('removeTask', function() {
   var tmpDir = path.join(__dirname, 'tmp');
   var src = path.join(tmpDir, 'source');
   var grunt;
-  var renameFunction;
+  var removeFunction;
 
   // Mock
   beforeEach(function() {
@@ -37,7 +37,7 @@ describe('removeTask', function() {
 
   // Prepare tests
   beforeEach(function() {
-    renameFunction = removeTask(grunt);
+    removeFunction = removeTask(grunt);
   });
 
   // Create tmp directory
@@ -62,7 +62,7 @@ describe('removeTask', function() {
       });
     }
 
-    renameFunction.call({
+    removeFunction.call({
       files: [
         {
           src: [src]
