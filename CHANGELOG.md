@@ -1,4 +1,4 @@
-# 6.2.0 / YYYY-MM-DD
+# 6.2.0 / 2019-03-25
 
 ## NEW FEATURES
 
