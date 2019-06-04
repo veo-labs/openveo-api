@@ -20,13 +20,15 @@ describe('util', function() {
         },
         {
           property1: 'newValue1',
-          property3: 'value3'
+          property3: 'value3',
+          property4: null
         }
       );
 
       assert.equal(mergedObject.property1, 'newValue1');
       assert.equal(mergedObject.property2, 'value2');
       assert.equal(mergedObject.property3, 'value3');
+      assert.isNull(mergedObject.property4);
     });
 
     it('should be able to recursively merge two objects with depth > 1', function() {

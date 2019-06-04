@@ -1,3 +1,9 @@
+# 6.2.1 / YYYY-MM-DD
+
+## BUG FIXES
+
+- require('@openveo/api').util.merge now leaves properties with value null as is instead of setting properties values to an empty Object
+
 # 6.2.0 / 2019-03-25
 
 ## NEW FEATURES
