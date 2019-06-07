@@ -1,3 +1,9 @@
+# 6.2.2 / YYYY-MM-DD
+
+## BUG FIXES
+
+- require('@openveo/api').fileSystem.extract now executes callback with an error for an incomplete archive
+
 # 6.2.1 / 2019-06-04
 
 ## BUG FIXES
