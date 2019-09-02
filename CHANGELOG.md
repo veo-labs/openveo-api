@@ -1,3 +1,9 @@
+# 6.2.2 / YYYY-MM-DD
+
+## BUG FIXES
+
+- Fix duplicate values returned by require('@openveo/api').util.intersectArray when the same value was used several times in the same array
+
 # 6.2.1 / 2019-06-04
 
 ## BUG FIXES

@@ -127,11 +127,54 @@ describe('util', function() {
     it('should be able to make intersection of two arrays', function() {
       var obj1 = {obj1: 'obj1'};
       var obj2 = {obj2: 'obj2'};
-      var intersectedArray = util.intersectArray(
-        [1, 2, 3, obj1, obj2, 'string1', null, undefined],
-        [2, 4, obj2, 'string1', 'string2', null, undefined]);
+      var tests = [
+        {
+          array1: [1, 2, 3, obj1, obj2, 'string1', null, undefined],
+          array2: [2, 4, obj2, 'string1', 'string2', null, undefined],
+          expectedArray: [2, obj2, 'string1', null, undefined]
+        },
+        {
+          array1: ['1', '2', '3'],
+          array2: ['1', '1'],
+          expectedArray: ['1']
+        },
+        {
+          array1: ['1'],
+          array2: ['1', '2', '3'],
+          expectedArray: ['1']
+        },
+        {
+          array1: ['1', '1'],
+          array2: ['1', '1'],
+          expectedArray: ['1']
+        },
+        {
+          array1: [1, 1],
+          array2: [1],
+          expectedArray: [1]
+        },
+        {
+          array1: [],
+          array2: [],
+          expectedArray: []
+        },
+        {
+          array1: [1],
+          array2: [2],
+          expectedArray: []
+        }
+      ];
 
-      assert.sameMembers(intersectedArray, [2, obj2, 'string1', null, undefined]);
+      for (var i = 0; i < tests.length; i++) {
+        var test = tests[i];
+
+        assert.sameMembers(
+          util.intersectArray(test.array1, test.array2),
+          test.expectedArray,
+          'Wrong array values for test ' + i
+        );
+      }
+
     });
 
     it('should explode if one or both arguments or not arrays', function() {
