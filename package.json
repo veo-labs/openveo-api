@@ -1,6 +1,6 @@
 {
   "name": "@openveo/api",
-  "version": "6.2.1",
+  "version": "6.2.2",
   "description": "API for OpenVeo plugins",
   "keywords": [
     "openveo",
