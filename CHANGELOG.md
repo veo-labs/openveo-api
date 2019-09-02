@@ -1,8 +1,14 @@
-# 6.2.2 / YYYY-MM-DD
+# 6.2.3 / YYYY-MM-DD
 
 ## BUG FIXES
 
 - require('@openveo/api').fileSystem.extract now executes callback with an error for an incomplete archive
+
+# 6.2.2 / 2019-09-02
+
+## BUG FIXES
+
+- Fix duplicate values returned by require('@openveo/api').util.intersectArray when the same value was used several times in the same array
 
 # 6.2.1 / 2019-06-04
 
