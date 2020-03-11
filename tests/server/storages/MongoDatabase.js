@@ -526,12 +526,17 @@ describe('MongoDatabase', function() {
     it('should build a MongoDB sort object', function() {
       var expectedSort = {
         field1: 'asc',
-        field2: 'desc'
+        field2: 'desc',
+        field3: 'score'
       };
       var sort = MongoDatabase.buildSort(expectedSort);
 
-      for (var field in sort)
-        assert.equal(sort[field], expectedSort[field] === 'asc' ? 1 : -1, 'Wrong sort on ' + field);
+      for (var field in sort) {
+        if (expectedSort[field] === 'score')
+          assert.deepEqual(sort[field], {$meta: 'textScore'}, 'Wrong score sort on ' + field);
+        else
+          assert.equal(sort[field], expectedSort[field] === 'asc' ? 1 : -1, 'Wrong sort on ' + field);
+      }
     });
 
   });

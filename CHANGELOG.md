@@ -4,6 +4,10 @@
 
 - Drop support for NodeJS &lt; 12.4.0 and NPM &lt; 6.9.0
 
+## NEW FEATURES
+
+- Add support for sorting by score to require('@openveo/api').providers.EntityProvider *get* and *getAll* methods
+
 ## BUG FIXES
 
 - require('@openveo/api').fileSystem.extract now executes callback with an error for an incomplete archive
