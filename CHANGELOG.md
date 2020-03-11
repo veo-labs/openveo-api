@@ -7,6 +7,7 @@
 ## NEW FEATURES
 
 - Add support for sorting by score to require('@openveo/api').providers.EntityProvider *get* and *getAll* methods
+- Add require('@openveo/api').storages.ResourceFilter.getLogicalOperation to be able to find a logical operation from filter's operations
 
 ## BUG FIXES
 

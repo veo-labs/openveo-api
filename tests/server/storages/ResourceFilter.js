@@ -325,4 +325,42 @@ describe('ResourceFilter', function() {
 
   });
 
+  describe('getLogicalOperation', function() {
+
+    it('should return the first logical operation corresponding to specified type', function() {
+      logicalOperators.forEach(function(logicalOperator) {
+        var expectedSubFilters = [new ResourceFilter()];
+        filter = new ResourceFilter();
+        filter[logicalOperator](expectedSubFilters);
+        var operation = filter.getLogicalOperation(logicalOperator);
+        assert.strictEqual(operation.filters, expectedSubFilters, 'Wrong filters for operator ' + logicalOperator);
+      });
+    });
+
+    it('should be able to get the logical operation from filters contained in another logical operation', function() {
+      logicalOperators.forEach(function(logicalOperator) {
+        var expectedSubFilters = [new ResourceFilter()];
+        filter = new ResourceFilter();
+
+        // Test with logical operators which are not current logical operator to search for
+        var topLogicalOperators = logicalOperators.filter(function(topLogicalOperator) {
+          return topLogicalOperator !== logicalOperator;
+        });
+
+        topLogicalOperators.forEach(function(topLogicalOperator) {
+          filter[topLogicalOperator]([
+            new ResourceFilter()[logicalOperator](expectedSubFilters)
+          ]);
+          var operation = filter.getLogicalOperation(logicalOperator);
+          assert.strictEqual(operation.filters, expectedSubFilters, 'Wrong filters for operator ' + logicalOperator);
+        });
+      });
+    });
+
+    it('should return null if operation has not been found', function() {
+      assert.isNull(filter.getLogicalOperation(ResourceFilter.OPERATORS.OR));
+    });
+
+  });
+
 });
