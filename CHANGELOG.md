@@ -1,4 +1,8 @@
-# 6.2.3 / YYYY-MM-DD
+# 7.0.0 / YYYY-MM-DD
+
+## BREAKING CHANGES
+
+- Drop support for NodeJS &lt; 12.4.0 and NPM &lt; 6.9.0
 
 ## BUG FIXES
 
