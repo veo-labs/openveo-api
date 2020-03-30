@@ -23,6 +23,7 @@
 - **gm** has been upgraded from 1.23.0 to **1.23.1**
 - **multer** has been upgraded from 1.3.0 to **1.4.2**
 - **passport** has been upgraded from 0.4.0 to **0.4.1**
+- **passport-ldapauth** has been upgraded from 2.0.0 to **2.1.4**
 
 # 6.2.2 / 2019-09-02
 

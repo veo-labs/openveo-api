@@ -28,7 +28,7 @@
     "mongodb": "^3.5.5",
     "multer": "^1.4.2",
     "passport": "^0.4.1",
-    "passport-ldapauth": "2.0.0",
+    "passport-ldapauth": "^2.1.4",
     "passport-local": "1.0.0",
     "passport-strategy": "1.0.0",
     "shortid": "2.2.6",
