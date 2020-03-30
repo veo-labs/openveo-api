@@ -13,6 +13,10 @@
 
 - require('@openveo/api').fileSystem.extract now executes callback with an error for an incomplete archive
 
+## DEPENDENCIES
+
+- **async** has been upgraded from 2.1.4 to **3.2.0**
+
 # 6.2.2 / 2019-09-02
 
 ## BUG FIXES
