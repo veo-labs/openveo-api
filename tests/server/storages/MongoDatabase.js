@@ -15,6 +15,7 @@ var cursor;
 var commandCursor;
 var documents;
 var expectedDocuments;
+var expectedDatabase;
 var assert = chai.assert;
 
 chai.should();
@@ -25,7 +26,13 @@ describe('MongoDatabase', function() {
   // Initiates mocks
   beforeEach(function() {
     MongoClientMock = {
-      connect: function() {}
+      connect: function(url, options, callback) {
+        callback(null, MongoClientMock);
+      },
+      close: function() {},
+      db: function() {
+        return expectedDatabase;
+      }
     };
     MongoStoreMock = function() {};
 
@@ -53,6 +60,7 @@ describe('MongoDatabase', function() {
   beforeEach(function() {
     documents = [];
     expectedDocuments = null;
+    expectedDatabase = {};
 
     // Mock MongoDB Cursor
     cursor = {
@@ -126,7 +134,6 @@ describe('MongoDatabase', function() {
   describe('connect', function() {
 
     it('should establish a connection to the database', function(done) {
-      var expectedDatabase = {};
       var configuration = {
         username: 'username',
         password: 'password',
@@ -136,7 +143,7 @@ describe('MongoDatabase', function() {
         seedlist: 'ip:port,ip:port',
         replicaSet: 'rs'
       };
-      MongoClientMock.connect = function(url, callback) {
+      MongoClientMock.connect = function(url, options, callback) {
         assert.ok(
           url.indexOf(
             'mongodb://' +
@@ -150,7 +157,7 @@ describe('MongoDatabase', function() {
           ) === 0,
           'Wrong MongoDB url'
         );
-        callback(null, expectedDatabase);
+        callback(null, MongoClientMock);
       };
 
       var database = new MongoDatabase(configuration);
@@ -168,7 +175,7 @@ describe('MongoDatabase', function() {
         port: '27017',
         database: 'database'
       };
-      MongoClientMock.connect = function(url, callback) {
+      MongoClientMock.connect = function(url, options, callback) {
         assert.equal(
           url,
           'mongodb://' +
@@ -179,12 +186,12 @@ describe('MongoDatabase', function() {
           configuration.database,
           'Wrong MongoDB url'
         );
-        callback();
+        callback(null, MongoClientMock);
       };
 
       var database = new MongoDatabase(configuration);
       database.connect(function(error) {
-        assert.isUndefined(error, 'Unexpected error');
+        assert.isNull(error, 'Unexpected error');
         done();
       });
     });
@@ -198,7 +205,7 @@ describe('MongoDatabase', function() {
         database: 'database',
         replicaSet: 'rs'
       };
-      MongoClientMock.connect = function(url, callback) {
+      MongoClientMock.connect = function(url, options, callback) {
         assert.equal(
           url,
           'mongodb://' +
@@ -209,12 +216,12 @@ describe('MongoDatabase', function() {
           configuration.database,
           'Wrong MongoDB url'
         );
-        callback();
+        callback(null, MongoClientMock);
       };
 
       var database = new MongoDatabase(configuration);
       database.connect(function(error) {
-        assert.isUndefined(error, 'Unexpected error');
+        assert.isNull(error, 'Unexpected error');
         done();
       });
     });
@@ -228,7 +235,7 @@ describe('MongoDatabase', function() {
         database: 'database',
         seedlist: 'ip:port,ip:port'
       };
-      MongoClientMock.connect = function(url, callback) {
+      MongoClientMock.connect = function(url, options, callback) {
         assert.equal(
           url,
           'mongodb://' +
@@ -239,12 +246,12 @@ describe('MongoDatabase', function() {
           configuration.database,
           'Wrong MongoDB url'
         );
-        callback();
+        callback(null, MongoClientMock);
       };
 
       var database = new MongoDatabase(configuration);
       database.connect(function(error) {
-        assert.isUndefined(error, 'Unexpected error');
+        assert.isNull(error, 'Unexpected error');
         done();
       });
     });
@@ -259,7 +266,7 @@ describe('MongoDatabase', function() {
         database: 'database',
         seedlist: 'ip:port,ip:port'
       };
-      MongoClientMock.connect = function(url, callback) {
+      MongoClientMock.connect = function(url, options, callback) {
         callback(expectedError);
       };
 
@@ -544,7 +551,8 @@ describe('MongoDatabase', function() {
   describe('close', function() {
 
     it('should close connection to the database', function(done) {
-      database.db.close = function(callback) {
+      database.connect(function() {});
+      MongoClientMock.close = function(callback) {
         callback();
       };
 
@@ -557,7 +565,8 @@ describe('MongoDatabase', function() {
     it('should execute callback with an error if something went wrong', function(done) {
       var expectedError = new Error('Something went wrong');
 
-      database.db.close = function(callback) {
+      database.connect(function() {});
+      MongoClientMock.close = function(callback) {
         callback(expectedError);
       };
 

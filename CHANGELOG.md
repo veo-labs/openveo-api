@@ -16,6 +16,8 @@
 ## DEPENDENCIES
 
 - **async** has been upgraded from 2.1.4 to **3.2.0**
+- **connect-mongo** has been upgraded from 1.3.2 to **3.2.0**
+- **mongodb** has been upgraded from 2.2.16 to **3.5.5**
 
 # 6.2.2 / 2019-09-02
 
