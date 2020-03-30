@@ -46,7 +46,7 @@
     "grunt-gh-pages": "^3.1.0",
     "grunt-mocha-test": "^0.13.3",
     "mocha": "^7.1.1",
-    "mock-require": "3.0.2",
+    "mock-require": "^3.0.3",
     "pre-commit": "1.2.2",
     "yuidoc-theme-blue": "0.1.9"
   },
