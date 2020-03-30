@@ -32,7 +32,7 @@
     "passport-local": "^1.0.0",
     "passport-strategy": "^1.0.0",
     "shortid": "^2.2.15",
-    "socket.io": "1.7.2",
+    "socket.io": "^2.3.0",
     "tar-fs": "1.15.0",
     "winston": "2.3.0",
     "xml2js": "0.4.17"
