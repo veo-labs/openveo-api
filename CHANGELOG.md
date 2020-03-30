@@ -21,6 +21,7 @@
 - **esprima** has been upgraded from 4.0.0 to **4.0.1**
 - **express-session** has been upgraded from 1.14.2 to **1.17.0**
 - **gm** has been upgraded from 1.23.0 to **1.23.1**
+- **multer** has been upgraded from 1.3.0 to **1.4.2**
 
 # 6.2.2 / 2019-09-02
 
