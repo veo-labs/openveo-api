@@ -32,6 +32,7 @@
 - **xml2js** has been upgraded from 0.4.17 to **0.4.23**
 - **grunt** has been upgraded from 1.0.3 to **1.1.0**
 - **grunt-contrib-yuidoc** dependencies have been upgraded
+- **grunt-eslint** has been upgraded from 21.0.0 to **22.0.0**
 
 # 6.2.2 / 2019-09-02
 
