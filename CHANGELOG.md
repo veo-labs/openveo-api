@@ -34,6 +34,7 @@
 - **grunt-contrib-yuidoc** dependencies have been upgraded
 - **grunt-eslint** has been upgraded from 21.0.0 to **22.0.0**
 - **grunt-gh-pages** dependencies have been upgraded
+- **mocha** has been upgraded from 5.2.0 to **7.1.1**
 
 # 6.2.2 / 2019-09-02
 
