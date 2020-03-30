@@ -8,6 +8,7 @@
 
 - Add support for sorting by score to require('@openveo/api').providers.EntityProvider *get* and *getAll* methods
 - Add require('@openveo/api').storages.ResourceFilter.getLogicalOperation to be able to find a logical operation from filter's operations
+- Add colorization to console outputs
 
 ## BUG FIXES
 
@@ -27,6 +28,7 @@
 - **shortid** has been upgraded from 2.2.6 to **2.2.15**
 - **socket.io** has been upgraded from 1.7.2 to **2.3.0**
 - **tar-fs** has been upgraded from 1.15.0 to **1.16.3**
+- **winston** has been upgraded from 2.3.0 to **3.2.1**
 
 # 6.2.2 / 2019-09-02
 
