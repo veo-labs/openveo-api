@@ -14,6 +14,7 @@
 ## BUG FIXES
 
 - require('@openveo/api').fileSystem.extract now executes callback with an error for an incomplete archive
+- require('@openveo/api').logger didn't respect the level parameter when logging to the standard output, it does now
 
 ## DEPENDENCIES
 
