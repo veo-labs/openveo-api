@@ -3,11 +3,13 @@
 ## BREAKING CHANGES
 
 - Drop support for NodeJS &lt; 12.4.0 and NPM &lt; 6.9.0
+- require('@openveo/api').logger console parameter if now set to false by default meaning that logs won't be printed to the standard output unless console parameter is set to true
 
 ## NEW FEATURES
 
 - Add support for sorting by score to require('@openveo/api').providers.EntityProvider *get* and *getAll* methods
 - Add require('@openveo/api').storages.ResourceFilter.getLogicalOperation to be able to find a logical operation from filter's operations
+- require('@openveo/api').logger is now capable to log to standard output without logging to file by setting console parameter to true without specifying a file
 
 ## BUG FIXES
 
