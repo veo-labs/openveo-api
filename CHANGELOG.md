@@ -10,6 +10,7 @@
 - Add support for sorting by score to require('@openveo/api').providers.EntityProvider *get* and *getAll* methods
 - Add require('@openveo/api').storages.ResourceFilter.getLogicalOperation to be able to find a logical operation from filter's operations
 - require('@openveo/api').logger is now capable to log to standard output without logging to file by setting console parameter to true without specifying a file
+- Add drop index support to require('@openveo/api').storages.Database
 
 ## BUG FIXES
 

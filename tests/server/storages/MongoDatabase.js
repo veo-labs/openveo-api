@@ -1193,6 +1193,50 @@ describe('MongoDatabase', function() {
 
   });
 
+  describe('dropIndex', function() {
+
+    it('should drop index from a collection', function(done) {
+      var expectedIndexName = 'search';
+
+      collection.dropIndex = function(indexName, callback) {
+        assert.strictEqual(indexName, expectedIndexName, 'Wrong index name');
+        callback(null, expectedIndexName);
+      };
+
+      database.dropIndex('collection', expectedIndexName, function(error) {
+        assert.isNull(error, 'Unexpected error');
+        done();
+      });
+    });
+
+    it('should execute callback with an error if connecting to the collection failed', function(done) {
+      var expectedError = new Error('Something went wrong');
+
+      database.db.collection = function(collection, callback) {
+        callback(expectedError);
+      };
+
+      database.dropIndex('collection', 'search', function(error) {
+        assert.strictEqual(error, expectedError, 'Wrong error');
+        done();
+      });
+    });
+
+    it('should execute callback with an error if droping index failed', function(done) {
+      var expectedError = new Error('Something went wrong');
+
+      collection.dropIndex = function(indexName, callback) {
+        callback(expectedError);
+      };
+
+      database.dropIndex('collection', {}, function(error) {
+        assert.strictEqual(error, expectedError, 'Wrong error');
+        done();
+      });
+    });
+
+  });
+
   describe('renameCollection', function() {
 
     it('should rename a collection', function(done) {
