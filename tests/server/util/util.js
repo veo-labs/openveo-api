@@ -1346,4 +1346,47 @@ describe('util', function() {
     });
   });
 
+  // removeHtmlFromText method
+  describe('removeHtmlFromText', function() {
+
+    it('should be able to remove all HTML tags and decode all HTM entities from a text', function() {
+      var examples = [
+        {
+          original: 'Simple text without HTML',
+          expected: 'Simple text without HTML'
+        },
+        {
+          original: 'Text\n\nwith\n several lines',
+          expected: 'Text  with  several lines'
+        },
+        {
+          original: '<p style="font-color: red">Text with sub <strong>HTML tags</strong>\nand new lines',
+          expected: 'Text with sub HTML tags and new lines'
+        },
+        {
+          original: '<pre>&eacute;&ccedil;&#x00023;&#33;</pre>',
+          expected: 'éç#!'
+        }
+      ];
+
+      for (var i = 0; i < examples.length; i++) {
+        assert.equal(
+          util.removeHtmlFromText(examples[i].original),
+          examples[i].expected,
+          'Wrong response for example "' + i + '"'
+        );
+      }
+    });
+
+    it('should throw a TypeError if text is not a String', function() {
+      var invalidValues = [null, undefined, [], {}, true];
+
+      invalidValues.forEach(function(invalidValue) {
+        assert.throws(function() {
+          util.removeHtmlFromText(invalidValue);
+        }, TypeError, null, 'Expected exception when parameter is of type ' + typeof invalidValue);
+      });
+    });
+  });
+
 });
