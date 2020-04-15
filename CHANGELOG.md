@@ -17,6 +17,7 @@
 
 - require('@openveo/api').fileSystem.extract now executes callback with an error for an incomplete archive
 - require('@openveo/api').logger didn't respect the level parameter when logging to the standard output, it does now
+- require('@openveo/api').fileSystem rm, rmdir and readdir have been fixed to avoid "Callback was already called" error when something went wrong on several resources
 
 ## DEPENDENCIES
 
