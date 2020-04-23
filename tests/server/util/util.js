@@ -1357,11 +1357,19 @@ describe('util', function() {
         },
         {
           original: 'Text\n\nwith\n several lines',
-          expected: 'Text  with  several lines'
+          expected: 'Text with several lines'
         },
         {
           original: '<p style="font-color: red">Text with sub <strong>HTML tags</strong>\nand new lines',
           expected: 'Text with sub HTML tags and new lines'
+        },
+        {
+          original: 'Text with    too much   spaces',
+          expected: 'Text with too much spaces'
+        },
+        {
+          original: ' Text with begin space and trailing space ',
+          expected: 'Text with begin space and trailing space'
         },
         {
           original: '<pre>&eacute;&ccedil;&#x00023;&#33;</pre>',
