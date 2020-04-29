@@ -12,6 +12,7 @@
 - require('@openveo/api').logger is now capable to log to standard output without logging to file by setting console parameter to true without specifying a file
 - Add drop index support to require('@openveo/api').storages.Database
 - Add require('@openveo/api').util.removeHtmlFromText to be able to clean a text containing HTML entities and tags
+- Add support for STARTTLS for LDAP passport strategy
 
 ## BUG FIXES
 
