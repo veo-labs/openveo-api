@@ -1,0 +1,921 @@
+<!DOCTYPE html>
+<html lang="en" class="yui-overrride">
+<head>
+    <meta charset="utf-8">
+    <title>lib/fileSystem.js - OpenVeo server API for plugins</title>
+    <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
+    <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
+    <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700' rel='stylesheet' type='text/css'>
+    <link rel="shortcut icon" type="image/png" href="../assets/favicon.png">
+    <script src="http://yui.yahooapis.com/combo?3.9.1/build/yui/yui-min.js"></script>
+    <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
+</head>
+<body class="yui3-skin-sam">
+
+<div id="doc">
+    <div id="hd" class="yui3-g header">
+        <div class="yui3-u-3-4">
+            <h1 class="blue-main-title">OpenVeo server API for plugins</h1>
+        </div>
+        <div class="yui3-u-1-4 version project-version">
+            API Docs for: 7.0.0
+        </div>
+    </div>
+    <div id="bd" class="yui3-g">
+
+        <div class="yui3-u-1-4">
+            <div id="docs-sidebar" class="sidebar apidocs">
+                <div id="api-list">
+                    <h2 class="off-left">APIs</h2>
+                    <div id="api-tabview" class="tabview">
+                        <ul class="tabs">
+                            <li><a href="#api-classes">Classes</a></li>
+                            <li><a href="#api-modules">Modules</a></li>
+                        </ul>
+                
+                        <div id="api-tabview-filter">
+                            <input type="search" id="api-filter" placeholder="Type to filter APIs">
+                        </div>
+                
+                        <div id="api-tabview-panel">
+                            <ul id="api-classes" class="apis classes">
+                                <li><a href="../classes/AccessError.html">AccessError</a></li>
+                                <li><a href="../classes/AdvancedEmitter.html">AdvancedEmitter</a></li>
+                                <li><a href="../classes/AdvancedEvent.html">AdvancedEvent</a></li>
+                                <li><a href="../classes/CAS.html">CAS</a></li>
+                                <li><a href="../classes/CAS1.html">CAS1</a></li>
+                                <li><a href="../classes/CAS2.html">CAS2</a></li>
+                                <li><a href="../classes/CAS3.html">CAS3</a></li>
+                                <li><a href="../classes/CasStrategy.html">CasStrategy</a></li>
+                                <li><a href="../classes/ComponentExpression.html">ComponentExpression</a></li>
+                                <li><a href="../classes/ConfigExpression.html">ConfigExpression</a></li>
+                                <li><a href="../classes/ConstantExpression.html">ConstantExpression</a></li>
+                                <li><a href="../classes/ContentController.html">ContentController</a></li>
+                                <li><a href="../classes/Controller.html">Controller</a></li>
+                                <li><a href="../classes/copyTask.html">copyTask</a></li>
+                                <li><a href="../classes/Database.html">Database</a></li>
+                                <li><a href="../classes/database-errors.html">database-errors</a></li>
+                                <li><a href="../classes/DirectiveExpression.html">DirectiveExpression</a></li>
+                                <li><a href="../classes/disableCacheMiddleware.html">disableCacheMiddleware</a></li>
+                                <li><a href="../classes/ElementExpression.html">ElementExpression</a></li>
+                                <li><a href="../classes/EntityController.html">EntityController</a></li>
+                                <li><a href="../classes/EntityProvider.html">EntityProvider</a></li>
+                                <li><a href="../classes/Expression.html">Expression</a></li>
+                                <li><a href="../classes/factory.html">factory</a></li>
+                                <li><a href="../classes/fileSystem.html">fileSystem</a></li>
+                                <li><a href="../classes/FilterExpression.html">FilterExpression</a></li>
+                                <li><a href="../classes/http-errors.html">http-errors</a></li>
+                                <li><a href="../classes/HttpController.html">HttpController</a></li>
+                                <li><a href="../classes/imageProcessor.html">imageProcessor</a></li>
+                                <li><a href="../classes/imageProcessorMiddleware.html">imageProcessorMiddleware</a></li>
+                                <li><a href="../classes/InjectExpression.html">InjectExpression</a></li>
+                                <li><a href="../classes/logger.html">logger</a></li>
+                                <li><a href="../classes/logRequestMiddleware.html">logRequestMiddleware</a></li>
+                                <li><a href="../classes/ModuleExpression.html">ModuleExpression</a></li>
+                                <li><a href="../classes/MongoDatabase.html">MongoDatabase</a></li>
+                                <li><a href="../classes/MultipartParser.html">MultipartParser</a></li>
+                                <li><a href="../classes/ngDpTask.html">ngDpTask</a></li>
+                                <li><a href="../classes/NotFoundError.html">NotFoundError</a></li>
+                                <li><a href="../classes/Pilot.html">Pilot</a></li>
+                                <li><a href="../classes/Plugin.html">Plugin</a></li>
+                                <li><a href="../classes/PluginApi.html">PluginApi</a></li>
+                                <li><a href="../classes/Provider.html">Provider</a></li>
+                                <li><a href="../classes/removeTask.html">removeTask</a></li>
+                                <li><a href="../classes/renameTask.html">renameTask</a></li>
+                                <li><a href="../classes/ResourceFilter.html">ResourceFilter</a></li>
+                                <li><a href="../classes/RouteExpression.html">RouteExpression</a></li>
+                                <li><a href="../classes/SocketController.html">SocketController</a></li>
+                                <li><a href="../classes/SocketNamespace.html">SocketNamespace</a></li>
+                                <li><a href="../classes/SocketServer.html">SocketServer</a></li>
+                                <li><a href="../classes/Storage.html">Storage</a></li>
+                                <li><a href="../classes/StorageError.html">StorageError</a></li>
+                                <li><a href="../classes/STRATEGIES.html">STRATEGIES</a></li>
+                                <li><a href="../classes/util.html">util</a></li>
+                                <li><a href="../classes/ValueExpression.html">ValueExpression</a></li>
+                            </ul>
+                
+                            <ul id="api-modules" class="apis modules">
+                                <li><a href="../modules/controllers.html">controllers</a></li>
+                                <li><a href="../modules/emitters.html">emitters</a></li>
+                                <li><a href="../modules/errors.html">errors</a></li>
+                                <li><a href="../modules/fileSystem.html">fileSystem</a></li>
+                                <li><a href="../modules/grunt.html">grunt</a></li>
+                                <li><a href="../modules/imageProcessor.html">imageProcessor</a></li>
+                                <li><a href="../modules/logger.html">logger</a></li>
+                                <li><a href="../modules/middlewares.html">middlewares</a></li>
+                                <li><a href="../modules/multipart.html">multipart</a></li>
+                                <li><a href="../modules/passport.html">passport</a></li>
+                                <li><a href="../modules/plugin.html">plugin</a></li>
+                                <li><a href="../modules/providers.html">providers</a></li>
+                                <li><a href="../modules/socket.html">socket</a></li>
+                                <li><a href="../modules/storages.html">storages</a></li>
+                                <li><a href="../modules/util.html">util</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="yui3-u-3-4">
+                <div id="api-options">
+                    Show:
+                    <label for="api-show-inherited">
+                        <input type="checkbox" id="api-show-inherited" checked>
+                        Inherited
+                    </label>
+            
+                    <label for="api-show-protected">
+                        <input type="checkbox" id="api-show-protected">
+                        Protected
+                    </label>
+            
+                    <label for="api-show-private">
+                        <input type="checkbox" id="api-show-private">
+                        Private
+                    </label>
+                    <label for="api-show-deprecated">
+                        <input type="checkbox" id="api-show-deprecated">
+                        Deprecated
+                    </label>
+            
+                </div>
+            
+            <div class="apidocs">
+                <div id="docs-main">
+                    <div class="content">
+<h1 class="file-heading">File: lib/fileSystem.js</h1>
+
+<div class="file">
+    <pre class="code prettyprint linenums">
+&#x27;use strict&#x27;;
+
+/**
+ * Defines functions to interact with the file system as an extension to the Node.js filesystem module.
+ *
+ *     // Load module &quot;fileSystem&quot;
+ *     var fsApi = require(&#x27;@openveo/api&#x27;).fileSystem;
+ *
+ * @module fileSystem
+ * @main fileSystem
+ * @class fileSystem
+ * @static
+ */
+
+var fs = require(&#x27;fs&#x27;);
+var path = require(&#x27;path&#x27;);
+var tar = require(&#x27;tar-fs&#x27;);
+
+/**
+ * Creates a directory recursively and asynchronously.
+ *
+ * If parent directories do not exist, they will be automatically created.
+ *
+ * @method mkdirRecursive
+ * @private
+ * @static
+ * @async
+ * @param {String} directoryPath The directory system path to create
+ * @param {Function} callback The function to call when done
+ *   - **Error** The error if an error occurred, null otherwise
+ */
+function mkdirRecursive(directoryPath, callback) {
+  directoryPath = path.resolve(directoryPath);
+
+  // Try to create directory
+  fs.mkdir(directoryPath, function(error) {
+
+    if (error &amp;&amp; error.code === &#x27;EEXIST&#x27;) {
+
+      // Can&#x27;t create directory it already exists
+      // It may have been created by another loop
+      callback();
+
+    } else if (error &amp;&amp; error.code === &#x27;ENOENT&#x27;) {
+
+      // Can&#x27;t create directory, parent directory does not exist
+
+      // Create parent directory
+      mkdirRecursive(path.dirname(directoryPath), function(error) {
+        if (!error) {
+
+          // Now that parent directory is created, create requested directory
+          fs.mkdir(directoryPath, function(error) {
+            if (error &amp;&amp; error.code === &#x27;EEXIST&#x27;) {
+
+              // Can&#x27;t create directory it already exists
+              // It may have been created by another loop
+              callback();
+
+            } else
+              callback(error);
+          });
+
+        } else
+          callback(error);
+      });
+    } else
+      callback(error);
+  });
+}
+
+/**
+ * Removes a directory and all its content recursively and asynchronously.
+ *
+ * It is assumed that the directory exists.
+ *
+ * @method rmdirRecursive
+ * @private
+ * @static
+ * @async
+ * @param {String} directoryPath Path of the directory to remove
+ * @param {Function} callback The function to call when done
+ *   - **Error** The error if an error occurred, null otherwise
+ */
+function rmdirRecursive(directoryPath, callback) {
+  var terminated = false;
+  var terminate = function(error) {
+    if (terminated) return;
+    terminated = true;
+    callback(error);
+  };
+
+  // Open directory
+  fs.readdir(directoryPath, function(error, resources) {
+
+    // Failed reading directory
+    if (error)
+      return terminate(error);
+
+    var pendingResourceNumber = resources.length;
+
+    // No more pending resources, done for this directory
+    if (!pendingResourceNumber) {
+
+      // Remove directory
+      fs.rmdir(directoryPath, terminate);
+
+    }
+
+    // Iterate through the list of resources in the directory
+    resources.forEach(function(resource) {
+
+      var resourcePath = path.join(directoryPath, resource);
+
+      // Get resource stats
+      fs.stat(resourcePath, function(error, stats) {
+        if (terminated) return;
+        if (error)
+          return terminate(error);
+
+        // Resource correspond to a directory
+        if (stats.isDirectory()) {
+
+          resources = rmdirRecursive(path.join(directoryPath, resource), function(error) {
+            if (terminated) return;
+            if (error)
+              return terminate(error);
+
+            pendingResourceNumber--;
+
+            if (!pendingResourceNumber)
+              fs.rmdir(directoryPath, terminate);
+
+          });
+
+        } else {
+
+          // Resource does not correspond to a directory
+          // Mark resource as treated
+
+          // Remove file
+          fs.unlink(resourcePath, function(error) {
+            if (terminated) return;
+            if (error)
+              return terminate(error);
+            else {
+              pendingResourceNumber--;
+
+              if (!pendingResourceNumber)
+                fs.rmdir(directoryPath, terminate);
+
+            }
+          });
+
+        }
+
+      });
+
+    });
+
+  });
+
+}
+
+/**
+ * Reads a directory content recursively and asynchronously.
+ *
+ * It is assumed that the directory exists.
+ *
+ * @method readdirRecursive
+ * @private
+ * @static
+ * @async
+ * @param {String} directoryPath Path of the directory
+ * @param {Function} callback The function to call when done
+ *   - **Error** The error if an error occurred, null otherwise
+ *   - **Array** The list of fs.Stats corresponding to resources inside the directory (files and directories)
+ */
+function readdirRecursive(directoryPath, callback) {
+  var resources = [];
+  var terminated = false;
+  var terminate = function(error, results) {
+    if (terminated) return;
+    terminated = true;
+    callback(error, results);
+  };
+
+  // Read directory
+  fs.readdir(directoryPath, function(error, resourcesNames) {
+
+    // Failed reading directory
+    if (error) return terminate(error);
+
+    var pendingResourceNumber = resourcesNames.length;
+
+    // No more pending resources, done for this directory
+    if (!pendingResourceNumber)
+      return terminate(null, resources);
+
+    // Iterate through the list of resources in the directory
+    resourcesNames.forEach(function(resourceName) {
+      var resourcePath = path.join(directoryPath, resourceName);
+
+      // Get resource stats
+      fs.stat(resourcePath, function(error, stats) {
+        if (terminated) return;
+        if (error)
+          return terminate(error);
+
+        stats.path = resourcePath;
+        resources.push(stats);
+
+        // Resource correspond to a directory
+        if (stats.isDirectory()) {
+
+          readdirRecursive(resourcePath, function(error, paths) {
+            if (terminated) return;
+            if (error)
+              return terminate(error);
+
+            resources = resources.concat(paths);
+            pendingResourceNumber--;
+
+            if (!pendingResourceNumber)
+              terminate(null, resources);
+
+          });
+
+        } else {
+
+          // Resource does not correspond to a directory
+          // Mark resource as treated
+
+          pendingResourceNumber--;
+
+          if (!pendingResourceNumber)
+            terminate(null, resources);
+        }
+
+      });
+
+    });
+
+  });
+
+}
+
+/**
+ * Copies a file.
+ *
+ * If directory does not exist it will be automatically created.
+ *
+ * @method copyFile
+ * @private
+ * @static
+ * @async
+ * @param {String} sourceFilePath Path of the file
+ * @param {String} destinationFilePath Final path of the file
+ * @param {Function} callback The function to call when done
+ *   - **Error** The error if an error occurred, null otherwise
+ */
+function copyFile(sourceFilePath, destinationFilePath, callback) {
+  var onError = function(error) {
+    callback(error);
+  };
+
+  var safecopy = function(sourceFilePath, destinationFilePath, callback) {
+    if (sourceFilePath &amp;&amp; destinationFilePath &amp;&amp; callback) {
+      try {
+        var is = fs.createReadStream(sourceFilePath);
+        var os = fs.createWriteStream(destinationFilePath);
+
+        is.on(&#x27;error&#x27;, onError);
+        os.on(&#x27;error&#x27;, onError);
+
+        is.on(&#x27;end&#x27;, function() {
+          os.end();
+        });
+
+        os.on(&#x27;finish&#x27;, function() {
+          callback();
+        });
+
+        is.pipe(os);
+      } catch (e) {
+        callback(new Error(e.message));
+      }
+    } else callback(new Error(&#x27;File path not defined&#x27;));
+  };
+
+  var pathDir = path.dirname(destinationFilePath);
+
+  this.mkdir(pathDir,
+    function(error) {
+      if (error) callback(error);
+      else safecopy(sourceFilePath, destinationFilePath, callback);
+    }
+  );
+}
+
+/**
+ * The list of file types.
+ *
+ * @property FILE_TYPES
+ * @type Object
+ * @final
+ */
+module.exports.FILE_TYPES = {
+  JPG: &#x27;jpg&#x27;,
+  PNG: &#x27;png&#x27;,
+  GIF: &#x27;gif&#x27;,
+  TAR: &#x27;tar&#x27;,
+  MP4: &#x27;mp4&#x27;,
+  BMP: &#x27;bmp&#x27;,
+  UNKNOWN: &#x27;unknown&#x27;
+};
+
+Object.freeze(this.FILE_TYPES);
+
+/**
+ * The list of file types.
+ *
+ * @property FILE_TYPES
+ * @type Object
+ * @final
+ */
+module.exports.FILE_SIGNATURES = {
+  [this.FILE_TYPES.JPG]: [
+    {
+      offset: 0,
+      signature: &#x27;ffd8ffdb&#x27;
+    },
+    {
+      offset: 0,
+      signature: &#x27;ffd8ffe0&#x27;
+    },
+    {
+      offset: 0,
+      signature: &#x27;ffd8ffe1&#x27;
+    },
+    {
+      offset: 0,
+      signature: &#x27;ffd8fffe&#x27;
+    }
+  ],
+  [this.FILE_TYPES.PNG]: [{
+    offset: 0,
+    signature: &#x27;89504e47&#x27;
+  }],
+  [this.FILE_TYPES.GIF]: [{
+    offset: 0,
+    signature: &#x27;47494638&#x27;
+  }],
+  [this.FILE_TYPES.TAR]: [{
+    offset: 257,
+    signature: &#x27;7573746172&#x27; // ustar
+  }],
+  [this.FILE_TYPES.MP4]: [
+    {
+      offset: 4,
+      signature: &#x27;6674797069736f6d&#x27; // isom
+    },
+    {
+      offset: 4,
+      signature: &#x27;6674797033677035&#x27; // 3gp5
+    },
+    {
+      offset: 4,
+      signature: &#x27;667479706d703431&#x27; // mp41
+    },
+    {
+      offset: 4,
+      signature: &#x27;667479706d703432&#x27; // mp42
+    },
+    {
+      offset: 4,
+      signature: &#x27;667479704d534e56&#x27; // MSNV
+    },
+    {
+      offset: 4,
+      signature: &#x27;667479704d345620&#x27; // M4V
+    }
+  ]
+};
+
+Object.freeze(this.FILE_SIGNATURES);
+
+/**
+ * Extracts a tar file to the given directory.
+ *
+ * @method extract
+ * @static
+ * @async
+ * @param {String} filePath Path of the file to extract
+ * @param {String} destinationPath Path of the directory where to
+ * extract files
+ * @param {Function} [callback] The function to call when done
+ *   - **Error** The error if an error occurred, null otherwise
+ */
+module.exports.extract = function(filePath, destinationPath, callback) {
+  var streamError;
+
+  callback = callback || function(error) {
+    if (error)
+      process.logger.error(&#x27;Extract error&#x27;, {error: error, path: destinationPath});
+    else
+      process.logger.silly(filePath + &#x27; extracted into &#x27; + destinationPath);
+  };
+
+  if (filePath &amp;&amp; destinationPath) {
+
+    // Prepare the extractor with destination path
+    var extractor = tar.extract(path.normalize(destinationPath));
+
+    var onError = function(error) {
+      streamError = error;
+      extractor.end();
+      callback(streamError);
+    };
+
+    // Handle extraction end
+    extractor.on(&#x27;finish&#x27;, function() {
+      process.logger.silly(&#x27;extractor end&#x27;, {path: destinationPath});
+
+      if (!streamError) callback();
+    });
+
+    var tarFileReadableStream = fs.createReadStream(path.normalize(filePath));
+
+    // Handle errors
+    tarFileReadableStream.on(&#x27;error&#x27;, onError);
+    extractor.on(&#x27;error&#x27;, onError);
+
+    // Extract file
+    tarFileReadableStream.pipe(extractor);
+
+  } else
+    callback(new TypeError(&#x27;Invalid filePath and / or destinationPath, expected strings&#x27;));
+};
+
+/**
+ * Copies a file or a directory.
+ *
+ * @method copy
+ * @static
+ * @async
+ * @param {String} sourcePath Path of the source to copy
+ * @param {String} destinationSourcePath Final path of the source
+ * @param {Function} callback The function to call when done
+ *   - **Error** The error if an error occurred, null otherwise
+ */
+module.exports.copy = function(sourcePath, destinationSourcePath, callback) {
+  var self = this;
+
+  // Get source stats to test if this is a directory or a file
+  fs.stat(sourcePath, function(error, stats) {
+    if (error)
+      return callback(error);
+
+    if (stats.isDirectory()) {
+
+      // Resource is a directory
+
+      // Open directory
+      fs.readdir(sourcePath, function(error, resources) {
+
+        // Failed reading directory
+        if (error)
+          return callback(error);
+
+        var pendingResourceNumber = resources.length;
+
+        // Directory is empty, create it and leave
+        if (!pendingResourceNumber) {
+          self.mkdir(destinationSourcePath, callback);
+          return;
+        }
+
+        // Iterate through the list of resources in the directory
+        resources.forEach(function(resource) {
+          var resourcePath = path.join(sourcePath, resource);
+          var resourceDestinationPath = path.join(destinationSourcePath, resource);
+
+          // Copy resource
+          self.copy(resourcePath, resourceDestinationPath, function(error) {
+            if (error)
+              return callback(error);
+
+            pendingResourceNumber--;
+
+            if (!pendingResourceNumber)
+              callback();
+          });
+        });
+
+      });
+
+    } else {
+
+      // Resource is a file
+      copyFile.call(self, sourcePath, destinationSourcePath, callback);
+
+    }
+
+  });
+
+};
+
+/**
+ * Gets a JSON file content.
+ *
+ * This will verify that the file exists first.
+ *
+ * @method getJSONFileContent
+ * @static
+ * @async
+ * @param {String} filePath The path of the file to read
+ * @param {Function} callback The function to call when done
+ *   - **Error** The error if an error occurred, null otherwise
+ *   - **String** The file content or null if an error occurred
+ * @throws {TypeError} An error if callback is not speficied
+ */
+module.exports.getJSONFileContent = function(filePath, callback) {
+  if (!filePath)
+    return callback(new TypeError(&#x27;Invalid file path, expected a string&#x27;));
+
+  // Check if file exists
+  fs.exists(filePath, function(exists) {
+
+    if (exists) {
+
+      // Read file content
+      fs.readFile(filePath, {
+        encoding: &#x27;utf8&#x27;
+      },
+      function(error, data) {
+        if (error) {
+          callback(error);
+        } else {
+          var dataAsJson;
+          try {
+
+            // Try to parse file data as JSON content
+            dataAsJson = JSON.parse(data);
+
+          } catch (e) {
+            callback(new Error(e.message));
+          }
+
+          callback(null, dataAsJson);
+        }
+      });
+    } else
+      callback(new Error(&#x27;Missing file &#x27; + filePath));
+
+  });
+};
+
+/**
+ * Creates a directory.
+ *
+ * If parent directory does not exist, it will be automatically created.
+ * If directory already exists, it won&#x27;t do anything.
+ *
+ * @method mkdir
+ * @static
+ * @async
+ * @param {String} directoryPath The directory system path to create
+ * @param {Function} [callback] The function to call when done
+ *   - **Error** The error if an error occurred, null otherwise
+ */
+module.exports.mkdir = function(directoryPath, callback) {
+  callback = callback || function(error) {
+    if (error)
+      process.logger.error(&#x27;mkdir error&#x27;, {error: error});
+    else
+      process.logger.silly(directoryPath + &#x27; directory created&#x27;);
+  };
+
+  if (!directoryPath)
+    return callback(new TypeError(&#x27;Invalid directory path, expected a string&#x27;));
+
+  fs.exists(directoryPath, function(exists) {
+    if (exists)
+      callback();
+    else
+      mkdirRecursive(directoryPath, callback);
+  });
+};
+
+/**
+ * Removes a directory and all its content recursively and asynchronously.
+ *
+ * @method rmdir
+ * @static
+ * @async
+ * @deprecated Use rm instead
+ * @param {String} directoryPath Path of the directory to remove
+ * @param {Function} [callback] The function to call when done
+ *   - **Error** The error if an error occurred, null otherwise
+ */
+module.exports.rmdir = function(directoryPath, callback) {
+  callback = callback || function(error) {
+    if (error)
+      process.logger.error(&#x27;rmdir error&#x27;, {error: error});
+    else
+      process.logger.silly(directoryPath + &#x27; directory removed&#x27;);
+  };
+
+  if (!directoryPath)
+    return callback(new TypeError(&#x27;Invalid directory path, expected a string&#x27;));
+
+  fs.exists(directoryPath, function(exists) {
+    if (!exists)
+      callback();
+    else
+      rmdirRecursive(directoryPath, callback);
+  });
+};
+
+/**
+ * Gets OpenVeo configuration directory path.
+ *
+ * OpenVeo configuration is stored in user home directory.
+ *
+ * @method getConfDir
+ * @static
+ * @return {String} OpenVeo configuration directory path
+ */
+module.exports.getConfDir = function() {
+  var env = process.env;
+  var home = env.HOME;
+
+  if (process.platform === &#x27;win32&#x27;)
+    home = env.USERPROFILE || env.HOMEDRIVE + env.HOMEPATH || home || &#x27;&#x27;;
+
+  return path.join(home, &#x27;.openveo&#x27;);
+};
+
+/**
+ * Gets the content of a directory recursively and asynchronously.
+ *
+ * @method readdir
+ * @static
+ * @async
+ * @param {String} directoryPath Path of the directory
+ * @param {Function} callback The function to call when done
+ *   - **Error** The error if an error occurred, null otherwise
+ *   - **Array** The list of resources insides the directory
+ */
+module.exports.readdir = function(directoryPath, callback) {
+  if (!directoryPath || Object.prototype.toString.call(directoryPath) !== &#x27;[object String]&#x27;)
+    return callback(new TypeError(&#x27;Invalid directory path, expected a string&#x27;));
+
+  fs.stat(directoryPath, function(error, stat) {
+    if (error) callback(error);
+    else if (!stat.isDirectory())
+      callback(new Error(directoryPath + &#x27; is not a directory&#x27;));
+    else
+      readdirRecursive(directoryPath, callback);
+  });
+};
+
+/**
+ * Gets part of a file as bytes.
+ *
+ * @method readFile
+ * @static
+ * @async
+ * @param {String} filePath Path of the file
+ * @param {Number} [offset] Specify where to begin reading from in the file
+ * @param {Number} [length] The number of bytes ro read
+ * @param {Function} callback The function to call when done
+ *   - **Error** The error if an error occurred, null otherwise
+ *   - **Buffer** The buffer containing read bytes
+ */
+module.exports.readFile = function(filePath, offset, length, callback) {
+  fs.stat(filePath, function(error, stats) {
+    if (error) return callback(error);
+
+    fs.open(filePath, &#x27;r&#x27;, function(error, fd) {
+      if (error) return callback(error);
+
+      length = length || stats.size - offset;
+      length = Math.min(length, stats.size - offset);
+      var buffer = new Buffer(Math.min(stats.size, length));
+
+      fs.read(fd, buffer, 0, length, offset, function(error, bytesRead, buffer) {
+        fs.close(fd, function() {
+          callback(error, buffer);
+        });
+      });
+    });
+  });
+};
+
+/**
+ * Gets file type.
+ *
+ * @method getFileTypeFromBuffer
+ * @static
+ * @param {Buffer} file At least the first 300 bytes of the file
+ * @return {String} The file type
+ */
+module.exports.getFileTypeFromBuffer = function(file) {
+  for (var type in this.FILE_SIGNATURES) {
+    for (var i = 0; i &lt; this.FILE_SIGNATURES[type].length; i++) {
+      var fileMagicNumbers = file.toString(
+        &#x27;hex&#x27;,
+        this.FILE_SIGNATURES[type][i].offset,
+        this.FILE_SIGNATURES[type][i].offset + (this.FILE_SIGNATURES[type][i].signature.length / 2)
+      );
+
+      if (fileMagicNumbers === this.FILE_SIGNATURES[type][i].signature)
+        return type;
+    }
+  }
+
+  return this.FILE_TYPES.UNKNOWN;
+};
+
+/**
+ * Removes a resource.
+ *
+ * If resource is a directory, the whole directory is removed.
+ *
+ * @method rm
+ * @static
+ * @async
+ * @param {String} resourcePath Path of the resource to remove
+ * @param {Function} [callback] The function to call when done
+ *   - **Error** The error if an error occurred, null otherwise
+ */
+module.exports.rm = function(resourcePath, callback) {
+  callback = callback || function(error) {
+    if (error)
+      process.logger.error(&#x27;rm error&#x27;, {error: error});
+    else
+      process.logger.silly(resourcePath + &#x27; resource removed&#x27;);
+  };
+
+  if (!resourcePath)
+    return callback(new TypeError(&#x27;Invalid resource path, expected a string&#x27;));
+
+  fs.stat(resourcePath, function(error, stats) {
+    if (error) return callback(error);
+
+    if (stats.isDirectory())
+      rmdirRecursive(resourcePath, callback);
+    else
+      fs.unlink(resourcePath, callback);
+  });
+};
+
+    </pre>
+</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../assets/vendor/prettify/prettify-min.js"></script>
+<script>prettyPrint();</script>
+<script src="../assets/js/yui-prettify.js"></script>
+<script src="../assets/../api.js"></script>
+<script src="../assets/js/api-filter.js"></script>
+<script src="../assets/js/api-list.js"></script>
+<script src="../assets/js/api-search.js"></script>
+<script src="../assets/js/apidocs.js"></script>
+</body>
+</html>
