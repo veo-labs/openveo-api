@@ -1,3 +1,9 @@
+# 7.0.1 / YYYY-MM-dd
+
+## BUG FIXES
+
+- Fix NodeJS DEP0005 warning when using fileSystem.readFile
+
 # 7.0.0 / 2020-05-04
 
 ## BREAKING CHANGES
