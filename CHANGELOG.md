@@ -7,6 +7,7 @@
 ## BUG FIXES
 
 - Fix NodeJS DEP0005 warning when using fileSystem.readFile
+- Fix "callback was already called" error when using fileSystem.getJSONFileContent to parse invalid JSON
 
 # 7.0.0 / 2020-05-04
 
