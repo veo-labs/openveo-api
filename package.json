@@ -53,8 +53,9 @@
     "yuidoc-theme-blue": "^0.1.9"
   },
   "scripts": {
+    "doc": "npx grunt yuidoc",
     "lint": "npx grunt eslint",
-    "postpublish": "npx grunt deploy-doc",
+    "postpublish": "npm run doc && npx grunt gh-pages:doc",
     "test": "npx grunt mochaTest"
   },
   "precommit": [
