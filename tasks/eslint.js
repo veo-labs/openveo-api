@@ -1,7 +1,9 @@
 'use strict';
 
 module.exports = {
-  js: {
+
+  // Validate the whole project
+  api: {
     src: [
       'Gruntfile.js',
       'index.js',
