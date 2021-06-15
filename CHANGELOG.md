@@ -4,6 +4,10 @@
 
 - No longer tested on NodeJS &lt; 16.3.0 and NPM &lt; 7.15.1
 
+## NEW FEATURES
+
+- require('@openveo/api').logger now adds a timestamp property to each log containing localized date and time
+
 ## BUG FIXES
 
 - Fix NodeJS DEP0005 warning when using fileSystem.readFile
