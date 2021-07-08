@@ -20,6 +20,7 @@
 - **connect-mongo** has been upgraded from 3.2.0 to **4.4.1**
 - **express-session** has been upgraded from 1.17.0 to **1.17.2**
 - **mongodb** has been upgraded from 3.5.5 to **3.6.10**
+- **passport-ldapauth** has been upgraded from 2.1.4 to **3.0.1**
 - **socket.io** has been upgraded from 2.3.0 to **4.1.2**
 
 # 7.0.0 / 2020-05-04
