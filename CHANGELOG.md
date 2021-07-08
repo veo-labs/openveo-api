@@ -17,6 +17,7 @@
 
 ## DEPENDENCIES
 
+- **connect-mongo** has been upgraded from 3.2.0 to **4.4.1**
 - **socket.io** has been upgraded from 2.3.0 to **4.1.2**
 
 # 7.0.0 / 2020-05-04
