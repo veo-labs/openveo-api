@@ -3,6 +3,8 @@
 ## BREAKING CHANGES
 
 - No longer tested on NodeJS &lt; 16.3.0 and NPM &lt; 7.15.1
+- require('@openveo/api').socket.SocketServer.listen signature has changed and now expects a list of allowed origins as second parameter
+- This is not a breaking change but a warning: Socket.io clients in version 2 are still supported but are strongly encouraged to upgrade to version 4
 
 ## NEW FEATURES
 
@@ -12,6 +14,10 @@
 
 - Fix NodeJS DEP0005 warning when using fileSystem.readFile
 - Fix "callback was already called" error when using fileSystem.getJSONFileContent to parse invalid JSON
+
+## DEPENDENCIES
+
+- **socket.io** has been upgraded from 2.3.0 to **4.1.2**
 
 # 7.0.0 / 2020-05-04
 
