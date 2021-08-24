@@ -26,6 +26,7 @@
 - **socket.io** has been upgraded from 2.3.0 to **4.1.2**
 - **tar-fs** has been upgraded from 1.16.3 to **2.1.1**
 - **winston** has been upgraded from 3.2.1 to **3.3.3**
+- **chai** has been upgraded from 4.2.0 to **4.3.4**
 
 # 7.0.0 / 2020-05-04
 
