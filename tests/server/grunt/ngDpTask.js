@@ -44,6 +44,7 @@ describe('ngDpTask', function() {
       },
       file: {
         write: function(filePath, data) {
+          // eslint-disable-next-line node/no-sync
           fs.writeFileSync(filePath, data);
         }
       },

@@ -111,8 +111,8 @@ describe('fileSystem', function() {
     it('should be able to recursively remove a directory with all its content', function(done) {
       fileSystem.rmdir(directoryPath, function(error) {
         if (!error) {
-          fs.exists(directoryPath, function(exists) {
-            if (!exists)
+          fs.access(directoryPath, function(error) {
+            if (error)
               done();
             else
               assert.ok(false, 'Expected directory to be removed');
@@ -158,8 +158,8 @@ describe('fileSystem', function() {
       it('should be able to recursively remove a directory', function(done) {
         fileSystem.rm(directoryPath, function(error) {
           if (!error) {
-            fs.exists(directoryPath, function(exists) {
-              if (!exists)
+            fs.access(directoryPath, function(error) {
+              if (error)
                 done();
               else
                 assert.ok(false, 'Expected directory to be removed');
@@ -183,8 +183,8 @@ describe('fileSystem', function() {
       it('should be able to remove a file', function(done) {
         fileSystem.rm(filePath, function(error) {
           if (!error) {
-            fs.exists(filePath, function(exists) {
-              if (!exists)
+            fs.access(filePath, function(error) {
+              if (error)
                 done();
               else
                 assert.ok(false, 'Expected file to be removed');
