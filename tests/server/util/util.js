@@ -1108,19 +1108,6 @@ describe('util', function() {
       }
     );
 
-    it('should consider an unknown file with .tar extension as a tar file', function(done) {
-      util.validateFiles({
-        file: path.join(__dirname, '/resources/wrongTar.tar')
-      }, {
-        file: {in: [fileSystem.FILE_TYPES.TAR]}
-      }, function(error, files) {
-        assert.isNull(error);
-        assert.ok(files.file.isValid);
-        assert.equal(files.file.type, fileSystem.FILE_TYPES.TAR);
-        done();
-      });
-    });
-
     it('should execute callback with an error if no files provided', function(done) {
       util.validateFiles(null, {
         file: {in: [fileSystem.FILE_TYPES.JPG]}

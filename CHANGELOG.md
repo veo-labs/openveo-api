@@ -5,6 +5,7 @@
 - No longer tested on NodeJS &lt; 16.3.0 and NPM &lt; 7.15.1
 - require('@openveo/api').socket.SocketServer.listen signature has changed and now expects a list of allowed origins as second parameter
 - This is not a breaking change but a warning: Socket.io clients in version 2 are still supported but are strongly encouraged to upgrade to version 4
+- require('@openveo/api').util.validateFiles won't consider non tar files with .tar extension as tar archives
 
 ## NEW FEATURES
 
