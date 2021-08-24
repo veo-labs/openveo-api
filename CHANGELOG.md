@@ -23,6 +23,7 @@
 - **passport-ldapauth** has been upgraded from 2.1.4 to **3.0.1**
 - **shortid** has been replaced by nanoid
 - **socket.io** has been upgraded from 2.3.0 to **4.1.2**
+- **tar-fs** has been upgraded from 1.16.3 to **2.1.1**
 
 # 7.0.0 / 2020-05-04
 
