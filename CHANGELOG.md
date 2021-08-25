@@ -31,6 +31,7 @@
 - **grunt-cli** has been upgraded from 1.3.2 to **1.4.3**
 - **grunt-eslint** has been upgraded from 22.0.0 to **23.0.0**
 - **grunt-gh-pages** has been upgraded from 3.1.0 to **4.0.0**
+- **mocha** has been upgraded from 7.1.1 to **9.1.0**
 
 # 7.0.0 / 2020-05-04
 
