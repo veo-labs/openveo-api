@@ -10,6 +10,7 @@
 ## NEW FEATURES
 
 - require('@openveo/api').logger now adds a timestamp property to each log containing localized date and time
+- Improve code documentation by replacing Yuidoc by JSDoc
 
 ## BUG FIXES
 
@@ -32,6 +33,7 @@
 - **grunt-eslint** has been upgraded from 22.0.0 to **23.0.0**
 - **grunt-gh-pages** has been upgraded from 3.1.0 to **4.0.0**
 - **mocha** has been upgraded from 7.1.1 to **9.1.0**
+- **yuidoc** has been replaced by **JSDoc**
 
 # 7.0.0 / 2020-05-04
 
