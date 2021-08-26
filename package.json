@@ -41,10 +41,10 @@
   "devDependencies": {
     "chai": "^4.3.4",
     "chai-spies": "^1.0.0",
+    "eslint": "^7.32.0",
     "eslint-plugin-node": "^11.1.0",
     "grunt": "^1.4.1",
     "grunt-cli": "^1.4.3",
-    "grunt-eslint": "^23.0.0",
     "grunt-gh-pages": "^4.0.0",
     "jsdoc": "^3.6.7",
     "mocha": "^9.1.0",
@@ -53,7 +53,7 @@
   },
   "scripts": {
     "doc": "npx jsdoc -c jsdoc.json -d \"./site/$(echo $npm_package_version)\" -p -r",
-    "lint": "npx grunt eslint",
+    "lint": "npx eslint *.js lib/**/*.js tests/**/*.js tasks/**/*.js",
     "postpublish": "npm run doc && npx grunt gh-pages:doc",
     "test": "npx mocha --config tests/.mocharc.json"
   },

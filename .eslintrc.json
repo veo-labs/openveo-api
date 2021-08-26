@@ -1,9 +1,12 @@
 {
 
+  // Make this configuration file as the root one
+  "root": true,
+
   // Extends eslint recommended rules
   "extends": [
     "eslint:recommended",
-    "plugin:node/recommended",
+    "plugin:node/recommended"
   ],
   "env": {
 
@@ -239,4 +242,5 @@
     "node/no-sync": 2
 
   }
+
 }

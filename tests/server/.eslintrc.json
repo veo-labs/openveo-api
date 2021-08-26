@@ -9,11 +9,11 @@
   "globals": {
 
     // Add chai to environment globals but do not authorize to overwrite it
-    chai: false,
-    assert: false,
+    "chai": false,
+    "assert": false,
 
-    // Add angular to environment globals but do not authorize to overwrite it,
-    angular: false
+    // Add angular to environment globals but do not authorize to overwrite it
+    "angular": false
 
   },
   "rules": {
@@ -22,7 +22,7 @@
     "require-jsdoc": 0,
 
     // Allow synchronous methods
-    "no-sync": 0,
+    "no-sync": 0
 
   }
 
