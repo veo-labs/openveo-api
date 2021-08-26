@@ -1,0 +1,4 @@
+{
+  "file": ["tests/server/init.js"],
+  "spec": ["tests/server/*/*.js"]
+}

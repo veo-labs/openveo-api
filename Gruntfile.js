@@ -39,7 +39,6 @@ module.exports = function(grunt) {
   grunt.config.merge(loadConfig('./tasks'));
 
   // Load grunt plugins
-  grunt.loadNpmTasks('grunt-mocha-test');
   grunt.loadNpmTasks('grunt-eslint');
   grunt.loadNpmTasks('grunt-gh-pages');
 
