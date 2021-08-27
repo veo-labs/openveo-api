@@ -1,12 +1,6 @@
 'use strict';
 
-var path = require('path');
-
-// Set module root directory
-process.rootApi = __dirname;
-process.requireApi = function(filePath) {
-  return require(path.join(process.rootApi, filePath));
-};
+require('./processRequire.js');
 
 module.exports.fileSystem = process.requireApi('lib/fileSystem.js');
 module.exports.util = process.requireApi('lib/util.js');
