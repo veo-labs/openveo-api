@@ -28,13 +28,13 @@
 - **tar-fs** has been upgraded from 1.16.3 to **2.1.1**
 - **winston** has been upgraded from 3.2.1 to **3.3.3**
 - **chai** has been upgraded from 4.2.0 to **4.3.4**
-- **grunt** has been upgraded from 1.1.0 to **1.4.1**
-- **grunt-cli** has been upgraded from 1.3.2 to **1.4.3**
 - **mocha** has been upgraded from 7.1.1 to **9.1.0**
 - **multer** has been upgraded from 1.4.2 to **1.4.3**
 - **yuidoc** has been replaced by **JSDoc**
 - **grunt-gh-pages** has been replaced by a custom script
 - **grunt-eslint** has been removed
+- **grunt** has been removed
+- **grunt-cli** has been removed
 
 # 7.0.0 / 2020-05-04
 
