@@ -53,7 +53,7 @@
   },
   "scripts": {
     "doc": "npx jsdoc -c jsdoc.json -d \"./site/$(echo $npm_package_version)\" -p -r",
-    "lint": "npx eslint *.js lib/**/*.js tests/**/*.js scripts/**/*.js",
+    "lint": "npx eslint \"*.js\" \"lib/**/*.js\" \"tests/**/*.js\" \"scripts/**/*.js\"",
     "postpublish": "npm run doc && npm run doc:deploy",
     "test": "npx mocha --config tests/.mocharc.json",
     "doc:deploy": "./scripts/deployGithubPages.js \"site/$(echo $npm_package_version)\""
