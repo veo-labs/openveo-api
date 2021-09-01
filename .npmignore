@@ -24,11 +24,6 @@ nbproject
 # Documentation
 /site
 
-# Grunt files
-/Gruntfile.js
-/tasks
-/.grunt
-
 # Git
 .gitignore
 .gitattributes
