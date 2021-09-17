@@ -26,7 +26,7 @@
 - **mongodb** has been upgraded from 3.5.5 to **3.6.10**
 - **passport-ldapauth** has been upgraded from 2.1.4 to **3.0.1**
 - **shortid** has been replaced by nanoid
-- **socket.io** has been upgraded from 2.3.0 to **4.1.2**
+- **socket.io** has been upgraded from 2.3.0 to **4.2.0**
 - **tar-fs** has been upgraded from 1.16.3 to **2.1.1**
 - **winston** has been upgraded from 3.2.1 to **3.3.3**
 - **chai** has been upgraded from 4.2.0 to **4.3.4**
