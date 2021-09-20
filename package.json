@@ -51,7 +51,8 @@
   },
   "bin": {
     "ovDeployGithubPages": "scripts/deployGithubPages.js",
-    "ovWatch": "scripts/watch.js"
+    "ovWatch": "scripts/watch.js",
+    "ovRemove": "scripts/remove.js"
   },
   "scripts": {
     "doc": "npx jsdoc -c jsdoc.json -d \"./site/$(echo $npm_package_version)\" -p -r",

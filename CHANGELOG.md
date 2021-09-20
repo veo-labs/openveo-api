@@ -13,6 +13,7 @@
 - Improve code documentation by replacing Yuidoc by JSDoc
 - Add require('@openveo/api').watcher to listen to files system changes
 - ovWatch script has been added to execute an NPM script of files changes and can be launched using npx (see scripts/watch.js) for usage
+- ovRemove script has been added to remove a file system resource and can be launched using npx (see scripts/remove.js) for usage
 
 ## BUG FIXES
 
