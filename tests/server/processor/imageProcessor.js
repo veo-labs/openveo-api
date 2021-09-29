@@ -27,11 +27,16 @@ describe('imageProcessor', function() {
     };
 
     gm = {
-      constructor: function() {
+      constructor: function(firstImage) {
+        gm.firstImage = firstImage;
         return gm;
       },
       subClass: function() {
         return gm.constructor;
+      },
+      background: function(color) {
+        gm.backgroundColor = color;
+        return gm;
       },
       size: chai.spy(function(callback) {
         callback(null, {width: 142, height: 42});
@@ -774,6 +779,267 @@ describe('imageProcessor', function() {
           assert.strictEqual(error, expectedError, 'Wrong error');
           fileSystem.rm.should.have.been.called.at.least(1);
           done();
+        }
+      );
+    });
+
+  });
+
+  describe('generateSpriteFreely', function() {
+    var expectedBackgroundColor;
+    var expectedDestinationPath;
+    var expectedFirstLineHeight;
+    var expectedImagesPaths = [];
+    var expectedImageWidth;
+    var expectedQuality;
+    var expectedSecondLineHeight;
+    var expectedTemporaryDirectoryPath;
+
+    beforeEach(function() {
+      expectedBackgroundColor = '#00000000';
+      expectedDestinationPath = 'destination/path';
+      expectedFirstLineHeight = 42;
+      expectedImagesPaths = ['image1', 'image2', 'image3', 'image4'];
+      expectedImageWidth = 142;
+      expectedQuality = 50;
+      expectedSecondLineHeight = 22;
+      expectedTemporaryDirectoryPath = '/tmp/path';
+
+      var imageCount = 0;
+      gm.size = chai.spy(function(callback) {
+        callback(null, {
+          width: expectedImageWidth,
+          height: (imageCount++ % 2) ? expectedFirstLineHeight : expectedSecondLineHeight
+        });
+      });
+    });
+
+    it('should generate a sprite from a list of images', function(done) {
+
+      var qualityCount = 0;
+      gm.quality = chai.spy(function(quality) {
+        assert.equal(quality, (qualityCount++ <= 1) ? 100 : expectedQuality, 'Wrong quality');
+        return gm;
+      });
+
+      gm.background = chai.spy(function(color) {
+        assert.equal(color, expectedBackgroundColor, 'Wrong color');
+        return gm;
+      });
+
+      fileSystem.mkdir = chai.spy(function(directoryPath, callback) {
+        assert.include(
+          [path.dirname(expectedDestinationPath), expectedTemporaryDirectoryPath],
+          directoryPath,
+          'Wrong directory to create'
+        );
+        callback();
+      });
+
+      fileSystem.rm = chai.spy(function(directoryPath, callback) {
+        assert.equal(directoryPath, expectedTemporaryDirectoryPath, 'Wrong directory to remove');
+        callback();
+      });
+
+      imageProcessor.generateSpriteFreely(
+        expectedImagesPaths,
+        expectedDestinationPath,
+        expectedQuality,
+        expectedTemporaryDirectoryPath,
+        function(error, sprite) {
+          assert.isNull(error, 'Unexpected error');
+
+          fileSystem.mkdir.should.have.been.called.exactly(2);
+          fileSystem.rm.should.have.been.called.exactly(1);
+
+          gm.size.should.have.been.called.exactly(expectedImagesPaths.length);
+          gm.quality.should.have.been.called.exactly(3);
+          gm.background.should.have.been.called.exactly(3);
+
+          assert.equal(sprite.path, expectedDestinationPath, 'Wrong output path');
+
+          // First image on first line
+          assert.equal(sprite.images[0].path, expectedImagesPaths[3], 'Wrong path for image 0');
+          assert.equal(sprite.images[0].size.width, expectedImageWidth, 'Wrong width for image 0');
+          assert.equal(sprite.images[0].size.height, expectedFirstLineHeight, 'Wrong height for image 0');
+          assert.equal(sprite.images[0].x, 0, 'Wrong x position for image 0');
+          assert.equal(sprite.images[0].y, 0, 'Wrong x position for image 0');
+
+          // Second image on first line
+          assert.equal(sprite.images[1].path, expectedImagesPaths[1], 'Wrong path for image 1');
+          assert.equal(sprite.images[1].size.width, expectedImageWidth, 'Wrong width for image 1');
+          assert.equal(sprite.images[1].size.height, expectedFirstLineHeight, 'Wrong height for image 1');
+          assert.equal(sprite.images[1].x, expectedImageWidth, 'Wrong x position for image 1');
+          assert.equal(sprite.images[1].y, 0, 'Wrong x position for image 1');
+
+          // First image on second line
+          assert.equal(sprite.images[2].path, expectedImagesPaths[2], 'Wrong path for image 2');
+          assert.equal(sprite.images[2].size.width, expectedImageWidth, 'Wrong width for image 2');
+          assert.equal(sprite.images[2].size.height, expectedSecondLineHeight, 'Wrong height for image 2');
+          assert.equal(sprite.images[2].x, 0, 'Wrong x position for image 2');
+          assert.equal(sprite.images[2].y, expectedFirstLineHeight, 'Wrong x position for image 2');
+
+          // Second image on second line
+          assert.equal(sprite.images[3].path, expectedImagesPaths[0], 'Wrong path for image 3');
+          assert.equal(sprite.images[3].size.width, expectedImageWidth, 'Wrong width for image 3');
+          assert.equal(sprite.images[3].size.height, expectedSecondLineHeight, 'Wrong height for image 3');
+          assert.equal(sprite.images[3].x, expectedImageWidth, 'Wrong x position for image 2');
+          assert.equal(sprite.images[3].y, expectedFirstLineHeight, 'Wrong x position for image 2');
+
+          done();
+        }
+      );
+
+    });
+
+    it('should set quality to 90 if not specified', function(done) {
+      var qualityCount = 0;
+      gm.quality = chai.spy(function(quality) {
+        if (qualityCount++ === 2) {
+          assert.equal(quality, 90, 'Wrong quality');
+        }
+        return gm;
+      });
+
+      imageProcessor.generateSpriteFreely(
+        expectedImagesPaths,
+        expectedDestinationPath,
+        null,
+        expectedTemporaryDirectoryPath,
+        function(error, sprite) {
+          assert.isNull(error, 'Unexpected error');
+          gm.quality.should.have.been.called.exactly(3);
+          done();
+        }
+      );
+    });
+
+    it('should throw an error if no image is provided', function() {
+      assert.throws(function() {
+        imageProcessor.generateSpriteFreely(
+          [],
+          expectedDestinationPath,
+          expectedQuality,
+          expectedTemporaryDirectoryPath,
+          function(error, sprite) {
+            assert.fail('Unexpected response');
+          }
+        );
+      }, TypeError);
+    });
+
+    it('should execute callback with an error if creating line failed', function() {
+      var expectedError = new Error('Something went wrong');
+
+      gm.write = chai.spy(function(imagePath, callback) {
+        callback(expectedError);
+      });
+
+      imageProcessor.generateSpriteFreely(
+        expectedImagesPaths,
+        expectedDestinationPath,
+        expectedQuality,
+        expectedTemporaryDirectoryPath,
+        function(error, sprite) {
+          assert.isUndefined(sprite, 'Unexpected result');
+          assert.strictEqual(error, expectedError, 'Wrong error');
+        }
+      );
+    });
+
+    it('should execute callback with an error if creating destination directory failed', function() {
+      var expectedError = new Error('Something went wrong');
+
+      fileSystem.mkdir = chai.spy(function(directoryPath, callback) {
+        callback(expectedError);
+      });
+
+      imageProcessor.generateSpriteFreely(
+        expectedImagesPaths,
+        expectedDestinationPath,
+        expectedQuality,
+        expectedTemporaryDirectoryPath,
+        function(error, sprite) {
+          assert.isUndefined(sprite, 'Unexpected result');
+          assert.strictEqual(error, expectedError, 'Wrong error');
+        }
+      );
+    });
+
+    it('should execute callback with an error if creating temporary directory failed', function() {
+      var expectedError = new Error('Something went wrong');
+
+      var mkdirCount = 0;
+      fileSystem.mkdir = chai.spy(function(directoryPath, callback) {
+        callback((mkdirCount++ === 1) ? expectedError : null);
+      });
+
+      imageProcessor.generateSpriteFreely(
+        expectedImagesPaths,
+        expectedDestinationPath,
+        expectedQuality,
+        expectedTemporaryDirectoryPath,
+        function(error, sprite) {
+          assert.isUndefined(sprite, 'Unexpected result');
+          assert.strictEqual(error, expectedError, 'Wrong error');
+        }
+      );
+    });
+
+    it('should execute callback with an error if getting the size on an image failed', function() {
+      var expectedError = new Error('Something went wrong');
+
+      gm.size = chai.spy(function(callback) {
+        callback(expectedError);
+      });
+
+      imageProcessor.generateSpriteFreely(
+        expectedImagesPaths,
+        expectedDestinationPath,
+        expectedQuality,
+        expectedTemporaryDirectoryPath,
+        function(error, sprite) {
+          assert.isUndefined(sprite, 'Unexpected result');
+          assert.strictEqual(error, expectedError, 'Wrong error');
+        }
+      );
+    });
+
+    it('should execute callback with an error if creating sprite failed', function() {
+      var expectedError = new Error('Something went wrong');
+
+      var writeCount = 0;
+      gm.write = chai.spy(function(imagePath, callback) {
+        callback((writeCount++ === 2) ? expectedError : null);
+      });
+
+      imageProcessor.generateSpriteFreely(
+        expectedImagesPaths,
+        expectedDestinationPath,
+        expectedQuality,
+        expectedTemporaryDirectoryPath,
+        function(error, sprite) {
+          assert.isUndefined(sprite, 'Unexpected result');
+          assert.strictEqual(error, expectedError, 'Wrong error');
+        }
+      );
+    });
+
+    it('should execute callback with an error if removing temporary directory failed', function() {
+      var expectedError = new Error('Something went wrong');
+
+      fileSystem.rm = chai.spy(function(resourcePath, callback) {
+        callback(expectedError);
+      });
+
+      imageProcessor.generateSpriteFreely(
+        expectedImagesPaths,
+        expectedDestinationPath,
+        expectedQuality,
+        expectedTemporaryDirectoryPath,
+        function(error, sprite) {
+          assert.isUndefined(sprite, 'Unexpected result');
+          assert.strictEqual(error, expectedError, 'Wrong error');
         }
       );
     });
