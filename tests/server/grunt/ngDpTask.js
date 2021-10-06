@@ -3,7 +3,7 @@
 var fs = require('fs');
 var path = require('path');
 var assert = require('chai').assert;
-var ngDpTask = process.requireApi('lib/grunt/ngDpTask/ngDpTask.js');
+var ngDpTask = process.requireApi('lib/grunt/ngDpTask.js');
 var utilApi = process.requireApi('lib/util.js');
 
 describe('ngDpTask', function() {

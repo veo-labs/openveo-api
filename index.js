@@ -2,6 +2,7 @@
 
 require('./processRequire.js');
 
+module.exports.angularJs = process.requireApi('lib/angularJs/index.js');
 module.exports.fileSystem = process.requireApi('lib/fileSystem.js');
 module.exports.util = process.requireApi('lib/util.js');
 module.exports.logger = process.requireApi('lib/logger.js');
