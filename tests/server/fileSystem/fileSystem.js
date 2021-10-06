@@ -467,4 +467,110 @@ describe('fileSystem', function() {
     });
   });
 
+  // replace method
+  describe('replace', function() {
+    var originalFileContent;
+    var substitutions;
+    var filePath = path.join(__dirname, '/tmp/replace.txt');
+
+    beforeEach(function(done) {
+      originalFileContent = 'File used by fileSystem.js replace test\n' +
+        'to replace matching patterns for each line\n' +
+        'of a file.';
+      substitutions = [
+        {
+          pattern: /replace/g,
+          replacement: 'REPLACE'
+        },
+        {
+          pattern: /file/ig,
+          replacement: 'FILE'
+        }
+      ];
+
+      fs.writeFile(filePath, originalFileContent, function(error) {
+        done();
+      });
+    });
+
+    it('should be able to replace matching pattern of each line of file', function(done) {
+      fileSystem.replace(filePath, substitutions, function(error) {
+        assert.isNull(error);
+
+        fs.readFile(filePath, function(error, buffer) {
+          assert.equal(
+            buffer.toString(),
+            originalFileContent.replace(/replace/gm, 'REPLACE').replace(/file/igm, 'FILE')
+          );
+          done();
+        });
+      });
+    });
+
+    it('should not replace anything if substitutions is not specified', function(done) {
+      fileSystem.replace(filePath, null, function(error) {
+        assert.isUndefined(error);
+
+        fs.readFile(filePath, function(error, buffer) {
+          assert.equal(buffer.toString(), originalFileContent);
+          done();
+        });
+      });
+    });
+
+    it('should execute callback with an error if reading file failed', function(done) {
+      fileSystem.replace('wrong file', substitutions, function(error) {
+        assert.isDefined(error);
+        done();
+      });
+    });
+
+  });
+
+  // prepend method
+  describe('prepend', function() {
+    var originalFileContent;
+    var textToPrepend;
+    var filePath = path.join(__dirname, '/tmp/prepend.txt');
+
+    beforeEach(function(done) {
+      originalFileContent = 'File used by fileSystem.js preprend test';
+      textToPrepend = 'This text should be inserted before the first line\n';
+
+      fs.writeFile(filePath, originalFileContent, function(error) {
+        done();
+      });
+    });
+
+    it('should be able to preprend text at the beginning of file', function(done) {
+      fileSystem.prepend(filePath, textToPrepend, function(error) {
+        assert.isNull(error);
+
+        fs.readFile(filePath, function(error, buffer) {
+          assert.equal(buffer.toString(), textToPrepend + originalFileContent);
+          done();
+        });
+      });
+    });
+
+    it('should not preprend anything if data is not specified', function(done) {
+      fileSystem.prepend(filePath, null, function(error) {
+        assert.isUndefined(error);
+
+        fs.readFile(filePath, function(error, buffer) {
+          assert.equal(buffer.toString(), originalFileContent);
+          done();
+        });
+      });
+    });
+
+    it('should execute callback with an error if reading file failed', function(done) {
+      fileSystem.prepend('wrong file', textToPrepend, function(error) {
+        assert.isDefined(error);
+        done();
+      });
+    });
+
+  });
+
 });

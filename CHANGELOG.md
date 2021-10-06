@@ -16,6 +16,8 @@
 - ovRemove script has been added to remove a file system resource and can be launched using npx (see scripts/remove.js) for usage
 - require('@openveo/api').imageProcessor.generateSpriteFreely has been added to be able to generate a sprite without resizing the images and simply ordering images by their height with all images of the same height on the same line of the sprites
 - require('@openveo/api').angularJs.parser has been added to offer tools to analyze and AngularJS application like sorting components files by dependence (used by grunt.ngDpTask) or generating an AngularJS run script to put all HTML templates into $templateCache
+- require('@openveo/api').fileSystem.replace has been added to be able to replace some text in a file
+- require('@openveo/api').fileSystem.prepend has been added to be able to add text at the beginning of a file
 
 ## BUG FIXES
 
