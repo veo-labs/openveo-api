@@ -7,25 +7,27 @@ var fileSystem = process.requireApi('lib/fileSystem.js');
 
 // fileSystem.js
 describe('fileSystem', function() {
+  var resourcesPath = path.join(__dirname, 'resources');
+  var tmpPath = path.join(__dirname, 'tmp');
 
   // Create tmp directory before each test
   beforeEach(function(done) {
-    fileSystem.mkdir(path.join(__dirname, '/tmp'), function() {
+    fileSystem.mkdir(tmpPath, function() {
       done();
     });
   });
 
   // Remove tmp directory after each test
   afterEach(function(done) {
-    fileSystem.rmdir(path.join(__dirname, '/tmp'), function(error) {
+    fileSystem.rmdir(tmpPath, function(error) {
       done();
     });
   });
 
   // extract method
   describe('extract', function() {
-    var tarFile = path.join(__dirname, '/resources/file.tar');
-    var extractedDirectory = path.join(__dirname, '/tmp/extract');
+    var tarFile = path.join(resourcesPath, 'file.tar');
+    var extractedDirectory = path.join(tmpPath, 'extract');
     var tarContent = ['.session', 'slide_00000.jpeg', 'slide_00001.jpeg', 'synchro.xml'];
 
     it('should be able to extract a tar file', function(done) {
@@ -64,7 +66,7 @@ describe('fileSystem', function() {
     });
 
     it('should return an error if the given tar file is not a valid tar', function(done) {
-      fileSystem.extract(path.join(__dirname, '/resources/invalidTar.tar'), extractedDirectory, function(error) {
+      fileSystem.extract(path.join(resourcesPath, 'invalidTar.tar'), extractedDirectory, function(error) {
         if (error)
           done();
         else
@@ -78,7 +80,7 @@ describe('fileSystem', function() {
   describe('mkdir', function() {
 
     it('should be able to create a directory', function(done) {
-      fileSystem.mkdir(path.join(__dirname, '/tmp/mkdir1/mkdir2/mkdir3'), function(error) {
+      fileSystem.mkdir(path.join(tmpPath, 'mkdir1/mkdir2/mkdir3'), function(error) {
         if (!error)
           done();
         else
@@ -99,7 +101,7 @@ describe('fileSystem', function() {
 
   // rmdir method
   describe('rmdir', function() {
-    var directoryPath = path.join(__dirname, '/tmp/rmdir');
+    var directoryPath = path.join(tmpPath, 'rmdir');
 
     // Create directory before each test
     beforeEach(function(done) {
@@ -146,7 +148,7 @@ describe('fileSystem', function() {
     });
 
     describe('directory', function() {
-      var directoryPath = path.join(__dirname, '/tmp/rm');
+      var directoryPath = path.join(tmpPath, 'rm');
 
       // Create directory before each test
       beforeEach(function(done) {
@@ -184,7 +186,7 @@ describe('fileSystem', function() {
     });
 
     describe('file', function() {
-      var filePath = path.join(__dirname, '/tmp/rm.txt');
+      var filePath = path.join(tmpPath, 'rm.txt');
 
       // Create file before each test
       beforeEach(function(done) {
@@ -212,7 +214,7 @@ describe('fileSystem', function() {
 
   // getJSONFileContent method
   describe('getJSONFileContent', function() {
-    var filePath = path.join(__dirname, '/resources/file.json');
+    var filePath = path.join(resourcesPath, 'file.json');
 
     it('should be able to get a file content as JSON', function(done) {
       fileSystem.getJSONFileContent(filePath, function(error, data) {
@@ -246,9 +248,9 @@ describe('fileSystem', function() {
 
   // copy method
   describe('copy', function() {
-    var filePath = path.join(__dirname, '/resources/file.json');
-    var directoryPath = path.join(__dirname, '/resources/dir1');
-    var copyDirPath = path.join(__dirname, '/tmp/copy');
+    var filePath = path.join(resourcesPath, 'file.json');
+    var directoryPath = path.join(resourcesPath, 'dir1');
+    var copyDirPath = path.join(tmpPath, 'copy');
     var copyFilePath = path.join(copyDirPath, 'file-copy.json');
 
     /**
@@ -325,14 +327,14 @@ describe('fileSystem', function() {
 
     it('should be able to read a directory recursively', function(done) {
       var expectedResources = [
-        path.join(__dirname, '/resources/dir1/dir1.txt'),
-        path.join(__dirname, '/resources/dir1/dir2'),
-        path.join(__dirname, '/resources/dir1/dir2/dir2.txt'),
-        path.join(__dirname, '/resources/dir1/dir2/dir3'),
-        path.join(__dirname, '/resources/dir1/dir2/dir3/dir3.txt')
+        path.join(resourcesPath, 'dir1/dir1.txt'),
+        path.join(resourcesPath, 'dir1/dir2'),
+        path.join(resourcesPath, 'dir1/dir2/dir2.txt'),
+        path.join(resourcesPath, 'dir1/dir2/dir3'),
+        path.join(resourcesPath, 'dir1/dir2/dir3/dir3.txt')
       ];
 
-      fileSystem.readdir(path.join(__dirname, '/resources/dir1'), function(error, paths) {
+      fileSystem.readdir(path.join(resourcesPath, 'dir1'), function(error, paths) {
         if (!error) {
           paths.forEach(function(resourcePath) {
             assert.oneOf(resourcePath.path, expectedResources);
@@ -361,7 +363,7 @@ describe('fileSystem', function() {
     });
 
     it('should execute callback with an error if it is not a directory', function(done) {
-      fileSystem.readdir(path.join(__dirname, '/resources/dir1/dir1.txt'), function(error) {
+      fileSystem.readdir(path.join(resourcesPath, 'dir1/dir1.txt'), function(error) {
         assert.isDefined(error);
         done();
       });
@@ -373,7 +375,7 @@ describe('fileSystem', function() {
   describe('readFile', function() {
 
     it('should be able to read part of a file', function(done) {
-      var filePath = path.join(__dirname, '/resources/files/GIF.gif');
+      var filePath = path.join(resourcesPath, 'files/GIF.gif');
 
       fs.readFile(filePath, function(error, data) {
         var expectedBytes = data.toString('hex', 1, 4);
@@ -387,7 +389,7 @@ describe('fileSystem', function() {
     });
 
     it('should read all file if neither offset nor length is specified', function(done) {
-      var filePath = path.join(__dirname, '/resources/files/GIF.gif');
+      var filePath = path.join(resourcesPath, 'files/GIF.gif');
 
       fs.readFile(filePath, function(error, data) {
         var expectedBytes = data.toString('hex');
@@ -401,7 +403,7 @@ describe('fileSystem', function() {
     });
 
     it('should read the rest of the file if length is not specified', function(done) {
-      var filePath = path.join(__dirname, '/resources/files/GIF.gif');
+      var filePath = path.join(resourcesPath, 'files/GIF.gif');
 
       fs.readFile(filePath, function(error, data) {
         var expectedBytes = data.toString('hex', 1, data.length);
@@ -415,7 +417,7 @@ describe('fileSystem', function() {
     });
 
     it('should start reading at 0 if offset is not specified', function(done) {
-      var filePath = path.join(__dirname, '/resources/files/GIF.gif');
+      var filePath = path.join(resourcesPath, 'files/GIF.gif');
 
       fs.readFile(filePath, function(error, data) {
         var expectedBytes = data.toString('hex', 0, 4);
@@ -429,7 +431,7 @@ describe('fileSystem', function() {
     });
 
     it('should be able to read the file if bytes to read exceed the size of the file', function(done) {
-      var filePath = path.join(__dirname, '/resources/files/GIF.gif');
+      var filePath = path.join(resourcesPath, 'files/GIF.gif');
 
       fs.readFile(filePath, function(error, data) {
         var expectedBytes = data.toString('hex');
@@ -465,7 +467,7 @@ describe('fileSystem', function() {
 
       it('should be able to get the file type from a buffer corresponding to a file of type ' + TYPE, function(done) {
         fs.readFile(
-          path.join(__dirname, 'resources/files/' + TYPE.toUpperCase() + '.' + TYPE.toLowerCase()),
+          path.join(resourcesPath, 'files/' + TYPE.toUpperCase() + '.' + TYPE.toLowerCase()),
           function(error, data) {
             assert.equal(fileSystem.getFileTypeFromBuffer(data), TYPE);
             done();
@@ -484,7 +486,7 @@ describe('fileSystem', function() {
   describe('replace', function() {
     var originalFileContent;
     var substitutions;
-    var filePath = path.join(__dirname, '/tmp/replace.txt');
+    var filePath = path.join(tmpPath, 'replace.txt');
 
     beforeEach(function(done) {
       originalFileContent = 'File used by fileSystem.js replace test\n' +
@@ -544,7 +546,7 @@ describe('fileSystem', function() {
   describe('prepend', function() {
     var originalFileContent;
     var textToPrepend;
-    var filePath = path.join(__dirname, '/tmp/prepend.txt');
+    var filePath = path.join(tmpPath, 'prepend.txt');
 
     beforeEach(function(done) {
       originalFileContent = 'File used by fileSystem.js preprend test';
