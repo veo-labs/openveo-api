@@ -168,6 +168,19 @@ describe('fileSystem', function() {
             assert.ok(false, 'Remove directory failed: ' + error.message);
         });
       });
+
+      it('should be able to remove the content of a directory but not the directory itself', function(done) {
+        fileSystem.rm(directoryPath, true, function(error) {
+          if (!error) {
+            fs.readdir(directoryPath, function(error, resources) {
+              assert.isNull(error, 'Unexpected error');
+              assert.isEmpty(resources, 'Unexpected resources inside directory');
+              done();
+            });
+          } else
+            assert.ok(false, 'Remove directory failed: ' + error.message);
+        });
+      });
     });
 
     describe('file', function() {

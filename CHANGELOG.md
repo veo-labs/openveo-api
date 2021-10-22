@@ -18,6 +18,8 @@
 - require('@openveo/api').angularJs.parser has been added to offer tools to analyze and AngularJS application like sorting components files by dependence (used by grunt.ngDpTask) or generating an AngularJS run script to put all HTML templates into $templateCache
 - require('@openveo/api').fileSystem.replace has been added to be able to replace some text in a file
 - require('@openveo/api').fileSystem.prepend has been added to be able to add text at the beginning of a file
+- require('@openveo/api').fileSystem.rmdir is now able to keep the directory itself
+- require('@openveo/api').fileSystem.rm is now able to remove the content of a directory without the directory itself
 
 ## BUG FIXES
 
