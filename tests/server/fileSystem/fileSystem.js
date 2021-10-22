@@ -2,13 +2,57 @@
 
 var path = require('path');
 var fs = require('fs');
+
+var async = require('async');
 var assert = require('chai').assert;
+
 var fileSystem = process.requireApi('lib/fileSystem.js');
 
 // fileSystem.js
 describe('fileSystem', function() {
   var resourcesPath = path.join(__dirname, 'resources');
   var tmpPath = path.join(__dirname, 'tmp');
+
+  /**
+   * Gets directory tree.
+   *
+   * @param {String} directoryPath Path to the directory to read
+   * @param {Function} callback Function to call when its done with
+   *  - **Array** The list of files in the tree
+   */
+  function getDirectoryTree(directoryPath, callback) {
+    var tree = [];
+    fs.readdir(directoryPath, function(error, resources) {
+      var pendingResourceNumber = resources.length;
+
+      if (!pendingResourceNumber) {
+        callback(tree);
+        return;
+      }
+
+      resources.forEach(function(resource) {
+        var resourcePath = path.join(directoryPath, resource);
+        fs.stat(resourcePath, function(error, stats) {
+          tree.push(resource);
+
+          if (stats.isFile()) {
+            pendingResourceNumber--;
+
+            if (!pendingResourceNumber)
+              callback(tree);
+          } else {
+            getDirectoryTree(resourcePath, function(subTree) {
+              tree = tree.concat(subTree);
+
+              pendingResourceNumber--;
+              if (!pendingResourceNumber)
+                callback(tree);
+            });
+          }
+        });
+      });
+    });
+  }
 
   // Create tmp directory before each test
   beforeEach(function(done) {
@@ -253,47 +297,6 @@ describe('fileSystem', function() {
     var copyDirPath = path.join(tmpPath, 'copy');
     var copyFilePath = path.join(copyDirPath, 'file-copy.json');
 
-    /**
-     * Gets directory tree.
-     *
-     * @param {String} directoryPath Path to the directory to read
-     * @param {Function} callback Function to call when its done with
-     *  - **Array** The list of files in the tree
-     */
-    function getDirectoryTree(directoryPath, callback) {
-      var tree = [];
-      fs.readdir(directoryPath, function(error, resources) {
-        var pendingResourceNumber = resources.length;
-
-        if (!pendingResourceNumber) {
-          callback(tree);
-          return;
-        }
-
-        resources.forEach(function(resource) {
-          var resourcePath = path.join(directoryPath, resource);
-          fs.stat(resourcePath, function(error, stats) {
-            tree.push(resource);
-
-            if (stats.isFile()) {
-              pendingResourceNumber--;
-
-              if (!pendingResourceNumber)
-                callback(tree);
-            } else {
-              getDirectoryTree(resourcePath, function(subTree) {
-                tree = tree.concat(subTree);
-
-                pendingResourceNumber--;
-                if (!pendingResourceNumber)
-                  callback(tree);
-              });
-            }
-          });
-        });
-      });
-    }
-
     it('should be able to copy a file', function(done) {
       fileSystem.copy(filePath, copyFilePath, function(error) {
         if (!error) {
@@ -480,6 +483,92 @@ describe('fileSystem', function() {
     it('should return the unknown type if buffer does not correspond to a supported file', function() {
       assert.equal(fileSystem.getFileTypeFromBuffer(Buffer.from('Not a file')), fileSystem.FILE_TYPES.UNKNOWN);
     });
+  });
+
+  // performActions method
+  describe('performActions', function() {
+    var directoryToRemovePath = path.join(tmpPath, 'directoryToRemove');
+    var fileToRemovePath = path.join(tmpPath, 'fileToRemove.txt');
+    var directoryToCopyPath = path.join(resourcesPath, 'files');
+    var directoryCopiedPath = path.join(tmpPath, 'files');
+    var fileToCopyPath = path.join(resourcesPath, 'file.json');
+    var fileCopiedPath = path.join(tmpPath, 'file.json');
+
+    // Create resources
+    beforeEach(function(done) {
+      async.parallel([
+        function(callback) {
+          fileSystem.mkdir(directoryToRemovePath, callback);
+        },
+
+        function(callback) {
+          fs.writeFile(fileToRemovePath, 'Something', {encoding: 'utf8'}, callback);
+        }
+      ], function() {
+        done();
+      });
+    });
+
+    it('should be able to copy / remove several resources', function(done) {
+      fileSystem.performActions([
+        {type: fileSystem.ACTIONS.REMOVE, sourcePath: directoryToRemovePath},
+        {type: fileSystem.ACTIONS.REMOVE, sourcePath: fileToRemovePath},
+        {type: fileSystem.ACTIONS.COPY, sourcePath: directoryToCopyPath, destinationPath: directoryCopiedPath},
+        {type: fileSystem.ACTIONS.COPY, sourcePath: fileToCopyPath, destinationPath: fileCopiedPath}
+      ], function(error) {
+        assert.isNull(error, 'Unexpected error');
+
+        var asyncFunctions = [
+          function(callback) {
+            fs.access(directoryToRemovePath, function(error) {
+              callback(null, error ? true : false);
+            });
+          },
+          function(callback) {
+            fs.access(fileToRemovePath, function(error) {
+              callback(null, error ? true : false);
+            });
+          },
+          function(callback) {
+            getDirectoryTree(directoryToCopyPath, function(tree) {
+              getDirectoryTree(directoryCopiedPath, function(copyTree) {
+                callback(null, {tree: tree, copiedTree: copyTree});
+              });
+            });
+          }
+        ];
+        async.parallel(asyncFunctions, function(error, results) {
+          assert.isNull(error, 'Unexpected verification error');
+          assert.ok(results[0], 'Expected directory to be removed');
+          assert.ok(results[1], 'Expected file to be removed');
+          assert.sameMembers(
+            results[2].tree,
+            results[2].copiedTree,
+            'Expected copy directory to have same resources as the original'
+          );
+          done();
+        });
+      });
+    });
+
+    it('should execute callback with an error if action type is unknown', function(done) {
+      fileSystem.performActions([
+        {type: 'wrong type', sourcePath: directoryToRemovePath}
+      ], function(error) {
+        assert.instanceOf(error, Error, 'Error expected');
+        done();
+      });
+    });
+
+    it('should execute callback with an error if action failed', function(done) {
+      fileSystem.performActions([
+        {type: fileSystem.ACTIONS.REMOVE, sourcePath: path.join(tmpPath, 'unknown')}
+      ], function(error) {
+        assert.instanceOf(error, Error, 'Error expected');
+        done();
+      });
+    });
+
   });
 
   // replace method
