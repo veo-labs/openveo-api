@@ -21,6 +21,7 @@
 - require('@openveo/api').fileSystem.prepend has been added to be able to add text at the beginning of a file
 - require('@openveo/api').fileSystem.rmdir is now able to keep the directory itself
 - require('@openveo/api').fileSystem.rm is now able to remove the content of a directory without the directory itself
+- require('@openveo/api').fileSystem.getFileType has been added to be able to get the type of a file (only for supported files)
 
 ## BUG FIXES
 

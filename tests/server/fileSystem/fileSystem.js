@@ -456,6 +456,48 @@ describe('fileSystem', function() {
 
   });
 
+  // getFileType method
+  describe('getFileType', function() {
+    var TYPES = [
+      fileSystem.FILE_TYPES.JPG,
+      fileSystem.FILE_TYPES.GIF,
+      fileSystem.FILE_TYPES.PNG,
+      fileSystem.FILE_TYPES.TAR,
+      fileSystem.FILE_TYPES.MP4
+    ];
+
+    TYPES.forEach(function(TYPE) {
+
+      it('should be able to get the file type corresponding to a file of type ' + TYPE, function(done) {
+        fileSystem.getFileType(
+          path.join(resourcesPath, 'files/' + TYPE.toUpperCase() + '.' + TYPE.toLowerCase()),
+          function(error, type) {
+            assert.equal(type, TYPE);
+            done();
+          }
+        );
+      });
+
+    });
+
+    it('should execute callback with an error if file doesn\'t exist', function(done) {
+      fileSystem.getFileType('Not a file', function(error, type) {
+        assert.instanceOf(error, Error);
+        done();
+      });
+    });
+
+    it('should execute callback with the unknown type if file does not correspond to a supported file', function(done) {
+      fileSystem.getFileType(
+        path.join(resourcesPath, 'files/unknown.txt'),
+        function(error, type) {
+          assert.equal(type, fileSystem.FILE_TYPES.UNKNOWN);
+          done();
+        }
+      );
+    });
+  });
+
   // getFileTypeFromBuffer method
   describe('getFileTypeFromBuffer', function() {
     var TYPES = [
