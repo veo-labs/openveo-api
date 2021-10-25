@@ -70,51 +70,50 @@ describe('fileSystem', function() {
 
   // extract method
   describe('extract', function() {
-    var tarFile = path.join(resourcesPath, 'file.tar');
     var extractedDirectory = path.join(tmpPath, 'extract');
-    var tarContent = ['.session', 'slide_00000.jpeg', 'slide_00001.jpeg', 'synchro.xml'];
+    var TYPES = [
+      fileSystem.FILE_TYPES.TAR,
+      fileSystem.FILE_TYPES.ZIP
+    ];
 
-    it('should be able to extract a tar file', function(done) {
-      fileSystem.extract(tarFile, extractedDirectory, function(error) {
-        if (!error) {
-          fs.readdir(extractedDirectory, function(error, tarFiles) {
-            if (error)
-              assert.ok(false, 'Failed reading extracted content : ' + error.message);
-            else {
-              assert.isDefined(tarFiles, 'Expected files in the tar');
-              assert.sameMembers(tarFiles, tarContent, 'Unexpected tar content');
+    TYPES.forEach(function(TYPE) {
+      var archivePath = path.join(resourcesPath, 'file.' + TYPE);
+      var archiveContent = ['.session', 'slide_00000.jpeg', 'slide_00001.jpeg', 'synchro.xml'];
+
+      it('should be able to extract a ' + TYPE + ' file', function(done) {
+        fileSystem.extract(archivePath, extractedDirectory, function(error) {
+          if (!error) {
+            fs.readdir(extractedDirectory, function(error, archiveFiles) {
+              assert.isNull(error, 'Failed reading extracted content');
+              assert.isDefined(archiveFiles, 'Expected files in the archive');
+              assert.sameMembers(archiveFiles, archiveContent, 'Unexpected archive content');
               done();
-            }
-          });
-        } else
-          assert.ok(false, 'Extraction failed : ' + error.message);
+            });
+          } else
+            assert.ok(false, 'Extraction failed: ' + error.message);
+        });
       });
+
     });
 
-    it('should return an error in case of invalid tar file path', function(done) {
+    it('should execute callback with an error in case of invalid archive file path', function(done) {
       fileSystem.extract(null, extractedDirectory, function(error) {
-        if (error)
-          done();
-        else
-          assert.ok(false, 'Expected an error');
+        assert.instanceOf(error, Error, 'Error expected');
+        done();
       });
     });
 
-    it('should return an error in case of invalid destination path', function(done) {
+    it('should execute callback with an error in case of invalid destination path', function(done) {
       fileSystem.extract(null, extractedDirectory, function(error) {
-        if (error)
-          done();
-        else
-          assert.ok(false, 'Expected an error');
+        assert.instanceOf(error, Error, 'Error expected');
+        done();
       });
     });
 
-    it('should return an error if the given tar file is not a valid tar', function(done) {
-      fileSystem.extract(path.join(resourcesPath, 'invalidTar.tar'), extractedDirectory, function(error) {
-        if (error)
-          done();
-        else
-          assert.ok(false, 'Expected an error');
+    it('should execute callback with an error if the given archive file is not a valid archive', function(done) {
+      fileSystem.extract(path.join(resourcesPath, 'file.json'), extractedDirectory, function(error) {
+        assert.instanceOf(error, Error, 'Error expected');
+        done();
       });
     });
 
@@ -463,7 +462,8 @@ describe('fileSystem', function() {
       fileSystem.FILE_TYPES.GIF,
       fileSystem.FILE_TYPES.PNG,
       fileSystem.FILE_TYPES.TAR,
-      fileSystem.FILE_TYPES.MP4
+      fileSystem.FILE_TYPES.MP4,
+      fileSystem.FILE_TYPES.ZIP
     ];
 
     TYPES.forEach(function(TYPE) {
@@ -505,7 +505,8 @@ describe('fileSystem', function() {
       fileSystem.FILE_TYPES.GIF,
       fileSystem.FILE_TYPES.PNG,
       fileSystem.FILE_TYPES.TAR,
-      fileSystem.FILE_TYPES.MP4
+      fileSystem.FILE_TYPES.MP4,
+      fileSystem.FILE_TYPES.ZIP
     ];
 
     TYPES.forEach(function(TYPE) {

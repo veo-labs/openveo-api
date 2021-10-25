@@ -1057,7 +1057,8 @@ describe('util', function() {
       fileSystem.FILE_TYPES.GIF,
       fileSystem.FILE_TYPES.PNG,
       fileSystem.FILE_TYPES.TAR,
-      fileSystem.FILE_TYPES.MP4
+      fileSystem.FILE_TYPES.MP4,
+      fileSystem.FILE_TYPES.ZIP
     ];
 
     TYPES.forEach(function(TYPE) {

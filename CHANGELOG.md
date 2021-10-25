@@ -22,6 +22,8 @@
 - require('@openveo/api').fileSystem.rmdir is now able to keep the directory itself
 - require('@openveo/api').fileSystem.rm is now able to remove the content of a directory without the directory itself
 - require('@openveo/api').fileSystem.getFileType has been added to be able to get the type of a file (only for supported files)
+- require('@openveo/api').fileSystem.extract is now capable of extracting zip files
+- require('@openveo/api').fileSystem now supports zip files
 
 ## BUG FIXES
 
