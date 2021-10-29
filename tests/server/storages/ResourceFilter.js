@@ -227,6 +227,30 @@ describe('ResourceFilter', function() {
 
   });
 
+  describe(ResourceFilter.OPERATORS.EXISTS, function() {
+
+    it('should add a "' + ResourceFilter.OPERATORS.EXISTS + '" operation', function() {
+      var expectedValue = true;
+      var expectedField = 'field';
+      filter[ResourceFilter.OPERATORS.EXISTS](expectedField, expectedValue);
+
+      assert.equal(filter.operations[0].type, ResourceFilter.OPERATORS.EXISTS, 'Wrong operation type');
+      assert.equal(filter.operations[0].field, expectedField, 'Wrong operation field');
+      assert.equal(filter.operations[0].value, expectedValue, 'Wrong operation value');
+    });
+
+    it('should throw a TypeError if value is not a boolean', function() {
+      var wrongValues = [[], 42, /regexp/, {}, 'String'];
+
+      wrongValues.forEach(function(wrongValue) {
+        assert.throws(function() {
+          filter[ResourceFilter.OPERATORS.EXISTS]('field', wrongValue);
+        });
+      });
+    });
+
+  });
+
   describe('hasOperation', function() {
 
     it('should return true if an operation type is already present in the list of operations', function() {

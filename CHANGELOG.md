@@ -24,6 +24,7 @@
 - require('@openveo/api').fileSystem.getFileType has been added to be able to get the type of a file (only for supported files)
 - require('@openveo/api').fileSystem.extract is now capable of extracting zip files
 - require('@openveo/api').fileSystem now supports zip files
+- require('@openveo/api').storages.ResourceFilter now supports `exists` comparison operator to test if a field exists or not
 
 ## BUG FIXES
 

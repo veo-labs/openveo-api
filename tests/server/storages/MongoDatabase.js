@@ -291,6 +291,12 @@ describe('MongoDatabase', function() {
           mongoOperator: '$eq'
         },
         {
+          field: 'field1',
+          value: true,
+          type: ResourceFilter.OPERATORS.EXISTS,
+          mongoOperator: '$exists'
+        },
+        {
           field: 'field2',
           value: 'value2',
           type: ResourceFilter.OPERATORS.NOT_EQUAL,
@@ -353,6 +359,12 @@ describe('MongoDatabase', function() {
           value: '42',
           type: ResourceFilter.OPERATORS.EQUAL,
           mongoOperator: '$eq'
+        },
+        {
+          field: 'field',
+          value: true,
+          type: ResourceFilter.OPERATORS.EXISTS,
+          mongoOperator: '$exists'
         },
         {
           field: 'field',
