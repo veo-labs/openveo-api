@@ -1,4 +1,10 @@
-# 8.0.1 / YYYY-MM-DD
+# 8.0.2 / YYYY-MM-DD
+
+## BUG FIXES
+
+- Fix 8.0.1 release date
+
+# 8.0.1 / 2021-11-19
 
 ## BUG FIXES
 
