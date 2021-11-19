@@ -16,7 +16,7 @@ var api = require('@openveo/api');
 
 # API
 
-Documentation is available on [Github pages](https://veo-labs.github.io/openveo-api/8.0.0/index.html).
+Documentation is available on [Github pages](https://veo-labs.github.io/openveo-api/8.0.1/index.html).
 
 # Contributors
 
