@@ -1,3 +1,9 @@
+# 8.0.1 / YYYY-MM-DD
+
+## BUG FIXES
+
+- Fix ovDeployGithubPages which was hanging when credentials where required to push to the repository 
+
 # 8.0.0 / 2021-11-19
 
 ## BREAKING CHANGES

@@ -20,7 +20,7 @@
 
 require('../processRequire.js');
 
-const {exec} = require('child_process');
+const {exec, spawn} = require('child_process');
 const {nanoid} = require('nanoid');
 const path = require('path');
 const os = require('os');
@@ -133,12 +133,34 @@ async function commit(repositoryPath, message) {
  */
 async function push(repositoryPath, branch) {
   return new Promise((resolve, reject) => {
-    const command = `git push origin ${branch}`;
-    log(`${repositoryPath} > Push commits > ${command}`);
-    exec(command, {cwd: repositoryPath}, (error, stdout, stderr) => {
-      if (error) return reject(error);
-      console.log(stdout);
+    let errorOutput = '';
+
+    log(`${repositoryPath} > Push commits > git push origin ${branch}`);
+
+    const gitProcess = spawn('git', [
+      'push',
+      'origin',
+      branch
+    ], {cwd: repositoryPath});
+
+    gitProcess.stderr.setEncoding('utf8');
+    gitProcess.stdout.on('error', (error) => reject(error));
+    gitProcess.on('error', (error) => reject(error));
+    gitProcess.on('exit', (code, signal) => {
+      if (code > 0) {
+        return reject(new Error(`Push failed with code ${code}\n${errorOutput}`));
+      }
+
       return resolve();
+    });
+    gitProcess.stderr.on('readable', () => {
+      let data;
+
+      // eslint-disable-next-line no-cond-assign
+      while (data = gitProcess.stderr.read()) {
+        errorOutput += data;
+      }
+
     });
   });
 }
