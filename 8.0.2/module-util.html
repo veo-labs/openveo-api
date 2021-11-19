@@ -1,0 +1,2811 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Module: util</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Module: util</h1>
+
+    
+
+
+
+
+<section>
+
+<header>
+    
+        
+            
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description"><p>Provides functions for common JavaScript operations.</p></div>
+        
+
+        
+            
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="util.js.html">util.js</a>, <a href="util.js.html#line8">line 8</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>// Load module "util"
+var util = require('@openveo/api').util;</code></pre>
+
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id=".areSameArrays"><span class="type-signature">(static) </span>areSameArrays<span class="signature">(array1, array2)</span><span class="type-signature"> &rarr; {Boolean}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Compares two arrays.</p>
+<p>Shallow validates that two arrays contains the same elements, no more no less.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>array1</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>An array</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>array2</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>An array</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="util.js.html">util.js</a>, <a href="util.js.html#line97">line 97</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>true if arrays are the same, false otherwise</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Boolean</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id=".escapeTextForRegExp"><span class="type-signature">(static) </span>escapeTextForRegExp<span class="signature">(text)</span><span class="type-signature"> &rarr; {String}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Escapes a text that will be used in a regular expression.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>text</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The text to escape</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="util.js.html">util.js</a>, <a href="util.js.html#line599">line 599</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>The escaped text</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">String</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>// Get util
+var util = require('@openveo/api').util;
+
+var escapedText = util.escapeTextForRegExp(
+  'Text with characters interpreted by JavaScript regular expressions: [](){}?*+.^$/\\|'
+);
+
+// "Text with characters interpreted by JavaScript regular expressions:
+// \\[\\]\\(\\)\\{\\}\\?\\*\\+\\.\\^\\$\/\\\|"
+console.log(escapedText);</code></pre>
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id=".evaluateDeepObjectProperties"><span class="type-signature">(static) </span>evaluateDeepObjectProperties<span class="signature">(propertyPath, objectToAnalyze)</span><span class="type-signature"> &rarr; {*}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Evaluates a path of properties on an object.</p>
+<p>It does not use the JavaScript eval function.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>propertyPath</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The path of the property to retreive from the object</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>objectToAnalyze</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The object containing the requested property</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="util.js.html">util.js</a>, <a href="util.js.html#line558">line 558</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>The value of the property</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">*</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>// Get util
+var util = require('@openveo/api').util;
+
+// Get property 'my.deep.property' of the object
+var value = util.evaluateDeepObjectProperties('my.deep.property', {
+  my {
+    deep {
+      property: 'My deep property value'
+    }
+  }
+});
+
+// "My deep property value"
+console.log(value);</code></pre>
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id=".getPropertyFromArray"><span class="type-signature">(static) </span>getPropertyFromArray<span class="signature">(property, list, recursiveProperty<span class="signature-attributes">opt</span>, startValue<span class="signature-attributes">opt</span>, shouldGetNextItems<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {Array}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Gets values of a specific property from a structured Array and its sub Array(s).</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>property</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>The name of the property to fetch</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>list</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>The list of objects to look into</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>recursiveProperty</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>The name of the recursive property to look into</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>startValue</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">*</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>The value of the searched property to start collecting values from</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>shouldGetNextItems</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Boolean</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>For internal use, it indicates if the values must be collected or not, for the
+given list. If true all values of the Array and sub Array(s) will be collected</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="util.js.html">util.js</a>, <a href="util.js.html#line488">line 488</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>The list of values for the given property in the Array and its sub Array(s)</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Array</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+    <h5>Examples</h5>
+    
+    <pre class="prettyprint"><code>// Get util
+var util = require('@openveo/api').util;
+
+// Get values of property "id" for each Array and sub Array(s) items
+var params = util.getPropertyFromArray('id', [
+  {id: 0},
+  {id: 1},
+  {id: 2, items: [{id: 3}]}
+], 'items');
+
+// [0, 1, 2, 3]
+console.log(params);</code></pre>
+
+    <pre class="prettyprint"><code>// Get util
+var util = require('@openveo/api').util;
+
+// Get values of property "id" for each Array and sub Array(s) items starting at the item where "id" equal 2
+var params = util.getPropertyFromArray('id', [
+  {id: 0},
+  {id: 1},
+  {id: 2, items: [
+      {id: 3, items: [{id: 4}]}
+    ]
+  }
+], 'items', 2);
+
+// [3, 4]
+console.log(params);</code></pre>
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id=".intersectArray"><span class="type-signature">(static) </span>intersectArray<span class="signature">(array1, array2)</span><span class="type-signature"> &rarr; {Array}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Makes intersection of two arrays.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>array1</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>An array</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>array2</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>An array</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="util.js.html">util.js</a>, <a href="util.js.html#line76">line 76</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>The intersection of the two arrays</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Array</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id=".isContained"><span class="type-signature">(static) </span>isContained<span class="signature">(expectedValue)</span><span class="type-signature"> &rarr; {Boolean}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Checks if a value is isContained into another comparing primitive types.</p>
+<p>All values in expectedValue must be found in value to pass the test.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>expectedValue</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+|
+
+<span class="param-type">Number</span>
+|
+
+<span class="param-type">String</span>
+|
+
+<span class="param-type">Array</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The value expecting to be found in &quot;value&quot;</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="util.js.html">util.js</a>, <a href="util.js.html#line129">line 129</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>true if the expected value has been found in value</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Boolean</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id=".isEmailValid"><span class="type-signature">(static) </span>isEmailValid<span class="signature">(email)</span><span class="type-signature"> &rarr; {Boolean}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Checks if an email address is valid or not.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>email</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The email address</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="util.js.html">util.js</a>, <a href="util.js.html#line115">line 115</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>true if the email is valid, false otherwise</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Boolean</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id=".joinArray"><span class="type-signature">(static) </span>joinArray<span class="signature">(array1, array2)</span><span class="type-signature"> &rarr; {Array}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Makes union of two arrays.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>array1</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>An array</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>array2</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>An array</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="util.js.html">util.js</a>, <a href="util.js.html#line61">line 61</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>The union of the two arrays</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Array</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id=".merge"><span class="type-signature">(static) </span>merge<span class="signature">(object1, object2)</span><span class="type-signature"> &rarr; {Object}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Merges, recursively, all properties of object2 in object1.</p>
+<p>This will not create copies of objects.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>object1</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The JavaScript final object</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>object2</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>A second JavaScript object to merge into
+the first one</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="util.js.html">util.js</a>, <a href="util.js.html#line18">line 18</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>object1</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Object</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id=".removeHtmlFromText"><span class="type-signature">(static) </span>removeHtmlFromText<span class="signature">(text)</span><span class="type-signature"> &rarr; {String}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Decodes all HTML entities and removes all HTML elements from specified text.</p>
+<p>New lines are also replaced by spaces.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>text</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The text to sanitize</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="util.js.html">util.js</a>, <a href="util.js.html#line623">line 623</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>The sanitized text</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">String</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>// Get util
+var util = require('@openveo/api').util;
+
+var htmlLessText = util.removeHtmlFromText(
+  'Text with &lt;strong style="color: orange">HTML tags&lt;/strong> and HTML entities like "&amp;eacute; or $ccedil;" +
+  '\n on several lines'
+);
+
+// 'Text with HTML tags and HTML entities like "é or ç"  on several lines'
+console.log(htmlLessText);</code></pre>
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id=".shallowValidateObject"><span class="type-signature">(static) </span>shallowValidateObject<span class="signature">(objectToAnalyze, validationDescription)</span><span class="type-signature"> &rarr; {Object}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Validates first level object properties using the given validation description object.</p>
+<p>It helps validating that an object, coming from a request query string parameters correspond to the expected
+type, if it has to be required, if it must be contained into a list of values etc.</p>
+<p>Available features by types :</p>
+<ul>
+<li><strong>string</strong>
+<ul>
+<li><strong>default</strong> Specify a default value</li>
+<li><strong>required</strong> Boolean to indicate if the value is required (if default is specified, value will always be set)</li>
+<li><strong>in</strong> Specify an array of strings to validate that the value is inside this array</li>
+</ul>
+</li>
+<li><strong>number</strong>
+<ul>
+<li><strong>default</strong> Specify a default value</li>
+<li><strong>required</strong> Boolean to indicate if the value is required (if default is specified, value will always be set)</li>
+<li><strong>in</strong> Specify an array of numbers to validate that the value is inside this array</li>
+<li><strong>gt</strong> Specify a number to validate that the value is greater than this number</li>
+<li><strong>lt</strong> Specify a number to validate that the value is lesser than this number</li>
+<li><strong>gte</strong> Specify a number to validate that the value is greater or equal to this number</li>
+<li><strong>lte</strong> Specify a number to validate that the value is lesser or equal to this number</li>
+</ul>
+</li>
+<li><strong>array&lt;string&gt;</strong>
+<ul>
+<li><strong>required</strong> Boolean to indicate if the value is required (an empty array is not an error)</li>
+<li><strong>in</strong> Specify an array of values to validate that each value of the array is inside this array</li>
+</ul>
+</li>
+<li><strong>array&lt;number&gt;</strong>
+<ul>
+<li><strong>required</strong> Boolean to indicate if the value is required (an empty array is not an error)</li>
+<li><strong>in</strong> Specify an array of values to validate that each value of the array is inside this array</li>
+</ul>
+</li>
+<li><strong>array&lt;object&gt;</strong>
+<ul>
+<li><strong>required</strong> Boolean to indicate if the value is required (an empty array is not an error)</li>
+</ul>
+</li>
+<li><strong>date</strong>
+<ul>
+<li><strong>required</strong> Boolean to indicate if the value is required</li>
+<li><strong>gt</strong> Specify a date to validate that the value is greater than this date</li>
+<li><strong>lt</strong> Specify a date to validate that the value is lesser than this date</li>
+<li><strong>gte</strong> Specify a date to validate that the value is greater or equal to this date</li>
+<li><strong>lte</strong> Specify a date to validate that the value is lesser or equal to this date</li>
+</ul>
+</li>
+<li><strong>object</strong>
+<ul>
+<li><strong>default</strong> Specify a default value</li>
+<li><strong>required</strong> Boolean to indicate if the value is required (if default is specified, value will always be set)</li>
+</ul>
+</li>
+<li><strong>boolean</strong>
+<ul>
+<li><strong>default</strong> Specify a default value</li>
+<li><strong>required</strong> Boolean to indicate if the value is required (if default is specified, value will always be set)</li>
+</ul>
+</li>
+<li><strong>file</strong>
+<ul>
+<li><strong>required</strong> Boolean to indicate if the value is required</li>
+<li><strong>in</strong> Specify an array of types to validate that the file's type is inside this array</li>
+</ul>
+</li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>objectToAnalyze</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The object to analyze</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>validationDescription</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The validation description object</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="util.js.html">util.js</a>, <a href="util.js.html#line162">line 162</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Throws:</h5>
+
+        
+
+<dl>
+    <dt>
+        <div class="param-desc">
+        <p>An error if a property does not respect its associated rules</p>
+        </div>
+    </dt>
+    <dd></dd>
+    <dt>
+        <dl>
+            <dt>
+                Type
+            </dt>
+            <dd>
+                
+<span class="param-type">Error</span>
+
+
+            </dd>
+        </dl>
+    </dt>
+    <dd></dd>
+</dl>
+
+
+    
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>A new object with the list of properties as expected</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Object</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>// Get util
+var util = require('@openveo/api').util;
+var fileSystem = require('@openveo/api').fileSystem;
+
+// Validate parameters
+var params = util.shallowValidateObject({
+  myStringProperty: 'my value',
+  myNumberProperty: 25,
+  myArrayStringProperty: ['value1', 'value2'],
+  myArrayNumberProperty: [10, 5],
+  myArrayObjectProperty: [{}, {}],
+  myDateProperty: '02/25/2016',
+  myObjectProperty: {firstKey: 'firstValue'},
+  myBooleanProperty: true,
+  myFileProperty: 88 13 70 17 // At least the first 300 bytes of the file
+}, {
+  myStringProperty: {type: 'string', required: true, default: 'default', in: ['my value', 'value']},
+  myNumberProperty: {type: 'number', required: true, default: 0, in: [0, 5, 10], gte: 0, lte: 5},
+  myArrayStringProperty: {type: 'array&lt;string>', required: true, in: ['value1', 'value2']},
+  myArrayNumberProperty: {type: 'array&lt;number>', required: true, in: [42, 43]},
+  myArrayObjectProperty: {type: 'array&lt;object>', required: true},
+  myDateProperty: {type: 'date', required: true, gte: '02/20/2016', lte: '03/30/2016'},
+  myObjectProperty: {type: 'object', required: true},
+  myBooleanProperty: {type: 'boolean', required: true},
+  myFileProperty: {type: 'file', required: true, in: [
+    fileSystem.FILE_TYPES.JPG,
+    fileSystem.FILE_TYPES.PNG,
+    fileSystem.FILE_TYPES.GIF,
+    fileSystem.FILE_TYPES.MP4,
+    fileSystem.FILE_TYPES.TAR
+  ]}
+});
+
+console.log(params);</code></pre>
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id=".validateFiles"><span class="type-signature">(static) </span>validateFiles<span class="signature">(filesToAnalyze, validationDescription, callback)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Validates that files are in the expected type.</p>
+<p>Available features for validation object:</p>
+<ul>
+<li><strong>in</strong> Specify an array of types to validate that the file type is inside this array</li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>filesToAnalyze</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Files to validate with keys as files identifiers and values as
+files absolute paths</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>validationDescription</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The validation description object with keys as files identifiers
+and values as validation objects</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>callback</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-util.html#~validateFilesCallback">module:util~validateFilesCallback</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The function to call when done</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="util.js.html">util.js</a>, <a href="util.js.html#line416">line 416</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>// Get util
+var util = require('@openveo/api').util;
+var fileSystem = require('@openveo/api').fileSystem;
+
+// Validate parameters
+var params = util.validateFiles({
+  myFirstFile: '/tmp/myFirstFile.mp4',
+  mySecondFile: '/tmp/mySecondFile.tar'
+}, {
+  myFirstFile: {in: [fileSystem.FILE_TYPES.MP4]},
+  mySecondFile: {in: [fileSystem.FILE_TYPES.TAR]}
+}, function(error, files) {
+  if (error) {
+    console.log('An error occurred during validation with message: ' + error.message);
+  }
+
+  console.log('Is file valid ? ' + files.myFirstFile.isValid);
+  console.log('File type: ' + files.myFirstFile.type);
+});
+
+console.log(params);</code></pre>
+
+
+
+        
+    
+
+    
+        <h3 class="subsection-title">Type Definitions</h3>
+
+        
+                
+
+    
+
+    
+    <h4 class="name" id="~validateFilesCallback"><span class="type-signature"></span>validateFilesCallback<span class="signature">(error, files)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>error</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Error</span>
+|
+
+<span class="param-type">null</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The error if an error occurred, null otherwise</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>files</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+|
+
+<span class="param-type">undefined</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Files with keys as the files identifiers and values as Objects containing validation
+information: isValid and <a href="module-fileSystem.html#.FILE_TYPES"><code>type</code></a></p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="util.js.html">util.js</a>, <a href="util.js.html#line665">line 665</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-angularJs.html">angularJs</a></li><li><a href="module-angularJs_parser.html">angularJs/parser</a></li><li><a href="module-controllers.html">controllers</a></li><li><a href="module-controllers_ContentController.html">controllers/ContentController</a></li><li><a href="module-controllers_Controller.html">controllers/Controller</a></li><li><a href="module-controllers_EntityController.html">controllers/EntityController</a></li><li><a href="module-controllers_HttpController.html">controllers/HttpController</a></li><li><a href="module-controllers_httpErrors.html">controllers/httpErrors</a></li><li><a href="module-controllers_SocketController.html">controllers/SocketController</a></li><li><a href="module-emitters.html">emitters</a></li><li><a href="module-emitters_AdvancedEmitter.html">emitters/AdvancedEmitter</a></li><li><a href="module-emitters_AdvancedEvent.html">emitters/AdvancedEvent</a></li><li><a href="module-errors.html">errors</a></li><li><a href="module-errors_AccessError.html">errors/AccessError</a></li><li><a href="module-errors_NotFoundError.html">errors/NotFoundError</a></li><li><a href="module-errors_StorageError.html">errors/StorageError</a></li><li><a href="module-fileSystem.html">fileSystem</a></li><li><a href="module-grunt.html">grunt</a></li><li><a href="module-grunt_copyTask.html">grunt/copyTask</a></li><li><a href="module-grunt_ngDpTask.html">grunt/ngDpTask</a></li><li><a href="module-grunt_removeTask.html">grunt/removeTask</a></li><li><a href="module-grunt_renameTask.html">grunt/renameTask</a></li><li><a href="module-imageProcessor.html">imageProcessor</a></li><li><a href="module-logger.html">logger</a></li><li><a href="module-middlewares.html">middlewares</a></li><li><a href="module-middlewares_disableCacheMiddleware.html">middlewares/disableCacheMiddleware</a></li><li><a href="module-middlewares_imageProcessorMiddleware.html">middlewares/imageProcessorMiddleware</a></li><li><a href="module-middlewares_logRequestMiddleware.html">middlewares/logRequestMiddleware</a></li><li><a href="module-multipart.html">multipart</a></li><li><a href="module-multipart_MultipartParser.html">multipart/MultipartParser</a></li><li><a href="module-passport.html">passport</a></li><li><a href="module-passport_STRATEGIES.html">passport/STRATEGIES</a></li><li><a href="module-passport_strategyFactory.html">passport/strategyFactory</a></li><li><a href="module-plugin.html">plugin</a></li><li><a href="module-plugin_Plugin.html">plugin/Plugin</a></li><li><a href="module-plugin_PluginApi.html">plugin/PluginApi</a></li><li><a href="module-providers.html">providers</a></li><li><a href="module-providers_EntityProvider.html">providers/EntityProvider</a></li><li><a href="module-providers_Provider.html">providers/Provider</a></li><li><a href="module-socket.html">socket</a></li><li><a href="module-socket_Pilot.html">socket/Pilot</a></li><li><a href="module-socket_SocketNamespace.html">socket/SocketNamespace</a></li><li><a href="module-socket_SocketServer.html">socket/SocketServer</a></li><li><a href="module-storages.html">storages</a></li><li><a href="module-storages_DATABASE_ERRORS.html">storages/DATABASE_ERRORS</a></li><li><a href="module-storages_factory.html">storages/factory</a></li><li><a href="module-storages_MongoDatabase.html">storages/MongoDatabase</a></li><li><a href="module-storages_ResourceFilter.html">storages/ResourceFilter</a></li><li><a href="module-storages_Storage.html">storages/Storage</a></li><li><a href="module-util.html">util</a></li><li><a href="module-watcher.html">watcher</a></li><li><a href="module-watcher_Watcher.html">watcher/Watcher</a></li><li><a href="module-watcher_WatcherError.html">watcher/WatcherError</a></li></ul><h3>Namespaces</h3><ul><li><a href="module-controllers_httpErrors-HTTP_ERRORS.html">controllers/httpErrors~HTTP_ERRORS</a></li><li><a href="module-passport_STRATEGIES-STRATEGIES.html">passport/STRATEGIES~STRATEGIES</a></li></ul><h3>Classes</h3><ul><li><a href="module-controllers_ContentController-ContentController.html">controllers/ContentController~ContentController</a></li><li><a href="module-controllers_Controller-Controller.html">controllers/Controller~Controller</a></li><li><a href="module-controllers_EntityController-EntityController.html">controllers/EntityController~EntityController</a></li><li><a href="module-controllers_HttpController-HttpController.html">controllers/HttpController~HttpController</a></li><li><a href="module-controllers_SocketController-SocketController.html">controllers/SocketController~SocketController</a></li><li><a href="module-emitters_AdvancedEmitter-AdvancedEmitter.html">emitters/AdvancedEmitter~AdvancedEmitter</a></li><li><a href="module-emitters_AdvancedEvent-AdvancedEvent.html">emitters/AdvancedEvent~AdvancedEvent</a></li><li><a href="module-errors_AccessError-AccessError.html">errors/AccessError~AccessError</a></li><li><a href="module-errors_NotFoundError-NotFoundError.html">errors/NotFoundError~NotFoundError</a></li><li><a href="module-errors_StorageError-StorageError.html">errors/StorageError~StorageError</a></li><li><a href="module-multipart_MultipartParser-MultipartParser.html">multipart/MultipartParser~MultipartParser</a></li><li><a href="module-plugin_PluginApi-PluginApi.html">plugin/PluginApi~PluginApi</a></li><li><a href="module-plugin_Plugin-Plugin.html">plugin/Plugin~Plugin</a></li><li><a href="module-providers_EntityProvider-EntityProvider.html">providers/EntityProvider~EntityProvider</a></li><li><a href="module-providers_Provider-Provider.html">providers/Provider~Provider</a></li><li><a href="module-socket_Pilot-Pilot.html">socket/Pilot~Pilot</a></li><li><a href="module-socket_SocketNamespace-SocketNamespace.html">socket/SocketNamespace~SocketNamespace</a></li><li><a href="module-socket_SocketServer-SocketServer.html">socket/SocketServer~SocketServer</a></li><li><a href="module-storages_MongoDatabase-MongoDatabase.html">storages/MongoDatabase~MongoDatabase</a></li><li><a href="module-storages_ResourceFilter-ResourceFilter.html">storages/ResourceFilter~ResourceFilter</a></li><li><a href="module-storages_Storage-Storage.html">storages/Storage~Storage</a></li><li><a href="module-watcher_WatcherError-WatcherError.html">watcher/WatcherError~WatcherError</a></li><li><a href="module-watcher_Watcher-Watcher.html">watcher/Watcher~Watcher</a></li></ul><h3>Events</h3><ul><li><a href="core_watcher_Watcher-Watcher.html#event:create">core:watcher/Watcher~Watcher#create</a></li><li><a href="core_watcher_Watcher-Watcher.html#event:delete">core:watcher/Watcher~Watcher#delete</a></li><li><a href="core_watcher_Watcher-Watcher.html#event:error">core:watcher/Watcher~Watcher#error</a></li><li><a href="core_watcher_Watcher-Watcher.html#event:watch">core:watcher/Watcher~Watcher#watch</a></li><li><a href="module-watcher_DirectoryFsWatcher-DirectoryFsWatcher.html#event:create">watcher/DirectoryFsWatcher~DirectoryFsWatcher#create</a></li><li><a href="module-watcher_DirectoryFsWatcher-DirectoryFsWatcher.html#event:delete">watcher/DirectoryFsWatcher~DirectoryFsWatcher#delete</a></li><li><a href="module-watcher_DirectoryFsWatcher-DirectoryFsWatcher.html#event:error">watcher/DirectoryFsWatcher~DirectoryFsWatcher#error</a></li><li><a href="module-watcher_DirectoryWatcher-DirectoryWatcher.html#event:create">watcher/DirectoryWatcher~DirectoryWatcher#create</a></li><li><a href="module-watcher_DirectoryWatcher-DirectoryWatcher.html#event:delete">watcher/DirectoryWatcher~DirectoryWatcher#delete</a></li><li><a href="module-watcher_DirectoryWatcher-DirectoryWatcher.html#event:error">watcher/DirectoryWatcher~DirectoryWatcher#error</a></li><li><a href="module-watcher_DirectoryWatcher-DirectoryWatcher.html#event:watch">watcher/DirectoryWatcher~DirectoryWatcher#watch</a></li></ul><h3><a href="global.html">Global</a></h3>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Fri Nov 19 2021 15:26:23 GMT+0100 (Central European Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
