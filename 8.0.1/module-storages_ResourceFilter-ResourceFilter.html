@@ -1,0 +1,4434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Class: ResourceFilter</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Class: ResourceFilter</h1>
+
+    
+
+
+
+
+<section>
+
+<header>
+    
+        <h2><span class="attribs"><span class="type-signature"></span></span>
+            <span class="ancestors"><a href="module-storages_ResourceFilter.html">storages/ResourceFilter</a>~</span>ResourceFilter<span class="signature">()</span><span class="type-signature"></span></h2>
+        
+            <div class="class-description"><p>ResourceFilter</p></div>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+
+    
+    <h2>Constructor</h2>
+    
+
+    
+    <h4 class="name" id="ResourceFilter"><span class="type-signature"></span>new ResourceFilter<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Defines a storage filter.</p>
+<p>A filter is a uniform way of filtering results common to all storages.
+A filter can contain only one &quot;or&quot; operation, one &quot;nor&quot; operation and one &quot;and&quot; operation.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="storages_ResourceFilter.js.html">storages/ResourceFilter.js</a>, <a href="storages_ResourceFilter.js.html#line41">line 41</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>var filter = new ResourceFilter()
+.equal('field1', 42)
+.exists('field1', true)
+.notEqual('field2', 42)
+.greaterThan('field3', 42)
+.greaterThanEqual('field4', 42)
+.in('field5', [42])
+.lesserThan('field6', 42)
+.lesserThanEqual('field7', 42)
+.regex('field8', /^Something/i)
+.search('query')
+.or([
+  new ResourceFilter().equal('field8', 42),
+  new ResourceFilter().notIn('field9', [42])
+])
+.nor([
+  new ResourceFilter().equal('field10', 42),
+  new ResourceFilter().notIn('field11', [42])
+)],
+.and([
+  new ResourceFilter().equal('field12', 42),
+  new ResourceFilter().notIn('field13', [42])
+)];</code></pre>
+
+
+
+    
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Members</h3>
+
+        
+            
+<h4 class="name" id=".OPERATORS"><span class="type-signature">(static, constant) </span>OPERATORS<span class="type-signature"> :Object</span></h4>
+
+
+
+
+<div class="description">
+    <p>The available operators.</p>
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">Object</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-default">Default Value:</dt>
+    <dd class="tag-default"><ul class="dummy">
+            <li class="object-value"><pre class="prettyprint"><code>{"OR":"or","NOR":"nor","AND":"and","EQUAL":"equal","EXISTS":"exists","NOT_EQUAL":"notEqual","IN":"in","NOT_IN":"notIn","GREATER_THAN":"greaterThan","GREATER_THAN_EQUAL":"greaterThanEqual","LESSER_THAN":"lesserThan","LESSER_THAN_EQUAL":"lesserThanEqual","REGEX":"regex","SEARCH":"search"}</code></pre></li>
+        </ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="storages_ResourceFilter.js.html">storages/ResourceFilter.js</a>, <a href="storages_ResourceFilter.js.html#line74">line 74</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="operations"><span class="type-signature">(readonly) </span>operations<span class="type-signature"> :Array</span></h4>
+
+
+
+
+<div class="description">
+    <p>The list of operations.</p>
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">Array</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="storages_ResourceFilter.js.html">storages/ResourceFilter.js</a>, <a href="storages_ResourceFilter.js.html#line54">line 54</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id=".addComparisonOperation"><span class="type-signature">(private, static) </span>addComparisonOperation<span class="signature">(field, value, Resource, The)</span><span class="type-signature"> &rarr; {<a href="module-storages_ResourceFilter-ResourceFilter.html">module:storages/ResourceFilter~ResourceFilter</a>}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Adds a comparison operation to the filter.</p>
+</div>
+
+
+
+
+
+
+
+    <h5>This:</h5>
+    <ul><li><a href="module-storages_ResourceFilter-ResourceFilter.html">module:storages/ResourceFilter~ResourceFilter</a></li></ul>
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>field</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The name of the field</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>value</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+|
+
+<span class="param-type">Number</span>
+|
+
+<span class="param-type">Boolean</span>
+|
+
+<span class="param-type">Date</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The value to compare the field to</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>Resource</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>filter operator</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>The</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>list of authorized types as strings</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="storages_ResourceFilter.js.html">storages/ResourceFilter.js</a>, <a href="storages_ResourceFilter.js.html#line112">line 112</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Throws:</h5>
+
+        
+
+<dl>
+    <dt>
+        <div class="param-desc">
+        <p>An error if field and / or value is not valid</p>
+        </div>
+    </dt>
+    <dd></dd>
+    <dt>
+        <dl>
+            <dt>
+                Type
+            </dt>
+            <dd>
+                
+<span class="param-type">TypeError</span>
+
+
+            </dd>
+        </dl>
+    </dt>
+    <dd></dd>
+</dl>
+
+
+    
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>The actual filter</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="module-storages_ResourceFilter-ResourceFilter.html">module:storages/ResourceFilter~ResourceFilter</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id=".addLogicalOperation"><span class="type-signature">(private, static) </span>addLogicalOperation<span class="signature">(filters)</span><span class="type-signature"> &rarr; {<a href="module-storages_ResourceFilter-ResourceFilter.html">module:storages/ResourceFilter~ResourceFilter</a>}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Adds a logical operation to the filter.</p>
+<p>Only one logical operation can be added in a filter.</p>
+</div>
+
+
+
+
+
+
+
+    <h5>This:</h5>
+    <ul><li><a href="module-storages_ResourceFilter-ResourceFilter.html">module:storages/ResourceFilter~ResourceFilter</a></li></ul>
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>filters</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The list of filters</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="storages_ResourceFilter.js.html">storages/ResourceFilter.js</a>, <a href="storages_ResourceFilter.js.html#line138">line 138</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Throws:</h5>
+
+        
+
+<dl>
+    <dt>
+        <div class="param-desc">
+        <p>An error if field and / or value is not valid</p>
+        </div>
+    </dt>
+    <dd></dd>
+    <dt>
+        <dl>
+            <dt>
+                Type
+            </dt>
+            <dd>
+                
+<span class="param-type">TypeError</span>
+
+
+            </dd>
+        </dl>
+    </dt>
+    <dd></dd>
+</dl>
+
+
+    
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>The actual filter</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="module-storages_ResourceFilter-ResourceFilter.html">module:storages/ResourceFilter~ResourceFilter</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id=".isValidType"><span class="type-signature">(private, static) </span>isValidType<span class="signature">(value, The)</span><span class="type-signature"> &rarr; {Boolean}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Validates the type of a value.</p>
+</div>
+
+
+
+
+
+
+
+    <h5>This:</h5>
+    <ul><li><a href="module-storages_ResourceFilter-ResourceFilter.html">module:storages/ResourceFilter~ResourceFilter</a></li></ul>
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>value</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The value to test</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>The</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>list of authorized types as strings</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="storages_ResourceFilter.js.html">storages/ResourceFilter.js</a>, <a href="storages_ResourceFilter.js.html#line92">line 92</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>true if valid, false otherwise</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Boolean</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="and"><span class="type-signature"></span>and<span class="signature">(filters)</span><span class="type-signature"> &rarr; {module:storages:ResourceFilter~ResourceFilter}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Adds an &quot;and&quot; operation to the filter.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>filters</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The list of filters</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="storages_ResourceFilter.js.html">storages/ResourceFilter.js</a>, <a href="storages_ResourceFilter.js.html#line385">line 385</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Throws:</h5>
+
+        
+
+<dl>
+    <dt>
+        <div class="param-desc">
+        <p>An error if filters are not valid</p>
+        </div>
+    </dt>
+    <dd></dd>
+    <dt>
+        <dl>
+            <dt>
+                Type
+            </dt>
+            <dd>
+                
+<span class="param-type">TypeError</span>
+
+
+            </dd>
+        </dl>
+    </dt>
+    <dd></dd>
+</dl>
+
+
+    
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>The actual filter</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">module:storages:ResourceFilter~ResourceFilter</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="equal"><span class="type-signature"></span>equal<span class="signature">(field, value)</span><span class="type-signature"> &rarr; {<a href="module-storages_ResourceFilter-ResourceFilter.html">module:storages/ResourceFilter~ResourceFilter</a>}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Adds an equal operation to the filter.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>field</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The name of the field</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>value</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+|
+
+<span class="param-type">Number</span>
+|
+
+<span class="param-type">Boolean</span>
+|
+
+<span class="param-type">Date</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The value to compare the field to</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="storages_ResourceFilter.js.html">storages/ResourceFilter.js</a>, <a href="storages_ResourceFilter.js.html#line186">line 186</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Throws:</h5>
+
+        
+
+<dl>
+    <dt>
+        <div class="param-desc">
+        <p>An error if field and / or value is not valid</p>
+        </div>
+    </dt>
+    <dd></dd>
+    <dt>
+        <dl>
+            <dt>
+                Type
+            </dt>
+            <dd>
+                
+<span class="param-type">TypeError</span>
+
+
+            </dd>
+        </dl>
+    </dt>
+    <dd></dd>
+</dl>
+
+
+    
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>The actual filter</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="module-storages_ResourceFilter-ResourceFilter.html">module:storages/ResourceFilter~ResourceFilter</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="exists"><span class="type-signature"></span>exists<span class="signature">(field, value)</span><span class="type-signature"> &rarr; {<a href="module-storages_ResourceFilter-ResourceFilter.html">module:storages/ResourceFilter~ResourceFilter</a>}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Adds an exists operation to the filter.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>field</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The name of the field</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>value</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Boolean</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>true if the field should exist, false otherwise</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="storages_ResourceFilter.js.html">storages/ResourceFilter.js</a>, <a href="storages_ResourceFilter.js.html#line204">line 204</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Throws:</h5>
+
+        
+
+<dl>
+    <dt>
+        <div class="param-desc">
+        <p>An error if field and / or value is not valid</p>
+        </div>
+    </dt>
+    <dd></dd>
+    <dt>
+        <dl>
+            <dt>
+                Type
+            </dt>
+            <dd>
+                
+<span class="param-type">TypeError</span>
+
+
+            </dd>
+        </dl>
+    </dt>
+    <dd></dd>
+</dl>
+
+
+    
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>The actual filter</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="module-storages_ResourceFilter-ResourceFilter.html">module:storages/ResourceFilter~ResourceFilter</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="getComparisonOperation"><span class="type-signature"></span>getComparisonOperation<span class="signature">(operator, field)</span><span class="type-signature"> &rarr; {Object|Null}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Gets an operation from filter or sub filters.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>operator</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Operation operator</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>field</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Operation field</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="storages_ResourceFilter.js.html">storages/ResourceFilter.js</a>, <a href="storages_ResourceFilter.js.html#line457">line 457</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>The operation with:
+-<strong>String</strong> type The operation type
+-<strong>String</strong> field The operation field
+-<strong>String|Number|Boolean|Date|Array</strong> value The operation value</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Object</span>
+|
+
+<span class="param-type">Null</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="getLogicalOperation"><span class="type-signature"></span>getLogicalOperation<span class="signature">(operator)</span><span class="type-signature"> &rarr; {Object|Null}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Gets a logical operation from filter.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>operator</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Logical operator to look for</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="storages_ResourceFilter.js.html">storages/ResourceFilter.js</a>, <a href="storages_ResourceFilter.js.html#line428">line 428</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>The operation with:
+-<strong>String</strong> type The operation type
+-<strong>Array</strong> filters The list of filters inside the logical operation</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Object</span>
+|
+
+<span class="param-type">Null</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="greaterThan"><span class="type-signature"></span>greaterThan<span class="signature">(field, value)</span><span class="type-signature"> &rarr; {<a href="module-storages_ResourceFilter-ResourceFilter.html">module:storages/ResourceFilter~ResourceFilter</a>}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Adds a &quot;greater than&quot; operation to the filter.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>field</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The name of the field</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>value</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+|
+
+<span class="param-type">Number</span>
+|
+
+<span class="param-type">Boolean</span>
+|
+
+<span class="param-type">Date</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The value to compare the field to</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="storages_ResourceFilter.js.html">storages/ResourceFilter.js</a>, <a href="storages_ResourceFilter.js.html#line240">line 240</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Throws:</h5>
+
+        
+
+<dl>
+    <dt>
+        <div class="param-desc">
+        <p>An error if field and / or value is not valid</p>
+        </div>
+    </dt>
+    <dd></dd>
+    <dt>
+        <dl>
+            <dt>
+                Type
+            </dt>
+            <dd>
+                
+<span class="param-type">TypeError</span>
+
+
+            </dd>
+        </dl>
+    </dt>
+    <dd></dd>
+</dl>
+
+
+    
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>The actual filter</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="module-storages_ResourceFilter-ResourceFilter.html">module:storages/ResourceFilter~ResourceFilter</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="greaterThanEqual"><span class="type-signature"></span>greaterThanEqual<span class="signature">(field, value)</span><span class="type-signature"> &rarr; {<a href="module-storages_ResourceFilter-ResourceFilter.html">module:storages/ResourceFilter~ResourceFilter</a>}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Adds a &quot;greater than or equal&quot; operation to the filter.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>field</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The name of the field</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>value</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+|
+
+<span class="param-type">Number</span>
+|
+
+<span class="param-type">Boolean</span>
+|
+
+<span class="param-type">Date</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The value to compare the field to</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="storages_ResourceFilter.js.html">storages/ResourceFilter.js</a>, <a href="storages_ResourceFilter.js.html#line258">line 258</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Throws:</h5>
+
+        
+
+<dl>
+    <dt>
+        <div class="param-desc">
+        <p>An error if field and / or value is not valid</p>
+        </div>
+    </dt>
+    <dd></dd>
+    <dt>
+        <dl>
+            <dt>
+                Type
+            </dt>
+            <dd>
+                
+<span class="param-type">TypeError</span>
+
+
+            </dd>
+        </dl>
+    </dt>
+    <dd></dd>
+</dl>
+
+
+    
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>The actual filter</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="module-storages_ResourceFilter-ResourceFilter.html">module:storages/ResourceFilter~ResourceFilter</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="hasOperation"><span class="type-signature"></span>hasOperation<span class="signature">(operator)</span><span class="type-signature"> &rarr; {Boolean}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Tests if an operation has already been specified.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>operator</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Operation operator</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="storages_ResourceFilter.js.html">storages/ResourceFilter.js</a>, <a href="storages_ResourceFilter.js.html#line413">line 413</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>true if the operation has already been added to this filter, false otherwise</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Boolean</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="in"><span class="type-signature"></span>in<span class="signature">(field, value)</span><span class="type-signature"> &rarr; {<a href="module-storages_ResourceFilter-ResourceFilter.html">module:storages/ResourceFilter~ResourceFilter</a>}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Adds an &quot;in&quot; operation to the filter.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>field</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The name of the field</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>value</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The value to compare the field to</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="storages_ResourceFilter.js.html">storages/ResourceFilter.js</a>, <a href="storages_ResourceFilter.js.html#line312">line 312</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Throws:</h5>
+
+        
+
+<dl>
+    <dt>
+        <div class="param-desc">
+        <p>An error if field and / or value is not valid</p>
+        </div>
+    </dt>
+    <dd></dd>
+    <dt>
+        <dl>
+            <dt>
+                Type
+            </dt>
+            <dd>
+                
+<span class="param-type">TypeError</span>
+
+
+            </dd>
+        </dl>
+    </dt>
+    <dd></dd>
+</dl>
+
+
+    
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>The actual filter</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="module-storages_ResourceFilter-ResourceFilter.html">module:storages/ResourceFilter~ResourceFilter</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="lesserThan"><span class="type-signature"></span>lesserThan<span class="signature">(field, value)</span><span class="type-signature"> &rarr; {<a href="module-storages_ResourceFilter-ResourceFilter.html">module:storages/ResourceFilter~ResourceFilter</a>}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Adds a &quot;lesser than&quot; operation to the filter.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>field</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The name of the field</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>value</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+|
+
+<span class="param-type">Number</span>
+|
+
+<span class="param-type">Boolean</span>
+|
+
+<span class="param-type">Date</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The value to compare the field to</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="storages_ResourceFilter.js.html">storages/ResourceFilter.js</a>, <a href="storages_ResourceFilter.js.html#line276">line 276</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Throws:</h5>
+
+        
+
+<dl>
+    <dt>
+        <div class="param-desc">
+        <p>An error if field and / or value is not valid</p>
+        </div>
+    </dt>
+    <dd></dd>
+    <dt>
+        <dl>
+            <dt>
+                Type
+            </dt>
+            <dd>
+                
+<span class="param-type">TypeError</span>
+
+
+            </dd>
+        </dl>
+    </dt>
+    <dd></dd>
+</dl>
+
+
+    
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>The actual filter</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="module-storages_ResourceFilter-ResourceFilter.html">module:storages/ResourceFilter~ResourceFilter</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="lesserThanEqual"><span class="type-signature"></span>lesserThanEqual<span class="signature">(field, value)</span><span class="type-signature"> &rarr; {<a href="module-storages_ResourceFilter-ResourceFilter.html">module:storages/ResourceFilter~ResourceFilter</a>}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Adds a &quot;lesser than equal&quot; operation to the filter.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>field</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The name of the field</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>value</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+|
+
+<span class="param-type">Number</span>
+|
+
+<span class="param-type">Boolean</span>
+|
+
+<span class="param-type">Date</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The value to compare the field to</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="storages_ResourceFilter.js.html">storages/ResourceFilter.js</a>, <a href="storages_ResourceFilter.js.html#line294">line 294</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Throws:</h5>
+
+        
+
+<dl>
+    <dt>
+        <div class="param-desc">
+        <p>An error if field and / or value is not valid</p>
+        </div>
+    </dt>
+    <dd></dd>
+    <dt>
+        <dl>
+            <dt>
+                Type
+            </dt>
+            <dd>
+                
+<span class="param-type">TypeError</span>
+
+
+            </dd>
+        </dl>
+    </dt>
+    <dd></dd>
+</dl>
+
+
+    
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>The actual filter</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="module-storages_ResourceFilter-ResourceFilter.html">module:storages/ResourceFilter~ResourceFilter</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="nor"><span class="type-signature"></span>nor<span class="signature">(filters)</span><span class="type-signature"> &rarr; {<a href="module-storages_ResourceFilter-ResourceFilter.html">module:storages/ResourceFilter~ResourceFilter</a>}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Adds a &quot;nor&quot; operation to the filter.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>filters</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The list of filters</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="storages_ResourceFilter.js.html">storages/ResourceFilter.js</a>, <a href="storages_ResourceFilter.js.html#line374">line 374</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Throws:</h5>
+
+        
+
+<dl>
+    <dt>
+        <div class="param-desc">
+        <p>An error if filters are not valid</p>
+        </div>
+    </dt>
+    <dd></dd>
+    <dt>
+        <dl>
+            <dt>
+                Type
+            </dt>
+            <dd>
+                
+<span class="param-type">TypeError</span>
+
+
+            </dd>
+        </dl>
+    </dt>
+    <dd></dd>
+</dl>
+
+
+    
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>The actual filter</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="module-storages_ResourceFilter-ResourceFilter.html">module:storages/ResourceFilter~ResourceFilter</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="notEqual"><span class="type-signature"></span>notEqual<span class="signature">(field, value)</span><span class="type-signature"> &rarr; {<a href="module-storages_ResourceFilter-ResourceFilter.html">module:storages/ResourceFilter~ResourceFilter</a>}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Adds a &quot;not equal&quot; operation to the filter.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>field</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The name of the field</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>value</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+|
+
+<span class="param-type">Number</span>
+|
+
+<span class="param-type">Boolean</span>
+|
+
+<span class="param-type">Date</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The value to compare the field to</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="storages_ResourceFilter.js.html">storages/ResourceFilter.js</a>, <a href="storages_ResourceFilter.js.html#line222">line 222</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Throws:</h5>
+
+        
+
+<dl>
+    <dt>
+        <div class="param-desc">
+        <p>An error if field and / or value is not valid</p>
+        </div>
+    </dt>
+    <dd></dd>
+    <dt>
+        <dl>
+            <dt>
+                Type
+            </dt>
+            <dd>
+                
+<span class="param-type">TypeError</span>
+
+
+            </dd>
+        </dl>
+    </dt>
+    <dd></dd>
+</dl>
+
+
+    
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>The actual filter</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="module-storages_ResourceFilter-ResourceFilter.html">module:storages/ResourceFilter~ResourceFilter</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="notIn"><span class="type-signature"></span>notIn<span class="signature">(field, value)</span><span class="type-signature"> &rarr; {<a href="module-storages_ResourceFilter-ResourceFilter.html">module:storages/ResourceFilter~ResourceFilter</a>}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Adds a &quot;not in&quot; operation to the filter.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>field</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The name of the field</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>value</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The value to compare the field to</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="storages_ResourceFilter.js.html">storages/ResourceFilter.js</a>, <a href="storages_ResourceFilter.js.html#line329">line 329</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Throws:</h5>
+
+        
+
+<dl>
+    <dt>
+        <div class="param-desc">
+        <p>An error if field and / or value is not valid</p>
+        </div>
+    </dt>
+    <dd></dd>
+    <dt>
+        <dl>
+            <dt>
+                Type
+            </dt>
+            <dd>
+                
+<span class="param-type">TypeError</span>
+
+
+            </dd>
+        </dl>
+    </dt>
+    <dd></dd>
+</dl>
+
+
+    
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>The actual filter</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="module-storages_ResourceFilter-ResourceFilter.html">module:storages/ResourceFilter~ResourceFilter</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="or"><span class="type-signature"></span>or<span class="signature">(filters)</span><span class="type-signature"> &rarr; {<a href="module-storages_ResourceFilter-ResourceFilter.html">module:storages/ResourceFilter~ResourceFilter</a>}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Adds a &quot;or&quot; operation to the filter.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>filters</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The list of filters</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="storages_ResourceFilter.js.html">storages/ResourceFilter.js</a>, <a href="storages_ResourceFilter.js.html#line363">line 363</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Throws:</h5>
+
+        
+
+<dl>
+    <dt>
+        <div class="param-desc">
+        <p>An error if filters are not valid</p>
+        </div>
+    </dt>
+    <dd></dd>
+    <dt>
+        <dl>
+            <dt>
+                Type
+            </dt>
+            <dd>
+                
+<span class="param-type">TypeError</span>
+
+
+            </dd>
+        </dl>
+    </dt>
+    <dd></dd>
+</dl>
+
+
+    
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>The actual filter</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="module-storages_ResourceFilter-ResourceFilter.html">module:storages/ResourceFilter~ResourceFilter</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="regex"><span class="type-signature"></span>regex<span class="signature">(field, value)</span><span class="type-signature"> &rarr; {<a href="module-storages_ResourceFilter-ResourceFilter.html">module:storages/ResourceFilter~ResourceFilter</a>}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Adds a &quot;regular expression&quot; operation to the filter.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>field</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The name of the field</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>value</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">RegExp</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The regular expression to compare the field to</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="storages_ResourceFilter.js.html">storages/ResourceFilter.js</a>, <a href="storages_ResourceFilter.js.html#line346">line 346</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Throws:</h5>
+
+        
+
+<dl>
+    <dt>
+        <div class="param-desc">
+        <p>An error if field and / or value is not valid</p>
+        </div>
+    </dt>
+    <dd></dd>
+    <dt>
+        <dl>
+            <dt>
+                Type
+            </dt>
+            <dd>
+                
+<span class="param-type">TypeError</span>
+
+
+            </dd>
+        </dl>
+    </dt>
+    <dd></dd>
+</dl>
+
+
+    
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>The actual filter</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="module-storages_ResourceFilter-ResourceFilter.html">module:storages/ResourceFilter~ResourceFilter</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="search"><span class="type-signature"></span>search<span class="signature">(value)</span><span class="type-signature"> &rarr; {<a href="module-storages_ResourceFilter-ResourceFilter.html">module:storages/ResourceFilter~ResourceFilter</a>}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Adds a &quot;search&quot; operation to the filter.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>value</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The search query</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="storages_ResourceFilter.js.html">storages/ResourceFilter.js</a>, <a href="storages_ResourceFilter.js.html#line396">line 396</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Throws:</h5>
+
+        
+
+<dl>
+    <dt>
+        <div class="param-desc">
+        <p>An error if value is not a String</p>
+        </div>
+    </dt>
+    <dd></dd>
+    <dt>
+        <dl>
+            <dt>
+                Type
+            </dt>
+            <dd>
+                
+<span class="param-type">TypeError</span>
+
+
+            </dd>
+        </dl>
+    </dt>
+    <dd></dd>
+</dl>
+
+
+    
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>The actual filter</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="module-storages_ResourceFilter-ResourceFilter.html">module:storages/ResourceFilter~ResourceFilter</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-angularJs.html">angularJs</a></li><li><a href="module-angularJs_parser.html">angularJs/parser</a></li><li><a href="module-controllers.html">controllers</a></li><li><a href="module-controllers_ContentController.html">controllers/ContentController</a></li><li><a href="module-controllers_Controller.html">controllers/Controller</a></li><li><a href="module-controllers_EntityController.html">controllers/EntityController</a></li><li><a href="module-controllers_HttpController.html">controllers/HttpController</a></li><li><a href="module-controllers_httpErrors.html">controllers/httpErrors</a></li><li><a href="module-controllers_SocketController.html">controllers/SocketController</a></li><li><a href="module-emitters.html">emitters</a></li><li><a href="module-emitters_AdvancedEmitter.html">emitters/AdvancedEmitter</a></li><li><a href="module-emitters_AdvancedEvent.html">emitters/AdvancedEvent</a></li><li><a href="module-errors.html">errors</a></li><li><a href="module-errors_AccessError.html">errors/AccessError</a></li><li><a href="module-errors_NotFoundError.html">errors/NotFoundError</a></li><li><a href="module-errors_StorageError.html">errors/StorageError</a></li><li><a href="module-fileSystem.html">fileSystem</a></li><li><a href="module-grunt.html">grunt</a></li><li><a href="module-grunt_copyTask.html">grunt/copyTask</a></li><li><a href="module-grunt_ngDpTask.html">grunt/ngDpTask</a></li><li><a href="module-grunt_removeTask.html">grunt/removeTask</a></li><li><a href="module-grunt_renameTask.html">grunt/renameTask</a></li><li><a href="module-imageProcessor.html">imageProcessor</a></li><li><a href="module-logger.html">logger</a></li><li><a href="module-middlewares.html">middlewares</a></li><li><a href="module-middlewares_disableCacheMiddleware.html">middlewares/disableCacheMiddleware</a></li><li><a href="module-middlewares_imageProcessorMiddleware.html">middlewares/imageProcessorMiddleware</a></li><li><a href="module-middlewares_logRequestMiddleware.html">middlewares/logRequestMiddleware</a></li><li><a href="module-multipart.html">multipart</a></li><li><a href="module-multipart_MultipartParser.html">multipart/MultipartParser</a></li><li><a href="module-passport.html">passport</a></li><li><a href="module-passport_STRATEGIES.html">passport/STRATEGIES</a></li><li><a href="module-passport_strategyFactory.html">passport/strategyFactory</a></li><li><a href="module-plugin.html">plugin</a></li><li><a href="module-plugin_Plugin.html">plugin/Plugin</a></li><li><a href="module-plugin_PluginApi.html">plugin/PluginApi</a></li><li><a href="module-providers.html">providers</a></li><li><a href="module-providers_EntityProvider.html">providers/EntityProvider</a></li><li><a href="module-providers_Provider.html">providers/Provider</a></li><li><a href="module-socket.html">socket</a></li><li><a href="module-socket_Pilot.html">socket/Pilot</a></li><li><a href="module-socket_SocketNamespace.html">socket/SocketNamespace</a></li><li><a href="module-socket_SocketServer.html">socket/SocketServer</a></li><li><a href="module-storages.html">storages</a></li><li><a href="module-storages_DATABASE_ERRORS.html">storages/DATABASE_ERRORS</a></li><li><a href="module-storages_factory.html">storages/factory</a></li><li><a href="module-storages_MongoDatabase.html">storages/MongoDatabase</a></li><li><a href="module-storages_ResourceFilter.html">storages/ResourceFilter</a></li><li><a href="module-storages_Storage.html">storages/Storage</a></li><li><a href="module-util.html">util</a></li><li><a href="module-watcher.html">watcher</a></li><li><a href="module-watcher_Watcher.html">watcher/Watcher</a></li><li><a href="module-watcher_WatcherError.html">watcher/WatcherError</a></li></ul><h3>Namespaces</h3><ul><li><a href="module-controllers_httpErrors-HTTP_ERRORS.html">controllers/httpErrors~HTTP_ERRORS</a></li><li><a href="module-passport_STRATEGIES-STRATEGIES.html">passport/STRATEGIES~STRATEGIES</a></li></ul><h3>Classes</h3><ul><li><a href="module-controllers_ContentController-ContentController.html">controllers/ContentController~ContentController</a></li><li><a href="module-controllers_Controller-Controller.html">controllers/Controller~Controller</a></li><li><a href="module-controllers_EntityController-EntityController.html">controllers/EntityController~EntityController</a></li><li><a href="module-controllers_HttpController-HttpController.html">controllers/HttpController~HttpController</a></li><li><a href="module-controllers_SocketController-SocketController.html">controllers/SocketController~SocketController</a></li><li><a href="module-emitters_AdvancedEmitter-AdvancedEmitter.html">emitters/AdvancedEmitter~AdvancedEmitter</a></li><li><a href="module-emitters_AdvancedEvent-AdvancedEvent.html">emitters/AdvancedEvent~AdvancedEvent</a></li><li><a href="module-errors_AccessError-AccessError.html">errors/AccessError~AccessError</a></li><li><a href="module-errors_NotFoundError-NotFoundError.html">errors/NotFoundError~NotFoundError</a></li><li><a href="module-errors_StorageError-StorageError.html">errors/StorageError~StorageError</a></li><li><a href="module-multipart_MultipartParser-MultipartParser.html">multipart/MultipartParser~MultipartParser</a></li><li><a href="module-plugin_PluginApi-PluginApi.html">plugin/PluginApi~PluginApi</a></li><li><a href="module-plugin_Plugin-Plugin.html">plugin/Plugin~Plugin</a></li><li><a href="module-providers_EntityProvider-EntityProvider.html">providers/EntityProvider~EntityProvider</a></li><li><a href="module-providers_Provider-Provider.html">providers/Provider~Provider</a></li><li><a href="module-socket_Pilot-Pilot.html">socket/Pilot~Pilot</a></li><li><a href="module-socket_SocketNamespace-SocketNamespace.html">socket/SocketNamespace~SocketNamespace</a></li><li><a href="module-socket_SocketServer-SocketServer.html">socket/SocketServer~SocketServer</a></li><li><a href="module-storages_MongoDatabase-MongoDatabase.html">storages/MongoDatabase~MongoDatabase</a></li><li><a href="module-storages_ResourceFilter-ResourceFilter.html">storages/ResourceFilter~ResourceFilter</a></li><li><a href="module-storages_Storage-Storage.html">storages/Storage~Storage</a></li><li><a href="module-watcher_WatcherError-WatcherError.html">watcher/WatcherError~WatcherError</a></li><li><a href="module-watcher_Watcher-Watcher.html">watcher/Watcher~Watcher</a></li></ul><h3>Events</h3><ul><li><a href="core_watcher_Watcher-Watcher.html#event:create">core:watcher/Watcher~Watcher#create</a></li><li><a href="core_watcher_Watcher-Watcher.html#event:delete">core:watcher/Watcher~Watcher#delete</a></li><li><a href="core_watcher_Watcher-Watcher.html#event:error">core:watcher/Watcher~Watcher#error</a></li><li><a href="core_watcher_Watcher-Watcher.html#event:watch">core:watcher/Watcher~Watcher#watch</a></li><li><a href="module-watcher_DirectoryFsWatcher-DirectoryFsWatcher.html#event:create">watcher/DirectoryFsWatcher~DirectoryFsWatcher#create</a></li><li><a href="module-watcher_DirectoryFsWatcher-DirectoryFsWatcher.html#event:delete">watcher/DirectoryFsWatcher~DirectoryFsWatcher#delete</a></li><li><a href="module-watcher_DirectoryFsWatcher-DirectoryFsWatcher.html#event:error">watcher/DirectoryFsWatcher~DirectoryFsWatcher#error</a></li><li><a href="module-watcher_DirectoryWatcher-DirectoryWatcher.html#event:create">watcher/DirectoryWatcher~DirectoryWatcher#create</a></li><li><a href="module-watcher_DirectoryWatcher-DirectoryWatcher.html#event:delete">watcher/DirectoryWatcher~DirectoryWatcher#delete</a></li><li><a href="module-watcher_DirectoryWatcher-DirectoryWatcher.html#event:error">watcher/DirectoryWatcher~DirectoryWatcher#error</a></li><li><a href="module-watcher_DirectoryWatcher-DirectoryWatcher.html#event:watch">watcher/DirectoryWatcher~DirectoryWatcher#watch</a></li></ul><h3><a href="global.html">Global</a></h3>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Fri Nov 19 2021 15:19:13 GMT+0100 (Central European Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
