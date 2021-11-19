@@ -1,0 +1,1143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: fileSystem.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: fileSystem.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>'use strict';
+
+/**
+ * Defines functions to interact with the file system as an extension to the Node.js filesystem module.
+ *
+ * @example
+ * // Load module "fileSystem"
+ * var fsApi = require('@openveo/api').fileSystem;
+ *
+ * @module fileSystem
+ */
+
+var fs = require('fs');
+var path = require('path');
+var stream = require('stream');
+var util = require('util');
+
+var AdmZip = require('adm-zip');
+var async = require('async');
+var nanoid = require('nanoid').nanoid;
+var tar = require('tar-fs');
+
+/**
+ * Extracts a tar file.
+ *
+ * @method extractTarFile
+ * @private
+ * @param {String} filePath Path of the tar file to extract
+ * @param {String} destinationPath Path of the directory where to extract files automatically
+ * @param {callback} [callback] The function to call when done
+ */
+function extractTarFile(filePath, destinationPath, callback) {
+  var streamError;
+
+  // Prepare the extractor with destination path
+  var extractor = tar.extract(path.normalize(destinationPath));
+
+  var onError = function(error) {
+    streamError = error;
+    extractor.end();
+    callback(streamError);
+  };
+
+  // Handle extraction end
+  extractor.on('finish', function() {
+    process.logger.silly('tar extractor ended', {path: destinationPath});
+
+    if (!streamError) callback();
+  });
+
+  var tarFileReadableStream = fs.createReadStream(path.normalize(filePath));
+
+  // Handle errors
+  tarFileReadableStream.on('error', onError);
+  extractor.on('error', onError);
+
+  // Extract file
+  tarFileReadableStream.pipe(extractor);
+}
+
+/**
+ * Extracts a zip file.
+ *
+ * @method extractZipFile
+ * @private
+ * @param {String} filePath Path of the zip file to extract
+ * @param {String} destinationPath Path of the directory where to extract files automatically
+ * @param {callback} [callback] The function to call when done
+ */
+function extractZipFile(filePath, destinationPath, callback) {
+  var zip = new AdmZip(path.normalize(filePath));
+  zip.extractAllToAsync(path.normalize(destinationPath), true, true, callback);
+}
+
+/**
+ * Creates a directory recursively and asynchronously.
+ *
+ * If parent directories do not exist, they will be automatically created.
+ *
+ * @method mkdirRecursive
+ * @private
+ * @param {String} directoryPath The directory system path to create
+ * @param {callback} callback The function to call when done
+ */
+function mkdirRecursive(directoryPath, callback) {
+  directoryPath = path.resolve(directoryPath);
+
+  // Try to create directory
+  fs.mkdir(directoryPath, function(error) {
+
+    if (error &amp;&amp; error.code === 'EEXIST') {
+
+      // Can't create directory it already exists
+      // It may have been created by another loop
+      callback();
+
+    } else if (error &amp;&amp; error.code === 'ENOENT') {
+
+      // Can't create directory, parent directory does not exist
+
+      // Create parent directory
+      mkdirRecursive(path.dirname(directoryPath), function(error) {
+        if (!error) {
+
+          // Now that parent directory is created, create requested directory
+          fs.mkdir(directoryPath, function(error) {
+            if (error &amp;&amp; error.code === 'EEXIST') {
+
+              // Can't create directory it already exists
+              // It may have been created by another loop
+              callback();
+
+            } else
+              callback(error);
+          });
+
+        } else
+          callback(error);
+      });
+    } else
+      callback(error);
+  });
+}
+
+/**
+ * Removes a directory and all its content recursively and asynchronously.
+ *
+ * It is assumed that the directory exists.
+ *
+ * @method rmdirRecursive
+ * @private
+ * @param {String} directoryPath Path of the directory to remove
+ * @param {Boolean} keepDirectory true to keep the directory in case the resource is a directory, false to also remove
+ * the directory
+ * @param {callback} callback The function to call when done
+ */
+function rmdirRecursive(directoryPath, keepDirectory, callback) {
+  var terminated = false;
+  var terminate = function(error) {
+    if (terminated) return;
+    terminated = true;
+    callback(error);
+  };
+
+  // Open directory
+  fs.readdir(directoryPath, function(error, resources) {
+
+    // Failed reading directory
+    if (error)
+      return terminate(error);
+
+    var pendingResourceNumber = resources.length;
+
+    // No more pending resources, done for this directory
+    if (!pendingResourceNumber) {
+
+      // Remove directory
+      if (!keepDirectory) fs.rmdir(directoryPath, terminate);
+      else terminate();
+
+    }
+
+    // Iterate through the list of resources in the directory
+    resources.forEach(function(resource) {
+
+      var resourcePath = path.join(directoryPath, resource);
+
+      // Get resource stats
+      fs.stat(resourcePath, function(error, stats) {
+        if (terminated) return;
+        if (error)
+          return terminate(error);
+
+        // Resource correspond to a directory
+        if (stats.isDirectory()) {
+
+          resources = rmdirRecursive(path.join(directoryPath, resource), false, function(error) {
+            if (terminated) return;
+            if (error)
+              return terminate(error);
+
+            pendingResourceNumber--;
+
+            if (!pendingResourceNumber) {
+              if (!keepDirectory) fs.rmdir(directoryPath, terminate);
+              else terminate();
+            }
+
+          });
+
+        } else {
+
+          // Resource does not correspond to a directory
+          // Mark resource as treated
+
+          // Remove file
+          fs.unlink(resourcePath, function(error) {
+            if (terminated) return;
+            if (error)
+              return terminate(error);
+            else {
+              pendingResourceNumber--;
+
+              if (!pendingResourceNumber) {
+                if (!keepDirectory) fs.rmdir(directoryPath, terminate);
+                else terminate();
+              }
+            }
+          });
+
+        }
+
+      });
+
+    });
+
+  });
+
+}
+
+/**
+ * Reads a directory content recursively and asynchronously.
+ *
+ * It is assumed that the directory exists.
+ *
+ * @method readdirRecursive
+ * @private
+ * @param {String} directoryPath Path of the directory
+ * @param {module:fileSystem~readdirRecursiveCallback} callback The function to call when done
+ */
+function readdirRecursive(directoryPath, callback) {
+  var resources = [];
+  var terminated = false;
+  var terminate = function(error, results) {
+    if (terminated) return;
+    terminated = true;
+    callback(error, results);
+  };
+
+  // Read directory
+  fs.readdir(directoryPath, function(error, resourcesNames) {
+
+    // Failed reading directory
+    if (error) return terminate(error);
+
+    var pendingResourceNumber = resourcesNames.length;
+
+    // No more pending resources, done for this directory
+    if (!pendingResourceNumber)
+      return terminate(null, resources);
+
+    // Iterate through the list of resources in the directory
+    resourcesNames.forEach(function(resourceName) {
+      var resourcePath = path.join(directoryPath, resourceName);
+
+      // Get resource stats
+      fs.stat(resourcePath, function(error, stats) {
+        if (terminated) return;
+        if (error)
+          return terminate(error);
+
+        stats.path = resourcePath;
+        resources.push(stats);
+
+        // Resource correspond to a directory
+        if (stats.isDirectory()) {
+
+          readdirRecursive(resourcePath, function(error, paths) {
+            if (terminated) return;
+            if (error)
+              return terminate(error);
+
+            resources = resources.concat(paths);
+            pendingResourceNumber--;
+
+            if (!pendingResourceNumber)
+              terminate(null, resources);
+
+          });
+
+        } else {
+
+          // Resource does not correspond to a directory
+          // Mark resource as treated
+
+          pendingResourceNumber--;
+
+          if (!pendingResourceNumber)
+            terminate(null, resources);
+        }
+
+      });
+
+    });
+
+  });
+
+}
+
+/**
+ * Copies a file.
+ *
+ * If directory does not exist it will be automatically created.
+ *
+ * @method copyFile
+ * @private
+ * @param {String} sourceFilePath Path of the file
+ * @param {String} destinationFilePath Final path of the file
+ * @param {callback} callback The function to call when done
+ */
+function copyFile(sourceFilePath, destinationFilePath, callback) {
+  var onError = function(error) {
+    callback(error);
+  };
+
+  var safecopy = function(sourceFilePath, destinationFilePath, callback) {
+    if (sourceFilePath &amp;&amp; destinationFilePath &amp;&amp; callback) {
+      try {
+        var is = fs.createReadStream(sourceFilePath);
+        var os = fs.createWriteStream(destinationFilePath);
+
+        is.on('error', onError);
+        os.on('error', onError);
+
+        is.on('end', function() {
+          os.end();
+        });
+
+        os.on('finish', function() {
+          callback();
+        });
+
+        is.pipe(os);
+      } catch (e) {
+        callback(new Error(e.message));
+      }
+    } else callback(new Error('File path not defined'));
+  };
+
+  var pathDir = path.dirname(destinationFilePath);
+
+  this.mkdir(pathDir,
+    function(error) {
+      if (error) callback(error);
+      else safecopy(sourceFilePath, destinationFilePath, callback);
+    }
+  );
+}
+
+/**
+ * Substitutes matching patterns in each line by something else.
+ *
+ * @class ReplaceTransformStream
+ * @extends stream.Transform
+ * @constructor
+ * @private
+ * @ignore
+ * @param {Array} substitutions The list of substitutions
+ * @param {RegExp} substitutions[].pattern The regular expression to test for each line
+ * @param {String} substitutions[].replacement The regular expression matching replacement
+ */
+function ReplaceTransformStream(substitutions) {
+  if (!(this instanceof ReplaceTransformStream))
+    return new ReplaceTransformStream();
+
+  stream.Transform.call(this);
+
+  Object.defineProperties(this,
+
+    /** @lends module:fileSystem~ReplaceTransformStream */
+    {
+
+      /**
+       * Incomplete line if read stop before the end of a line.
+       *
+       * @type {(String|null)}
+       * @instance
+       */
+      incompleteLine: {value: null, writable: true},
+
+      /**
+       * The list of substitutions to apply.
+       *
+       * @type {Array}
+       * @instance
+       * @readonly
+       */
+      substitutions: {value: substitutions}
+
+    }
+
+  );
+}
+
+util.inherits(ReplaceTransformStream, stream.Transform);
+
+ReplaceTransformStream.prototype._transform = function(data, encoding, callback) {
+  var self = this;
+  var dataAsString = data.toString();
+
+  if (this.incompleteLine) {
+    dataAsString = this.incompleteLine + dataAsString;
+  }
+
+  var lines = dataAsString.split('\n');
+
+  lines = lines.map(function(line) {
+    var modifiedLine = line;
+
+    for (var substitution of self.substitutions) {
+      modifiedLine = modifiedLine.replace(substitution.pattern, substitution.replacement);
+    }
+
+    return modifiedLine;
+  });
+
+  this.incompleteLine = lines.splice(lines.length - 1, 1)[0];
+  this.push(lines.join('\n'));
+
+  callback();
+};
+
+ReplaceTransformStream.prototype._flush = function(callback) {
+  if (this.incompleteLine) {
+    this.push('\n' + this.incompleteLine);
+  }
+
+  this.incompleteLine = null;
+  callback();
+};
+
+/**
+ * Prepends given data before anything else.
+ *
+ * @class PrependTransformStream
+ * @extends stream.Transform
+ * @constructor
+ * @private
+ * @ignore
+ * @param {String} data The data to prepend
+ */
+function PrependTransformStream(data) {
+  if (!(this instanceof PrependTransformStream))
+    return new PrependTransformStream();
+
+  stream.Transform.call(this);
+
+  Object.defineProperties(this,
+
+    /** @lends module:fileSystem~PrependTransformStream */
+    {
+
+      /**
+       * The data to prepend.
+       *
+       * @type {String}
+       * @instance
+       * @readonly
+       */
+      data: {value: data},
+
+      /**
+       * Indicate if prepend has been made or not.
+       *
+       * @type {Boolean}
+       * @instance
+       */
+      done: {value: false, writable: true}
+
+    }
+
+  );
+}
+
+util.inherits(PrependTransformStream, stream.Transform);
+
+PrependTransformStream.prototype._transform = function(data, encoding, callback) {
+  if (!this.done) {
+    this.push(this.data);
+    this.done = true;
+  }
+
+  this.push(data.toString());
+
+  callback();
+};
+
+/**
+ * The list of file types.
+ *
+ * @const
+ * @type {Object}
+ * @default
+ */
+module.exports.FILE_TYPES = {
+  JPG: 'jpg',
+  PNG: 'png',
+  GIF: 'gif',
+  TAR: 'tar',
+  MP4: 'mp4',
+  BMP: 'bmp',
+  ZIP: 'zip',
+  UNKNOWN: 'unknown'
+};
+
+Object.freeze(this.FILE_TYPES);
+
+/**
+ * The list of file types.
+ *
+ * @const
+ * @type {Object}
+ */
+module.exports.FILE_SIGNATURES = {
+  [this.FILE_TYPES.JPG]: [
+    {
+      offset: 0,
+      signature: 'ffd8ffdb'
+    },
+    {
+      offset: 0,
+      signature: 'ffd8ffe0'
+    },
+    {
+      offset: 0,
+      signature: 'ffd8ffe1'
+    },
+    {
+      offset: 0,
+      signature: 'ffd8fffe'
+    }
+  ],
+  [this.FILE_TYPES.PNG]: [{
+    offset: 0,
+    signature: '89504e47'
+  }],
+  [this.FILE_TYPES.GIF]: [{
+    offset: 0,
+    signature: '47494638'
+  }],
+  [this.FILE_TYPES.TAR]: [{
+    offset: 257,
+    signature: '7573746172' // ustar
+  }],
+  [this.FILE_TYPES.ZIP]: [{
+    offset: 0,
+    signature: '504b0304'
+  }],
+  [this.FILE_TYPES.MP4]: [
+    {
+      offset: 4,
+      signature: '6674797069736f6d' // isom
+    },
+    {
+      offset: 4,
+      signature: '6674797033677035' // 3gp5
+    },
+    {
+      offset: 4,
+      signature: '667479706d703431' // mp41
+    },
+    {
+      offset: 4,
+      signature: '667479706d703432' // mp42
+    },
+    {
+      offset: 4,
+      signature: '667479704d534e56' // MSNV
+    },
+    {
+      offset: 4,
+      signature: '667479704d345620' // M4V
+    }
+  ]
+};
+
+Object.freeze(this.FILE_SIGNATURES);
+
+/**
+ * The list of available actions for performActions.
+ *
+ * @const
+ * @type {Object}
+ * @default
+ */
+module.exports.ACTIONS = {
+  REMOVE: 'remove',
+  COPY: 'copy'
+};
+
+Object.freeze(this.ACTIONS);
+
+/**
+ * Extracts an archive to the given directory.
+ *
+ * @method extract
+ * @static
+ * @param {String} filePath Path of the archive to extract
+ * @param {String} destinationPath Path of the directory where to extract files
+ * @param {callback} [callback] The function to call when done
+ */
+module.exports.extract = function(filePath, destinationPath, callback) {
+  var self = this;
+
+  callback = callback || function(error) {
+    if (error)
+      process.logger.error('Extract error', {error: error, path: destinationPath});
+    else
+      process.logger.silly(filePath + ' extracted into ' + destinationPath);
+  };
+
+  if (filePath &amp;&amp; destinationPath) {
+
+    async.waterfall([
+
+      // Get file type
+      function(callback) {
+        self.getFileType(filePath, callback);
+      },
+
+      // Extract file given its type
+      function(fileType, callback) {
+        if (fileType === self.FILE_TYPES.TAR) {
+          extractTarFile(filePath, destinationPath, callback);
+        } else if (fileType === self.FILE_TYPES.ZIP) {
+          extractZipFile(filePath, destinationPath, callback);
+        } else {
+          callback(new Error('Can\'t extract file of type ' + fileType));
+        }
+      }
+
+    ], callback);
+
+  } else
+    callback(new TypeError('Invalid filePath and / or destinationPath, expected strings'));
+};
+
+/**
+ * Copies a file or a directory.
+ *
+ * @method copy
+ * @static
+ * @param {String} sourcePath Path of the source to copy
+ * @param {String} destinationSourcePath Final path of the source
+ * @param {callback} callback The function to call when done
+ */
+module.exports.copy = function(sourcePath, destinationSourcePath, callback) {
+  var self = this;
+
+  // Get source stats to test if this is a directory or a file
+  fs.stat(sourcePath, function(error, stats) {
+    if (error)
+      return callback(error);
+
+    if (stats.isDirectory()) {
+
+      // Resource is a directory
+
+      // Open directory
+      fs.readdir(sourcePath, function(error, resources) {
+
+        // Failed reading directory
+        if (error)
+          return callback(error);
+
+        var pendingResourceNumber = resources.length;
+
+        // Directory is empty, create it and leave
+        if (!pendingResourceNumber) {
+          self.mkdir(destinationSourcePath, callback);
+          return;
+        }
+
+        // Iterate through the list of resources in the directory
+        resources.forEach(function(resource) {
+          var resourcePath = path.join(sourcePath, resource);
+          var resourceDestinationPath = path.join(destinationSourcePath, resource);
+
+          // Copy resource
+          self.copy(resourcePath, resourceDestinationPath, function(error) {
+            if (error)
+              return callback(error);
+
+            pendingResourceNumber--;
+
+            if (!pendingResourceNumber)
+              callback();
+          });
+        });
+
+      });
+
+    } else {
+
+      // Resource is a file
+      copyFile.call(self, sourcePath, destinationSourcePath, callback);
+
+    }
+
+  });
+
+};
+
+/**
+ * Gets a JSON file content.
+ *
+ * This will verify that the file exists first.
+ *
+ * @method getJSONFileContent
+ * @static
+ * @param {String} filePath The path of the file to read
+ * @param {module:fileSystem~getJSONFileContentCallback} callback The function to call when done
+ * @throws {TypeError} An error if callback is not speficied
+ */
+module.exports.getJSONFileContent = function(filePath, callback) {
+  if (!filePath)
+    return callback(new TypeError('Invalid file path, expected a string'));
+
+  // Check if file exists
+  fs.access(filePath, function(error) {
+
+    if (!error) {
+
+      // Read file content
+      fs.readFile(filePath, {
+        encoding: 'utf8'
+      },
+      function(error, data) {
+        if (error) {
+          callback(error);
+        } else {
+          var dataAsJson;
+          try {
+
+            // Try to parse file data as JSON content
+            dataAsJson = JSON.parse(data);
+
+          } catch (e) {
+            return callback(new Error(e.message));
+          }
+
+          callback(null, dataAsJson);
+        }
+      });
+    } else
+      callback(new Error('Missing file ' + filePath));
+
+  });
+};
+
+/**
+ * Creates a directory.
+ *
+ * If parent directory does not exist, it will be automatically created.
+ * If directory already exists, it won't do anything.
+ *
+ * @method mkdir
+ * @static
+ * @param {String} directoryPath The directory system path to create
+ * @param {callback} [callback] The function to call when done
+ */
+module.exports.mkdir = function(directoryPath, callback) {
+  callback = callback || function(error) {
+    if (error)
+      process.logger.error('mkdir error', {error: error});
+    else
+      process.logger.silly(directoryPath + ' directory created');
+  };
+
+  if (!directoryPath)
+    return callback(new TypeError('Invalid directory path, expected a string'));
+
+  fs.access(directoryPath, function(error) {
+    if (!error)
+      callback();
+    else
+      mkdirRecursive(directoryPath, callback);
+  });
+};
+
+/**
+ * Removes a directory and all its content recursively and asynchronously.
+ *
+ * @method rmdir
+ * @static
+ * @deprecated Use rm instead
+ * @param {String} directoryPath Path of the directory to remove
+ * @param {Boolean} [keepDirectory=false] true to keep the directory, false to also remove the directory
+ * @param {callback} [callback] The function to call when done
+ */
+module.exports.rmdir = function(directoryPath, keepDirectory, callback) {
+  if (typeof keepDirectory === 'function') {
+    callback = keepDirectory;
+    keepDirectory = false;
+  }
+  callback = callback || function(error) {
+    if (error)
+      process.logger.error('rmdir error', {error: error});
+    else
+      process.logger.silly(directoryPath + ' directory removed');
+  };
+
+  if (!directoryPath)
+    return callback(new TypeError('Invalid directory path, expected a string'));
+
+  fs.access(directoryPath, function(error) {
+    if (error)
+      callback();
+    else
+      rmdirRecursive(directoryPath, keepDirectory, callback);
+  });
+};
+
+/**
+ * Gets OpenVeo configuration directory path.
+ *
+ * OpenVeo configuration is stored in user home directory.
+ *
+ * @method getConfDir
+ * @static
+ * @return {String} OpenVeo configuration directory path
+ */
+module.exports.getConfDir = function() {
+  var env = process.env;
+  var home = env.HOME;
+
+  if (process.platform === 'win32')
+    home = env.USERPROFILE || env.HOMEDRIVE + env.HOMEPATH || home || '';
+
+  return path.join(home, '.openveo');
+};
+
+/**
+ * Gets the content of a directory recursively and asynchronously.
+ *
+ * @method readdir
+ * @static
+ * @param {String} directoryPath Path of the directory
+ * @param {module:fileSystem~readdirCallback} callback The function to call when done
+ */
+module.exports.readdir = function(directoryPath, callback) {
+  if (!directoryPath || Object.prototype.toString.call(directoryPath) !== '[object String]')
+    return callback(new TypeError('Invalid directory path, expected a string'));
+
+  fs.stat(directoryPath, function(error, stat) {
+    if (error) callback(error);
+    else if (!stat.isDirectory())
+      callback(new Error(directoryPath + ' is not a directory'));
+    else
+      readdirRecursive(directoryPath, callback);
+  });
+};
+
+/**
+ * Gets part of a file as bytes.
+ *
+ * @method readFile
+ * @static
+ * @param {String} filePath Path of the file
+ * @param {Number} [offset] Specify where to begin reading from in the file
+ * @param {Number} [length] The number of bytes ro read
+ * @param {module:fileSystem~readFileCallback} callback The function to call when done
+ */
+module.exports.readFile = function(filePath, offset, length, callback) {
+  fs.stat(filePath, function(error, stats) {
+    if (error) return callback(error);
+
+    fs.open(filePath, 'r', function(error, fd) {
+      if (error) return callback(error);
+
+      length = length || stats.size - offset;
+      length = Math.min(length, stats.size - offset);
+      var buffer = Buffer.alloc(Math.min(stats.size, length));
+
+      fs.read(fd, buffer, 0, length, offset, function(error, bytesRead, buffer) {
+        fs.close(fd, function() {
+          callback(error, buffer);
+        });
+      });
+    });
+  });
+};
+
+/**
+ * Gets file type.
+ *
+ * @method getFileType
+ * @static
+ * @param {String} filePath The path of the file to get type from
+ * @param {module:fileSystem~getFileTypeCallback} callback The function to call when done
+ */
+module.exports.getFileType = function(filePath, callback) {
+  var self = this;
+
+  this.readFile(filePath, 0, 300, function(error, buffer) {
+    if (error) return callback(error);
+    callback(null, self.getFileTypeFromBuffer(buffer));
+  });
+};
+
+/**
+ * Gets file type from Buffer.
+ *
+ * @method getFileTypeFromBuffer
+ * @static
+ * @param {Buffer} file At least the first 300 bytes of the file
+ * @return {String} The file type
+ */
+module.exports.getFileTypeFromBuffer = function(file) {
+  for (var type in this.FILE_SIGNATURES) {
+    for (var i = 0; i &lt; this.FILE_SIGNATURES[type].length; i++) {
+      var fileMagicNumbers = file.toString(
+        'hex',
+        this.FILE_SIGNATURES[type][i].offset,
+        this.FILE_SIGNATURES[type][i].offset + (this.FILE_SIGNATURES[type][i].signature.length / 2)
+      );
+
+      if (fileMagicNumbers === this.FILE_SIGNATURES[type][i].signature)
+        return type;
+    }
+  }
+
+  return this.FILE_TYPES.UNKNOWN;
+};
+
+/**
+ * Removes a resource.
+ *
+ * If resource is a directory, the whole directory is removed.
+ *
+ * @method rm
+ * @static
+ * @param {String} resourcePath Path of the resource to remove
+ * @param {Boolean} [keepDirectory=false] true to keep the directory in case the resource is a directory, false to also
+ * remove the directory
+ * @param {callback} [callback] The function to call when done
+ */
+module.exports.rm = function(resourcePath, keepDirectory, callback) {
+  if (typeof keepDirectory === 'function') {
+    callback = keepDirectory;
+    keepDirectory = false;
+  }
+  callback = callback || function(error) {
+    if (error)
+      process.logger.error('rm error', {error: error});
+    else
+      process.logger.silly(resourcePath + ' resource removed');
+  };
+
+  if (!resourcePath)
+    return callback(new TypeError('Invalid resource path, expected a string'));
+
+  fs.stat(resourcePath, function(error, stats) {
+    if (error) return callback(error);
+
+    if (stats.isDirectory())
+      rmdirRecursive(resourcePath, keepDirectory, callback);
+    else
+      fs.unlink(resourcePath, callback);
+  });
+};
+
+/**
+ * Performs all given copy / remove actions.
+ *
+ * All actions are executed in parallel.
+ * Make sure one action does not depend on another.
+ *
+ * @method performActions
+ * @static
+ * @param {Array} actions The actions to perform
+ * @param {String} actions[].type The [action type]{@link module:fileSystem.ACTIONS}
+ * @param {Sting} actions[].sourcePath The resource path
+ * @param {Sting} [actions[].destinationPath] The destination path if type is COPY
+ * @param {callback} callback The function to call when done
+ */
+module.exports.performActions = function(actions, callback) {
+  var self = this;
+  var actionsFunctions = [];
+
+  actions.forEach(function(action) {
+    actionsFunctions.push(function(callback) {
+      switch (action.type) {
+        case self.ACTIONS.COPY:
+          self.copy(action.sourcePath, action.destinationPath, callback);
+          break;
+        case self.ACTIONS.REMOVE:
+          self.rm(action.sourcePath, callback);
+          break;
+        default:
+          callback(new Error('Unknown action ' + action.type));
+      }
+    });
+  });
+
+  async.parallel(actionsFunctions, callback);
+};
+
+/**
+ * Replaces strings matching a pattern inside a file.
+ *
+ * @param {String} filePath The system path of the file to parse
+ * @param {Array} substitutions The list of substitutions
+ * @param {RegExp} substitutions[].pattern The regular expression to test for each line
+ * @param {String} substitutions[].replacement The regular expression matching replacement
+ * @param {callback} [callback] The function to call when done
+ */
+module.exports.replace = function(filePath, substitutions, callback) {
+  if (!substitutions || !substitutions.length) return callback();
+  var self = this;
+  var temporaryId = nanoid();
+  var file = path.parse(filePath);
+  var temporaryFilePath = path.join(file.dir, file.name + temporaryId + file.ext);
+  var fileInputStream = fs.createReadStream(filePath);
+  var fileOutputStream = fs.createWriteStream(temporaryFilePath);
+  var transformStream = new ReplaceTransformStream(substitutions);
+  var handleError = function(error) {
+    self.rm(temporaryFilePath, function() {
+      callback(error);
+    });
+  };
+
+  fileInputStream.pipe(transformStream).pipe(fileOutputStream);
+
+  fileInputStream.on('error', handleError);
+  fileOutputStream.on('error', handleError);
+  fileOutputStream.on('finish', function() {
+    fs.rename(temporaryFilePath, filePath, callback);
+  });
+};
+
+/**
+ * Prepends given data to file.
+ *
+ * @param {String} filePath The system path of the file to add data to
+ * @param {String} data Data to add to the beginning of the file
+ * @param {callback} [callback] The function to call when done
+ */
+module.exports.prepend = function(filePath, data, callback) {
+  if (!data) return callback();
+  var self = this;
+  var temporaryId = nanoid();
+  var file = path.parse(filePath);
+  var temporaryFilePath = path.join(file.dir, file.name + temporaryId + file.ext);
+  var fileInputStream = fs.createReadStream(filePath);
+  var fileOutputStream = fs.createWriteStream(temporaryFilePath);
+  var transformStream = new PrependTransformStream(data);
+  var handleError = function(error) {
+    self.rm(temporaryFilePath, function() {
+      callback(error);
+    });
+  };
+
+  fileInputStream.pipe(transformStream).pipe(fileOutputStream);
+
+  fileInputStream.on('error', handleError);
+  fileOutputStream.on('error', handleError);
+  fileOutputStream.on('finish', function() {
+    fs.rename(temporaryFilePath, filePath, callback);
+  });
+};
+
+/**
+ * @callback module:fileSystem~readdirRecursiveCallback
+ * @param {(Error|null)} error The error if an error occurred, null otherwise
+ * @param {Array} stats The list of fs.Stats corresponding to resources inside the directory (files and directories)
+ */
+
+/**
+ * @callback module:fileSystem~getFileTypeCallback
+ * @param {(Error|null)} error The error if an error occurred, null otherwise
+ * @param {String} type The [file type]{@link module:fileSystem.FILE_TYPES}
+ */
+
+/**
+ * @callback module:fileSystem~getJSONFileContentCallback
+ * @param {(Error|null)} error The error if an error occurred, null otherwise
+ * @param {(String|null)} content The file content or null if an error occurred
+ */
+
+/**
+ * @callback module:fileSystem~readdirCallback
+ * @param {(Error|null)} error The error if an error occurred, null otherwise
+ * @param {(Array|Undefined)} resources The list of resources insides the directory
+ */
+
+/**
+ * @callback module:fileSystem~readFileCallback
+ * @param {(Error|null)} error The error if an error occurred, null otherwise
+ * @param {(Buffer|Undefined)} buffer The buffer containing read bytes
+ */
+
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-angularJs.html">angularJs</a></li><li><a href="module-angularJs_parser.html">angularJs/parser</a></li><li><a href="module-controllers.html">controllers</a></li><li><a href="module-controllers_ContentController.html">controllers/ContentController</a></li><li><a href="module-controllers_Controller.html">controllers/Controller</a></li><li><a href="module-controllers_EntityController.html">controllers/EntityController</a></li><li><a href="module-controllers_HttpController.html">controllers/HttpController</a></li><li><a href="module-controllers_httpErrors.html">controllers/httpErrors</a></li><li><a href="module-controllers_SocketController.html">controllers/SocketController</a></li><li><a href="module-emitters.html">emitters</a></li><li><a href="module-emitters_AdvancedEmitter.html">emitters/AdvancedEmitter</a></li><li><a href="module-emitters_AdvancedEvent.html">emitters/AdvancedEvent</a></li><li><a href="module-errors.html">errors</a></li><li><a href="module-errors_AccessError.html">errors/AccessError</a></li><li><a href="module-errors_NotFoundError.html">errors/NotFoundError</a></li><li><a href="module-errors_StorageError.html">errors/StorageError</a></li><li><a href="module-fileSystem.html">fileSystem</a></li><li><a href="module-grunt.html">grunt</a></li><li><a href="module-grunt_copyTask.html">grunt/copyTask</a></li><li><a href="module-grunt_ngDpTask.html">grunt/ngDpTask</a></li><li><a href="module-grunt_removeTask.html">grunt/removeTask</a></li><li><a href="module-grunt_renameTask.html">grunt/renameTask</a></li><li><a href="module-imageProcessor.html">imageProcessor</a></li><li><a href="module-logger.html">logger</a></li><li><a href="module-middlewares.html">middlewares</a></li><li><a href="module-middlewares_disableCacheMiddleware.html">middlewares/disableCacheMiddleware</a></li><li><a href="module-middlewares_imageProcessorMiddleware.html">middlewares/imageProcessorMiddleware</a></li><li><a href="module-middlewares_logRequestMiddleware.html">middlewares/logRequestMiddleware</a></li><li><a href="module-multipart.html">multipart</a></li><li><a href="module-multipart_MultipartParser.html">multipart/MultipartParser</a></li><li><a href="module-passport.html">passport</a></li><li><a href="module-passport_STRATEGIES.html">passport/STRATEGIES</a></li><li><a href="module-passport_strategyFactory.html">passport/strategyFactory</a></li><li><a href="module-plugin.html">plugin</a></li><li><a href="module-plugin_Plugin.html">plugin/Plugin</a></li><li><a href="module-plugin_PluginApi.html">plugin/PluginApi</a></li><li><a href="module-providers.html">providers</a></li><li><a href="module-providers_EntityProvider.html">providers/EntityProvider</a></li><li><a href="module-providers_Provider.html">providers/Provider</a></li><li><a href="module-socket.html">socket</a></li><li><a href="module-socket_Pilot.html">socket/Pilot</a></li><li><a href="module-socket_SocketNamespace.html">socket/SocketNamespace</a></li><li><a href="module-socket_SocketServer.html">socket/SocketServer</a></li><li><a href="module-storages.html">storages</a></li><li><a href="module-storages_DATABASE_ERRORS.html">storages/DATABASE_ERRORS</a></li><li><a href="module-storages_factory.html">storages/factory</a></li><li><a href="module-storages_MongoDatabase.html">storages/MongoDatabase</a></li><li><a href="module-storages_ResourceFilter.html">storages/ResourceFilter</a></li><li><a href="module-storages_Storage.html">storages/Storage</a></li><li><a href="module-util.html">util</a></li><li><a href="module-watcher.html">watcher</a></li><li><a href="module-watcher_Watcher.html">watcher/Watcher</a></li><li><a href="module-watcher_WatcherError.html">watcher/WatcherError</a></li></ul><h3>Namespaces</h3><ul><li><a href="module-controllers_httpErrors-HTTP_ERRORS.html">controllers/httpErrors~HTTP_ERRORS</a></li><li><a href="module-passport_STRATEGIES-STRATEGIES.html">passport/STRATEGIES~STRATEGIES</a></li></ul><h3>Classes</h3><ul><li><a href="module-controllers_ContentController-ContentController.html">controllers/ContentController~ContentController</a></li><li><a href="module-controllers_Controller-Controller.html">controllers/Controller~Controller</a></li><li><a href="module-controllers_EntityController-EntityController.html">controllers/EntityController~EntityController</a></li><li><a href="module-controllers_HttpController-HttpController.html">controllers/HttpController~HttpController</a></li><li><a href="module-controllers_SocketController-SocketController.html">controllers/SocketController~SocketController</a></li><li><a href="module-emitters_AdvancedEmitter-AdvancedEmitter.html">emitters/AdvancedEmitter~AdvancedEmitter</a></li><li><a href="module-emitters_AdvancedEvent-AdvancedEvent.html">emitters/AdvancedEvent~AdvancedEvent</a></li><li><a href="module-errors_AccessError-AccessError.html">errors/AccessError~AccessError</a></li><li><a href="module-errors_NotFoundError-NotFoundError.html">errors/NotFoundError~NotFoundError</a></li><li><a href="module-errors_StorageError-StorageError.html">errors/StorageError~StorageError</a></li><li><a href="module-multipart_MultipartParser-MultipartParser.html">multipart/MultipartParser~MultipartParser</a></li><li><a href="module-plugin_PluginApi-PluginApi.html">plugin/PluginApi~PluginApi</a></li><li><a href="module-plugin_Plugin-Plugin.html">plugin/Plugin~Plugin</a></li><li><a href="module-providers_EntityProvider-EntityProvider.html">providers/EntityProvider~EntityProvider</a></li><li><a href="module-providers_Provider-Provider.html">providers/Provider~Provider</a></li><li><a href="module-socket_Pilot-Pilot.html">socket/Pilot~Pilot</a></li><li><a href="module-socket_SocketNamespace-SocketNamespace.html">socket/SocketNamespace~SocketNamespace</a></li><li><a href="module-socket_SocketServer-SocketServer.html">socket/SocketServer~SocketServer</a></li><li><a href="module-storages_MongoDatabase-MongoDatabase.html">storages/MongoDatabase~MongoDatabase</a></li><li><a href="module-storages_ResourceFilter-ResourceFilter.html">storages/ResourceFilter~ResourceFilter</a></li><li><a href="module-storages_Storage-Storage.html">storages/Storage~Storage</a></li><li><a href="module-watcher_WatcherError-WatcherError.html">watcher/WatcherError~WatcherError</a></li><li><a href="module-watcher_Watcher-Watcher.html">watcher/Watcher~Watcher</a></li></ul><h3>Events</h3><ul><li><a href="core_watcher_Watcher-Watcher.html#event:create">core:watcher/Watcher~Watcher#create</a></li><li><a href="core_watcher_Watcher-Watcher.html#event:delete">core:watcher/Watcher~Watcher#delete</a></li><li><a href="core_watcher_Watcher-Watcher.html#event:error">core:watcher/Watcher~Watcher#error</a></li><li><a href="core_watcher_Watcher-Watcher.html#event:watch">core:watcher/Watcher~Watcher#watch</a></li><li><a href="module-watcher_DirectoryFsWatcher-DirectoryFsWatcher.html#event:create">watcher/DirectoryFsWatcher~DirectoryFsWatcher#create</a></li><li><a href="module-watcher_DirectoryFsWatcher-DirectoryFsWatcher.html#event:delete">watcher/DirectoryFsWatcher~DirectoryFsWatcher#delete</a></li><li><a href="module-watcher_DirectoryFsWatcher-DirectoryFsWatcher.html#event:error">watcher/DirectoryFsWatcher~DirectoryFsWatcher#error</a></li><li><a href="module-watcher_DirectoryWatcher-DirectoryWatcher.html#event:create">watcher/DirectoryWatcher~DirectoryWatcher#create</a></li><li><a href="module-watcher_DirectoryWatcher-DirectoryWatcher.html#event:delete">watcher/DirectoryWatcher~DirectoryWatcher#delete</a></li><li><a href="module-watcher_DirectoryWatcher-DirectoryWatcher.html#event:error">watcher/DirectoryWatcher~DirectoryWatcher#error</a></li><li><a href="module-watcher_DirectoryWatcher-DirectoryWatcher.html#event:watch">watcher/DirectoryWatcher~DirectoryWatcher#watch</a></li></ul><h3><a href="global.html">Global</a></h3>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Fri Nov 19 2021 14:04:24 GMT+0100 (Central European Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
