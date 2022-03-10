@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: watcher/Watcher.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: watcher/Watcher.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>'use strict';
+
+/**
+ * @module watcher/Watcher
+ */
+
+var path = require('path');
+var util = require('util');
+var events = require('events');
+var async = require('async');
+var DirectoryWatcher = process.requireApi('lib/watcher/DirectoryWatcher.js');
+
+/**
+ * Fired when an error occurred.
+ *
+ * @event core:watcher/Watcher~Watcher#error
+ * @property {module:watcher/WatcherError~WatcherError} error The error
+ */
+
+/**
+ * Fired when a new resource (file or directory) has been added to one of the watched folders.
+ *
+ * @event core:watcher/Watcher~Watcher#create
+ * @property {String} resourcePath Path of the added resource
+ */
+
+/**
+ * Fired when a resource (file or directory) has been deleted from one of the watched folders.
+ *
+ * @event core:watcher/Watcher~Watcher#delete
+ * @property {String} resourcePath Path of the resource before it has been removed
+ */
+
+/**
+ * Fired when a directory is added to watched directories.
+ *
+ * Fired after "create" event in case the directory is added to an already watched directory.
+ *
+ * @event core:watcher/Watcher~Watcher#watch
+ * @property {String} resourcePath Path of the directory
+ */
+
+/**
+ * Defines a watcher to be aware of new resources added to one or several directories.
+ *
+ * @example
+ * // Create a new watcher
+ * var watcher = new Watcher();
+ *
+ * // Listen to watcher events
+ * watcher.on('create', function(resourcePath) {
+ *   console.log('A new file has been added : ' + resourcePath);
+ * });
+ *
+ * watcher.on('delete', function(resourcePath) {
+ *   console.log('A file has been removed : ' + resourcePath);
+ * });
+ *
+ * watcher.on('watch', function(directoryPath) {
+ *   console.log('A watcher is now running for directory ' + directoryPath);
+ * });
+ *
+ * watcher.on('error', function(error) {
+ *   console.log(error);
+ * });
+ *
+ * // Ask watcher to watch directories
+ * watcher.add([
+ *   '/tmp/hotFolder1',
+ *   '/tmp/hotFolder2',
+ *   '/tmp/hotFolder3'
+ * ], function(results) {
+ *   console.log(results);
+ * });
+ *
+ * // Ask watcher to stop watching directories
+ * watcher.remove([
+ *   '/tmp/hotFolder3'
+ * ]);
+ *
+ * @class Watcher
+ * @constructor
+ * @param {Object} [options] Watcher options
+ * @param {Number} [options.stabilityThreshold] Number of milliseconds to wait before considering a file
+ * as stable
+ */
+function Watcher(options) {
+  Object.defineProperties(this,
+
+    /** @lends module:watcher/Watcher~Watcher */
+    {
+
+      /**
+       * The list of directories' watchers actually running.
+       *
+       * @instance
+       * @readonly
+       * @type {Array}
+       */
+      directoriesWatchers: {
+        value: []
+      },
+
+      /**
+       * Watcher options.
+       *
+       * @instance
+       * @readonly
+       * @type {Object}
+       */
+      options: {
+        value: options
+      }
+
+    }
+
+  );
+}
+
+module.exports = Watcher;
+util.inherits(Watcher, events.EventEmitter);
+
+/**
+ * Checks if a directory is actually being watched.
+ *
+ * @private
+ * @memberof module:watcher/Watcher~Watcher
+ * @this module:watcher/Watcher~Watcher
+ * @param {String} directoryPath The absolute path of the directory to check
+ * @return {Boolean} true if directory is actually being watched, false otherwise
+ */
+function isWatched(directoryPath) {
+  directoryPath = path.resolve(directoryPath);
+
+  for (var i = 0; i &lt; this.directoriesWatchers.length; i++) {
+    if (directoryPath === this.directoriesWatchers[i].directoryPath)
+      return true;
+  }
+
+  return false;
+}
+
+/**
+ * Adds new directories to watch.
+ *
+ * @param {Array} directoriesPaths The list of absolute directories paths to watch
+ * @param {module:watcher/Watcher~Watcher~addCallback} callback The function to call when directories are being watched
+ */
+Watcher.prototype.add = function(directoriesPaths, callback) {
+  var asyncTasks = [];
+
+  directoriesPaths.forEach((function(directoryPath) {
+    asyncTasks.push((function(callback) {
+      if (isWatched.call(this, directoryPath))
+        return callback(new Error('Directory "' + directoryPath + '" is already being watched'));
+
+      var directoryWatcher = new DirectoryWatcher(directoryPath, this.options);
+
+      directoryWatcher.on('create', (function(resourcePath) {
+        this.emit('create', resourcePath);
+      }).bind(this));
+
+      directoryWatcher.on('watch', (function(directoryPath) {
+        this.emit('watch', directoryPath);
+      }).bind(this));
+
+      directoryWatcher.on('delete', (function(resourcePath) {
+        this.emit('delete', resourcePath);
+      }).bind(this));
+
+      directoryWatcher.on('error', (function(error) {
+        this.emit('error', error);
+      }).bind(this));
+
+      this.directoriesWatchers.push(directoryWatcher);
+
+      // Watch directory
+      directoryWatcher.watch(callback);
+
+    }).bind(this));
+  }).bind(this));
+
+  async.parallel(async.reflectAll(asyncTasks), function(error, results) {
+    callback(results);
+  });
+};
+
+/**
+ * Stops watching directories.
+ *
+ * @param {Array} [directoriesPaths] The list of absolute directories' paths to stop watching. If no directories are
+ * specified all watching directories won't be watched anymore
+ */
+Watcher.prototype.remove = function(directoriesPaths) {
+  if (directoriesPaths) {
+    directoriesPaths.forEach((function(directoryPath) {
+      var index = -1;
+      for (var i = 0; i &lt; this.directoriesWatchers.length; i++) {
+        var directoryWatcher = this.directoriesWatchers[0];
+        if (directoryWatcher.directoryPath === path.resolve(directoryPath)) {
+          directoryWatcher.close();
+          index = i;
+          break;
+        }
+      }
+      if (index > -1)
+        this.directoriesWatchers.splice(index, 1);
+    }).bind(this));
+  } else {
+    this.directoriesWatchers.forEach(function(directoryWatcher) {
+      directoryWatcher.close();
+    });
+    this.directoriesWatchers.splice(0, this.directoriesWatchers.length);
+  }
+};
+
+/**
+ * @callback module:watcher/Watcher~Watcher~addCallback
+ * @param {Object[]} results The list of results
+ * @param {module:watcher/WatcherError~WatcherError[]} results[].value The list of errors if any
+ */
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-angularJs.html">angularJs</a></li><li><a href="module-angularJs_parser.html">angularJs/parser</a></li><li><a href="module-controllers.html">controllers</a></li><li><a href="module-controllers_ContentController.html">controllers/ContentController</a></li><li><a href="module-controllers_Controller.html">controllers/Controller</a></li><li><a href="module-controllers_EntityController.html">controllers/EntityController</a></li><li><a href="module-controllers_HttpController.html">controllers/HttpController</a></li><li><a href="module-controllers_httpErrors.html">controllers/httpErrors</a></li><li><a href="module-controllers_SocketController.html">controllers/SocketController</a></li><li><a href="module-emitters.html">emitters</a></li><li><a href="module-emitters_AdvancedEmitter.html">emitters/AdvancedEmitter</a></li><li><a href="module-emitters_AdvancedEvent.html">emitters/AdvancedEvent</a></li><li><a href="module-errors.html">errors</a></li><li><a href="module-errors_AccessError.html">errors/AccessError</a></li><li><a href="module-errors_NotFoundError.html">errors/NotFoundError</a></li><li><a href="module-errors_StorageError.html">errors/StorageError</a></li><li><a href="module-fileSystem.html">fileSystem</a></li><li><a href="module-grunt.html">grunt</a></li><li><a href="module-grunt_copyTask.html">grunt/copyTask</a></li><li><a href="module-grunt_ngDpTask.html">grunt/ngDpTask</a></li><li><a href="module-grunt_removeTask.html">grunt/removeTask</a></li><li><a href="module-grunt_renameTask.html">grunt/renameTask</a></li><li><a href="module-imageProcessor.html">imageProcessor</a></li><li><a href="module-logger.html">logger</a></li><li><a href="module-middlewares.html">middlewares</a></li><li><a href="module-middlewares_disableCacheMiddleware.html">middlewares/disableCacheMiddleware</a></li><li><a href="module-middlewares_imageProcessorMiddleware.html">middlewares/imageProcessorMiddleware</a></li><li><a href="module-middlewares_logRequestMiddleware.html">middlewares/logRequestMiddleware</a></li><li><a href="module-multipart.html">multipart</a></li><li><a href="module-multipart_MultipartParser.html">multipart/MultipartParser</a></li><li><a href="module-passport.html">passport</a></li><li><a href="module-passport_STRATEGIES.html">passport/STRATEGIES</a></li><li><a href="module-passport_strategyFactory.html">passport/strategyFactory</a></li><li><a href="module-plugin.html">plugin</a></li><li><a href="module-plugin_Plugin.html">plugin/Plugin</a></li><li><a href="module-plugin_PluginApi.html">plugin/PluginApi</a></li><li><a href="module-providers.html">providers</a></li><li><a href="module-providers_EntityProvider.html">providers/EntityProvider</a></li><li><a href="module-providers_Provider.html">providers/Provider</a></li><li><a href="module-socket.html">socket</a></li><li><a href="module-socket_Pilot.html">socket/Pilot</a></li><li><a href="module-socket_SocketNamespace.html">socket/SocketNamespace</a></li><li><a href="module-socket_SocketServer.html">socket/SocketServer</a></li><li><a href="module-storages.html">storages</a></li><li><a href="module-storages_DATABASE_ERRORS.html">storages/DATABASE_ERRORS</a></li><li><a href="module-storages_factory.html">storages/factory</a></li><li><a href="module-storages_MongoDatabase.html">storages/MongoDatabase</a></li><li><a href="module-storages_ResourceFilter.html">storages/ResourceFilter</a></li><li><a href="module-storages_Storage.html">storages/Storage</a></li><li><a href="module-util.html">util</a></li><li><a href="module-watcher.html">watcher</a></li><li><a href="module-watcher_Watcher.html">watcher/Watcher</a></li><li><a href="module-watcher_WatcherError.html">watcher/WatcherError</a></li></ul><h3>Namespaces</h3><ul><li><a href="module-controllers_httpErrors-HTTP_ERRORS.html">controllers/httpErrors~HTTP_ERRORS</a></li><li><a href="module-passport_STRATEGIES-STRATEGIES.html">passport/STRATEGIES~STRATEGIES</a></li></ul><h3>Classes</h3><ul><li><a href="module-controllers_ContentController-ContentController.html">controllers/ContentController~ContentController</a></li><li><a href="module-controllers_Controller-Controller.html">controllers/Controller~Controller</a></li><li><a href="module-controllers_EntityController-EntityController.html">controllers/EntityController~EntityController</a></li><li><a href="module-controllers_HttpController-HttpController.html">controllers/HttpController~HttpController</a></li><li><a href="module-controllers_SocketController-SocketController.html">controllers/SocketController~SocketController</a></li><li><a href="module-emitters_AdvancedEmitter-AdvancedEmitter.html">emitters/AdvancedEmitter~AdvancedEmitter</a></li><li><a href="module-emitters_AdvancedEvent-AdvancedEvent.html">emitters/AdvancedEvent~AdvancedEvent</a></li><li><a href="module-errors_AccessError-AccessError.html">errors/AccessError~AccessError</a></li><li><a href="module-errors_NotFoundError-NotFoundError.html">errors/NotFoundError~NotFoundError</a></li><li><a href="module-errors_StorageError-StorageError.html">errors/StorageError~StorageError</a></li><li><a href="module-multipart_MultipartParser-MultipartParser.html">multipart/MultipartParser~MultipartParser</a></li><li><a href="module-plugin_PluginApi-PluginApi.html">plugin/PluginApi~PluginApi</a></li><li><a href="module-plugin_Plugin-Plugin.html">plugin/Plugin~Plugin</a></li><li><a href="module-providers_EntityProvider-EntityProvider.html">providers/EntityProvider~EntityProvider</a></li><li><a href="module-providers_Provider-Provider.html">providers/Provider~Provider</a></li><li><a href="module-socket_Pilot-Pilot.html">socket/Pilot~Pilot</a></li><li><a href="module-socket_SocketNamespace-SocketNamespace.html">socket/SocketNamespace~SocketNamespace</a></li><li><a href="module-socket_SocketServer-SocketServer.html">socket/SocketServer~SocketServer</a></li><li><a href="module-storages_MongoDatabase-MongoDatabase.html">storages/MongoDatabase~MongoDatabase</a></li><li><a href="module-storages_ResourceFilter-ResourceFilter.html">storages/ResourceFilter~ResourceFilter</a></li><li><a href="module-storages_Storage-Storage.html">storages/Storage~Storage</a></li><li><a href="module-watcher_WatcherError-WatcherError.html">watcher/WatcherError~WatcherError</a></li><li><a href="module-watcher_Watcher-Watcher.html">watcher/Watcher~Watcher</a></li></ul><h3>Events</h3><ul><li><a href="core_watcher_Watcher-Watcher.html#event:create">core:watcher/Watcher~Watcher#create</a></li><li><a href="core_watcher_Watcher-Watcher.html#event:delete">core:watcher/Watcher~Watcher#delete</a></li><li><a href="core_watcher_Watcher-Watcher.html#event:error">core:watcher/Watcher~Watcher#error</a></li><li><a href="core_watcher_Watcher-Watcher.html#event:watch">core:watcher/Watcher~Watcher#watch</a></li><li><a href="module-watcher_DirectoryFsWatcher-DirectoryFsWatcher.html#event:create">watcher/DirectoryFsWatcher~DirectoryFsWatcher#create</a></li><li><a href="module-watcher_DirectoryFsWatcher-DirectoryFsWatcher.html#event:delete">watcher/DirectoryFsWatcher~DirectoryFsWatcher#delete</a></li><li><a href="module-watcher_DirectoryFsWatcher-DirectoryFsWatcher.html#event:error">watcher/DirectoryFsWatcher~DirectoryFsWatcher#error</a></li><li><a href="module-watcher_DirectoryWatcher-DirectoryWatcher.html#event:create">watcher/DirectoryWatcher~DirectoryWatcher#create</a></li><li><a href="module-watcher_DirectoryWatcher-DirectoryWatcher.html#event:delete">watcher/DirectoryWatcher~DirectoryWatcher#delete</a></li><li><a href="module-watcher_DirectoryWatcher-DirectoryWatcher.html#event:error">watcher/DirectoryWatcher~DirectoryWatcher#error</a></li><li><a href="module-watcher_DirectoryWatcher-DirectoryWatcher.html#event:watch">watcher/DirectoryWatcher~DirectoryWatcher#watch</a></li></ul><h3><a href="global.html">Global</a></h3>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Thu Mar 10 2022 15:45:37 GMT+0100 (Central European Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
