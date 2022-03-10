@@ -1,3 +1,9 @@
+# 8.0.3 / YYYY-MM-DD
+
+## BUG FIXES
+
+- Fix require('@openveo/api').controllers.ContentController.addAccessFilter which was returning null if filter argument wasn't set
+
 # 8.0.2 / 2021-11-19
 
 ## BUG FIXES
