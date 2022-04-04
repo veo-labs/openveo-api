@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: watcher/DirectoryFsWatcher.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: watcher/DirectoryFsWatcher.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>'use strict';
+
+/**
+ * @module watcher/DirectoryFsWatcher
+ * @ignore
+ */
+
+var path = require('path');
+var util = require('util');
+var events = require('events');
+var fs = require('fs');
+var WatcherError = process.requireApi('lib/watcher/WatcherError.js');
+
+/**
+ * Fired when an error occurred.
+ *
+ * @event module:watcher/DirectoryFsWatcher~DirectoryFsWatcher#error
+ * @property {module:watcher/WatcherError~WatcherError} error The error
+ */
+
+/**
+ * Fired when a new resource (file or directory) has been added to the directory.
+ *
+ * @event module:watcher/DirectoryFsWatcher~DirectoryFsWatcher#create
+ * @property {String} resourcePath Path of the added resource
+ */
+
+/**
+ * Fired when a resource (file or directory) has been deleted from the directory.
+ *
+ * @event module:watcher/DirectoryFsWatcher~DirectoryFsWatcher#delete
+ * @property {String} resourcePath Path of the resource before it has been removed
+ */
+
+/**
+ * Defines a directory watcher which is a wrapper around Node.js fs.watch.
+ *
+ * fs.watch only emit "change" and "rename" events, nothing more.
+ * This class intends to make it more user friendly by emitting more understandable events like "create" or "delete".
+ *
+ * It analyzes only "rename" events, "change" events are not constant between Linux and Windows systems.
+ * On both Linux and Windows systems :
+ * When a file is added a "rename" event is emitted followed by a "change" event
+ * When a file is renamed a "rename" event is emitted twice (one for the removal and one for the addition)
+ * When a file is removed a "rename" event is emitted
+ *
+ * To work through this behaviour, a snapshot of the directory is made each time a "rename" event is fired.
+ * Then new resources inside the directory are compared to the snapshot to find out which resource has been
+ * added or removed.
+ *
+ * If a "rename" event is emitted while the directory is being analyzed, directory will be analyzed again making every
+ * "rename" event count.
+ *
+ * @class DirectoryFsWatcher
+ * @ignore
+ * @constructor
+ * @param {Array} directoryPath The absolute path of the directory to watch
+ * @param {Object} [options] Watcher options
+ * @param {Number} [options.stabilityThreshold] Number of milliseconds to wait before considering a file
+ * as stable
+ */
+function DirectoryFsWatcher(directoryPath, options) {
+  options = options || {};
+  options.stabilityThreshold = options.stabilityThreshold > 0 ? options.stabilityThreshold : 10000;
+
+  Object.defineProperties(this,
+
+    /** @lends module:watcher/DirectoryFsWatcher~DirectoryFsWatcher */
+    {
+
+      /**
+       * The absolute path of the watched directory.
+       *
+       * @instance
+       * @readonly
+       * @type {String}
+       */
+      directoryPath: {
+        value: path.resolve(directoryPath)
+      },
+
+      /**
+       * Watcher options.
+       *
+       * @instance
+       * @readonly
+       * @type {Object}
+       */
+      options: {
+        value: options
+      },
+
+      /**
+       * The number of "rename" events which haven't been treated yet.
+       *
+       * @instance
+       * @default 0
+       * @type {Number}
+       */
+      pendingEventsCounter: {
+        value: 0,
+        writable: true
+      },
+
+      /**
+       * The resources inside the directory with the resource path as the key and true as the value.
+       *
+       * The snapshot represents the current content of the directory and will be updated after each "rename" event.
+       *
+       * @instance
+       * @type {Object}
+       */
+      snapshot: {
+        value: {},
+        writable: true
+      },
+
+      /**
+       * The Node.js directory watcher.
+       *
+       * @instance
+       * @type {fs.FSWatcher}
+       */
+      fsWatcher: {
+        value: null,
+        writable: true
+      }
+
+    }
+
+  );
+}
+
+module.exports = DirectoryFsWatcher;
+util.inherits(DirectoryFsWatcher, events.EventEmitter);
+
+/**
+ * Waits for the resource to be fully written.
+ *
+ * @private
+ * @memberof module:watcher/DirectoryFsWatcher~DirectoryFsWatcher
+ * @this module:watcher/DirectoryFsWatcher~DirectoryFsWatcher
+ * @param {String} resourcePath The absolute path of the resource to wait for
+ * @param {fs.Stats} [lastStat] Last information about the resource
+ */
+function awaitWriteFinish(resourcePath, lastStat) {
+  fs.stat(resourcePath, (function(error, stat) {
+
+    // If resource has not been found (ENOENT) it's because, meanwhile, it has been removed
+    if (error) {
+      if (error.code !== 'ENOENT')
+        return this.emit('error', new WatcherError(error.message, error.code, resourcePath));
+    } else if (stat.isDirectory()) {
+
+      // Resource is a directory, no need to wait
+      this.emit('create', resourcePath);
+
+    } else if (lastStat &amp;&amp; stat.size === lastStat.size &amp;&amp; stat.mtime.getTime() === lastStat.mtime.getTime()) {
+
+      // Modification time has not changed since 10 seconds
+      // Consider file has written
+      this.emit('create', resourcePath);
+
+    } else {
+
+      // Await 10 seconds to be sure it is fully written
+      setTimeout(awaitWriteFinish.bind(this), this.options.stabilityThreshold, resourcePath, stat);
+
+    }
+
+  }).bind(this));
+}
+
+/**
+ * Interprets a "rename" event.
+ *
+ * If "rename" event corresponds to an addition, a "create" event will be fired.
+ * If "rename" event corresponds to a removal, a "delete" event will be fired.
+ *
+ * @private
+ * @memberof module:watcher/DirectoryFsWatcher~DirectoryFsWatcher
+ * @this module:watcher/DirectoryFsWatcher~DirectoryFsWatcher
+ */
+function interpretRename() {
+
+  // It takes some time for the fs.FSWatcher to really stop firing events after a close
+  // Do not interpret events anymore if watcher has been closed
+  if (!this.fsWatcher) return;
+
+  fs.readdir(this.directoryPath, (function(error, resources) {
+    var newSnapshot = {};
+    if (error &amp;&amp; error.code !== 'EPERM')
+      return this.emit('error', new WatcherError(error.message, error.code, this.directoryPath));
+
+    // Compare resources with the snapshot
+    resources.forEach((function(resource) {
+
+      // Create the new snapshot
+      newSnapshot[resource] = true;
+
+      if (this.snapshot[resource]) {
+
+        // Resource was already there
+        // Mark it as removed
+
+        delete this.snapshot[resource];
+
+      } else {
+
+        // New resource
+
+        awaitWriteFinish.call(this, path.join(this.directoryPath, resource));
+      }
+    }).bind(this));
+
+    // All remaining resources in the previous snapshot are resources which have been removed
+    for (var resource in this.snapshot)
+      this.emit('delete', path.join(this.directoryPath, resource));
+
+    // Save new snapshot
+    this.snapshot = newSnapshot;
+
+    this.pendingEventsCounter--;
+
+    // If another "rename" event was fired while interpreting, interpret again
+    if (this.pendingEventsCounter > 0)
+      interpretRename.call(this);
+  }).bind(this));
+}
+
+/**
+ * Watches the directory.
+ *
+ * @param {callback} callback The function to call when its starts listening to changes
+ */
+DirectoryFsWatcher.prototype.watch = function(callback) {
+  if (this.fsWatcher) this.close();
+
+  fs.readdir(this.directoryPath, (function(error, resources) {
+    if (error) return callback(error);
+
+    // New directory being watched
+    // Emit a "create" event for all its resources and create a snapshot
+    resources.forEach((function(resource) {
+      this.snapshot[resource] = true;
+      awaitWriteFinish.call(this, path.join(this.directoryPath, resource));
+    }).bind(this));
+
+    this.fsWatcher = fs.watch(this.directoryPath, {persistent: false});
+
+    this.fsWatcher.on('change', (function(type) {
+      if (type === 'rename') {
+
+        // Queue "rename" events to not miss any while reading the directory
+        this.pendingEventsCounter++;
+
+        // Read dir to find out what have changed
+        interpretRename.call(this);
+
+      }
+    }).bind(this));
+
+    this.fsWatcher.on('error', (function(error) {
+
+      // EPERM errors are fired when directory has been removed while the watcher is still running
+      // This is due to fs.FSWatcher.close() which is not immediate
+      if (error.code !== 'EPERM')
+        this.emit('error', new WatcherError(error.message, error.code, this.directoryPath));
+    }).bind(this));
+
+    callback();
+  }).bind(this));
+};
+
+/**
+ * Stops watching the directory.
+ */
+DirectoryFsWatcher.prototype.close = function() {
+  if (this.fsWatcher) {
+    this.fsWatcher.close();
+    this.fsWatcher = null;
+  }
+};
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-angularJs.html">angularJs</a></li><li><a href="module-angularJs_parser.html">angularJs/parser</a></li><li><a href="module-controllers.html">controllers</a></li><li><a href="module-controllers_ContentController.html">controllers/ContentController</a></li><li><a href="module-controllers_Controller.html">controllers/Controller</a></li><li><a href="module-controllers_EntityController.html">controllers/EntityController</a></li><li><a href="module-controllers_HttpController.html">controllers/HttpController</a></li><li><a href="module-controllers_httpErrors.html">controllers/httpErrors</a></li><li><a href="module-controllers_SocketController.html">controllers/SocketController</a></li><li><a href="module-emitters.html">emitters</a></li><li><a href="module-emitters_AdvancedEmitter.html">emitters/AdvancedEmitter</a></li><li><a href="module-emitters_AdvancedEvent.html">emitters/AdvancedEvent</a></li><li><a href="module-errors.html">errors</a></li><li><a href="module-errors_AccessError.html">errors/AccessError</a></li><li><a href="module-errors_NotFoundError.html">errors/NotFoundError</a></li><li><a href="module-errors_StorageError.html">errors/StorageError</a></li><li><a href="module-fileSystem.html">fileSystem</a></li><li><a href="module-grunt.html">grunt</a></li><li><a href="module-grunt_copyTask.html">grunt/copyTask</a></li><li><a href="module-grunt_ngDpTask.html">grunt/ngDpTask</a></li><li><a href="module-grunt_removeTask.html">grunt/removeTask</a></li><li><a href="module-grunt_renameTask.html">grunt/renameTask</a></li><li><a href="module-imageProcessor.html">imageProcessor</a></li><li><a href="module-logger.html">logger</a></li><li><a href="module-middlewares.html">middlewares</a></li><li><a href="module-middlewares_disableCacheMiddleware.html">middlewares/disableCacheMiddleware</a></li><li><a href="module-middlewares_imageProcessorMiddleware.html">middlewares/imageProcessorMiddleware</a></li><li><a href="module-middlewares_logRequestMiddleware.html">middlewares/logRequestMiddleware</a></li><li><a href="module-multipart.html">multipart</a></li><li><a href="module-multipart_MultipartParser.html">multipart/MultipartParser</a></li><li><a href="module-passport.html">passport</a></li><li><a href="module-passport_STRATEGIES.html">passport/STRATEGIES</a></li><li><a href="module-passport_strategyFactory.html">passport/strategyFactory</a></li><li><a href="module-plugin.html">plugin</a></li><li><a href="module-plugin_Plugin.html">plugin/Plugin</a></li><li><a href="module-plugin_PluginApi.html">plugin/PluginApi</a></li><li><a href="module-providers.html">providers</a></li><li><a href="module-providers_EntityProvider.html">providers/EntityProvider</a></li><li><a href="module-providers_Provider.html">providers/Provider</a></li><li><a href="module-socket.html">socket</a></li><li><a href="module-socket_Pilot.html">socket/Pilot</a></li><li><a href="module-socket_SocketNamespace.html">socket/SocketNamespace</a></li><li><a href="module-socket_SocketServer.html">socket/SocketServer</a></li><li><a href="module-storages.html">storages</a></li><li><a href="module-storages_DATABASE_ERRORS.html">storages/DATABASE_ERRORS</a></li><li><a href="module-storages_factory.html">storages/factory</a></li><li><a href="module-storages_MongoDatabase.html">storages/MongoDatabase</a></li><li><a href="module-storages_ResourceFilter.html">storages/ResourceFilter</a></li><li><a href="module-storages_Storage.html">storages/Storage</a></li><li><a href="module-util.html">util</a></li><li><a href="module-watcher.html">watcher</a></li><li><a href="module-watcher_Watcher.html">watcher/Watcher</a></li><li><a href="module-watcher_WatcherError.html">watcher/WatcherError</a></li></ul><h3>Namespaces</h3><ul><li><a href="module-controllers_httpErrors-HTTP_ERRORS.html">controllers/httpErrors~HTTP_ERRORS</a></li><li><a href="module-passport_STRATEGIES-STRATEGIES.html">passport/STRATEGIES~STRATEGIES</a></li></ul><h3>Classes</h3><ul><li><a href="module-controllers_ContentController-ContentController.html">controllers/ContentController~ContentController</a></li><li><a href="module-controllers_Controller-Controller.html">controllers/Controller~Controller</a></li><li><a href="module-controllers_EntityController-EntityController.html">controllers/EntityController~EntityController</a></li><li><a href="module-controllers_HttpController-HttpController.html">controllers/HttpController~HttpController</a></li><li><a href="module-controllers_SocketController-SocketController.html">controllers/SocketController~SocketController</a></li><li><a href="module-emitters_AdvancedEmitter-AdvancedEmitter.html">emitters/AdvancedEmitter~AdvancedEmitter</a></li><li><a href="module-emitters_AdvancedEvent-AdvancedEvent.html">emitters/AdvancedEvent~AdvancedEvent</a></li><li><a href="module-errors_AccessError-AccessError.html">errors/AccessError~AccessError</a></li><li><a href="module-errors_NotFoundError-NotFoundError.html">errors/NotFoundError~NotFoundError</a></li><li><a href="module-errors_StorageError-StorageError.html">errors/StorageError~StorageError</a></li><li><a href="module-multipart_MultipartParser-MultipartParser.html">multipart/MultipartParser~MultipartParser</a></li><li><a href="module-plugin_PluginApi-PluginApi.html">plugin/PluginApi~PluginApi</a></li><li><a href="module-plugin_Plugin-Plugin.html">plugin/Plugin~Plugin</a></li><li><a href="module-providers_EntityProvider-EntityProvider.html">providers/EntityProvider~EntityProvider</a></li><li><a href="module-providers_Provider-Provider.html">providers/Provider~Provider</a></li><li><a href="module-socket_Pilot-Pilot.html">socket/Pilot~Pilot</a></li><li><a href="module-socket_SocketNamespace-SocketNamespace.html">socket/SocketNamespace~SocketNamespace</a></li><li><a href="module-socket_SocketServer-SocketServer.html">socket/SocketServer~SocketServer</a></li><li><a href="module-storages_MongoDatabase-MongoDatabase.html">storages/MongoDatabase~MongoDatabase</a></li><li><a href="module-storages_ResourceFilter-ResourceFilter.html">storages/ResourceFilter~ResourceFilter</a></li><li><a href="module-storages_Storage-Storage.html">storages/Storage~Storage</a></li><li><a href="module-watcher_WatcherError-WatcherError.html">watcher/WatcherError~WatcherError</a></li><li><a href="module-watcher_Watcher-Watcher.html">watcher/Watcher~Watcher</a></li></ul><h3>Events</h3><ul><li><a href="core_watcher_Watcher-Watcher.html#event:create">core:watcher/Watcher~Watcher#create</a></li><li><a href="core_watcher_Watcher-Watcher.html#event:delete">core:watcher/Watcher~Watcher#delete</a></li><li><a href="core_watcher_Watcher-Watcher.html#event:error">core:watcher/Watcher~Watcher#error</a></li><li><a href="core_watcher_Watcher-Watcher.html#event:watch">core:watcher/Watcher~Watcher#watch</a></li><li><a href="module-watcher_DirectoryFsWatcher-DirectoryFsWatcher.html#event:create">watcher/DirectoryFsWatcher~DirectoryFsWatcher#create</a></li><li><a href="module-watcher_DirectoryFsWatcher-DirectoryFsWatcher.html#event:delete">watcher/DirectoryFsWatcher~DirectoryFsWatcher#delete</a></li><li><a href="module-watcher_DirectoryFsWatcher-DirectoryFsWatcher.html#event:error">watcher/DirectoryFsWatcher~DirectoryFsWatcher#error</a></li><li><a href="module-watcher_DirectoryWatcher-DirectoryWatcher.html#event:create">watcher/DirectoryWatcher~DirectoryWatcher#create</a></li><li><a href="module-watcher_DirectoryWatcher-DirectoryWatcher.html#event:delete">watcher/DirectoryWatcher~DirectoryWatcher#delete</a></li><li><a href="module-watcher_DirectoryWatcher-DirectoryWatcher.html#event:error">watcher/DirectoryWatcher~DirectoryWatcher#error</a></li><li><a href="module-watcher_DirectoryWatcher-DirectoryWatcher.html#event:watch">watcher/DirectoryWatcher~DirectoryWatcher#watch</a></li></ul><h3><a href="global.html">Global</a></h3>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Mon Apr 04 2022 11:54:00 GMT+0200 (Central European Summer Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
