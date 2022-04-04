@@ -1,3 +1,13 @@
+# 8.0.4 / YYYY-MM-DD
+
+## BUG FIXES
+
+- Fix require('@openveo/api').fileSystem.extract which wasn't able to extract large zip files (more than 2Go)
+
+## DEPENDENCIES
+
+- **adm-zip** has been replaced by node-stream-zip
+
 # 8.0.3 / 2022-03-10
 
 ## BUG FIXES
