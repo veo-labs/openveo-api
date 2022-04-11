@@ -1,3 +1,10 @@
+# 8.1.0 / YYYY-MM-DD
+
+## DEPENDENCIES
+
+- **connect-mongo** has been upgraded from 4.4.1 to **4.6.0**
+- **mongodb** has been upgraded from 3.6.10 o **4.5.0**
+
 # 8.0.4 / 2022-04-04
 
 ## BUG FIXES

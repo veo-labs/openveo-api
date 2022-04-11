@@ -4,10 +4,13 @@ var path = require('path');
 var chai = require('chai');
 var spies = require('chai-spies');
 var mock = require('mock-require');
+
 var ResourceFilter = process.requireApi('lib/storages/ResourceFilter.js');
 var databaseErrors = process.requireApi('lib/storages/databases/databaseErrors.js');
+
 var MongoDatabase;
 var MongoClientMock;
+var MongoObjectIdMock;
 var MongoStoreMock;
 var database;
 var collection;
@@ -35,8 +38,14 @@ describe('MongoDatabase', function() {
       }
     };
     MongoStoreMock = function() {};
+    MongoObjectIdMock = function(id) {
+      this.id = id;
+    };
+    MongoObjectIdMock.prototype.toHexString = function() {
+      return this.id;
+    };
 
-    mock('mongodb', {MongoClient: MongoClientMock});
+    mock('mongodb', {MongoClient: MongoClientMock, ObjectId: MongoObjectIdMock});
     mock('connect-mongo', function() {
       return MongoStoreMock;
     });
@@ -47,12 +56,15 @@ describe('MongoDatabase', function() {
     MongoDatabase = mock.reRequire(path.join(process.rootApi, 'lib/storages/databases/mongodb/MongoDatabase.js'));
     database = new MongoDatabase({});
     database.db = {
-      collection: function(name, callback) {
-        callback(null, collection);
-      },
-      listCollections: function(filter, options) {
+      collection: chai.spy(function(name) {
+        return collection;
+      }),
+      dropCollection: chai.spy(function(name, callback) {
+        callback();
+      }),
+      listCollections: chai.spy(function(filter, options) {
         return commandCursor;
-      }
+      })
     };
   });
 
@@ -64,49 +76,49 @@ describe('MongoDatabase', function() {
 
     // Mock MongoDB Cursor
     cursor = {
-      project: function() {
+      project: chai.spy(function() {
         return cursor;
-      },
-      sort: function() {
+      }),
+      sort: chai.spy(function() {
         return cursor;
-      },
-      skip: function(skip) {
+      }),
+      skip: chai.spy(function(skip) {
         var docs = expectedDocuments ? expectedDocuments : documents;
         expectedDocuments = docs.slice(skip);
         return cursor;
-      },
-      limit: function(limit) {
+      }),
+      limit: chai.spy(function(limit) {
         var docs = expectedDocuments ? expectedDocuments : documents;
         expectedDocuments = docs.slice(0, limit);
         return cursor;
-      },
-      count: function(applySkipLimit, options, callback) {
-        callback(null, documents.length);
-      },
-      toArray: function(callback) {
+      }),
+      toArray: chai.spy(function(callback) {
         callback(null, expectedDocuments);
-      }
+      })
     };
 
     // Mock MongoDB Collection
     collection = {
-      find: function() {
+      countDocuments: chai.spy(function(callback) {
+        callback(null, documents.length);
+      }),
+      find: chai.spy(function() {
         return cursor;
-      },
-      findOne: function(filter, projection, callback) {
+      }),
+      findOne: chai.spy(function(filter, projection, callback) {
         var docs = expectedDocuments ? expectedDocuments : documents;
         callback(docs[0] || null);
-      },
-      rename: function(name, callback) {
+      }),
+      rename: chai.spy(function(name, callback) {
         callback(null);
-      }
+      })
     };
 
     // Mock MongoDB CommandCursor
     commandCursor = {
-      toArray: function(callback) {
+      toArray: chai.spy(function(callback) {
         callback();
-      }
+      })
     };
   });
 
@@ -347,7 +359,67 @@ describe('MongoDatabase', function() {
       var builtFilter = MongoDatabase.buildFilter(filter);
 
       expectedOperations.forEach(function(expectedOperation) {
-        assert.equal(builtFilter[expectedOperation.field][expectedOperation.mongoOperator], expectedOperation.value);
+        assert.deepEqual(
+          builtFilter[expectedOperation.field][expectedOperation.mongoOperator],
+          expectedOperation.value
+        );
+      });
+    });
+
+    it('should convert value into ObjectId when field is "_id"', function() {
+      var filter = new ResourceFilter();
+      var expectedOperations = [
+        {
+          field: '_id',
+          value: 'value1',
+          type: ResourceFilter.OPERATORS.EQUAL,
+          mongoOperator: '$eq'
+        },
+        {
+          field: '_id',
+          value: 'value2',
+          type: ResourceFilter.OPERATORS.NOT_EQUAL,
+          mongoOperator: '$ne'
+        },
+        {
+          field: '_id',
+          value: ['value3'],
+          type: ResourceFilter.OPERATORS.IN,
+          mongoOperator: '$in'
+        },
+        {
+          field: '_id',
+          value: ['value4'],
+          type: ResourceFilter.OPERATORS.NOT_IN,
+          mongoOperator: '$nin'
+        }
+      ];
+
+      expectedOperations.forEach(function(expectedOperation) {
+        filter[expectedOperation.type](expectedOperation.field, expectedOperation.value);
+      });
+
+      var builtFilter = MongoDatabase.buildFilter(filter);
+
+      expectedOperations.forEach(function(expectedOperation) {
+        var expectedValue;
+
+        if (expectedOperation.field === '_id') {
+          var valueType = Object.prototype.toString.call(expectedOperation.value);
+
+          if (valueType === '[object String]') {
+            expectedValue = new MongoObjectIdMock(expectedOperation.value);
+          } else if (valueType === '[object Array]') {
+            expectedValue = expectedOperation.value.map(function(value) {
+              return new MongoObjectIdMock(value);
+            });
+          }
+        }
+
+        assert.deepEqual(
+          builtFilter[expectedOperation.field][expectedOperation.mongoOperator],
+          expectedValue
+        );
       });
     });
 
@@ -600,53 +672,97 @@ describe('MongoDatabase', function() {
 
     it('should be able to insert documents into a collection', function(done) {
       var expectedCollection = 'collection';
-      expectedDocuments = [{}];
+      var expectedInsertedIds = {};
 
-      collection.insertMany = function(results, callback) {
+      expectedDocuments = [{_id: new MongoObjectIdMock('42')}];
+      expectedDocuments.forEach(function(expectedDocument, index) {
+        expectedInsertedIds[index] = expectedDocument._id;
+      });
+
+      collection.insertMany = chai.spy(function(results, callback) {
         assert.strictEqual(results, expectedDocuments, 'Wrong documents');
-        callback(null, {insertedCount: expectedDocuments.length, ops: expectedDocuments});
-      };
-      database.db.collection = function(name, callback) {
-        assert.equal(name, expectedCollection, 'Wrong collection');
-        callback(null, collection);
-      };
+        callback(
+          null, {
+            insertedCount: expectedDocuments.length,
+            insertedIds: expectedInsertedIds
+          }
+        );
+      });
+
+      database.get = chai.spy(function(collection, filter, fields, limit, page, sort, callback) {
+        assert.equal(collection, expectedCollection, 'Wrong collection');
+        assert.deepEqual(
+          filter.getComparisonOperation(ResourceFilter.OPERATORS.IN, '_id').value,
+          expectedDocuments.map(function(expectedDocument) {
+            return expectedDocument._id.id;
+          }),
+          'Wrong get filter'
+        );
+        assert.isNull(fields, 'Unexpected get fields');
+        assert.equal(limit, expectedDocuments.length, 'Wrong get limit');
+        assert.equal(page, 0, 'Wrong get page');
+        assert.isNull(sort, 'Unexpected get sort');
+
+        callback(null, expectedDocuments);
+      });
 
       database.add(expectedCollection, expectedDocuments, function(error, insertedCount, insertedDocuments) {
+        database.db.collection.should.have.been.called.exactly(1);
+        database.db.collection.should.have.been.called.with(expectedCollection);
+        collection.insertMany.should.have.been.called.exactly(1);
+        database.get.should.have.been.called.exactly(1);
+
         assert.isNull(error, 'Unexpected error');
         assert.equal(insertedCount, expectedDocuments.length, 'Wrong number of documents');
         assert.strictEqual(insertedDocuments, expectedDocuments, 'Wrong documents');
-        done();
-      });
-    });
 
-    it('should execute callback with an error if connecting to the collection failed', function(done) {
-      var expectedError = new Error('Something went wrong');
-
-      database.db.collection = function(name, callback) {
-        callback(expectedError);
-      };
-
-      database.add('collection', [{}], function(error) {
-        assert.strictEqual(error, expectedError, 'Wrong error');
         done();
       });
     });
 
     it('should execute callback with an error if inserting documents failed', function(done) {
       var expectedError = new Error('Something went wrong');
-      collection.insertMany = function(results, callback) {
+
+      collection.insertMany = chai.spy(function(results, callback) {
         callback(expectedError);
-      };
+      });
 
       database.add('collection', [{}], function(error) {
+        collection.insertMany.should.have.been.called.exactly(1);
+
         assert.strictEqual(error, expectedError, 'Wrong error');
         done();
       });
     });
 
-    it('should throw an error if database connection has not been established', function() {
-      assert.throws(function() {
-        database.add('collection', [{}], function() {});
+    it('should execute callback with an error if getting inserted documents failed', function(done) {
+      var expectedError = new Error('Something went wrong');
+      var expectedInsertedIds = {};
+
+      expectedDocuments = [{_id: new MongoObjectIdMock('42')}];
+      expectedDocuments.forEach(function(expectedDocument, index) {
+        expectedInsertedIds[index] = expectedDocument._id;
+      });
+
+      collection.insertMany = chai.spy(function(results, callback) {
+        callback(
+          null, {
+            insertedCount: expectedDocuments.length,
+            insertedIds: expectedInsertedIds
+          }
+        );
+      });
+
+      database.get = chai.spy(function(collection, filter, fields, limit, page, sort, callback) {
+        callback(expectedError);
+      });
+
+      database.add('collection', [{}], function(error) {
+        collection.insertMany.should.have.been.called.exactly(1);
+        database.get.should.have.been.called.exactly(1);
+
+        assert.strictEqual(error, expectedError, 'Wrong error');
+        done();
       });
     });
 
@@ -659,54 +775,39 @@ describe('MongoDatabase', function() {
       var expectedDeletedCount = 42;
       var expectedFilter = new ResourceFilter().in('id', ['42', '43']);
 
-      collection.deleteMany = function(filter, callback) {
+      collection.deleteMany = chai.spy(function(filter, callback) {
         assert.deepEqual(filter, MongoDatabase.buildFilter(expectedFilter), 'Wrong filter');
         callback(null, {deletedCount: expectedDeletedCount});
-      };
-      database.db.collection = function(name, callback) {
-        assert.equal(name, expectedCollection, 'Wrong collection');
-        callback(null, collection);
-      };
+      });
 
       database.remove(
         expectedCollection,
         expectedFilter,
         function(error, deletedCount) {
+          database.db.collection.should.have.been.called.exactly(1);
+          database.db.collection.should.have.been.called.with(expectedCollection);
+
           assert.isNull(error, 'Unexpected error');
           assert.equal(deletedCount, expectedDeletedCount, 'Wrong number of documents');
+
+          collection.deleteMany.should.have.been.called.exactly(1);
           done();
         }
       );
     });
 
-    it('should execute callback with an error if connecting to the collection failed', function(done) {
-      var expectedError = new Error('Something went wrong');
-
-      database.db.collection = function(name, callback) {
-        callback(expectedError);
-      };
-
-      database.remove('collection', new ResourceFilter(), function(error) {
-        assert.strictEqual(error, expectedError, 'Wrong error');
-        done();
-      });
-    });
-
     it('should execute callback with an error if removing documents failed', function(done) {
       var expectedError = new Error('Something went wrong');
-      collection.deleteMany = function(results, callback) {
+
+      collection.deleteMany = chai.spy(function(results, callback) {
         callback(expectedError);
-      };
+      });
 
       database.remove('collection', new ResourceFilter(), function(error) {
+        collection.deleteMany.should.have.been.called.exactly(1);
+
         assert.strictEqual(error, expectedError, 'Wrong error');
         done();
-      });
-    });
-
-    it('should throw an error if database connection has not been established', function() {
-      assert.throws(function() {
-        database.remove('collection', new ResourceFilter(), function() {});
       });
     });
 
@@ -720,24 +821,24 @@ describe('MongoDatabase', function() {
       var expectedModifiedCount = 42;
       var expectedFilter = new ResourceFilter().equal('id', '42');
 
-      collection.updateMany = function(filter, data, callback) {
+      collection.updateMany = chai.spy(function(filter, data, callback) {
         expectedFilter = MongoDatabase.buildFilter(expectedFilter);
         expectedFilter[expectedProperty] = {$exists: true};
 
         assert.isEmpty(data.$unset[expectedProperty], 'Expected property to be empty');
         assert.deepEqual(filter, expectedFilter, 'Wrong filter');
         callback(null, {modifiedCount: expectedModifiedCount});
-      };
-      database.db.collection = function(name, callback) {
-        assert.equal(name, expectedCollection, 'Wrong collection');
-        callback(null, collection);
-      };
+      });
 
       database.removeField(
         expectedCollection,
         expectedProperty,
         expectedFilter,
         function(error, modifiedCount) {
+          database.db.collection.should.have.been.called.exactly(1);
+          database.db.collection.should.have.been.called.with(expectedCollection);
+
+          collection.updateMany.should.have.been.called.exactly(1);
           assert.isNull(error, 'Unexpected error');
           assert.equal(modifiedCount, expectedModifiedCount, 'Wrong modified count');
         }
@@ -745,35 +846,18 @@ describe('MongoDatabase', function() {
 
     });
 
-    it('should execute callback with an error if connecting to the collection failed', function(done) {
-      var expectedError = new Error('Something went wrong');
-
-      database.db.collection = function(collection, callback) {
-        callback(expectedError);
-      };
-
-      database.removeField('collection', 'property', new ResourceFilter(), function(error) {
-        assert.strictEqual(error, expectedError, 'Wrong error');
-        done();
-      });
-    });
-
     it('should execute callback with an error if removing field failed', function(done) {
       var expectedError = new Error('Something went wrong');
 
-      collection.updateMany = function(filter, data, callback) {
+      collection.updateMany = chai.spy(function(filter, data, callback) {
         callback(expectedError);
-      };
+      });
 
       database.removeField('collection', 'property', new ResourceFilter(), function(error) {
+        collection.updateMany.should.have.been.called.exactly(1);
+
         assert.strictEqual(error, expectedError, 'Wrong error');
         done();
-      });
-    });
-
-    it('should throw an error if database connection has not been established', function() {
-      assert.throws(function() {
-        database.removeField('collection', 'property', new ResourceFilter(), function() {});
       });
     });
 
@@ -787,59 +871,41 @@ describe('MongoDatabase', function() {
       var expectedData = {};
       var expectedFilter = new ResourceFilter().equal('id', '42');
 
-      collection.updateOne = function(filter, data, callback) {
+      collection.updateOne = chai.spy(function(filter, data, callback) {
         expectedFilter = MongoDatabase.buildFilter(expectedFilter);
 
         assert.strictEqual(data.$set, expectedData, 'Wrong data');
         assert.deepEqual(filter, expectedFilter, 'Wrong filter');
         callback(null, {modifiedCount: expectedModifiedCount});
-      };
-
-      database.db.collection = function(name, callback) {
-        assert.equal(name, expectedCollection, 'Wrong collection');
-        callback(null, collection);
-      };
+      });
 
       database.updateOne(
         expectedCollection,
         expectedFilter,
         expectedData,
         function(error, modifiedCount) {
+          database.db.collection.should.have.been.called.exactly(1);
+          database.db.collection.should.have.been.called.with(expectedCollection);
+
+          collection.updateOne.should.have.been.called.exactly(1);
           assert.isNull(error, 'Unexpected error');
           assert.equal(modifiedCount, expectedModifiedCount, 'Wrong modified count');
         }
       );
     });
 
-    it('should execute callback with an error if connecting to the collection failed', function(done) {
-      var expectedError = new Error('Something went wrong');
-
-      database.db.collection = function(name, callback) {
-        callback(expectedError);
-      };
-
-      database.updateOne('collection', new ResourceFilter(), {}, function(error) {
-        assert.strictEqual(error, expectedError, 'Wrong error');
-        done();
-      });
-    });
-
     it('should execute callback with an error if updating the entity failed', function(done) {
       var expectedError = new Error('Something went wrong');
 
-      collection.updateOne = function(filter, data, callback) {
+      collection.updateOne = chai.spy(function(filter, data, callback) {
         callback(expectedError);
-      };
+      });
 
       database.updateOne('collection', new ResourceFilter(), {}, function(error) {
+        collection.updateOne.should.have.been.called.exactly(1);
+
         assert.strictEqual(error, expectedError, 'Wrong error');
         done();
-      });
-    });
-
-    it('should throw an error if database connection has not been established', function() {
-      assert.throws(function() {
-        database.updateOne('collection', new ResourceFilter(), {}, function() {});
       });
     });
 
@@ -861,19 +927,24 @@ describe('MongoDatabase', function() {
       var expectedCollection = 'collection';
       var expectedFilter = new ResourceFilter().equal('field', 'value');
 
-      database.db.collection = function(name, callback) {
-        assert.equal(name, expectedCollection, 'Wrong collection');
-        callback(null, collection);
-      };
-
-      collection.find = function(filter) {
+      collection.find = chai.spy(function(filter) {
         assert.deepEqual(filter, MongoDatabase.buildFilter(expectedFilter), 'Wrong filter');
         return cursor;
-      };
+      });
 
       database.get(expectedCollection, expectedFilter, null, null, null, null, function(error, results, pagination) {
+        database.db.collection.should.have.been.called.exactly(2);
+        database.db.collection.should.have.been.called.with(expectedCollection);
+        collection.find.should.have.been.called.exactly(1);
+        cursor.project.should.have.been.called.exactly(1);
+        cursor.sort.should.have.been.called.exactly(1);
+        cursor.skip.should.have.been.called.exactly(1);
+        cursor.limit.should.have.been.called.exactly(1);
+        cursor.toArray.should.have.been.called.exactly(1);
+        collection.countDocuments.should.have.been.called.exactly(1);
+
         assert.isNull(error, 'Unexpected error');
-        assert.equal(results.length, expectedDocuments.length, 'Wrong documents');
+        assert.equal(results.length, expectedDocuments.length, 'Wrong total of documents');
         assert.equal(pagination.limit, 10, 'Wrong limit');
         assert.equal(pagination.page, 0, 'Wrong page');
         assert.equal(pagination.pages, Math.ceil(documents.length / 10), 'Wrong number of pages');
@@ -893,6 +964,13 @@ describe('MongoDatabase', function() {
         null,
         null,
         function(error, results, pagination) {
+          cursor.project.should.have.been.called.exactly(1);
+          cursor.sort.should.have.been.called.exactly(1);
+          cursor.skip.should.have.been.called.exactly(1);
+          cursor.limit.should.have.been.called.exactly(1);
+          cursor.toArray.should.have.been.called.exactly(1);
+          collection.countDocuments.should.have.been.called.exactly(1);
+
           assert.isNull(error, 'Unexpected error');
           assert.equal(results.length, expectedLimit, 'Wrong number of documents');
           assert.equal(results[0].id, 0, 'Wrong documents');
@@ -916,6 +994,13 @@ describe('MongoDatabase', function() {
         expectedPage,
         null,
         function(error, results, pagination) {
+          cursor.project.should.have.been.called.exactly(1);
+          cursor.sort.should.have.been.called.exactly(1);
+          cursor.skip.should.have.been.called.exactly(1);
+          cursor.limit.should.have.been.called.exactly(1);
+          cursor.toArray.should.have.been.called.exactly(1);
+          collection.countDocuments.should.have.been.called.exactly(1);
+
           assert.isNull(error, 'Unexpected error');
           assert.equal(results.length, 10, 'Wrong number of documents');
           assert.equal(results[0].id, 20, 'Wrong documents');
@@ -933,10 +1018,10 @@ describe('MongoDatabase', function() {
         include: ['field1', 'field2']
       };
 
-      collection.project = function(fields) {
+      cursor.project = chai.spy(function(fields) {
         assert.deepEqual(fields, MongoDatabase.buildFields(expectedFields.include, true));
         return cursor;
-      };
+      });
 
       database.get(
         'collection',
@@ -946,6 +1031,8 @@ describe('MongoDatabase', function() {
         null,
         null,
         function(error, results, pagination) {
+          cursor.project.should.have.been.called.exactly(1);
+
           done();
         }
       );
@@ -956,10 +1043,10 @@ describe('MongoDatabase', function() {
         exclude: ['field1', 'field2']
       };
 
-      collection.project = function(fields) {
+      cursor.project = chai.spy(function(fields) {
         assert.deepEqual(fields, MongoDatabase.buildFields(expectedFields.exclude, false));
         return cursor;
-      };
+      });
 
       database.get(
         'collection',
@@ -969,6 +1056,8 @@ describe('MongoDatabase', function() {
         null,
         null,
         function(error, results, pagination) {
+          cursor.project.should.have.been.called.exactly(1);
+
           done();
         }
       );
@@ -980,10 +1069,10 @@ describe('MongoDatabase', function() {
         field2: 'desc'
       };
 
-      collection.sort = function(sort) {
+      collection.sort = chai.spy(function(sort) {
         assert.deepEqual(sort, MongoDatabase.buildSort(expectedSort), 'Wrong sort');
         return cursor;
-      };
+      });
 
       database.get(
         'collection',
@@ -993,32 +1082,23 @@ describe('MongoDatabase', function() {
         null,
         expectedSort,
         function(error, results, pagination) {
+          cursor.sort.should.have.been.called.exactly(1);
+
           done();
         }
       );
     });
 
-    it('should execute callback with an error if connecting to the collection failed', function(done) {
-      var expectedError = new Error('Something went wrong');
-
-      database.db.collection = function(name, callback) {
-        callback(expectedError);
-      };
-
-      database.get('collection', null, null, null, null, null, function(error) {
-        assert.strictEqual(error, expectedError, 'Wrong error');
-        done();
-      });
-    });
-
     it('should execute callback with an error if getting documents failed', function(done) {
       var expectedError = new Error('Something went wrong');
 
-      cursor.toArray = function(callback) {
+      cursor.toArray = chai.spy(function(callback) {
         callback(expectedError);
-      };
+      });
 
       database.get('collection', null, null, null, null, null, function(error) {
+        cursor.toArray.should.have.been.called.exactly(1);
+
         assert.strictEqual(error, expectedError, 'Wrong error');
         done();
       });
@@ -1027,11 +1107,13 @@ describe('MongoDatabase', function() {
     it('should execute callback with an error if counting documents failed', function(done) {
       var expectedError = new Error('Something went wrong');
 
-      cursor.count = function(applySkipLimit, options, callback) {
+      collection.countDocuments = chai.spy(function(callback) {
         callback(expectedError);
-      };
+      });
 
       database.get('collection', null, null, null, null, null, function(error) {
+        collection.countDocuments.should.have.been.called.exactly(1);
+
         assert.strictEqual(error, expectedError, 'Wrong error');
         done();
       });
@@ -1042,15 +1124,20 @@ describe('MongoDatabase', function() {
   describe('getOne', function() {
 
     it('should get a single document', function(done) {
+      var expectedCollection = 'collection';
       var expectedFilter = new ResourceFilter().equal('id', 42);
       var expectedDocuments = [{}, {}];
 
-      collection.findOne = function(filter, projection, callback) {
+      collection.findOne = chai.spy(function(filter, projection, callback) {
         assert.deepEqual(filter, MongoDatabase.buildFilter(expectedFilter));
         callback(null, expectedDocuments[0]);
-      };
+      });
 
       database.getOne('collection', expectedFilter, null, function(error, document) {
+        database.db.collection.should.have.been.called.exactly(1);
+        database.db.collection.should.have.been.called.with(expectedCollection);
+        collection.findOne.should.have.been.called.exactly(1);
+
         assert.isNull(error, 'Unexpected error');
         assert.strictEqual(document, expectedDocuments[0], 'Wrong document');
         done();
@@ -1058,46 +1145,39 @@ describe('MongoDatabase', function() {
     });
 
     it('should be able to include only certain fields from document', function(done) {
+      var expectedDocuments = [{}, {}];
       var expectedFields = {
         include: ['field1', 'field2']
       };
 
-      collection.project = function(fields) {
-        assert.deepEqual(fields, MongoDatabase.buildFields(expectedFields.include, true));
-        return cursor;
-      };
+      collection.findOne = chai.spy(function(filter, projection, callback) {
+        assert.deepEqual(projection, MongoDatabase.buildFields(expectedFields.include, true));
+        callback(null, expectedDocuments[0]);
+      });
 
       database.getOne('collection', null, expectedFields, function(error, document) {
+        collection.findOne.should.have.been.called.exactly(1);
+
         assert.isNull(error, 'Unexpected error');
         done();
       });
     });
 
     it('should be able to exclude only certain fields from the document', function(done) {
+      var expectedDocuments = [{}, {}];
       var expectedFields = {
         exclude: ['field1', 'field2']
       };
 
-      collection.project = function(fields) {
-        assert.deepEqual(fields, MongoDatabase.buildFields(expectedFields.exclude, false));
-        return cursor;
-      };
+      collection.findOne = chai.spy(function(filter, projection, callback) {
+        assert.deepEqual(projection, MongoDatabase.buildFields(expectedFields.exclude, false));
+        callback(null, expectedDocuments[0]);
+      });
 
       database.getOne('collection', null, expectedFields, function(error, document) {
+        collection.findOne.should.have.been.called.exactly(1);
+
         assert.isNull(error, 'Unexpected error');
-        done();
-      });
-    });
-
-    it('should execute callback with an error if connecting to the collection failed', function(done) {
-      var expectedError = new Error('Something went wrong');
-
-      database.db.collection = function(name, callback) {
-        callback(expectedError);
-      };
-
-      database.getOne('collection', null, null, function(error) {
-        assert.strictEqual(error, expectedError, 'Wrong error');
         done();
       });
     });
@@ -1105,11 +1185,13 @@ describe('MongoDatabase', function() {
     it('should execute callback with an error if getting document failed', function(done) {
       var expectedError = new Error('Something went wrong');
 
-      collection.findOne = function(applySkipLimit, options, callback) {
+      collection.findOne = chai.spy(function(applySkipLimit, options, callback) {
         callback(expectedError);
-      };
+      });
 
       database.getOne('collection', null, null, function(error, document) {
+        collection.findOne.should.have.been.called.exactly(1);
+
         assert.strictEqual(error, expectedError, 'Wrong error');
         done();
       });
@@ -1120,28 +1202,20 @@ describe('MongoDatabase', function() {
   describe('getIndexes', function() {
 
     it('should get indexes of a collection', function(done) {
+      var expectedCollection = 'collection';
       var expectedIndexes = {};
 
-      collection.indexes = function(callback) {
+      collection.indexes = chai.spy(function(callback) {
         callback(null, expectedIndexes);
-      };
+      });
 
-      database.getIndexes('collection', function(error, indexes) {
+      database.getIndexes(expectedCollection, function(error, indexes) {
+        database.db.collection.should.have.been.called.exactly(1);
+        database.db.collection.should.have.been.called.with(expectedCollection);
+        collection.indexes.should.have.been.called.exactly(1);
+
         assert.isNull(error, 'Unexpected error');
         assert.strictEqual(indexes, expectedIndexes, 'Expected indexes');
-        done();
-      });
-    });
-
-    it('should execute callback with an error if connecting to the collection failed', function(done) {
-      var expectedError = new Error('Something went wrong');
-
-      database.db.collection = function(collection, callback) {
-        callback(expectedError);
-      };
-
-      database.getIndexes('collection', function(error) {
-        assert.strictEqual(error, expectedError, 'Wrong error');
         done();
       });
     });
@@ -1149,11 +1223,13 @@ describe('MongoDatabase', function() {
     it('should execute callback with an error if getting indexes failed', function(done) {
       var expectedError = new Error('Something went wrong');
 
-      collection.indexes = function(callback) {
+      collection.indexes = chai.spy(function(callback) {
         callback(expectedError);
-      };
+      });
 
       database.getIndexes('collection', function(error) {
+        collection.indexes.should.have.been.called.exactly(1);
+
         assert.strictEqual(error, expectedError, 'Wrong error');
         done();
       });
@@ -1164,28 +1240,20 @@ describe('MongoDatabase', function() {
   describe('createIndexes', function() {
 
     it('should create indexes for a collection', function(done) {
+      var expectedCollection = 'collection';
       var expectedIndexes = {};
 
-      collection.createIndexes = function(indexes, callback) {
+      collection.createIndexes = chai.spy(function(indexes, callback) {
         assert.strictEqual(indexes, expectedIndexes, 'Wrong indexes');
         callback(null, expectedIndexes);
-      };
-
-      database.createIndexes('collection', expectedIndexes, function(error) {
-        assert.isNull(error, 'Unexpected error');
-        done();
       });
-    });
 
-    it('should execute callback with an error if connecting to the collection failed', function(done) {
-      var expectedError = new Error('Something went wrong');
+      database.createIndexes(expectedCollection, expectedIndexes, function(error) {
+        database.db.collection.should.have.been.called.exactly(1);
+        database.db.collection.should.have.been.called.with(expectedCollection);
+        collection.createIndexes.should.have.been.called.exactly(1);
 
-      database.db.collection = function(collection, callback) {
-        callback(expectedError);
-      };
-
-      database.createIndexes('collection', {}, function(error) {
-        assert.strictEqual(error, expectedError, 'Wrong error');
+        assert.isNull(error, 'Unexpected error');
         done();
       });
     });
@@ -1193,11 +1261,13 @@ describe('MongoDatabase', function() {
     it('should execute callback with an error if creating indexes failed', function(done) {
       var expectedError = new Error('Something went wrong');
 
-      collection.createIndexes = function(indexes, callback) {
+      collection.createIndexes = chai.spy(function(indexes, callback) {
         callback(expectedError);
-      };
+      });
 
       database.createIndexes('collection', {}, function(error) {
+        collection.createIndexes.should.have.been.called.exactly(1);
+
         assert.strictEqual(error, expectedError, 'Wrong error');
         done();
       });
@@ -1208,28 +1278,20 @@ describe('MongoDatabase', function() {
   describe('dropIndex', function() {
 
     it('should drop index from a collection', function(done) {
+      var expectedCollection = 'collection';
       var expectedIndexName = 'search';
 
-      collection.dropIndex = function(indexName, callback) {
+      collection.dropIndex = chai.spy(function(indexName, callback) {
         assert.strictEqual(indexName, expectedIndexName, 'Wrong index name');
         callback(null, expectedIndexName);
-      };
-
-      database.dropIndex('collection', expectedIndexName, function(error) {
-        assert.isNull(error, 'Unexpected error');
-        done();
       });
-    });
 
-    it('should execute callback with an error if connecting to the collection failed', function(done) {
-      var expectedError = new Error('Something went wrong');
+      database.dropIndex(expectedCollection, expectedIndexName, function(error) {
+        database.db.collection.should.have.been.called.exactly(1);
+        database.db.collection.should.have.been.called.with(expectedCollection);
+        collection.dropIndex.should.have.been.called.exactly(1);
 
-      database.db.collection = function(collection, callback) {
-        callback(expectedError);
-      };
-
-      database.dropIndex('collection', 'search', function(error) {
-        assert.strictEqual(error, expectedError, 'Wrong error');
+        assert.isNull(error, 'Unexpected error');
         done();
       });
     });
@@ -1237,11 +1299,13 @@ describe('MongoDatabase', function() {
     it('should execute callback with an error if droping index failed', function(done) {
       var expectedError = new Error('Something went wrong');
 
-      collection.dropIndex = function(indexName, callback) {
+      collection.dropIndex = chai.spy(function(indexName, callback) {
         callback(expectedError);
-      };
+      });
 
       database.dropIndex('collection', {}, function(error) {
+        collection.dropIndex.should.have.been.called.exactly(1);
+
         assert.strictEqual(error, expectedError, 'Wrong error');
         done();
       });
@@ -1252,29 +1316,43 @@ describe('MongoDatabase', function() {
   describe('renameCollection', function() {
 
     it('should rename a collection', function(done) {
-      var expectedName = 'new-name';
+      var expectedName = 'collection';
+      var expectedNewName = 'collection-new-name';
 
-      commandCursor.toArray = function(callback) {
+      database.db.listCollections = chai.spy(function(filter, options) {
+        assert.deepEqual(filter, {name: expectedName}, 'Wrong listCollections filter');
+        return commandCursor;
+      });
+
+      commandCursor.toArray = chai.spy(function(callback) {
         callback(null, [expectedName]);
-      };
+      });
 
-      collection.rename = function(name, callback) {
-        assert.equal(name, expectedName, 'Wrong name');
+      collection.rename = chai.spy(function(name, callback) {
+        assert.equal(name, expectedNewName, 'Wrong name');
         callback(null);
-      };
+      });
 
-      database.renameCollection('collection', expectedName, function(error) {
+      database.renameCollection(expectedName, expectedNewName, function(error) {
+        database.db.listCollections.should.have.been.called.exactly(1);
+        database.db.collection.should.have.been.called.exactly(1);
+        commandCursor.toArray.should.have.been.called.exactly(1);
+        collection.rename.should.have.been.called.exactly(1);
+
         assert.isNull(error, 'Unexpected error');
         done();
       });
     });
 
-    it('should execute callback with an error if collection not found', function(done) {
-      commandCursor.toArray = function(callback) {
+    it('should execute callback with an error if collection is not found', function(done) {
+      commandCursor.toArray = chai.spy(function(callback) {
         callback(null, []);
-      };
+      });
 
       database.renameCollection('collection', 'new-name', function(error) {
+        database.db.listCollections.should.have.been.called.exactly(1);
+        collection.rename.should.have.been.called.exactly(0);
+
         assert.strictEqual(error.code, databaseErrors.RENAME_COLLECTION_NOT_FOUND_ERROR, 'Wrong error');
         done();
       });
@@ -1283,28 +1361,15 @@ describe('MongoDatabase', function() {
     it('should execute callback with an error if fetching collections failed', function(done) {
       var expectedError = new Error('Something went wrong');
 
-      commandCursor.toArray = function(callback) {
+      commandCursor.toArray = chai.spy(function(callback) {
         callback(expectedError);
-      };
-
-      database.renameCollection('collection', 'new-name', function(error) {
-        assert.strictEqual(error, expectedError, 'Wrong error');
-        done();
       });
-    });
-
-    it('should execute callback with an error if connecting to the collection failed', function(done) {
-      var expectedError = new Error('Something went wrong');
-
-      commandCursor.toArray = function(callback) {
-        callback(null, ['collection']);
-      };
-
-      database.db.collection = function(collection, callback) {
-        callback(expectedError);
-      };
 
       database.renameCollection('collection', 'new-name', function(error) {
+        database.db.listCollections.should.have.been.called.exactly(1);
+        commandCursor.toArray.should.have.been.called.exactly(1);
+        collection.rename.should.have.been.called.exactly(0);
+
         assert.strictEqual(error, expectedError, 'Wrong error');
         done();
       });
@@ -1313,15 +1378,17 @@ describe('MongoDatabase', function() {
     it('should execute callback with an error if renaming collection failed', function(done) {
       var expectedError = new Error('Something went wrong');
 
-      commandCursor.toArray = function(callback) {
+      commandCursor.toArray = chai.spy(function(callback) {
         callback(null, ['collection']);
-      };
+      });
 
-      collection.rename = function(name, callback) {
+      collection.rename = chai.spy(function(name, callback) {
         callback(expectedError);
-      };
+      });
 
       database.renameCollection('collection', 'new-name', function(error) {
+        collection.rename.should.have.been.called.exactly(1);
+
         assert.strictEqual(error, expectedError, 'Wrong error');
         done();
       });
@@ -1334,33 +1401,45 @@ describe('MongoDatabase', function() {
     it('should remove a collection', function() {
       var expectedCollection = 'collection';
 
-      database.db.dropCollection = function(name, callback) {
+      database.db.listCollections = chai.spy(function(filter, options) {
+        assert.deepEqual(filter, {name: expectedCollection}, 'Wrong listCollections filter');
+        return commandCursor;
+      });
+
+      database.db.dropCollection = chai.spy(function(name, callback) {
         assert.equal(name, expectedCollection, 'Wrong name');
         callback(null);
-      };
+      });
 
-      commandCursor.toArray = function(callback) {
+      commandCursor.toArray = chai.spy(function(callback) {
         callback(null, [expectedCollection]);
-      };
+      });
 
       database.removeCollection(expectedCollection, function(error) {
+        database.db.listCollections.should.have.been.called.exactly(1);
+        commandCursor.toArray.should.have.been.called.exactly(1);
+        database.db.dropCollection.should.have.been.called.exactly(1);
+
         assert.isNull(error, 'Unexpected error');
       });
     });
 
-    it('should execute callback with an error if remove collection failed', function(done) {
+    it('should execute callback with an error if removing collection failed', function(done) {
       var expectedError = new Error('Something went wrong');
       var expectedCollection = 'collection';
 
-      database.db.dropCollection = function(name, callback) {
+      database.db.dropCollection = chai.spy(function(name, callback) {
         callback(expectedError);
-      };
+      });
 
-      commandCursor.toArray = function(callback) {
+      commandCursor.toArray = chai.spy(function(callback) {
         callback(null, [expectedCollection]);
-      };
+      });
 
-      database.removeCollection('collection', function(error) {
+      database.removeCollection(expectedCollection, function(error) {
+        commandCursor.toArray.should.have.been.called.exactly(1);
+        database.db.dropCollection.should.have.been.called.exactly(1);
+
         assert.strictEqual(error, expectedError, 'Wrong error');
         done();
       });
@@ -1368,6 +1447,10 @@ describe('MongoDatabase', function() {
 
     it('should execute callback with a storage error if collection is not found', function(done) {
       database.removeCollection('Unknown collection', function(error) {
+        database.db.listCollections.should.have.been.called.exactly(1);
+        commandCursor.toArray.should.have.been.called.exactly(1);
+        database.db.dropCollection.should.have.been.called.exactly(0);
+
         assert.strictEqual(error.code, databaseErrors.REMOVE_COLLECTION_NOT_FOUND_ERROR, 'Wrong error');
         done();
       });
