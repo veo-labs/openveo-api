@@ -99,7 +99,7 @@ describe('MongoDatabase', function() {
 
     // Mock MongoDB Collection
     collection = {
-      countDocuments: chai.spy(function(callback) {
+      countDocuments: chai.spy(function(filter, callback) {
         callback(null, documents.length);
       }),
       find: chai.spy(function() {
@@ -928,8 +928,13 @@ describe('MongoDatabase', function() {
       var expectedFilter = new ResourceFilter().equal('field', 'value');
 
       collection.find = chai.spy(function(filter) {
-        assert.deepEqual(filter, MongoDatabase.buildFilter(expectedFilter), 'Wrong filter');
+        assert.deepEqual(filter, MongoDatabase.buildFilter(expectedFilter), 'Wrong find filter');
         return cursor;
+      });
+
+      collection.countDocuments = chai.spy(function(filter, callback) {
+        assert.deepEqual(filter, MongoDatabase.buildFilter(expectedFilter), 'Wrong countDocuments filter');
+        callback(null, documents.length);
       });
 
       database.get(expectedCollection, expectedFilter, null, null, null, null, function(error, results, pagination) {
@@ -1107,7 +1112,7 @@ describe('MongoDatabase', function() {
     it('should execute callback with an error if counting documents failed', function(done) {
       var expectedError = new Error('Something went wrong');
 
-      collection.countDocuments = chai.spy(function(callback) {
+      collection.countDocuments = chai.spy(function(filter, callback) {
         callback(expectedError);
       });
 
