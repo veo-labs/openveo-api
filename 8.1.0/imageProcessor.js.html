@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: imageProcessor.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: imageProcessor.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>'use strict';
+
+/**
+ * Defines functions to manipulate images.
+ *
+ * @example
+ * // Load module "imageProcessor"
+ * var fsApi = require('@openveo/api').imageProcessor;
+ *
+ * @module imageProcessor
+ */
+
+var path = require('path');
+var os = require('os');
+var async = require('async');
+var nanoid = require('nanoid').nanoid;
+var gm = require('gm').subClass({
+  imageMagick: true
+});
+var fileSystem = process.requireApi('lib/fileSystem.js');
+
+/**
+ * Generates a thumbnail from the given image.
+ *
+ * Destination directory is automatically created if it does not exist.
+ *
+ * @method generateThumbnail
+ * @static
+ * @param {String} imagePath The image absolute path
+ * @param {String} thumbnailPath The thumbnail path
+ * @param {Number} [width] The expected image width (in px)
+ * @param {Number} [height] The expected image height (in px)
+ * @param {Boolean} [crop] Crop the image if the new ratio differs from original one
+ * @param {Number} [quality] Expected quality from 0 to 100 (default to 90 with 100 the best)
+ * @param {callback} callback Function to call when its done
+ */
+module.exports.generateThumbnail = function(imagePath, thumbnailPath, width, height, crop, quality, callback) {
+  var image = gm(imagePath);
+
+  async.waterfall([
+
+    // Create thumbnail directory if it does not exist
+    function(callback) {
+      fileSystem.mkdir(path.dirname(thumbnailPath), function(error) {
+        callback(error);
+      });
+    },
+
+    // Get original image size
+    function(callback) {
+      image.size(callback);
+    },
+
+    // Generate thumbnail
+    function(size, callback) {
+      var ratio = size.width / size.height;
+      var cropPosition = {};
+      var resizeWidth = width || Math.round(height * ratio);
+      var resizeHeight = height || Math.round(width / ratio);
+
+      if (crop &amp;&amp; width &amp;&amp; height) {
+        if (ratio &lt; width / height) {
+          resizeHeight = Math.round(width / ratio);
+          cropPosition = {x: 0, y: Math.round((resizeHeight - height) / 2)};
+          crop = resizeHeight > height;
+        } else {
+          resizeWidth = Math.round(height * ratio);
+          cropPosition = {x: Math.round((resizeWidth - width) / 2), y: 0};
+          crop = resizeWidth > width;
+        }
+      }
+
+      image
+        .noProfile()
+        .quality(quality)
+        .resizeExact(resizeWidth, resizeHeight);
+
+      if (crop)
+        image.crop(width, height, cropPosition.x, cropPosition.y);
+
+      image.write(thumbnailPath, callback);
+    }
+
+  ], function(error) {
+    callback(error);
+  });
+};
+
+/**
+ * Creates an image from a list of images.
+ *
+ * Input images are aggregated horizontally or vertically to create the new image.
+ *
+ * @method aggregate
+ * @static
+ * @param {Array} imagesPaths The list of paths of the images to add to the final image
+ * @param {String} destinationPath The final image path
+ * @param {Number} width The width of input images inside the image (in px)
+ * @param {Number} height The height of input images inside the image (in px)
+ * @param {Boolean} [horizontally=true] true to aggregate images horizontally, false to aggregate them vertically
+ * @param {Number} [quality=90] Expected quality from 0 to 100 (default to 90 with 100 the best)
+ * @param {String} [temporaryDirectoryPath] Path to the temporary directory to use to store intermediate images. It will
+ * be removed at the end of the operation. If not specified a directory is created in /tmp/
+ * @return {module:imageProcessor~aggregateCallback} callback Function to call when its done
+ */
+module.exports.aggregate = function(imagesPaths, destinationPath, width, height, horizontally, quality,
+  temporaryDirectoryPath, callback) {
+  var self = this;
+  var asyncFunctions = [];
+  var thumbnailsPaths = [];
+  var images = [];
+
+  // Validate arguments
+  quality = quality || 90;
+
+  // Use a temporary directory to store thumbnails
+  temporaryDirectoryPath = path.join(temporaryDirectoryPath || path.join(os.tmpdir()), nanoid());
+
+  imagesPaths.forEach(function(imagePath) {
+    asyncFunctions.push(function(callback) {
+      var thumbnailPath = path.join(temporaryDirectoryPath, path.basename(imagePath));
+      thumbnailsPaths.push({
+        originalPath: imagePath,
+        thumbnailPath: thumbnailPath
+      });
+
+      self.generateThumbnail(
+        imagePath,
+        thumbnailPath,
+        width,
+        height,
+        true,
+        100,
+        callback
+      );
+    });
+  });
+
+  async.series([
+
+    // Create destination path directory if it does not exist
+    function(callback) {
+      fileSystem.mkdir(path.dirname(destinationPath), function(error) {
+        callback(error);
+      });
+    },
+
+    // Generate thumbnails
+    function(callback) {
+      async.parallel(asyncFunctions, callback);
+    },
+
+    // Aggregate thumbnails
+    function(callback) {
+      var firstThumbnail;
+
+      for (var i = 0; i &lt; thumbnailsPaths.length; i++) {
+        var thumbnailsPath = thumbnailsPaths[i].thumbnailPath;
+
+        if (!firstThumbnail)
+          firstThumbnail = gm(thumbnailsPath);
+        else
+          firstThumbnail.append(thumbnailsPath, horizontally);
+
+        images.push({
+          sprite: destinationPath,
+          image: thumbnailsPaths[i].originalPath,
+          x: horizontally ? width * i : 0,
+          y: horizontally ? 0 : height * i
+        });
+      }
+      firstThumbnail
+        .quality(quality)
+        .write(destinationPath, callback);
+    }
+  ], function(error, results) {
+    fileSystem.rm(temporaryDirectoryPath, function(removeError) {
+      if (error || removeError) return callback(error || removeError);
+
+      callback(null, images);
+    });
+  });
+};
+
+/**
+ * Generates a sprite from a list of images.
+ *
+ * If the number of images exceeds the maximum number of images (depending on totalColumns and maxRows), extra images
+ * won't be in the sprite.
+ *
+ * @method generateSprite
+ * @static
+ * @param {Array} imagesPaths The list of images path to include in the sprite
+ * @param {String} destinationPath The sprite path
+ * @param {Number} width The width of images inside the sprite (in px)
+ * @param {Number} height The height of images inside the sprite (in px)
+ * @param {Number} [totalColumns=5] The number of images per line in the sprite
+ * @param {Number} [maxRows=5] The maximum number of lines of images in the sprite
+ * @param {Number} [quality=90] Expected quality from 0 to 100 (default to 90 with 100 the best)
+ * @param {String} [temporaryDirectoryPath] Path to the temporary directory to use to store intermediate images. It will
+ * be removed at the end of the operation. If not specified a directory is created in /tmp/
+ * @return {module:imageProcessor~generateSpriteCallback} callback Function to call when its done
+ */
+module.exports.generateSprite = function(imagesPaths, destinationPath, width, height, totalColumns, maxRows, quality,
+  temporaryDirectoryPath, callback) {
+  var self = this;
+  var linesPaths = [];
+  var images = [];
+
+  // Validate arguments
+  totalColumns = totalColumns || 5;
+  maxRows = maxRows || 5;
+  quality = quality || 90;
+
+  // Create a copy of the list of images to avoid modifying the original
+  imagesPaths = imagesPaths.slice(0);
+
+  // Use a temporary directory to store intermediate images
+  temporaryDirectoryPath = path.join(temporaryDirectoryPath || path.join(os.tmpdir()), nanoid());
+
+  // It is possible to have less than the expected number of columns if not enough images
+  // The number of rows varies depending on the number of columns and the number of images
+  var numberOfColumns = Math.min(imagesPaths.length, totalColumns);
+  var numberOfRows = Math.ceil(imagesPaths.length / numberOfColumns);
+
+  if (numberOfRows > maxRows) {
+
+    // The number of images exceeds the possible number of images implicitly specified by the number of columns and rows
+    // Ignore extra images
+    numberOfRows = maxRows;
+    imagesPaths = imagesPaths.slice(0, numberOfRows * numberOfColumns);
+
+  }
+
+  /**
+   * Creates sprite lines by aggregating images.
+   *
+   * @ignore
+   * @param {Array} linesImagesPaths The list of images paths to aggregate
+   * @param {String} linePath The path of the image to generate
+   * @param {Number} lineWidth The line width (in px)
+   * @param {Number} lineHeight The line height (in px)
+   * @param {Boolean} horizontally true to create an horizontal line, false to create a vertical line
+   * @param {Number} lineQuality The line quality from 0 to 100 (default to 90 with 100 the best)
+   * @return {Function} The async function of the operation
+   */
+  var createLine = function(linesImagesPaths, linePath, lineWidth, lineHeight, horizontally, lineQuality) {
+    return function(callback) {
+      self.aggregate(
+        linesImagesPaths,
+        linePath,
+        lineWidth,
+        lineHeight,
+        horizontally,
+        lineQuality,
+        temporaryDirectoryPath,
+        callback
+      );
+    };
+  };
+
+  async.series([
+
+    // Create destination path directory if it does not exist
+    function(callback) {
+      fileSystem.mkdir(path.dirname(destinationPath), function(error) {
+        callback(error);
+      });
+    },
+
+    // Create temporary directory if it does not exist
+    function(callback) {
+      fileSystem.mkdir(temporaryDirectoryPath, function(error) {
+        callback(error);
+      });
+    },
+
+    // Complete the grid defined by numberOfColumns and numberOfRows using transparent images if needed
+    function(callback) {
+      if (imagesPaths.length >= numberOfColumns * numberOfRows) return callback();
+
+      var transparentImagePath = path.join(temporaryDirectoryPath, 'transparent.png');
+      gm(width, height, '#00000000').write(transparentImagePath, function(error) {
+
+        // Add as many as needed transparent images to the list of images
+        var totalMissingImages = numberOfColumns * numberOfRows - imagesPaths.length;
+
+        for (var i = 0; i &lt; totalMissingImages; i++)
+          imagesPaths.push(transparentImagePath);
+
+        callback(error);
+      });
+    },
+
+    // Create sprite horizontal lines
+    function(callback) {
+      var asyncFunctions = [];
+
+      for (var i = 0; i &lt; numberOfRows; i++) {
+        var rowsImagesPaths = imagesPaths.slice(i * numberOfColumns, i * numberOfColumns + numberOfColumns);
+        var lineWidth = width;
+        var lineHeight = height;
+        var linePath = path.join(temporaryDirectoryPath, 'line-' + i);
+
+        linesPaths.push(linePath);
+        asyncFunctions.push(createLine(rowsImagesPaths, linePath, lineWidth, lineHeight, true, 100));
+      }
+
+      async.parallel(asyncFunctions, function(error, results) {
+        if (error) return callback(error);
+
+        results.forEach(function(line) {
+          line.forEach(function(image) {
+            if (image.image === path.join(temporaryDirectoryPath, 'transparent.png')) return;
+
+            var spritePathChunks = path.parse(image.sprite).name.match(/-([0-9]+)$/);
+            var lineIndex = (spritePathChunks &amp;&amp; parseInt(spritePathChunks[1])) || 0;
+
+            image.y = image.y + (lineIndex * height);
+            image.sprite = destinationPath;
+            images.push(image);
+          });
+        });
+
+        callback();
+      });
+    },
+
+    // Aggregate lines vertically
+    function(callback) {
+      createLine(linesPaths, destinationPath, width * numberOfColumns, height, false, quality)(callback);
+    }
+
+  ], function(error, results) {
+    fileSystem.rm(temporaryDirectoryPath, function(removeError) {
+      if (error || removeError) return callback(error || removeError);
+
+      callback(null, images);
+    });
+  });
+};
+
+/**
+ * Generates a sprite from a list of images without specifying images sizes nor grid size.
+ *
+ * Size of images aren't changed.
+ * Images or simply packed by height with all images of the same height on the same line starting by images with higher
+ * height.
+ *
+ * @method generateSpriteFreely
+ * @static
+ * @param {Array} imagesPaths The list of images path to include in the sprite
+ * @param {String} destinationPath The sprite path
+ * @param {Number} [quality=90] Expected quality from 0 to 100 (default to 90 with 100 the best)
+ * @param {String} [temporaryDirectoryPath] Path to the temporary directory to use to store intermediate images. It will
+ * be removed at the end of the operation. If not specified a directory is created in /tmp/
+ * @return {module:imageProcessor~generateSpriteFreelyCallback} callback Function to call when its done
+ */
+module.exports.generateSpriteFreely = function(
+  imagesPaths,
+  destinationPath,
+  quality,
+  temporaryDirectoryPath,
+  callback
+) {
+  var images = [];
+  var lineSprites = [];
+  var sprite;
+
+  /**
+   * Generates a single line sprite from a list of images either horizontally or vertically.
+   *
+   * Images or simply packed one after another.
+   *
+   * @ignore
+   * @param {Array} images The list of images
+   * @param {String} images[].path The original image path
+   * @param {Object} images[].size The image size
+   * @param {Number} images[].size.width The image width
+   * @param {Number} images[].size.height The image height
+   * @param {Boolean} horizontally true to pack images horizontally, false to pack them vertically
+   * @param {String} outputPath The sprite path
+   * @param {Number} quality Expected quality from 0 to 100 (default to 90 with 100 the best)
+   * @return {module:imageProcessor~generateSpriteFreelyInternalCallback} callback Function to call when its done
+   */
+  var createLine = function(images, horizontally, outputPath, quality, createLineCallback) {
+    var firstImage;
+    var position = 0;
+
+    for (var image of images) {
+      image.x = horizontally ? position : 0;
+      image.y = !horizontally ? position : 0;
+
+      if (!firstImage) {
+        firstImage = gm(image.path).background('#00000000').quality(quality);
+      } else {
+        firstImage.append(image.path, horizontally);
+      }
+
+      position += horizontally ? image.size.width : image.size.height;
+    }
+
+    firstImage.write(outputPath, function(error) {
+      if (error) {
+        return createLineCallback(error);
+      }
+
+      createLineCallback(null, {
+        path: outputPath,
+        images: images
+      });
+    });
+  };
+
+  async.series([
+
+    // Create sprite directory if it does not exist
+    function(callback) {
+      fileSystem.mkdir(path.dirname(destinationPath), callback);
+    },
+
+    // Create temporary directory if it does not exist
+    function(callback) {
+      fileSystem.mkdir(temporaryDirectoryPath, callback);
+    },
+
+    // Get size of all images
+    function(callback) {
+      var getSizeFunctions = [];
+
+      imagesPaths.forEach(function(imagePath) {
+        getSizeFunctions.push(function(getSizeCallback) {
+          var image = gm(imagePath);
+          image.size(function(error, size) {
+            if (error) {
+              return getSizeCallback(error);
+            }
+
+            images.push({path: imagePath, size: size});
+            getSizeCallback();
+          });
+        });
+      });
+
+      async.parallel(getSizeFunctions, callback);
+    },
+
+    // Create horizontal lines
+    function(callback) {
+      images.sort(function(image1, image2) {
+        if (
+          (image1.size.height > image2.size.height) ||
+          (image1.size.height === image2.size.height &amp;&amp; image1.path > image2.path)
+        ) {
+          return -1;
+        } else {
+          return 1;
+        }
+      });
+
+      var createLineFunctions = [];
+      var horizontalLineImages = [];
+      var lastImageHeight;
+      var getCreateLineFunction = function(lineImages) {
+        return function(createLineCallback) {
+          createLine(
+            lineImages,
+            true,
+            path.join(temporaryDirectoryPath, `${nanoid()}.png`),
+            100,
+            createLineCallback
+          );
+        };
+      };
+
+      images.forEach(function(image, index) {
+        if (image.size.height !== lastImageHeight) {
+          if (horizontalLineImages.length) {
+            createLineFunctions.push(getCreateLineFunction(horizontalLineImages));
+            horizontalLineImages = [];
+          }
+        }
+        horizontalLineImages.push(image);
+        lastImageHeight = image.size.height;
+
+      });
+
+      if (horizontalLineImages.length) {
+        createLineFunctions.push(getCreateLineFunction(horizontalLineImages));
+      }
+
+      async.parallel(createLineFunctions, function(error, results) {
+        if (error) {
+          return callback(error);
+        }
+
+        lineSprites = results;
+        callback();
+      });
+    },
+
+    // Create sprite
+    function(callback) {
+      createLine(
+        lineSprites.map(function(lineSprite) {
+          return {
+            path: lineSprite.path,
+            size: {
+              height: lineSprite.images[0].size.height
+            }
+          };
+        }),
+        false,
+        destinationPath,
+        quality || 90,
+        function(error, result) {
+          if (error) {
+            return callback(error);
+          }
+
+          var spriteImages = [];
+          var yPosition = 0;
+
+          lineSprites.forEach(function(lineSprite) {
+            lineSprite.images.forEach(function(image) {
+              image.y = yPosition;
+              spriteImages.push(image);
+            });
+
+            yPosition += lineSprite.images[0].size.height;
+          });
+
+          sprite = {
+            path: result.path,
+            images: spriteImages
+          };
+
+          callback();
+        }
+      );
+    }
+
+  ], function(error) {
+
+    // Remove temporary directory
+    fileSystem.rm(temporaryDirectoryPath, function(removeError) {
+      if (error || removeError) {
+        return callback(error || removeError);
+      }
+      callback(null, sprite);
+    });
+
+  });
+};
+
+/**
+ * Generates sprites from a list of images.
+ *
+ * If the number of images don't fit in the grid defined by totalColumns * maxRows, then several sprites will be
+ * created.
+ * Additional sprites are suffixed by a number.
+ *
+ * @method generateSprites
+ * @static
+ * @param {Array} imagesPaths The list of images paths to include in the sprites
+ * @param {String} destinationPath The first sprite path, additional sprites are suffixed by a number
+ * @param {Number} width The width of images inside the sprite (in px)
+ * @param {Number} height The height of images inside the sprite (in px)
+ * @param {Number} [totalColumns=5] The number of images per line in the sprite
+ * @param {Number} [maxRows=5] The maximum number of lines of images in the sprite
+ * @param {Number} [quality=90] Expected quality from 0 to 100 (default to 90 with 100 the best)
+ * @param {String} [temporaryDirectoryPath] Path to the temporary directory to use to store intermediate images. It
+ * will be removed at the end of the operation. If not specified a directory is created in /tmp/
+ * @return {module:imageProcessor~generateSpritesCallback} callback Function to call when its done
+ */
+module.exports.generateSprites = function(imagesPaths, destinationPath, width, height, totalColumns, maxRows, quality,
+  temporaryDirectoryPath, callback) {
+  var self = this;
+  var asyncFunctions = [];
+
+  // Validate arguments
+  totalColumns = totalColumns || 5;
+  maxRows = maxRows || 5;
+  temporaryDirectoryPath = path.join(temporaryDirectoryPath || path.join(os.tmpdir()), nanoid());
+
+  // Find out how many sprites that have to be created
+  var spriteMaxImages = totalColumns * maxRows;
+  var totalSprites = Math.ceil(imagesPaths.length / spriteMaxImages);
+
+  /**
+   * Creates a sprite.
+   *
+   * @ignore
+   * @param {Array} spriteImagesPaths The list of images to include in the sprite
+   * @param {String} spriteDestinationPath The sprite path
+   * @return {Function} The async function of the operation
+   */
+  var createSprite = function(spriteImagesPaths, spriteDestinationPath) {
+    return function(callback) {
+      self.generateSprite(
+        spriteImagesPaths,
+        spriteDestinationPath,
+        width,
+        height,
+        totalColumns,
+        maxRows,
+        quality,
+        temporaryDirectoryPath,
+        callback
+      );
+    };
+  };
+
+  for (var i = 0; i &lt; totalSprites; i++) {
+    var spriteImagesPaths = imagesPaths.slice(i * spriteMaxImages, i * spriteMaxImages + spriteMaxImages);
+    var spriteDestinationPath = destinationPath;
+
+    if (i > 0) {
+      var destinationPathChunks = path.parse(destinationPath);
+      destinationPathChunks.base = destinationPathChunks.name + '-' + i + destinationPathChunks.ext;
+      spriteDestinationPath = path.format(destinationPathChunks);
+    }
+
+    asyncFunctions.push(createSprite(spriteImagesPaths, spriteDestinationPath));
+  }
+
+  async.parallel(asyncFunctions, function(error, results) {
+    fileSystem.rm(temporaryDirectoryPath, function(removeError) {
+      if (error || removeError) return callback(error || removeError);
+
+      var images = [];
+      results.forEach(function(sprite) {
+        images = images.concat(sprite);
+      });
+
+      callback(null, images);
+    });
+  });
+};
+
+/**
+ * @callback module:imageProcessor~generateSpritesCallback
+ * @param {(Error|null)} error The error if an error occurred, null otherwise
+ * @param {Array} images The list of images
+ * @param {String} images[].sprite The path of the sprite file containing the image (destinationPath)
+ * @param {String} images[].image The path of the original image
+ * @param {Number} images[].x The x coordinate of the image top left corner inside the sprite
+ * @param {Number} images[].y The y coordinate of the image top left corner inside the sprite
+ */
+
+/**
+ * @callback module:imageProcessor~generateSpriteCallback
+ * @param {(Error|null)} error The error if an error occurred, null otherwise
+ * @param {Array} images The list of images
+ * @param {String} images[].sprite The path of the sprite file containing the image (destinationPath)
+ * @param {String} images[].image The path of the original image
+ * @param {Number} images[].x The x coordinate of the image top left corner inside the sprite
+ * @param {Number} images[].y The y coordinate of the image top left corner inside the sprite
+ */
+
+/**
+ * @callback module:imageProcessor~generateSpriteFreelyCallback
+ * @param {(Error|null)} error The error if an error occurred, null otherwise
+ * @param {Object} sprite The generated image
+ * @param {String} sprite.path The path of the sprite file containing the images
+ * @param {Array} sprite.images The list of images inside the sprite
+ * @param {String} sprite.images[].path The path of the original image
+ * @param {Number} sprite.images[].x The x coordinate of the image top left corner inside the sprite
+ * @param {Number} sprite.images[].y The y coordinate of the image top left corner inside the sprite
+ * @param {Object} sprite.images[].size The image size
+ * @param {Number} sprite.images[].size.width The image width
+ * @param {Number} sprite.images[].size.height The image height
+ */
+
+/**
+ * @callback module:imageProcessor~generateSpriteFreelyInternalCallback
+ * @param {(Error|null)} error The error if an error occurred, null otherwise
+ * @param {Object} sprite The generated image
+ * @param {String} sprite.path The path of the sprite file containing the images
+ * @param {Array} sprite.images The list of images inside the sprite
+ * @param {String} sprite.images[].path The path of the original image
+ * @param {Number} sprite.images[].x The x coordinate of the image top left corner inside the sprite
+ * @param {Number} sprite.images[].y The y coordinate of the image top left corner inside the sprite
+ */
+
+/**
+ * @callback module:imageProcessor~aggregateCallback
+ * @param {(Error|null)} error The error if an error occurred, null otherwise
+ * @param {Array} images The list of images
+ * @param {String} images[].sprite The path of the sprite file containing the image (destinationPath)
+ * @param {String} images[].image The path of the original image
+ * @param {Number} images[].x The x coordinate of the image top left corner inside the sprite
+ * @param {Number} images[].y The y coordinate of the image top left corner inside the sprite
+ */
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-angularJs.html">angularJs</a></li><li><a href="module-angularJs_parser.html">angularJs/parser</a></li><li><a href="module-controllers.html">controllers</a></li><li><a href="module-controllers_ContentController.html">controllers/ContentController</a></li><li><a href="module-controllers_Controller.html">controllers/Controller</a></li><li><a href="module-controllers_EntityController.html">controllers/EntityController</a></li><li><a href="module-controllers_HttpController.html">controllers/HttpController</a></li><li><a href="module-controllers_httpErrors.html">controllers/httpErrors</a></li><li><a href="module-controllers_SocketController.html">controllers/SocketController</a></li><li><a href="module-emitters.html">emitters</a></li><li><a href="module-emitters_AdvancedEmitter.html">emitters/AdvancedEmitter</a></li><li><a href="module-emitters_AdvancedEvent.html">emitters/AdvancedEvent</a></li><li><a href="module-errors.html">errors</a></li><li><a href="module-errors_AccessError.html">errors/AccessError</a></li><li><a href="module-errors_NotFoundError.html">errors/NotFoundError</a></li><li><a href="module-errors_StorageError.html">errors/StorageError</a></li><li><a href="module-fileSystem.html">fileSystem</a></li><li><a href="module-grunt.html">grunt</a></li><li><a href="module-grunt_copyTask.html">grunt/copyTask</a></li><li><a href="module-grunt_ngDpTask.html">grunt/ngDpTask</a></li><li><a href="module-grunt_removeTask.html">grunt/removeTask</a></li><li><a href="module-grunt_renameTask.html">grunt/renameTask</a></li><li><a href="module-imageProcessor.html">imageProcessor</a></li><li><a href="module-logger.html">logger</a></li><li><a href="module-middlewares.html">middlewares</a></li><li><a href="module-middlewares_disableCacheMiddleware.html">middlewares/disableCacheMiddleware</a></li><li><a href="module-middlewares_imageProcessorMiddleware.html">middlewares/imageProcessorMiddleware</a></li><li><a href="module-middlewares_logRequestMiddleware.html">middlewares/logRequestMiddleware</a></li><li><a href="module-multipart.html">multipart</a></li><li><a href="module-multipart_MultipartParser.html">multipart/MultipartParser</a></li><li><a href="module-passport.html">passport</a></li><li><a href="module-passport_STRATEGIES.html">passport/STRATEGIES</a></li><li><a href="module-passport_strategyFactory.html">passport/strategyFactory</a></li><li><a href="module-plugin.html">plugin</a></li><li><a href="module-plugin_Plugin.html">plugin/Plugin</a></li><li><a href="module-plugin_PluginApi.html">plugin/PluginApi</a></li><li><a href="module-providers.html">providers</a></li><li><a href="module-providers_EntityProvider.html">providers/EntityProvider</a></li><li><a href="module-providers_Provider.html">providers/Provider</a></li><li><a href="module-socket.html">socket</a></li><li><a href="module-socket_Pilot.html">socket/Pilot</a></li><li><a href="module-socket_SocketNamespace.html">socket/SocketNamespace</a></li><li><a href="module-socket_SocketServer.html">socket/SocketServer</a></li><li><a href="module-storages.html">storages</a></li><li><a href="module-storages_DATABASE_ERRORS.html">storages/DATABASE_ERRORS</a></li><li><a href="module-storages_factory.html">storages/factory</a></li><li><a href="module-storages_MongoDatabase.html">storages/MongoDatabase</a></li><li><a href="module-storages_ResourceFilter.html">storages/ResourceFilter</a></li><li><a href="module-storages_Storage.html">storages/Storage</a></li><li><a href="module-util.html">util</a></li><li><a href="module-watcher.html">watcher</a></li><li><a href="module-watcher_Watcher.html">watcher/Watcher</a></li><li><a href="module-watcher_WatcherError.html">watcher/WatcherError</a></li></ul><h3>Namespaces</h3><ul><li><a href="module-controllers_httpErrors-HTTP_ERRORS.html">controllers/httpErrors~HTTP_ERRORS</a></li><li><a href="module-passport_STRATEGIES-STRATEGIES.html">passport/STRATEGIES~STRATEGIES</a></li></ul><h3>Classes</h3><ul><li><a href="module-controllers_ContentController-ContentController.html">controllers/ContentController~ContentController</a></li><li><a href="module-controllers_Controller-Controller.html">controllers/Controller~Controller</a></li><li><a href="module-controllers_EntityController-EntityController.html">controllers/EntityController~EntityController</a></li><li><a href="module-controllers_HttpController-HttpController.html">controllers/HttpController~HttpController</a></li><li><a href="module-controllers_SocketController-SocketController.html">controllers/SocketController~SocketController</a></li><li><a href="module-emitters_AdvancedEmitter-AdvancedEmitter.html">emitters/AdvancedEmitter~AdvancedEmitter</a></li><li><a href="module-emitters_AdvancedEvent-AdvancedEvent.html">emitters/AdvancedEvent~AdvancedEvent</a></li><li><a href="module-errors_AccessError-AccessError.html">errors/AccessError~AccessError</a></li><li><a href="module-errors_NotFoundError-NotFoundError.html">errors/NotFoundError~NotFoundError</a></li><li><a href="module-errors_StorageError-StorageError.html">errors/StorageError~StorageError</a></li><li><a href="module-multipart_MultipartParser-MultipartParser.html">multipart/MultipartParser~MultipartParser</a></li><li><a href="module-plugin_PluginApi-PluginApi.html">plugin/PluginApi~PluginApi</a></li><li><a href="module-plugin_Plugin-Plugin.html">plugin/Plugin~Plugin</a></li><li><a href="module-providers_EntityProvider-EntityProvider.html">providers/EntityProvider~EntityProvider</a></li><li><a href="module-providers_Provider-Provider.html">providers/Provider~Provider</a></li><li><a href="module-socket_Pilot-Pilot.html">socket/Pilot~Pilot</a></li><li><a href="module-socket_SocketNamespace-SocketNamespace.html">socket/SocketNamespace~SocketNamespace</a></li><li><a href="module-socket_SocketServer-SocketServer.html">socket/SocketServer~SocketServer</a></li><li><a href="module-storages_MongoDatabase-MongoDatabase.html">storages/MongoDatabase~MongoDatabase</a></li><li><a href="module-storages_ResourceFilter-ResourceFilter.html">storages/ResourceFilter~ResourceFilter</a></li><li><a href="module-storages_Storage-Storage.html">storages/Storage~Storage</a></li><li><a href="module-watcher_WatcherError-WatcherError.html">watcher/WatcherError~WatcherError</a></li><li><a href="module-watcher_Watcher-Watcher.html">watcher/Watcher~Watcher</a></li></ul><h3>Events</h3><ul><li><a href="core_watcher_Watcher-Watcher.html#event:create">core:watcher/Watcher~Watcher#create</a></li><li><a href="core_watcher_Watcher-Watcher.html#event:delete">core:watcher/Watcher~Watcher#delete</a></li><li><a href="core_watcher_Watcher-Watcher.html#event:error">core:watcher/Watcher~Watcher#error</a></li><li><a href="core_watcher_Watcher-Watcher.html#event:watch">core:watcher/Watcher~Watcher#watch</a></li><li><a href="module-watcher_DirectoryFsWatcher-DirectoryFsWatcher.html#event:create">watcher/DirectoryFsWatcher~DirectoryFsWatcher#create</a></li><li><a href="module-watcher_DirectoryFsWatcher-DirectoryFsWatcher.html#event:delete">watcher/DirectoryFsWatcher~DirectoryFsWatcher#delete</a></li><li><a href="module-watcher_DirectoryFsWatcher-DirectoryFsWatcher.html#event:error">watcher/DirectoryFsWatcher~DirectoryFsWatcher#error</a></li><li><a href="module-watcher_DirectoryWatcher-DirectoryWatcher.html#event:create">watcher/DirectoryWatcher~DirectoryWatcher#create</a></li><li><a href="module-watcher_DirectoryWatcher-DirectoryWatcher.html#event:delete">watcher/DirectoryWatcher~DirectoryWatcher#delete</a></li><li><a href="module-watcher_DirectoryWatcher-DirectoryWatcher.html#event:error">watcher/DirectoryWatcher~DirectoryWatcher#error</a></li><li><a href="module-watcher_DirectoryWatcher-DirectoryWatcher.html#event:watch">watcher/DirectoryWatcher~DirectoryWatcher#watch</a></li></ul><h3><a href="global.html">Global</a></h3>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Fri Apr 15 2022 15:41:14 GMT+0200 (Central European Summer Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: controllers/EntityController.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: controllers/EntityController.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>'use strict';
+
+/**
+ * @module controllers/EntityController
+ */
+
+var util = require('util');
+var utilExt = process.requireApi('lib/util.js');
+var HttpController = process.requireApi('lib/controllers/HttpController.js');
+var ResourceFilter = process.requireApi('lib/storages/ResourceFilter.js');
+var errors = process.requireApi('lib/controllers/httpErrors.js');
+
+/**
+ * Defines base controller for all controllers which need to provide HTTP route actions for all requests
+ * relative to entities.
+ *
+ * @class EntityController
+ * @extends module:controllers/HttpController~HttpController
+ * @constructor
+ */
+function EntityController() {
+  EntityController.super_.call(this);
+}
+
+module.exports = EntityController;
+util.inherits(EntityController, HttpController);
+
+/**
+ * Gets entities.
+ *
+ * @example
+ * // Response example
+ * {
+ *   "entities" : [ ... ],
+ *   "pagination" : {
+ *     "limit": ..., // The limit number of entities by page
+ *     "page": ..., // The actual page
+ *     "pages": ..., // The total number of pages
+ *     "size": ... // The total number of entities
+ * }
+ *
+ * @param {Object} request ExpressJS HTTP Request
+ * @param {Object} [request.query] Request query
+ * @param {(String|Array)} [request.query.include] The list of fields to include from returned entities
+ * @param {(String|Array)} [request.query.exclude] The list of fields to exclude from returned entities. Ignored if
+ * include is also specified.
+ * @param {Number} [request.query.limit] A limit number of entities to retrieve per page (default to 10)
+ * @param {Number} [request.query.page] The page number started at 0 for the first page (default to 0)
+ * @param {String} [request.query.sortBy] The entity field to sort by
+ * @param {String} [request.query.sortOrder] Either "asc" for ascendant or "desc" for descendant
+ * @param {Object} response ExpressJS HTTP Response
+ * @param {Function} next Function to defer execution to the next registered middleware
+ */
+EntityController.prototype.getEntitiesAction = function(request, response, next) {
+  var provider = this.getProvider();
+  var sort = {};
+  var query;
+  request.query = request.query || {};
+
+  try {
+    query = utilExt.shallowValidateObject(request.query, {
+      include: {type: 'array&lt;string>'},
+      exclude: {type: 'array&lt;string>'},
+      limit: {type: 'number', gt: 0, default: 10},
+      page: {type: 'number', gte: 0, default: 0},
+      sortBy: {type: 'string'},
+      sortOrder: {type: 'string', in: ['asc', 'desc'], default: 'desc'}
+    });
+  } catch (error) {
+    return next(errors.GET_ENTITIES_WRONG_PARAMETERS);
+  }
+
+  // Build sort description object
+  if (query.sortBy &amp;&amp; query.sortOrder) sort[query.sortBy] = query.sortOrder;
+
+  provider.get(
+    null,
+    {
+      exclude: query.exclude,
+      include: query.include
+    },
+    query.limit,
+    query.page,
+    sort,
+    function(error, entities, pagination) {
+      if (error) {
+        process.logger.error(error.message, {error: error, method: 'getEntitiesAction'});
+        next(errors.GET_ENTITIES_ERROR);
+      } else {
+        response.send({
+          entities: entities,
+          pagination: pagination
+        });
+      }
+    }
+  );
+};
+
+/**
+ * Gets a specific entity.
+ *
+ * @example
+ * // Response example
+ * {
+ *   "entity" : { ... }
+ * }
+ *
+ * @param {Object} request ExpressJS HTTP Request
+ * @param {Object} request.params Request parameters
+ * @param {String} request.params.id The entity id to retrieve
+ * @param {Object} request.query Request query
+ * @param {(String|Array)} [request.query.include] The list of fields to include from returned entity
+ * @param {(String|Array)} [request.query.exclude] The list of fields to exclude from returned entity. Ignored if
+ * include is also specified.
+ * @param {Object} response ExpressJS HTTP Response
+ * @param {Function} next Function to defer execution to the next registered middleware
+ */
+EntityController.prototype.getEntityAction = function(request, response, next) {
+  if (request.params.id) {
+    var entityId = request.params.id;
+    var provider = this.getProvider();
+    var query;
+    request.query = request.query || {};
+
+    try {
+      query = utilExt.shallowValidateObject(request.query, {
+        include: {type: 'array&lt;string>'},
+        exclude: {type: 'array&lt;string>'}
+      });
+    } catch (error) {
+      return next(errors.GET_ENTITY_WRONG_PARAMETERS);
+    }
+
+    provider.getOne(
+      new ResourceFilter().equal('id', entityId),
+      {
+        exclude: query.exclude,
+        include: query.include
+      }, function(error, entity) {
+        if (error) {
+          process.logger.error(error.message, {error: error, method: 'getEntityAction', entity: entityId});
+          next(errors.GET_ENTITY_ERROR);
+        } else if (!entity) {
+          process.logger.warn('Not found', {method: 'getEntityAction', entity: entityId});
+          next(errors.GET_ENTITY_NOT_FOUND);
+        } else {
+          response.send({
+            entity: entity
+          });
+        }
+      }
+    );
+  } else {
+
+    // Missing id of the entity
+    next(errors.GET_ENTITY_MISSING_PARAMETERS);
+
+  }
+};
+
+/**
+ * Updates an entity.
+ *
+ * @example
+ * // Response example
+ * {
+ *   "total": 1
+ * }
+ *
+ * @param {Object} request ExpressJS HTTP Request
+ * @param {Object} request.params Request parameters
+ * @param {String} request.params.id The id of the entity to update
+ * @param {Object} request.body The fields to update with their values
+ * @param {Object} response ExpressJS HTTP Response
+ * @param {Function} next Function to defer execution to the next registered middleware
+ */
+EntityController.prototype.updateEntityAction = function(request, response, next) {
+  if (request.params.id &amp;&amp; request.body) {
+    var entityId = request.params.id;
+    var provider = this.getProvider();
+
+    provider.updateOne(
+      new ResourceFilter().equal('id', entityId),
+      request.body,
+      function(error, total) {
+        if (error) {
+          process.logger.error(
+            error.message || 'Fail updating',
+            {method: 'updateEntityAction', entities: entityId}
+          );
+          next(errors.UPDATE_ENTITY_ERROR);
+        } else {
+          response.send({total: total});
+        }
+      }
+    );
+  } else {
+
+    // Missing entity ids or the datas
+    next(errors.UPDATE_ENTITY_MISSING_PARAMETERS);
+
+  }
+};
+
+/**
+ * Adds entities.
+ *
+ * @example
+ * // Response example
+ * {
+ *   "entities": [ ... ],
+ *   "total": 42
+ * }
+ *
+ * @param {Object} request ExpressJS HTTP Request
+ * @param {Array} request.body The list of entities to add with for each entity the fields with their values
+ * @param {Object} response ExpressJS HTTP Response
+ * @param {Function} next Function to defer execution to the next registered middleware
+ */
+EntityController.prototype.addEntitiesAction = function(request, response, next) {
+  if (request.body) {
+    var provider = this.getProvider(request);
+    var parsedRequest;
+
+    try {
+      parsedRequest = utilExt.shallowValidateObject(request, {
+        body: {type: 'array&lt;object>', required: true}
+      });
+    } catch (error) {
+      return next(errors.ADD_ENTITIES_WRONG_PARAMETERS);
+    }
+
+    provider.add(parsedRequest.body, function(error, total, entities) {
+      if (error) {
+        process.logger.error(error.message, {error: error, method: 'addEntitiesAction'});
+        next(errors.ADD_ENTITIES_ERROR);
+      } else {
+        response.send({entities: entities, total: total});
+      }
+    });
+  } else {
+
+    // Missing body
+    next(errors.ADD_ENTITIES_MISSING_PARAMETERS);
+
+  }
+};
+
+/**
+ * Removes entities.
+ *
+ * @example
+ * // Response example
+ * {
+ *   "total": 42
+ * }
+ *
+ * @param {Object} request ExpressJS HTTP Request
+ * @param {Object} request.params Request parameters
+ * @param {String} request.params.id A comma separated list of entity ids to remove
+ * @param {Object} response ExpressJS HTTP Response
+ * @param {Function} next Function to defer execution to the next registered middleware
+ */
+EntityController.prototype.removeEntitiesAction = function(request, response, next) {
+  if (request.params.id) {
+    var entityIds = request.params.id.split(',');
+    var provider = this.getProvider(request);
+
+    provider.remove(
+      new ResourceFilter().in('id', entityIds),
+      function(error, total) {
+        if (error) {
+          process.logger.error(error.message, {error: error, method: 'removeEntitiesAction'});
+          next(errors.REMOVE_ENTITIES_ERROR);
+        } else if (total != entityIds.length) {
+          process.logger.error(
+            total + '/' + entityIds.length + ' removed',
+            {method: 'removeEntitiesAction', entities: entityIds}
+          );
+          next(errors.REMOVE_ENTITIES_ERROR);
+        } else {
+          response.send({total: total});
+        }
+      }
+    );
+  } else {
+
+    // Missing entity ids
+    next(errors.REMOVE_ENTITIES_MISSING_PARAMETERS);
+
+  }
+};
+
+/**
+ * Gets an instance of the entity provider associated to the controller.
+ *
+ * @return {EntityProvider} The entity provider
+ * @throws {Error} getProvider not implemented for this EntityController
+ */
+EntityController.prototype.getProvider = function() {
+  throw new Error('getProvider not implemented for this EntityController');
+};
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-angularJs.html">angularJs</a></li><li><a href="module-angularJs_parser.html">angularJs/parser</a></li><li><a href="module-controllers.html">controllers</a></li><li><a href="module-controllers_ContentController.html">controllers/ContentController</a></li><li><a href="module-controllers_Controller.html">controllers/Controller</a></li><li><a href="module-controllers_EntityController.html">controllers/EntityController</a></li><li><a href="module-controllers_HttpController.html">controllers/HttpController</a></li><li><a href="module-controllers_httpErrors.html">controllers/httpErrors</a></li><li><a href="module-controllers_SocketController.html">controllers/SocketController</a></li><li><a href="module-emitters.html">emitters</a></li><li><a href="module-emitters_AdvancedEmitter.html">emitters/AdvancedEmitter</a></li><li><a href="module-emitters_AdvancedEvent.html">emitters/AdvancedEvent</a></li><li><a href="module-errors.html">errors</a></li><li><a href="module-errors_AccessError.html">errors/AccessError</a></li><li><a href="module-errors_NotFoundError.html">errors/NotFoundError</a></li><li><a href="module-errors_StorageError.html">errors/StorageError</a></li><li><a href="module-fileSystem.html">fileSystem</a></li><li><a href="module-grunt.html">grunt</a></li><li><a href="module-grunt_copyTask.html">grunt/copyTask</a></li><li><a href="module-grunt_ngDpTask.html">grunt/ngDpTask</a></li><li><a href="module-grunt_removeTask.html">grunt/removeTask</a></li><li><a href="module-grunt_renameTask.html">grunt/renameTask</a></li><li><a href="module-imageProcessor.html">imageProcessor</a></li><li><a href="module-logger.html">logger</a></li><li><a href="module-middlewares.html">middlewares</a></li><li><a href="module-middlewares_disableCacheMiddleware.html">middlewares/disableCacheMiddleware</a></li><li><a href="module-middlewares_imageProcessorMiddleware.html">middlewares/imageProcessorMiddleware</a></li><li><a href="module-middlewares_logRequestMiddleware.html">middlewares/logRequestMiddleware</a></li><li><a href="module-multipart.html">multipart</a></li><li><a href="module-multipart_MultipartParser.html">multipart/MultipartParser</a></li><li><a href="module-passport.html">passport</a></li><li><a href="module-passport_STRATEGIES.html">passport/STRATEGIES</a></li><li><a href="module-passport_strategyFactory.html">passport/strategyFactory</a></li><li><a href="module-plugin.html">plugin</a></li><li><a href="module-plugin_Plugin.html">plugin/Plugin</a></li><li><a href="module-plugin_PluginApi.html">plugin/PluginApi</a></li><li><a href="module-providers.html">providers</a></li><li><a href="module-providers_EntityProvider.html">providers/EntityProvider</a></li><li><a href="module-providers_Provider.html">providers/Provider</a></li><li><a href="module-socket.html">socket</a></li><li><a href="module-socket_Pilot.html">socket/Pilot</a></li><li><a href="module-socket_SocketNamespace.html">socket/SocketNamespace</a></li><li><a href="module-socket_SocketServer.html">socket/SocketServer</a></li><li><a href="module-storages.html">storages</a></li><li><a href="module-storages_DATABASE_ERRORS.html">storages/DATABASE_ERRORS</a></li><li><a href="module-storages_factory.html">storages/factory</a></li><li><a href="module-storages_MongoDatabase.html">storages/MongoDatabase</a></li><li><a href="module-storages_ResourceFilter.html">storages/ResourceFilter</a></li><li><a href="module-storages_Storage.html">storages/Storage</a></li><li><a href="module-util.html">util</a></li><li><a href="module-watcher.html">watcher</a></li><li><a href="module-watcher_Watcher.html">watcher/Watcher</a></li><li><a href="module-watcher_WatcherError.html">watcher/WatcherError</a></li></ul><h3>Namespaces</h3><ul><li><a href="module-controllers_httpErrors-HTTP_ERRORS.html">controllers/httpErrors~HTTP_ERRORS</a></li><li><a href="module-passport_STRATEGIES-STRATEGIES.html">passport/STRATEGIES~STRATEGIES</a></li></ul><h3>Classes</h3><ul><li><a href="module-controllers_ContentController-ContentController.html">controllers/ContentController~ContentController</a></li><li><a href="module-controllers_Controller-Controller.html">controllers/Controller~Controller</a></li><li><a href="module-controllers_EntityController-EntityController.html">controllers/EntityController~EntityController</a></li><li><a href="module-controllers_HttpController-HttpController.html">controllers/HttpController~HttpController</a></li><li><a href="module-controllers_SocketController-SocketController.html">controllers/SocketController~SocketController</a></li><li><a href="module-emitters_AdvancedEmitter-AdvancedEmitter.html">emitters/AdvancedEmitter~AdvancedEmitter</a></li><li><a href="module-emitters_AdvancedEvent-AdvancedEvent.html">emitters/AdvancedEvent~AdvancedEvent</a></li><li><a href="module-errors_AccessError-AccessError.html">errors/AccessError~AccessError</a></li><li><a href="module-errors_NotFoundError-NotFoundError.html">errors/NotFoundError~NotFoundError</a></li><li><a href="module-errors_StorageError-StorageError.html">errors/StorageError~StorageError</a></li><li><a href="module-multipart_MultipartParser-MultipartParser.html">multipart/MultipartParser~MultipartParser</a></li><li><a href="module-plugin_PluginApi-PluginApi.html">plugin/PluginApi~PluginApi</a></li><li><a href="module-plugin_Plugin-Plugin.html">plugin/Plugin~Plugin</a></li><li><a href="module-providers_EntityProvider-EntityProvider.html">providers/EntityProvider~EntityProvider</a></li><li><a href="module-providers_Provider-Provider.html">providers/Provider~Provider</a></li><li><a href="module-socket_Pilot-Pilot.html">socket/Pilot~Pilot</a></li><li><a href="module-socket_SocketNamespace-SocketNamespace.html">socket/SocketNamespace~SocketNamespace</a></li><li><a href="module-socket_SocketServer-SocketServer.html">socket/SocketServer~SocketServer</a></li><li><a href="module-storages_MongoDatabase-MongoDatabase.html">storages/MongoDatabase~MongoDatabase</a></li><li><a href="module-storages_ResourceFilter-ResourceFilter.html">storages/ResourceFilter~ResourceFilter</a></li><li><a href="module-storages_Storage-Storage.html">storages/Storage~Storage</a></li><li><a href="module-watcher_WatcherError-WatcherError.html">watcher/WatcherError~WatcherError</a></li><li><a href="module-watcher_Watcher-Watcher.html">watcher/Watcher~Watcher</a></li></ul><h3>Events</h3><ul><li><a href="core_watcher_Watcher-Watcher.html#event:create">core:watcher/Watcher~Watcher#create</a></li><li><a href="core_watcher_Watcher-Watcher.html#event:delete">core:watcher/Watcher~Watcher#delete</a></li><li><a href="core_watcher_Watcher-Watcher.html#event:error">core:watcher/Watcher~Watcher#error</a></li><li><a href="core_watcher_Watcher-Watcher.html#event:watch">core:watcher/Watcher~Watcher#watch</a></li><li><a href="module-watcher_DirectoryFsWatcher-DirectoryFsWatcher.html#event:create">watcher/DirectoryFsWatcher~DirectoryFsWatcher#create</a></li><li><a href="module-watcher_DirectoryFsWatcher-DirectoryFsWatcher.html#event:delete">watcher/DirectoryFsWatcher~DirectoryFsWatcher#delete</a></li><li><a href="module-watcher_DirectoryFsWatcher-DirectoryFsWatcher.html#event:error">watcher/DirectoryFsWatcher~DirectoryFsWatcher#error</a></li><li><a href="module-watcher_DirectoryWatcher-DirectoryWatcher.html#event:create">watcher/DirectoryWatcher~DirectoryWatcher#create</a></li><li><a href="module-watcher_DirectoryWatcher-DirectoryWatcher.html#event:delete">watcher/DirectoryWatcher~DirectoryWatcher#delete</a></li><li><a href="module-watcher_DirectoryWatcher-DirectoryWatcher.html#event:error">watcher/DirectoryWatcher~DirectoryWatcher#error</a></li><li><a href="module-watcher_DirectoryWatcher-DirectoryWatcher.html#event:watch">watcher/DirectoryWatcher~DirectoryWatcher#watch</a></li></ul><h3><a href="global.html">Global</a></h3>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Fri Apr 15 2022 15:41:14 GMT+0200 (Central European Summer Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
