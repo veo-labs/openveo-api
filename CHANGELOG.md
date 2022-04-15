@@ -1,4 +1,4 @@
-# 8.1.0 / YYYY-MM-DD
+# 8.1.0 / 2022-04-15
 
 ## DEPENDENCIES
 
