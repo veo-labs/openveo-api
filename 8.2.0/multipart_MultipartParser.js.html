@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: multipart/MultipartParser.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: multipart/MultipartParser.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>'use strict';
+
+/**
+ * @module multipart/MultipartParser
+ */
+
+var fs = require('fs');
+var path = require('path');
+var multer = require('multer');
+var async = require('async');
+var fileSystem = process.requireApi('lib/fileSystem.js');
+
+/**
+ * Defines a multipart parser to parse multipart requests.
+ *
+ * Use MultipartParser to get fields from multipart requests (including files).
+ *
+ * @example
+ * // Get multipart parser
+ * var MultipartParser = require('@openveo/api').multipart.MultipartParser;
+ *
+ * // Create a request parser expecting several files: files in photos "field" and a file in "videos" field
+ * var parser = new MultipartParser(request, [
+ *   {
+ *     name: 'photos',
+ *     destinationPath: '/tmp/photos',
+ *     maxCount: 2,
+ *     unique: true
+ *   },
+ *   {
+ *     name: 'videos',
+ *     destinationPath: '/tmp/videos',
+ *     maxCount: 1,
+ *     unique: false
+ *   }
+ * ], {
+ *   fieldNameSize: 100,
+ *   fieldSize: 1024,
+ *   fields: Infinity,
+ *   fileSize: Infinity,
+ *   files: Infinity,
+ *   parts: Infinity,
+ *   headerPairs: 2000
+ * });
+ *
+ * parser.parse(function(error) {
+ *   if (error)
+ *     console.log('Something went wrong when uploading');
+ *   else
+ *     console.log(request.files);
+ * });
+ *
+ * @class MultipartParser
+ * @constructor
+ * @param {Object} request HTTP Request containing a multipart body, it will be altered with parsing properties
+ * @param {Array} fileFields A list of file field descriptors with:
+ * @param {String} fileFields[].name The field name which contains the file
+ * @param {String} fileFields[].destinationPath The destination directory where the file will be uploaded
+ * @param {Number} [fileFields[].maxCount] The maximum number of files allowed for this field
+ * @param {Boolean} [fileFields[].unique] true to generate unique file names for files corresponding to this field,
+ * false to generate a unique id only if a file with the same name already exists in the destination folder
+ * @param {Object} [limits] Multipart limits configuration, for more information about
+ * available limits see [Multer documentation]{@link https://www.npmjs.com/package/multer#limits}.
+ * @throws {TypeError} If request is not as expected
+ */
+function MultipartParser(request, fileFields, limits) {
+  Object.defineProperties(this,
+
+    /** @lends module:multipart/MultipartParser~MultipartParser */
+    {
+
+      /**
+       * The HTTP request containing a multipart body.
+       *
+       * @type {Object}
+       * @instance
+       * @readonly
+       */
+      request: {value: request},
+
+      /**
+       * The list of file field descriptors.
+       *
+       * @type {Array}
+       * @instance
+       * @readonly
+       */
+      fileFields: {value: fileFields || []},
+
+      /**
+       * Multipart limits configuration.
+       *
+       * @type {Object}
+       * @instance
+       * @readonly
+       */
+      limits: {value: limits},
+
+      /**
+       * Final paths of files detected in multipart body.
+       *
+       * @type {Array}
+       * @instance
+       * @readonly
+       */
+      detectedFilesPaths: {value: []}
+
+    }
+
+  );
+
+  if (!this.request)
+    throw new TypeError('A MultipartParser needs a request');
+}
+
+module.exports = MultipartParser;
+
+/**
+ * Gets fields configuration by name.
+ *
+ * @param {String} fieldName The name of the field containing files
+ * @return {(Object|null)} The field configuration
+ */
+MultipartParser.prototype.getField = function(fieldName) {
+  for (var i = 0; i &lt; this.fileFields.length; i++)
+    if (this.fileFields[i].name === fieldName) return this.fileFields[i];
+
+  return null;
+};
+
+/**
+ * Builds final file name.
+ *
+ * It avoids collisions with existing files and sanitizes file name.
+ *
+ * @param {String} originalFileName The original file name
+ * @param {String} fieldName The name of the field containing the file
+ * @param {module:multipart/MultipartParser~MultipartParser~getFileNameCallback} callback The function to call when done
+ */
+MultipartParser.prototype.getFileName = function(originalFileName, fieldName, callback) {
+  var extension = path.extname(originalFileName);
+  var basename = path.basename(originalFileName, extension);
+  var sanitizedFilename = basename.replace(/[^a-z0-9-]/gi, '-').replace(/-{2,}/g, '-').toLowerCase();
+  var field = this.getField(fieldName);
+
+  if (!field.destinationPath)
+    return callback(new Error('No destination path found for field ' + fieldName));
+
+  if (field.unique) {
+
+    // File name must be unique
+    // Add timestamp to the name of the file
+    return callback(null, sanitizedFilename + '-' + Date.now() + extension);
+
+  }
+
+  // Test if file already exists
+  fs.stat(path.join(field.destinationPath, sanitizedFilename + extension), function(error, stat) {
+    var uploadedFileName;
+    if (error) {
+      if (error.code == 'ENOENT') {
+
+        // File does not exist
+        uploadedFileName = sanitizedFilename + extension;
+
+      } else
+        return callback(error);
+    } else {
+
+      // File already exists
+      // Add timestamp to the name of the file
+      uploadedFileName = sanitizedFilename + '-' + Date.now() + extension;
+
+    }
+
+    callback(null, uploadedFileName);
+  });
+};
+
+/**
+ * Parses multipart content of the request and performs uploads if any.
+ *
+ * @param {callback} callback The function to call when done
+ */
+MultipartParser.prototype.parse = function(callback) {
+  var self = this;
+
+  // Multer does not remove partially parsed files when client aborts the request
+  // Remove files being written to the disk when client aborts the request
+  this.request.on('aborted', function() {
+    var asyncFunctions = [];
+    self.detectedFilesPaths.forEach(function(detectedFilePath) {
+      asyncFunctions.push(function(callback) {
+        fileSystem.rm(detectedFilePath, callback);
+      });
+    });
+
+    async.parallel(asyncFunctions, function() {
+      callback(new Error('Parsing aborted by client. Temporary files have been removed'));
+    });
+  });
+
+  multer({
+    storage: multer.diskStorage({
+      destination: function(request, file, callback) {
+        var field = self.getField(file.fieldname);
+
+        if (field.destinationPath) {
+          fileSystem.mkdir(field.destinationPath, function(error) {
+            callback(error, field.destinationPath);
+          });
+        } else callback(new Error('No destination path found for field ' + file.fieldname));
+      },
+      filename: function(request, file, callback) {
+        var field = self.getField(file.fieldname);
+
+        self.getFileName(file.originalname, file.fieldname, function(error, fileName) {
+          if (error) return callback(error);
+          self.detectedFilesPaths.push(path.join(field.destinationPath, fileName));
+          callback(null, fileName);
+        });
+      }
+    }),
+    limits: this.limits
+  }).fields(this.fileFields)(this.request, null, function(error) {
+    callback(error);
+  });
+};
+
+/**
+ * @callback module:multipart/MultipartParser~MultipartParser~getFileNameCallback
+ * @param {(Error|null)} error The error if an error occurred, null otherwise
+ * @param {(String|Undefined)} fileName The computed file name
+ */
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-angularJs.html">angularJs</a></li><li><a href="module-angularJs_parser.html">angularJs/parser</a></li><li><a href="module-controllers.html">controllers</a></li><li><a href="module-controllers_ContentController.html">controllers/ContentController</a></li><li><a href="module-controllers_Controller.html">controllers/Controller</a></li><li><a href="module-controllers_EntityController.html">controllers/EntityController</a></li><li><a href="module-controllers_HttpController.html">controllers/HttpController</a></li><li><a href="module-controllers_httpErrors.html">controllers/httpErrors</a></li><li><a href="module-controllers_SocketController.html">controllers/SocketController</a></li><li><a href="module-emitters.html">emitters</a></li><li><a href="module-emitters_AdvancedEmitter.html">emitters/AdvancedEmitter</a></li><li><a href="module-emitters_AdvancedEvent.html">emitters/AdvancedEvent</a></li><li><a href="module-errors.html">errors</a></li><li><a href="module-errors_AccessError.html">errors/AccessError</a></li><li><a href="module-errors_NotFoundError.html">errors/NotFoundError</a></li><li><a href="module-errors_StorageError.html">errors/StorageError</a></li><li><a href="module-fileSystem.html">fileSystem</a></li><li><a href="module-grunt.html">grunt</a></li><li><a href="module-grunt_copyTask.html">grunt/copyTask</a></li><li><a href="module-grunt_ngDpTask.html">grunt/ngDpTask</a></li><li><a href="module-grunt_removeTask.html">grunt/removeTask</a></li><li><a href="module-grunt_renameTask.html">grunt/renameTask</a></li><li><a href="module-imageProcessor.html">imageProcessor</a></li><li><a href="module-logger.html">logger</a></li><li><a href="module-middlewares.html">middlewares</a></li><li><a href="module-middlewares_disableCacheMiddleware.html">middlewares/disableCacheMiddleware</a></li><li><a href="module-middlewares_imageProcessorMiddleware.html">middlewares/imageProcessorMiddleware</a></li><li><a href="module-middlewares_logRequestMiddleware.html">middlewares/logRequestMiddleware</a></li><li><a href="module-multipart.html">multipart</a></li><li><a href="module-multipart_MultipartParser.html">multipart/MultipartParser</a></li><li><a href="module-passport.html">passport</a></li><li><a href="module-passport_STRATEGIES.html">passport/STRATEGIES</a></li><li><a href="module-passport_strategyFactory.html">passport/strategyFactory</a></li><li><a href="module-plugin.html">plugin</a></li><li><a href="module-plugin_Plugin.html">plugin/Plugin</a></li><li><a href="module-plugin_PluginApi.html">plugin/PluginApi</a></li><li><a href="module-providers.html">providers</a></li><li><a href="module-providers_EntityProvider.html">providers/EntityProvider</a></li><li><a href="module-providers_Provider.html">providers/Provider</a></li><li><a href="module-socket.html">socket</a></li><li><a href="module-socket_Pilot.html">socket/Pilot</a></li><li><a href="module-socket_SocketNamespace.html">socket/SocketNamespace</a></li><li><a href="module-socket_SocketServer.html">socket/SocketServer</a></li><li><a href="module-storages.html">storages</a></li><li><a href="module-storages_DATABASE_ERRORS.html">storages/DATABASE_ERRORS</a></li><li><a href="module-storages_factory.html">storages/factory</a></li><li><a href="module-storages_MongoDatabase.html">storages/MongoDatabase</a></li><li><a href="module-storages_ResourceFilter.html">storages/ResourceFilter</a></li><li><a href="module-storages_Storage.html">storages/Storage</a></li><li><a href="module-util.html">util</a></li><li><a href="module-watcher.html">watcher</a></li><li><a href="module-watcher_Watcher.html">watcher/Watcher</a></li><li><a href="module-watcher_WatcherError.html">watcher/WatcherError</a></li></ul><h3>Namespaces</h3><ul><li><a href="module-controllers_httpErrors-HTTP_ERRORS.html">controllers/httpErrors~HTTP_ERRORS</a></li><li><a href="module-passport_STRATEGIES-STRATEGIES.html">passport/STRATEGIES~STRATEGIES</a></li></ul><h3>Classes</h3><ul><li><a href="module-controllers_ContentController-ContentController.html">controllers/ContentController~ContentController</a></li><li><a href="module-controllers_Controller-Controller.html">controllers/Controller~Controller</a></li><li><a href="module-controllers_EntityController-EntityController.html">controllers/EntityController~EntityController</a></li><li><a href="module-controllers_HttpController-HttpController.html">controllers/HttpController~HttpController</a></li><li><a href="module-controllers_SocketController-SocketController.html">controllers/SocketController~SocketController</a></li><li><a href="module-emitters_AdvancedEmitter-AdvancedEmitter.html">emitters/AdvancedEmitter~AdvancedEmitter</a></li><li><a href="module-emitters_AdvancedEvent-AdvancedEvent.html">emitters/AdvancedEvent~AdvancedEvent</a></li><li><a href="module-errors_AccessError-AccessError.html">errors/AccessError~AccessError</a></li><li><a href="module-errors_NotFoundError-NotFoundError.html">errors/NotFoundError~NotFoundError</a></li><li><a href="module-errors_StorageError-StorageError.html">errors/StorageError~StorageError</a></li><li><a href="module-multipart_MultipartParser-MultipartParser.html">multipart/MultipartParser~MultipartParser</a></li><li><a href="module-plugin_PluginApi-PluginApi.html">plugin/PluginApi~PluginApi</a></li><li><a href="module-plugin_Plugin-Plugin.html">plugin/Plugin~Plugin</a></li><li><a href="module-providers_EntityProvider-EntityProvider.html">providers/EntityProvider~EntityProvider</a></li><li><a href="module-providers_Provider-Provider.html">providers/Provider~Provider</a></li><li><a href="module-socket_Pilot-Pilot.html">socket/Pilot~Pilot</a></li><li><a href="module-socket_SocketNamespace-SocketNamespace.html">socket/SocketNamespace~SocketNamespace</a></li><li><a href="module-socket_SocketServer-SocketServer.html">socket/SocketServer~SocketServer</a></li><li><a href="module-storages_MongoDatabase-MongoDatabase.html">storages/MongoDatabase~MongoDatabase</a></li><li><a href="module-storages_ResourceFilter-ResourceFilter.html">storages/ResourceFilter~ResourceFilter</a></li><li><a href="module-storages_Storage-Storage.html">storages/Storage~Storage</a></li><li><a href="module-watcher_WatcherError-WatcherError.html">watcher/WatcherError~WatcherError</a></li><li><a href="module-watcher_Watcher-Watcher.html">watcher/Watcher~Watcher</a></li></ul><h3>Events</h3><ul><li><a href="core_watcher_Watcher-Watcher.html#event:create">core:watcher/Watcher~Watcher#create</a></li><li><a href="core_watcher_Watcher-Watcher.html#event:delete">core:watcher/Watcher~Watcher#delete</a></li><li><a href="core_watcher_Watcher-Watcher.html#event:error">core:watcher/Watcher~Watcher#error</a></li><li><a href="core_watcher_Watcher-Watcher.html#event:watch">core:watcher/Watcher~Watcher#watch</a></li><li><a href="module-watcher_DirectoryFsWatcher-DirectoryFsWatcher.html#event:create">watcher/DirectoryFsWatcher~DirectoryFsWatcher#create</a></li><li><a href="module-watcher_DirectoryFsWatcher-DirectoryFsWatcher.html#event:delete">watcher/DirectoryFsWatcher~DirectoryFsWatcher#delete</a></li><li><a href="module-watcher_DirectoryFsWatcher-DirectoryFsWatcher.html#event:error">watcher/DirectoryFsWatcher~DirectoryFsWatcher#error</a></li><li><a href="module-watcher_DirectoryWatcher-DirectoryWatcher.html#event:create">watcher/DirectoryWatcher~DirectoryWatcher#create</a></li><li><a href="module-watcher_DirectoryWatcher-DirectoryWatcher.html#event:delete">watcher/DirectoryWatcher~DirectoryWatcher#delete</a></li><li><a href="module-watcher_DirectoryWatcher-DirectoryWatcher.html#event:error">watcher/DirectoryWatcher~DirectoryWatcher#error</a></li><li><a href="module-watcher_DirectoryWatcher-DirectoryWatcher.html#event:watch">watcher/DirectoryWatcher~DirectoryWatcher#watch</a></li></ul><h3><a href="global.html">Global</a></h3>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Mon Feb 27 2023 14:35:43 GMT+0100 (Central European Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

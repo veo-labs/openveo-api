@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: storages/ResourceFilter.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: storages/ResourceFilter.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>'use strict';
+
+/**
+ * @module storages/ResourceFilter
+ */
+
+/**
+ * Defines a storage filter.
+ *
+ * A filter is a uniform way of filtering results common to all storages.
+ * A filter can contain only one "or" operation, one "nor" operation and one "and" operation.
+ *
+ * @example
+ * var filter = new ResourceFilter()
+ * .equal('field1', 42)
+ * .exists('field1', true)
+ * .notEqual('field2', 42)
+ * .greaterThan('field3', 42)
+ * .greaterThanEqual('field4', 42)
+ * .in('field5', [42])
+ * .lesserThan('field6', 42)
+ * .lesserThanEqual('field7', 42)
+ * .regex('field8', /^Something/i)
+ * .search('query')
+ * .or([
+ *   new ResourceFilter().equal('field8', 42),
+ *   new ResourceFilter().notIn('field9', [42])
+ * ])
+ * .nor([
+ *   new ResourceFilter().equal('field10', 42),
+ *   new ResourceFilter().notIn('field11', [42])
+ * )],
+ * .and([
+ *   new ResourceFilter().equal('field12', 42),
+ *   new ResourceFilter().notIn('field13', [42])
+ * )];
+ *
+ * @class ResourceFilter
+ * @constructor
+ */
+function ResourceFilter() {
+  Object.defineProperties(this,
+
+    /** @lends module:storages/ResourceFilter~ResourceFilter */
+    {
+
+      /**
+       * The list of operations.
+       *
+       * @type {Array}
+       * @instance
+       * @readonly
+       */
+      operations: {
+        value: []
+      }
+
+    }
+
+  );
+
+}
+
+module.exports = ResourceFilter;
+
+/**
+ * The available operators.
+ *
+ * @const
+ * @type {Object}
+ * @default
+ * @static
+ */
+ResourceFilter.OPERATORS = {
+  OR: 'or',
+  NOR: 'nor',
+  AND: 'and',
+  EQUAL: 'equal',
+  EXISTS: 'exists',
+  NOT_EQUAL: 'notEqual',
+  IN: 'in',
+  NOT_IN: 'notIn',
+  GREATER_THAN: 'greaterThan',
+  GREATER_THAN_EQUAL: 'greaterThanEqual',
+  LESSER_THAN: 'lesserThan',
+  LESSER_THAN_EQUAL: 'lesserThanEqual',
+  REGEX: 'regex',
+  SEARCH: 'search'
+};
+Object.freeze(ResourceFilter.OPERATORS);
+
+/**
+ * Validates the type of a value.
+ *
+ * @method isValidType
+ * @private
+ * @this module:storages/ResourceFilter~ResourceFilter
+ * @memberof module:storages/ResourceFilter~ResourceFilter
+ * @param {String} value The value to test
+ * @param {Array} The list of authorized types as strings
+ * @return {Boolean} true if valid, false otherwise
+ */
+function isValidType(value, authorizedTypes) {
+  var valueToString = Object.prototype.toString.call(value);
+
+  for (var i = 0; i &lt; authorizedTypes.length; i++)
+    if (valueToString === '[object ' + authorizedTypes[i] + ']') return true;
+
+  return false;
+}
+
+/**
+ * Adds a comparison operation to the filter.
+ *
+ * @method addComparisonOperation
+ * @private
+ * @this module:storages/ResourceFilter~ResourceFilter
+ * @memberof module:storages/ResourceFilter~ResourceFilter
+ * @param {String} field The name of the field
+ * @param {(String|Number|Boolean|Date)} value The value to compare the field to
+ * @param {String} Resource filter operator
+ * @param {Array} The list of authorized types as strings
+ * @return {module:storages/ResourceFilter~ResourceFilter} The actual filter
+ * @throws {TypeError} An error if field and / or value is not valid
+ */
+function addComparisonOperation(field, value, operator, authorizedTypes) {
+  if (!isValidType(field, ['String'])) throw new TypeError('Invalid field');
+  if (!isValidType(value, authorizedTypes)) throw new TypeError('Invalid value');
+
+  this.operations.push({
+    type: operator,
+    field: field,
+    value: value
+  });
+  return this;
+}
+
+/**
+ * Adds a logical operation to the filter.
+ *
+ * Only one logical operation can be added in a filter.
+ *
+ * @method addLogicalOperation
+ * @private
+ * @this module:storages/ResourceFilter~ResourceFilter
+ * @memberof module:storages/ResourceFilter~ResourceFilter
+ * @param {Array} filters The list of filters
+ * @return {module:storages/ResourceFilter~ResourceFilter} The actual filter
+ * @throws {TypeError} An error if field and / or value is not valid
+ */
+function addLogicalOperation(filters, operator) {
+  for (var i = 0; i &lt; filters.length; i++)
+    if (!(filters[i] instanceof ResourceFilter)) throw new TypeError('Invalid filters');
+
+  if (this.hasOperation(operator)) {
+
+    // This logical operator already exists in the list of operations
+    // Just add the new filters to the operator
+
+    for (var operation of this.operations) {
+      if (operation.type === operator)
+        operation.filters = operation.filters.concat(filters);
+    }
+
+  } else {
+
+    // This logical operator does not exist yet in the list of operations
+
+    this.operations.push({
+      type: operator,
+      filters: filters
+    });
+  }
+
+  return this;
+}
+
+/**
+ * Adds an equal operation to the filter.
+ *
+ * @param {String} field The name of the field
+ * @param {(String|Number|Boolean|Date)} value The value to compare the field to
+ * @return {module:storages/ResourceFilter~ResourceFilter} The actual filter
+ * @throws {TypeError} An error if field and / or value is not valid
+ */
+ResourceFilter.prototype.equal = function(field, value) {
+  return addComparisonOperation.call(
+    this,
+    field,
+    value,
+    ResourceFilter.OPERATORS.EQUAL,
+    ['String', 'Boolean', 'Date', 'Number']
+  );
+};
+
+/**
+ * Adds an exists operation to the filter.
+ *
+ * @param {String} field The name of the field
+ * @param {Boolean} value true if the field should exist, false otherwise
+ * @return {module:storages/ResourceFilter~ResourceFilter} The actual filter
+ * @throws {TypeError} An error if field and / or value is not valid
+ */
+ResourceFilter.prototype.exists = function(field, value) {
+  return addComparisonOperation.call(
+    this,
+    field,
+    value,
+    ResourceFilter.OPERATORS.EXISTS,
+    ['Boolean']
+  );
+};
+
+/**
+ * Adds a "not equal" operation to the filter.
+ *
+ * @param {String} field The name of the field
+ * @param {(String|Number|Boolean|Date)} value The value to compare the field to
+ * @return {module:storages/ResourceFilter~ResourceFilter} The actual filter
+ * @throws {TypeError} An error if field and / or value is not valid
+ */
+ResourceFilter.prototype.notEqual = function(field, value) {
+  return addComparisonOperation.call(
+    this,
+    field,
+    value,
+    ResourceFilter.OPERATORS.NOT_EQUAL,
+    ['String', 'Boolean', 'Date', 'Number']
+  );
+};
+
+/**
+ * Adds a "greater than" operation to the filter.
+ *
+ * @param {String} field The name of the field
+ * @param {(String|Number|Boolean|Date)} value The value to compare the field to
+ * @return {module:storages/ResourceFilter~ResourceFilter} The actual filter
+ * @throws {TypeError} An error if field and / or value is not valid
+ */
+ResourceFilter.prototype.greaterThan = function(field, value) {
+  return addComparisonOperation.call(
+    this,
+    field,
+    value,
+    ResourceFilter.OPERATORS.GREATER_THAN,
+    ['String', 'Boolean', 'Date', 'Number']
+  );
+};
+
+/**
+ * Adds a "greater than or equal" operation to the filter.
+ *
+ * @param {String} field The name of the field
+ * @param {(String|Number|Boolean|Date)} value The value to compare the field to
+ * @return {module:storages/ResourceFilter~ResourceFilter} The actual filter
+ * @throws {TypeError} An error if field and / or value is not valid
+ */
+ResourceFilter.prototype.greaterThanEqual = function(field, value) {
+  return addComparisonOperation.call(
+    this,
+    field,
+    value,
+    ResourceFilter.OPERATORS.GREATER_THAN_EQUAL,
+    ['String', 'Boolean', 'Date', 'Number']
+  );
+};
+
+/**
+ * Adds a "lesser than" operation to the filter.
+ *
+ * @param {String} field The name of the field
+ * @param {(String|Number|Boolean|Date)} value The value to compare the field to
+ * @return {module:storages/ResourceFilter~ResourceFilter} The actual filter
+ * @throws {TypeError} An error if field and / or value is not valid
+ */
+ResourceFilter.prototype.lesserThan = function(field, value) {
+  return addComparisonOperation.call(
+    this,
+    field,
+    value,
+    ResourceFilter.OPERATORS.LESSER_THAN,
+    ['String', 'Boolean', 'Date', 'Number']
+  );
+};
+
+/**
+ * Adds a "lesser than equal" operation to the filter.
+ *
+ * @param {String} field The name of the field
+ * @param {(String|Number|Boolean|Date)} value The value to compare the field to
+ * @return {module:storages/ResourceFilter~ResourceFilter} The actual filter
+ * @throws {TypeError} An error if field and / or value is not valid
+ */
+ResourceFilter.prototype.lesserThanEqual = function(field, value) {
+  return addComparisonOperation.call(
+    this,
+    field,
+    value,
+    ResourceFilter.OPERATORS.LESSER_THAN_EQUAL,
+    ['String', 'Boolean', 'Date', 'Number']
+  );
+};
+
+/**
+ * Adds an "in" operation to the filter.
+ *
+ * @param {String} field The name of the field
+ * @param {Array} value The value to compare the field to
+ * @return {module:storages/ResourceFilter~ResourceFilter} The actual filter
+ * @throws {TypeError} An error if field and / or value is not valid
+ */
+ResourceFilter.prototype.in = function(field, value) {
+  if (!isValidType(value, ['Array'])) throw new TypeError('Invalid value');
+
+  for (var i = 0; i &lt; value.length; i++)
+    if (!isValidType(value[i], ['String', 'Boolean', 'Date', 'Number'])) throw new TypeError('Invalid value');
+
+  return addComparisonOperation.call(this, field, value, ResourceFilter.OPERATORS.IN, ['Array']);
+};
+
+/**
+ * Adds a "not in" operation to the filter.
+ *
+ * @param {String} field The name of the field
+ * @param {Array} value The value to compare the field to
+ * @return {module:storages/ResourceFilter~ResourceFilter} The actual filter
+ * @throws {TypeError} An error if field and / or value is not valid
+ */
+ResourceFilter.prototype.notIn = function(field, value) {
+  if (!isValidType(value, ['Array'])) throw new TypeError('Invalid value');
+
+  for (var i = 0; i &lt; value.length; i++)
+    if (!isValidType(value[i], ['String', 'Boolean', 'Date', 'Number'])) throw new TypeError('Invalid value');
+
+  return addComparisonOperation.call(this, field, value, ResourceFilter.OPERATORS.NOT_IN, ['Array']);
+};
+
+/**
+ * Adds a "regular expression" operation to the filter.
+ *
+ * @param {String} field The name of the field
+ * @param {RegExp} value The regular expression to compare the field to
+ * @return {module:storages/ResourceFilter~ResourceFilter} The actual filter
+ * @throws {TypeError} An error if field and / or value is not valid
+ */
+ResourceFilter.prototype.regex = function(field, value) {
+  return addComparisonOperation.call(
+    this,
+    field,
+    value,
+    ResourceFilter.OPERATORS.REGEX,
+    ['RegExp']
+  );
+};
+
+/**
+ * Adds a "or" operation to the filter.
+ *
+ * @param {Array} filters The list of filters
+ * @return {module:storages/ResourceFilter~ResourceFilter} The actual filter
+ * @throws {TypeError} An error if filters are not valid
+ */
+ResourceFilter.prototype.or = function(filters) {
+  return addLogicalOperation.call(this, filters, ResourceFilter.OPERATORS.OR);
+};
+
+/**
+ * Adds a "nor" operation to the filter.
+ *
+ * @param {Array} filters The list of filters
+ * @return {module:storages/ResourceFilter~ResourceFilter} The actual filter
+ * @throws {TypeError} An error if filters are not valid
+ */
+ResourceFilter.prototype.nor = function(filters) {
+  return addLogicalOperation.call(this, filters, ResourceFilter.OPERATORS.NOR);
+};
+
+/**
+ * Adds an "and" operation to the filter.
+ *
+ * @param {Array} filters The list of filters
+ * @return {module:storages:ResourceFilter~ResourceFilter} The actual filter
+ * @throws {TypeError} An error if filters are not valid
+ */
+ResourceFilter.prototype.and = function(filters) {
+  return addLogicalOperation.call(this, filters, ResourceFilter.OPERATORS.AND);
+};
+
+/**
+ * Adds a "search" operation to the filter.
+ *
+ * @param {String} value The search query
+ * @return {module:storages/ResourceFilter~ResourceFilter} The actual filter
+ * @throws {TypeError} An error if value is not a String
+ */
+ResourceFilter.prototype.search = function(value) {
+  if (!isValidType(value, ['String'])) throw new TypeError('Invalid value');
+
+  this.operations.push({
+    type: ResourceFilter.OPERATORS.SEARCH,
+    value: value
+  });
+
+  return this;
+};
+
+/**
+ * Tests if an operation has already been specified.
+ *
+ * @param {String} operator Operation operator
+ * @return {Boolean} true if the operation has already been added to this filter, false otherwise
+ */
+ResourceFilter.prototype.hasOperation = function(operator) {
+  for (var i = 0; i &lt; this.operations.length; i++)
+    if (this.operations[i].type === operator) return true;
+
+  return false;
+};
+
+/**
+ * Gets a logical operation from filter.
+ *
+ * @param {String} operator Logical operator to look for
+ * @return {(Object|Null)} The operation with:
+ * -**String** type The operation type
+ * -**Array** filters The list of filters inside the logical operation
+ */
+ResourceFilter.prototype.getLogicalOperation = function(operator) {
+  for (var i = 0; i &lt; this.operations.length; i++) {
+    if (this.operations[i].type === operator) return this.operations[i];
+
+    if ([
+      ResourceFilter.OPERATORS.OR,
+      ResourceFilter.OPERATORS.NOR,
+      ResourceFilter.OPERATORS.AND
+    ].indexOf(this.operations[i].type) >= 0) {
+      for (var j = 0; j &lt; this.operations[i].filters.length; j++) {
+        var result = this.operations[i].filters[j].getLogicalOperation(operator);
+        if (result) return result;
+      }
+    }
+  }
+
+  return null;
+};
+
+/**
+ * Gets an operation from filter or sub filters.
+ *
+ * @param {String} operator Operation operator
+ * @param {String} field Operation field
+ * @return {(Object|Null)} The operation with:
+ * -**String** type The operation type
+ * -**String** field The operation field
+ * -**String|Number|Boolean|Date|Array** value The operation value
+ */
+ResourceFilter.prototype.getComparisonOperation = function(operator, field) {
+  for (var i = 0; i &lt; this.operations.length; i++) {
+    if ([
+      ResourceFilter.OPERATORS.OR,
+      ResourceFilter.OPERATORS.NOR,
+      ResourceFilter.OPERATORS.AND
+    ].indexOf(this.operations[i].type) >= 0) {
+      for (var j = 0; j &lt; this.operations[i].filters.length; j++) {
+        var result = this.operations[i].filters[j].getComparisonOperation(operator, field);
+        if (result) return result;
+      }
+    } else if (this.operations[i].type === operator &amp;&amp; (!field || this.operations[i].field === field))
+      return this.operations[i];
+  }
+
+  return null;
+};
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-angularJs.html">angularJs</a></li><li><a href="module-angularJs_parser.html">angularJs/parser</a></li><li><a href="module-controllers.html">controllers</a></li><li><a href="module-controllers_ContentController.html">controllers/ContentController</a></li><li><a href="module-controllers_Controller.html">controllers/Controller</a></li><li><a href="module-controllers_EntityController.html">controllers/EntityController</a></li><li><a href="module-controllers_HttpController.html">controllers/HttpController</a></li><li><a href="module-controllers_httpErrors.html">controllers/httpErrors</a></li><li><a href="module-controllers_SocketController.html">controllers/SocketController</a></li><li><a href="module-emitters.html">emitters</a></li><li><a href="module-emitters_AdvancedEmitter.html">emitters/AdvancedEmitter</a></li><li><a href="module-emitters_AdvancedEvent.html">emitters/AdvancedEvent</a></li><li><a href="module-errors.html">errors</a></li><li><a href="module-errors_AccessError.html">errors/AccessError</a></li><li><a href="module-errors_NotFoundError.html">errors/NotFoundError</a></li><li><a href="module-errors_StorageError.html">errors/StorageError</a></li><li><a href="module-fileSystem.html">fileSystem</a></li><li><a href="module-grunt.html">grunt</a></li><li><a href="module-grunt_copyTask.html">grunt/copyTask</a></li><li><a href="module-grunt_ngDpTask.html">grunt/ngDpTask</a></li><li><a href="module-grunt_removeTask.html">grunt/removeTask</a></li><li><a href="module-grunt_renameTask.html">grunt/renameTask</a></li><li><a href="module-imageProcessor.html">imageProcessor</a></li><li><a href="module-logger.html">logger</a></li><li><a href="module-middlewares.html">middlewares</a></li><li><a href="module-middlewares_disableCacheMiddleware.html">middlewares/disableCacheMiddleware</a></li><li><a href="module-middlewares_imageProcessorMiddleware.html">middlewares/imageProcessorMiddleware</a></li><li><a href="module-middlewares_logRequestMiddleware.html">middlewares/logRequestMiddleware</a></li><li><a href="module-multipart.html">multipart</a></li><li><a href="module-multipart_MultipartParser.html">multipart/MultipartParser</a></li><li><a href="module-passport.html">passport</a></li><li><a href="module-passport_STRATEGIES.html">passport/STRATEGIES</a></li><li><a href="module-passport_strategyFactory.html">passport/strategyFactory</a></li><li><a href="module-plugin.html">plugin</a></li><li><a href="module-plugin_Plugin.html">plugin/Plugin</a></li><li><a href="module-plugin_PluginApi.html">plugin/PluginApi</a></li><li><a href="module-providers.html">providers</a></li><li><a href="module-providers_EntityProvider.html">providers/EntityProvider</a></li><li><a href="module-providers_Provider.html">providers/Provider</a></li><li><a href="module-socket.html">socket</a></li><li><a href="module-socket_Pilot.html">socket/Pilot</a></li><li><a href="module-socket_SocketNamespace.html">socket/SocketNamespace</a></li><li><a href="module-socket_SocketServer.html">socket/SocketServer</a></li><li><a href="module-storages.html">storages</a></li><li><a href="module-storages_DATABASE_ERRORS.html">storages/DATABASE_ERRORS</a></li><li><a href="module-storages_factory.html">storages/factory</a></li><li><a href="module-storages_MongoDatabase.html">storages/MongoDatabase</a></li><li><a href="module-storages_ResourceFilter.html">storages/ResourceFilter</a></li><li><a href="module-storages_Storage.html">storages/Storage</a></li><li><a href="module-util.html">util</a></li><li><a href="module-watcher.html">watcher</a></li><li><a href="module-watcher_Watcher.html">watcher/Watcher</a></li><li><a href="module-watcher_WatcherError.html">watcher/WatcherError</a></li></ul><h3>Namespaces</h3><ul><li><a href="module-controllers_httpErrors-HTTP_ERRORS.html">controllers/httpErrors~HTTP_ERRORS</a></li><li><a href="module-passport_STRATEGIES-STRATEGIES.html">passport/STRATEGIES~STRATEGIES</a></li></ul><h3>Classes</h3><ul><li><a href="module-controllers_ContentController-ContentController.html">controllers/ContentController~ContentController</a></li><li><a href="module-controllers_Controller-Controller.html">controllers/Controller~Controller</a></li><li><a href="module-controllers_EntityController-EntityController.html">controllers/EntityController~EntityController</a></li><li><a href="module-controllers_HttpController-HttpController.html">controllers/HttpController~HttpController</a></li><li><a href="module-controllers_SocketController-SocketController.html">controllers/SocketController~SocketController</a></li><li><a href="module-emitters_AdvancedEmitter-AdvancedEmitter.html">emitters/AdvancedEmitter~AdvancedEmitter</a></li><li><a href="module-emitters_AdvancedEvent-AdvancedEvent.html">emitters/AdvancedEvent~AdvancedEvent</a></li><li><a href="module-errors_AccessError-AccessError.html">errors/AccessError~AccessError</a></li><li><a href="module-errors_NotFoundError-NotFoundError.html">errors/NotFoundError~NotFoundError</a></li><li><a href="module-errors_StorageError-StorageError.html">errors/StorageError~StorageError</a></li><li><a href="module-multipart_MultipartParser-MultipartParser.html">multipart/MultipartParser~MultipartParser</a></li><li><a href="module-plugin_PluginApi-PluginApi.html">plugin/PluginApi~PluginApi</a></li><li><a href="module-plugin_Plugin-Plugin.html">plugin/Plugin~Plugin</a></li><li><a href="module-providers_EntityProvider-EntityProvider.html">providers/EntityProvider~EntityProvider</a></li><li><a href="module-providers_Provider-Provider.html">providers/Provider~Provider</a></li><li><a href="module-socket_Pilot-Pilot.html">socket/Pilot~Pilot</a></li><li><a href="module-socket_SocketNamespace-SocketNamespace.html">socket/SocketNamespace~SocketNamespace</a></li><li><a href="module-socket_SocketServer-SocketServer.html">socket/SocketServer~SocketServer</a></li><li><a href="module-storages_MongoDatabase-MongoDatabase.html">storages/MongoDatabase~MongoDatabase</a></li><li><a href="module-storages_ResourceFilter-ResourceFilter.html">storages/ResourceFilter~ResourceFilter</a></li><li><a href="module-storages_Storage-Storage.html">storages/Storage~Storage</a></li><li><a href="module-watcher_WatcherError-WatcherError.html">watcher/WatcherError~WatcherError</a></li><li><a href="module-watcher_Watcher-Watcher.html">watcher/Watcher~Watcher</a></li></ul><h3>Events</h3><ul><li><a href="core_watcher_Watcher-Watcher.html#event:create">core:watcher/Watcher~Watcher#create</a></li><li><a href="core_watcher_Watcher-Watcher.html#event:delete">core:watcher/Watcher~Watcher#delete</a></li><li><a href="core_watcher_Watcher-Watcher.html#event:error">core:watcher/Watcher~Watcher#error</a></li><li><a href="core_watcher_Watcher-Watcher.html#event:watch">core:watcher/Watcher~Watcher#watch</a></li><li><a href="module-watcher_DirectoryFsWatcher-DirectoryFsWatcher.html#event:create">watcher/DirectoryFsWatcher~DirectoryFsWatcher#create</a></li><li><a href="module-watcher_DirectoryFsWatcher-DirectoryFsWatcher.html#event:delete">watcher/DirectoryFsWatcher~DirectoryFsWatcher#delete</a></li><li><a href="module-watcher_DirectoryFsWatcher-DirectoryFsWatcher.html#event:error">watcher/DirectoryFsWatcher~DirectoryFsWatcher#error</a></li><li><a href="module-watcher_DirectoryWatcher-DirectoryWatcher.html#event:create">watcher/DirectoryWatcher~DirectoryWatcher#create</a></li><li><a href="module-watcher_DirectoryWatcher-DirectoryWatcher.html#event:delete">watcher/DirectoryWatcher~DirectoryWatcher#delete</a></li><li><a href="module-watcher_DirectoryWatcher-DirectoryWatcher.html#event:error">watcher/DirectoryWatcher~DirectoryWatcher#error</a></li><li><a href="module-watcher_DirectoryWatcher-DirectoryWatcher.html#event:watch">watcher/DirectoryWatcher~DirectoryWatcher#watch</a></li></ul><h3><a href="global.html">Global</a></h3>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Mon Feb 27 2023 14:35:43 GMT+0100 (Central European Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

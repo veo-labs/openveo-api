@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: storages/databases/mongodb/MongoDatabase.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: storages/databases/mongodb/MongoDatabase.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>'use strict';
+
+/**
+ * @module storages/MongoDatabase
+ */
+
+var util = require('util');
+var mongodb = require('mongodb');
+var MongoStore = require('connect-mongo');
+var Database = process.requireApi('lib/storages/databases/Database.js');
+var databaseErrors = process.requireApi('lib/storages/databases/databaseErrors.js');
+var ResourceFilter = process.requireApi('lib/storages/ResourceFilter.js');
+var StorageError = process.requireApi('lib/errors/StorageError.js');
+var MongoClient = mongodb.MongoClient;
+
+/**
+ * Defines a MongoDB Database.
+ *
+ * @class MongoDatabase
+ * @extends module:storages/Database~Database
+ * @constructor
+ * @param {Object} configuration A database configuration object
+ * @param {String} configuration.host MongoDB server host
+ * @param {Number} configuration.port MongoDB server port
+ * @param {String} configuration.database The name of the database
+ * @param {String} configuration.username The name of the database user
+ * @param {String} configuration.password The password of the database user
+ * @param {String} [configuration.replicaSet] The name of the ReplicaSet
+ * @param {String} [configuration.seedlist] The comma separated list of secondary servers
+ */
+function MongoDatabase(configuration) {
+  MongoDatabase.super_.call(this, configuration);
+
+  Object.defineProperties(this,
+
+    /** @lends module:storages/MongoDatabase~MongoDatabase */
+    {
+
+      /**
+       * The name of the replica set.
+       *
+       * @type {String}
+       * @instance
+       * @readonly
+       */
+      replicaSet: {value: configuration.replicaSet},
+
+      /**
+       * A comma separated list of secondary servers.
+       *
+       * @type {String}
+       * @instance
+       * @readonly
+       */
+      seedlist: {value: configuration.seedlist},
+
+      /**
+       * The connected database.
+       *
+       * @type {Object}
+       * @instance
+       * @readonly
+       */
+      db: {
+        value: null,
+        writable: true
+      },
+
+      /**
+       * The MongoDB client instance.
+       *
+       * @type {Object}
+       * @instance
+       */
+      client: {
+        value: null,
+        writable: true
+      }
+
+    }
+
+  );
+}
+
+module.exports = MongoDatabase;
+util.inherits(MongoDatabase, Database);
+
+/**
+ * Builds MongoDb filter from a ResourceFilter.
+ *
+ * @static
+ * @param {module:storages/ResourceFilter~ResourceFilter} resourceFilter The common resource filter
+ * @return {Object} The MongoDB like filter description object
+ * @throws {TypeError} If an operation is not supported
+ */
+MongoDatabase.buildFilter = function(resourceFilter) {
+  var filter = {};
+
+  if (!resourceFilter) return filter;
+
+  /**
+   * Builds a list of filters.
+   *
+   * @param {Array} filters The list of filters to build
+   * @return {Array} The list of built filters
+   */
+  function buildFilters(filters) {
+    var builtFilters = [];
+    filters.forEach(function(filter) {
+      builtFilters.push(MongoDatabase.buildFilter(filter));
+    });
+    return builtFilters;
+  }
+
+  resourceFilter.operations.forEach(function(operation) {
+    if (operation.field === '_id') {
+      var valueType = Object.prototype.toString.call(operation.value);
+
+      if (valueType === '[object String]') {
+        operation.value = new mongodb.ObjectId(operation.value);
+      } else if (valueType === '[object Array]') {
+        operation.value = operation.value.map(function(value) {
+          return new mongodb.ObjectId(value);
+        });
+      }
+    }
+
+    switch (operation.type) {
+      case ResourceFilter.OPERATORS.EQUAL:
+        if (!filter[operation.field]) filter[operation.field] = {};
+        filter[operation.field]['$eq'] = operation.value;
+        break;
+      case ResourceFilter.OPERATORS.EXISTS:
+        if (!filter[operation.field]) filter[operation.field] = {};
+        filter[operation.field]['$exists'] = operation.value;
+        break;
+      case ResourceFilter.OPERATORS.NOT_EQUAL:
+        if (!filter[operation.field]) filter[operation.field] = {};
+        filter[operation.field]['$ne'] = operation.value;
+        break;
+      case ResourceFilter.OPERATORS.GREATER_THAN:
+        if (!filter[operation.field]) filter[operation.field] = {};
+        filter[operation.field]['$gt'] = operation.value;
+        break;
+      case ResourceFilter.OPERATORS.GREATER_THAN_EQUAL:
+        if (!filter[operation.field]) filter[operation.field] = {};
+        filter[operation.field]['$gte'] = operation.value;
+        break;
+      case ResourceFilter.OPERATORS.LESSER_THAN:
+        if (!filter[operation.field]) filter[operation.field] = {};
+        filter[operation.field]['$lt'] = operation.value;
+        break;
+      case ResourceFilter.OPERATORS.LESSER_THAN_EQUAL:
+        if (!filter[operation.field]) filter[operation.field] = {};
+        filter[operation.field]['$lte'] = operation.value;
+        break;
+      case ResourceFilter.OPERATORS.IN:
+        if (!filter[operation.field]) filter[operation.field] = {};
+        filter[operation.field]['$in'] = operation.value;
+        break;
+      case ResourceFilter.OPERATORS.NOT_IN:
+        if (!filter[operation.field]) filter[operation.field] = {};
+        filter[operation.field]['$nin'] = operation.value;
+        break;
+      case ResourceFilter.OPERATORS.REGEX:
+        if (!filter[operation.field]) filter[operation.field] = {};
+        filter[operation.field]['$regex'] = operation.value;
+        break;
+      case ResourceFilter.OPERATORS.AND:
+        filter['$and'] = buildFilters(operation.filters);
+        break;
+      case ResourceFilter.OPERATORS.OR:
+        filter['$or'] = buildFilters(operation.filters);
+        break;
+      case ResourceFilter.OPERATORS.NOR:
+        filter['$nor'] = buildFilters(operation.filters);
+        break;
+      case ResourceFilter.OPERATORS.SEARCH:
+        filter['$text'] = {
+          $search: operation.value
+        };
+        break;
+      default:
+        throw new StorageError(
+          'Operation ' + operation.type + ' not supported',
+          databaseErrors.BUILD_FILTERS_UNKNOWN_OPERATION_ERROR
+        );
+    }
+  });
+
+  return filter;
+};
+
+/**
+ * Builds MongoDb fields projection.
+ *
+ * @static
+ * @param {Array} fields The list of fields to include or exclude
+ * @param {Boolean} doesInclude true to include fields and exclude all other fields or false to exclude fields and
+ * include all other fields
+ * @return {Object} The MongoDB projection description object
+ */
+MongoDatabase.buildFields = function(fields, doesInclude) {
+  var projection = {_id: 0};
+
+  if (!fields) return projection;
+
+  fields.forEach(function(field) {
+    projection[field] = doesInclude ? 1 : 0;
+  });
+
+  return projection;
+};
+
+/**
+ * Builds MongoDB sort object.
+ *
+ * Concretely it just replaces "score" by "{ $meta: 'textScore' }", "asc" by 1 and "desc" by -1.
+ *
+ * @static
+ * @param {Object} [sort] The list of fields to sort by with the field name as key and the sort order as
+ * value (e.g. {field1: 'asc', field2: 'desc', field3: 'score'})
+ * @return {Object} The MongoDB sort description object
+ */
+MongoDatabase.buildSort = function(sort) {
+  var mongoSort = {};
+
+  if (!sort) return mongoSort;
+  for (var field in sort) {
+    if (sort[field] === 'score') mongoSort[field] = {$meta: 'textScore'};
+    else mongoSort[field] = sort[field] === 'asc' ? 1 : -1;
+  }
+
+  return mongoSort;
+};
+
+/**
+ * Establishes connection to the database.
+ *
+ * @param {callback} callback The function to call when connection to the database is established
+ */
+MongoDatabase.prototype.connect = function(callback) {
+  var name = encodeURIComponent(this.username);
+  var password = encodeURIComponent(this.password);
+  var connectionUrl = 'mongodb://' + name + ':' + password + '@' + this.host + ':' + this.port;
+  var database = '/' + this.name;
+  var seedlist = ',' + this.seedlist;
+  var replicaset = '?replicaSet=' + this.replicaSet + '&amp;readPreference=secondary';
+
+  // Connect to a Replica Set or not
+  if (this.seedlist != undefined &amp;&amp;
+      this.seedlist != '' &amp;&amp;
+      this.replicaSet != undefined &amp;&amp;
+      this.replicaSet != '') {
+    connectionUrl = connectionUrl + seedlist + database + replicaset;
+  } else
+    connectionUrl = connectionUrl + database;
+
+  MongoClient.connect(
+    connectionUrl, {
+      useUnifiedTopology: true,
+      useNewUrlParser: true
+    }, function(error, client) {
+
+      // Connection succeeded
+      if (!error) {
+        this.client = client;
+        this.db = client.db(this.name);
+      }
+
+      callback(error);
+    }.bind(this)
+  );
+};
+
+/**
+ * Closes connection to the database.
+ *
+ * @param {callback} callback The function to call when connection is closed
+ */
+MongoDatabase.prototype.close = function(callback) {
+  this.client.close(callback);
+};
+
+/**
+ * Inserts several documents into a collection.
+ *
+ * @param {String} collection The collection to work on
+ * @param {Array} documents Document(s) to insert into the collection
+ * @param {module:storages/MongoDatabase~MongoDatabase~addCallback} callback The function to call when it's done
+ */
+MongoDatabase.prototype.add = function(collection, documents, callback) {
+  this.db.collection(collection).insertMany(documents, function(error, insertResult) {
+    if (error) return callback(error);
+
+    this.get(
+      collection,
+      new ResourceFilter().in(
+        '_id',
+        Object.values(insertResult.insertedIds).map(function(objectId) {
+          return objectId.toHexString();
+        })
+      ),
+      null,
+      insertResult.insertedCount,
+      0,
+      null,
+      function(getError, insertedDocuments) {
+        if (getError) return callback(getError);
+        callback(null, insertResult.insertedCount, insertedDocuments);
+      }
+    );
+  }.bind(this));
+};
+
+/**
+ * Removes several documents from a collection.
+ *
+ * @param {String} collection The collection to work on
+ * @param {module:storages/ResourceFilter~ResourceFilter} [filter] Rules to filter documents to remove
+ * @param {module:storages/MongoDatabase~MongoDatabase~removeCallback} callback The function to call when it's done
+ */
+MongoDatabase.prototype.remove = function(collection, filter, callback) {
+  filter = MongoDatabase.buildFilter(filter);
+
+  this.db.collection(collection).deleteMany(filter, function(error, result) {
+    if (error)
+      callback(error);
+    else
+      callback(null, result.deletedCount);
+  });
+};
+
+/**
+ * Removes a property from documents of a collection.
+ *
+ * @param {String} collection The collection to work on
+ * @param {String} property The name of the property to remove
+ * @param {module:storages/ResourceFilter~ResourceFilter} [filter] Rules to filter documents to update
+ * @param {module:storages/MongoDatabase~MongoDatabase~removeFieldCallback} callback The function to call when it's done
+ */
+MongoDatabase.prototype.removeField = function(collection, property, filter, callback) {
+  filter = MongoDatabase.buildFilter(filter);
+  filter[property] = {$exists: true};
+
+  var update = {};
+  update['$unset'] = {};
+  update['$unset'][property] = '';
+
+  this.db.collection(collection).updateMany(filter, update, function(error, result) {
+    if (error)
+      callback(error);
+    else
+      callback(null, result.modifiedCount);
+  });
+};
+
+/**
+ * Updates a document from collection.
+ *
+ * @param {String} collection The collection to work on
+ * @param {module:storages/ResourceFilter~ResourceFilter} [filter] Rules to filter the document to update
+ * @param {Object} data The modifications to perform
+ * @param {module:storages/MongoDatabase~MongoDatabase~updateOneCallback} callback The function to call when it's done
+ */
+MongoDatabase.prototype.updateOne = function(collection, filter, data, callback) {
+  var update = {$set: data};
+  filter = MongoDatabase.buildFilter(filter);
+
+  this.db.collection(collection).updateOne(filter, update, function(error, result) {
+    if (error)
+      callback(error);
+    else
+      callback(null, result.modifiedCount);
+  });
+};
+
+/**
+ * Fetches documents from the collection.
+ *
+ * @param {String} collection The collection to work on
+ * @param {module:storages/ResourceFilter~ResourceFilter} [filter] Rules to filter documents
+ * @param {Object} [fields] Expected resource fields to be included or excluded from the response, by default all
+ * fields are returned. Only "exclude" or "include" can be specified, not both
+ * @param {Array} [fields.include] The list of fields to include in the response, all other fields are excluded
+ * @param {Array} [fields.exclude] The list of fields to exclude from response, all other fields are included. Ignored
+ * if include is also specified.
+ * @param {Number} [limit] A limit number of documents to retrieve (10 by default)
+ * @param {Number} [page] The page number started at 0 for the first page
+ * @param {Object} sort The list of fields to sort by with the field name as key and the sort order as
+ * value (e.g. {field1: 'asc', field2: 'desc', field3: 'score'})
+ * @param {module:storages/MongoDatabase~MongoDatabase~getCallback} callback The function to call when it's done
+ */
+MongoDatabase.prototype.get = function(collection, filter, fields, limit, page, sort, callback) {
+  limit = limit || 10;
+  fields = fields || {};
+  page = page || 0;
+  filter = MongoDatabase.buildFilter(filter);
+  sort = MongoDatabase.buildSort(sort);
+  var projection = MongoDatabase.buildFields(fields.include || fields.exclude, fields.include ? true : false);
+  var skip = limit * page || 0;
+
+  // Automatically add the textScore projection if sorting by textScore
+  for (var field in sort) {
+    if (Object.prototype.hasOwnProperty.call(sort[field], '$meta') &amp;&amp; sort[field].$meta === 'textScore') {
+      projection[field] = sort[field];
+      break;
+    }
+  }
+
+  this.db.collection(collection).find(filter).project(projection).sort(sort).skip(skip).limit(limit).toArray(
+    function(error, documents) {
+      if (error) return callback(error);
+
+      this.db.collection(collection).countDocuments(filter, function(countError, count) {
+        if (countError) return callback(countError);
+
+        callback(null, documents || [], {
+          limit: limit,
+          page: page,
+          pages: Math.ceil(count / limit),
+          size: count
+        });
+      });
+    }.bind(this)
+  );
+};
+
+/**
+ * Fetches a single document from the storage.
+ *
+ * @param {String} collection The collection to work on
+ * @param {module:storages/ResourceFilter~ResourceFilter} [filter] Rules to filter documents
+ * @param {Object} [fields] Expected document fields to be included or excluded from the response, by default all
+ * fields are returned. Only "exclude" or "include" can be specified, not both
+ * @param {Array} [fields.include] The list of fields to include in the response, all other fields are excluded
+ * @param {Array} [fields.exclude] The list of fields to exclude from response, all other fields are included. Ignored
+ * if include is also specified.
+ * @param {module:storages/MongoDatabase~MongoDatabase~getOneCallback} callback The function to call when it's done
+ */
+MongoDatabase.prototype.getOne = function(collection, filter, fields, callback) {
+  filter = MongoDatabase.buildFilter(filter);
+  fields = fields || {};
+  var projection = MongoDatabase.buildFields(fields.include || fields.exclude, fields.include ? true : false);
+
+  this.db.collection(collection).findOne(filter, projection, callback);
+};
+
+/**
+ * Gets the list of indexes for a collection.
+ *
+ * @param {String} collection The collection to work on
+ * @param {module:storages/MongoDatabase~MongoDatabase~getIndexesCallback} callback The function to call when it's done
+ */
+MongoDatabase.prototype.getIndexes = function(collection, callback) {
+  this.db.collection(collection).indexes(callback);
+};
+
+/**
+ * Creates indexes for a collection.
+ *
+ * @param {String} collection The collection to work on
+ * @param {Array} indexes A list of indexes using MongoDB format
+ * @param {module:storages/MongoDatabase~MongoDatabase~createIndexesCallback} callback The function to call when it's
+ * done
+ */
+MongoDatabase.prototype.createIndexes = function(collection, indexes, callback) {
+  this.db.collection(collection).createIndexes(indexes, callback);
+};
+
+/**
+ * Drops an index from a collection.
+ *
+ * @param {String} collection The collection to work on
+ * @param {Array} indexName The name of the index to drop
+ * @param {module:storages/MongoDatabase~MongoDatabase~dropIndexCallback} callback The function to call when it's done
+ */
+MongoDatabase.prototype.dropIndex = function(collection, indexName, callback) {
+  this.db.collection(collection).dropIndex(indexName, callback);
+};
+
+/**
+ * Gets an express-session store for this database.
+ *
+ * @param {String} collection The collection to work on
+ * @return {Object} An express-session store
+ */
+MongoDatabase.prototype.getStore = function(collection) {
+  return new MongoStore({client: this.client, collectionName: collection});
+};
+
+/**
+ * Renames a collection.
+ *
+ * @param {String} collection The collection to work on
+ * @param {String} target The new name of the collection
+ * @param {callback} callback The function to call when it's done
+ */
+MongoDatabase.prototype.renameCollection = function(collection, target, callback) {
+  this.db.listCollections({name: collection}).toArray(function(error, collections) {
+    if (error) return callback(error);
+    if (!collections || !collections.length) {
+      return callback(
+        new StorageError('Collection "' + collection + '" not found', databaseErrors.RENAME_COLLECTION_NOT_FOUND_ERROR)
+      );
+    }
+
+    this.db.collection(collection).rename(target, callback);
+  }.bind(this));
+};
+
+/**
+ * Removes a collection from the database.
+ *
+ * @param {String} collection The collection to work on
+ * @param {callback} callback The function to call when it's done
+ */
+MongoDatabase.prototype.removeCollection = function(collection, callback) {
+  this.db.listCollections({name: collection}).toArray(function(error, collections) {
+    if (error) return callback(error);
+    if (!collections || !collections.length) {
+      return callback(
+        new StorageError('Collection "' + collection + '" not found', databaseErrors.REMOVE_COLLECTION_NOT_FOUND_ERROR)
+      );
+    }
+
+    this.db.dropCollection(collection, callback);
+  }.bind(this));
+};
+
+/**
+ * @callback module:storages/MongoDatabase~MongoDatabase~addCallback
+ * @param {(Error|null)} error The error if an error occurred, null otherwise
+ * @param {(Number|Undefined)} total The total amount of documents inserted
+ * @param {(Array|Undefined)} documents The list of inserted documents
+ */
+
+/**
+ * @callback module:storages/MongoDatabase~MongoDatabase~removeCallback
+ * @param {(Error|null)} error The error if an error occurred, null otherwise
+ * @param {(Number|Undefined)} total The number of deleted documents
+ */
+
+/**
+ * @callback module:storages/MongoDatabase~MongoDatabase~removeFieldCallback
+ * @param {(Error|null)} error The error if an error occurred, null otherwise
+ * @param {(Number|Undefined)} total The number of updated documents
+ */
+
+/**
+ * @callback module:storages/MongoDatabase~MongoDatabase~updateOneCallback
+ * @param {(Error|null)} error The error if an error occurred, null otherwise
+ * @param {(Number|Undefined)} total 1 if everything went fine
+ */
+
+/**
+ * @callback module:storages/MongoDatabase~MongoDatabase~getCallback
+ * @param {(Error|null)} error The error if an error occurred, null otherwise
+ * @param {(Array|Undefined)} documents The list of retrieved documents
+ * @param {(Object|Undefined)} pagination Pagination information
+ * @param {(Number|Undefined)} limit The specified limit
+ * @param {(Number|Undefined)} page The actual page
+ * @param {(Number|Undefined)} pages The total number of pages
+ * @param {(Number|Undefined)} size The total number of documents
+ */
+
+/**
+ * @callback module:storages/MongoDatabase~MongoDatabase~getOneCallback
+ * @param {(Error|null)} error The error if an error occurred, null otherwise
+ * @param {(Object|Undefined)} document The document
+ */
+
+/**
+ * @callback module:storages/MongoDatabase~MongoDatabase~getIndexesCallback
+ * @param {(Error|null)} error The error if an error occurred, null otherwise
+ * @param {(Array|Undefined)} indexes The list of indexes
+ */
+
+/**
+ * @callback module:storages/MongoDatabase~MongoDatabase~createIndexesCallback
+ * @param {(Error|null)} error The error if an error occurred, null otherwise
+ * @param {(Object|Undefined)} result Information about the operation
+ */
+
+/**
+ * @callback module:storages/MongoDatabase~MongoDatabase~dropIndexCallback
+ * @param {(Error|null)} error The error if an error occurred, null otherwise
+ * @param {(Object|Undefined)} result Information about the operation
+ */
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-angularJs.html">angularJs</a></li><li><a href="module-angularJs_parser.html">angularJs/parser</a></li><li><a href="module-controllers.html">controllers</a></li><li><a href="module-controllers_ContentController.html">controllers/ContentController</a></li><li><a href="module-controllers_Controller.html">controllers/Controller</a></li><li><a href="module-controllers_EntityController.html">controllers/EntityController</a></li><li><a href="module-controllers_HttpController.html">controllers/HttpController</a></li><li><a href="module-controllers_httpErrors.html">controllers/httpErrors</a></li><li><a href="module-controllers_SocketController.html">controllers/SocketController</a></li><li><a href="module-emitters.html">emitters</a></li><li><a href="module-emitters_AdvancedEmitter.html">emitters/AdvancedEmitter</a></li><li><a href="module-emitters_AdvancedEvent.html">emitters/AdvancedEvent</a></li><li><a href="module-errors.html">errors</a></li><li><a href="module-errors_AccessError.html">errors/AccessError</a></li><li><a href="module-errors_NotFoundError.html">errors/NotFoundError</a></li><li><a href="module-errors_StorageError.html">errors/StorageError</a></li><li><a href="module-fileSystem.html">fileSystem</a></li><li><a href="module-grunt.html">grunt</a></li><li><a href="module-grunt_copyTask.html">grunt/copyTask</a></li><li><a href="module-grunt_ngDpTask.html">grunt/ngDpTask</a></li><li><a href="module-grunt_removeTask.html">grunt/removeTask</a></li><li><a href="module-grunt_renameTask.html">grunt/renameTask</a></li><li><a href="module-imageProcessor.html">imageProcessor</a></li><li><a href="module-logger.html">logger</a></li><li><a href="module-middlewares.html">middlewares</a></li><li><a href="module-middlewares_disableCacheMiddleware.html">middlewares/disableCacheMiddleware</a></li><li><a href="module-middlewares_imageProcessorMiddleware.html">middlewares/imageProcessorMiddleware</a></li><li><a href="module-middlewares_logRequestMiddleware.html">middlewares/logRequestMiddleware</a></li><li><a href="module-multipart.html">multipart</a></li><li><a href="module-multipart_MultipartParser.html">multipart/MultipartParser</a></li><li><a href="module-passport.html">passport</a></li><li><a href="module-passport_STRATEGIES.html">passport/STRATEGIES</a></li><li><a href="module-passport_strategyFactory.html">passport/strategyFactory</a></li><li><a href="module-plugin.html">plugin</a></li><li><a href="module-plugin_Plugin.html">plugin/Plugin</a></li><li><a href="module-plugin_PluginApi.html">plugin/PluginApi</a></li><li><a href="module-providers.html">providers</a></li><li><a href="module-providers_EntityProvider.html">providers/EntityProvider</a></li><li><a href="module-providers_Provider.html">providers/Provider</a></li><li><a href="module-socket.html">socket</a></li><li><a href="module-socket_Pilot.html">socket/Pilot</a></li><li><a href="module-socket_SocketNamespace.html">socket/SocketNamespace</a></li><li><a href="module-socket_SocketServer.html">socket/SocketServer</a></li><li><a href="module-storages.html">storages</a></li><li><a href="module-storages_DATABASE_ERRORS.html">storages/DATABASE_ERRORS</a></li><li><a href="module-storages_factory.html">storages/factory</a></li><li><a href="module-storages_MongoDatabase.html">storages/MongoDatabase</a></li><li><a href="module-storages_ResourceFilter.html">storages/ResourceFilter</a></li><li><a href="module-storages_Storage.html">storages/Storage</a></li><li><a href="module-util.html">util</a></li><li><a href="module-watcher.html">watcher</a></li><li><a href="module-watcher_Watcher.html">watcher/Watcher</a></li><li><a href="module-watcher_WatcherError.html">watcher/WatcherError</a></li></ul><h3>Namespaces</h3><ul><li><a href="module-controllers_httpErrors-HTTP_ERRORS.html">controllers/httpErrors~HTTP_ERRORS</a></li><li><a href="module-passport_STRATEGIES-STRATEGIES.html">passport/STRATEGIES~STRATEGIES</a></li></ul><h3>Classes</h3><ul><li><a href="module-controllers_ContentController-ContentController.html">controllers/ContentController~ContentController</a></li><li><a href="module-controllers_Controller-Controller.html">controllers/Controller~Controller</a></li><li><a href="module-controllers_EntityController-EntityController.html">controllers/EntityController~EntityController</a></li><li><a href="module-controllers_HttpController-HttpController.html">controllers/HttpController~HttpController</a></li><li><a href="module-controllers_SocketController-SocketController.html">controllers/SocketController~SocketController</a></li><li><a href="module-emitters_AdvancedEmitter-AdvancedEmitter.html">emitters/AdvancedEmitter~AdvancedEmitter</a></li><li><a href="module-emitters_AdvancedEvent-AdvancedEvent.html">emitters/AdvancedEvent~AdvancedEvent</a></li><li><a href="module-errors_AccessError-AccessError.html">errors/AccessError~AccessError</a></li><li><a href="module-errors_NotFoundError-NotFoundError.html">errors/NotFoundError~NotFoundError</a></li><li><a href="module-errors_StorageError-StorageError.html">errors/StorageError~StorageError</a></li><li><a href="module-multipart_MultipartParser-MultipartParser.html">multipart/MultipartParser~MultipartParser</a></li><li><a href="module-plugin_PluginApi-PluginApi.html">plugin/PluginApi~PluginApi</a></li><li><a href="module-plugin_Plugin-Plugin.html">plugin/Plugin~Plugin</a></li><li><a href="module-providers_EntityProvider-EntityProvider.html">providers/EntityProvider~EntityProvider</a></li><li><a href="module-providers_Provider-Provider.html">providers/Provider~Provider</a></li><li><a href="module-socket_Pilot-Pilot.html">socket/Pilot~Pilot</a></li><li><a href="module-socket_SocketNamespace-SocketNamespace.html">socket/SocketNamespace~SocketNamespace</a></li><li><a href="module-socket_SocketServer-SocketServer.html">socket/SocketServer~SocketServer</a></li><li><a href="module-storages_MongoDatabase-MongoDatabase.html">storages/MongoDatabase~MongoDatabase</a></li><li><a href="module-storages_ResourceFilter-ResourceFilter.html">storages/ResourceFilter~ResourceFilter</a></li><li><a href="module-storages_Storage-Storage.html">storages/Storage~Storage</a></li><li><a href="module-watcher_WatcherError-WatcherError.html">watcher/WatcherError~WatcherError</a></li><li><a href="module-watcher_Watcher-Watcher.html">watcher/Watcher~Watcher</a></li></ul><h3>Events</h3><ul><li><a href="core_watcher_Watcher-Watcher.html#event:create">core:watcher/Watcher~Watcher#create</a></li><li><a href="core_watcher_Watcher-Watcher.html#event:delete">core:watcher/Watcher~Watcher#delete</a></li><li><a href="core_watcher_Watcher-Watcher.html#event:error">core:watcher/Watcher~Watcher#error</a></li><li><a href="core_watcher_Watcher-Watcher.html#event:watch">core:watcher/Watcher~Watcher#watch</a></li><li><a href="module-watcher_DirectoryFsWatcher-DirectoryFsWatcher.html#event:create">watcher/DirectoryFsWatcher~DirectoryFsWatcher#create</a></li><li><a href="module-watcher_DirectoryFsWatcher-DirectoryFsWatcher.html#event:delete">watcher/DirectoryFsWatcher~DirectoryFsWatcher#delete</a></li><li><a href="module-watcher_DirectoryFsWatcher-DirectoryFsWatcher.html#event:error">watcher/DirectoryFsWatcher~DirectoryFsWatcher#error</a></li><li><a href="module-watcher_DirectoryWatcher-DirectoryWatcher.html#event:create">watcher/DirectoryWatcher~DirectoryWatcher#create</a></li><li><a href="module-watcher_DirectoryWatcher-DirectoryWatcher.html#event:delete">watcher/DirectoryWatcher~DirectoryWatcher#delete</a></li><li><a href="module-watcher_DirectoryWatcher-DirectoryWatcher.html#event:error">watcher/DirectoryWatcher~DirectoryWatcher#error</a></li><li><a href="module-watcher_DirectoryWatcher-DirectoryWatcher.html#event:watch">watcher/DirectoryWatcher~DirectoryWatcher#watch</a></li></ul><h3><a href="global.html">Global</a></h3>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Mon Feb 27 2023 14:35:43 GMT+0100 (Central European Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
