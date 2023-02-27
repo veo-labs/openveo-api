@@ -1,3 +1,9 @@
+# 8.2.0 / YYYY-MM-DD
+
+## NEW FEATURES
+
+- fileSystem.getFileType, fileSystem.getFileTypeFromBuffer and utils.validateFiles now support MP4 iso5 files
+
 # 8.1.0 / 2022-04-15
 
 ## DEPENDENCIES
